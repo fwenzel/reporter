@@ -1,7 +1,7 @@
-Mozilla Reporter
-================
+Mozilla Input
+=============
 
-[Mozilla][Mozilla] Reporter is a [Django][Django]-based web application to
+[Mozilla][Mozilla] Input is a [Django][Django]-based web application to
 gather user feedback from the Firefox beta testing program.
 
 For project goals, specifications, etc., check out the
@@ -9,7 +9,7 @@ For project goals, specifications, etc., check out the
 
 [Mozilla]: http://www.mozilla.org
 [Django]: http://www.djangoproject.com/
-[wikimo]: https://wiki.mozilla.org/QA/Firefox/Reporter
+[wikimo]: https://wiki.mozilla.org/Firefox/Input
 
 Getting Started
 ---------------
@@ -44,7 +44,7 @@ This software is licensed under the [Mozilla Tri-License][MPL]:
     for the specific language governing rights and limitations under the
     License.
 
-    The Original Code is Mozilla Reporter.
+    The Original Code is Mozilla Input.
 
     The Initial Developer of the Original Code is Mozilla.
     Portions created by the Initial Developer are Copyright (C) 2010
