@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>{% block page_title %}Firefox Input{% endblock %}</title>
+    <link href="{{ MEDIA_URL }}css/reporter.css" type="text/css" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ MEDIA_URL }}img/favicon.ico"/>
+    {% block extra_headers %}{% endblock %}
+  </head>
+  <body id="{% block body_id %}{% endblock %}">
+    <div id="wrapper">
+      <div id="doc">
+        <div id="main-content">
+          {% block content %}
+          {% endblock %}
+        </div>
+      </div><!-- end #doc -->
+    </div><!-- end #wrapper -->
+
+    <!-- start #footer -->
+    <div id="footer">
+      <div id="footer-contents">
+        <div id="copyright">
+          <p id="footer-links">
+            <a href="http://www.mozilla.com/en-US/privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp;
+            <a href="http://www.mozilla.com/en-US/about/legal.html">Legal Notices</a> &nbsp;|&nbsp;
+            <a href="http://www.mozilla.com/en-US/legal/fraud-report/index.html">Report Trademark Abuse</a>
+          </p>
+          <p>Except where otherwise <a href="http://www.mozilla.com/en-US/about/legal.html#site">noted</a>,
+          content on this site is licensed under the <br/>
+          <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative
+            Commons Attribution Share-Alike License v3.0</a> or any later version.</p>
+        </div>
+      </div>
+    </div>
+    <!-- end #footer -->
+
+    {% block js %}{% endblock %}
+  </body>
+</html>
