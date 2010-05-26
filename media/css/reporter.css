@@ -207,21 +207,12 @@ body {
 	font-size: 110%;
 }
 
-#main-content div {
-    color:#69645C;
-    float:left;
-    font-size:95%;
-    margin:0 40px 12px 0;
-    width:250px;
-}
-
-
 /* }}} */
 /* {{{ Text and Links */
 
 body {
 	font-family: georgia, serif;
-	color: #807970;
+	color: #4B4742;
 }
 
 a:link,
@@ -340,27 +331,6 @@ h1, h2, h3 {
 /* }}} */
 /* {{{ Lists */
 
-ul {
-	margin: 1em 0 1em 0;
-	padding: 0;
-	position: relative;
-	left: -10px;
-	zoom: 1;
-}
-
-ul li,
-ol li ul li {
-	list-style-type: none;
-	padding: 3px 0 4px 10px;
-	background: url(../img/bullet.png) 0 10px no-repeat;
-}
-
-html[dir=rtl] ul li,
-html[dir=rtl] ol li ul li {
-	padding: 3px 10px 4px 0;
-	background-position: 100% 10px;
-}
-
 blockquote {
 	margin: 1em;
 }
@@ -436,4 +406,25 @@ table.data-table th {
     font-size: 110%;
 }
 
+/* }}} */
+/* {{{ Django stuff */
+ul.errorlist {
+    color: #B72324;
+}
+/* }}} */
+/* {{{ Feedback forms */
+#feedback #smiley {
+    float: left;
+    font-size: 2200%;
+    margin: -50px 20px 0 0;
+}
+#feedback #feedbackform {
+    margin-left: 25%;
+}
+#feedback #id_description {
+    width: 75%;
+}
+#feedback #id_url {
+    width: 75%;
+}
 /* }}} */
