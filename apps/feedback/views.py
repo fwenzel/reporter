@@ -1,12 +1,15 @@
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django import http
 
 from annoying.decorators import render_to
 
+from .decorators import enforce_user_agent
 from .forms import HappyForm, SadForm
 
 
 @render_to()
+@enforce_user_agent
 def give_feedback(request, positive):
     """Feedback page (positive or negative)."""
 
