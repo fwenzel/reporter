@@ -1,4 +1,7 @@
-# Essentials
+# Django stuff
 Django==1.2
+django-annoying==0.7.4
+
+# DB stuff
 MySQL-python==1.2.3c1
 -e git://github.com/jbalogh/schematic.git#egg=schematic
