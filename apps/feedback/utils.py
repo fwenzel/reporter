@@ -1,9 +1,12 @@
 import re
 
 from product_details import languages
+
 from . import BROWSERS
+from .decorators import cached
 
 
+@cached()
 def ua_parse(ua):
     """
     Simple user agent string parser for Firefox and friends.
@@ -38,7 +41,7 @@ def ua_parse(ua):
     os_patterns = (
         ('Win32', 'win'),
         ('Mac', 'mac'),
-        ('Linux', 'linux')
+        ('Linux', 'linux'),
     )
     os = 'other'
     for pattern in os_patterns:

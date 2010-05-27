@@ -1,10 +1,34 @@
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django import http
 
 from annoying.decorators import render_to
 
-from .decorators import enforce_user_agent
-from .forms import HappyForm, SadForm
+from .forms import HappyForm, SadForm, validate_ua
+
+
+def enforce_user_agent(f):
+    """
+    View decorator enforcing feedback from the latest beta users only.
+
+    Can be disabled with settings.ENFORCE_USER_AGENT = False.
+    """
+    def wrapped(request, *args, **kwargs):
+        if request.method != 'GET' or not settings.ENFORCE_USER_AGENT:
+            return f(request, *args, **kwargs)
+
+        # validate user agent GET parameter
+        ua = request.GET.get('ua', None)
+        try:
+            validate_ua(ua)
+        except ValidationError:
+            return http.HttpResponseRedirect(settings.URL_BETA)
+
+        # if we made it here, it's a latest beta user
+        return f(request, *args, **kwargs)
+
+    return wrapped
 
 
 @render_to()

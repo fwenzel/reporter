@@ -1,4 +1,18 @@
 from django import forms
+from django.core.exceptions import ValidationError
+
+from product_details import firefox_versions, mobile_details
+
+from . import FIREFOX, MOBILE
+from .utils import ua_parse
+from .validators import validate_ua
+from .version_compare import version_int
+
+
+LATEST_BETAS = {
+    FIREFOX: firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'],
+    MOBILE: mobile_details['beta_version'],
+}
 
 
 class FeedbackForm(forms.Form):
@@ -6,7 +20,8 @@ class FeedbackForm(forms.Form):
     description = forms.CharField(
         widget=forms.Textarea(attrs={
             'placeholder': 'Enter your feedback here.'}))
-    ua = forms.CharField(widget=forms.HiddenInput())
+    ua = forms.CharField(widget=forms.HiddenInput(),
+                         validators=[validate_ua])
 
 class HappyForm(FeedbackForm):
     """Form for positive feedback."""

@@ -1,40 +1,20 @@
-from django.conf import settings
-from django import http
+from hashlib import sha256
 
-from product_details import firefox_versions, mobile_details
-from . import FIREFOX, MOBILE
-from .utils import ua_parse
-from .version_compare import version_int
+from django.core.cache import cache
 
 
-LATEST_BETAS = {
-    FIREFOX: firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'],
-    MOBILE: mobile_details['beta_version'],
-}
-
-
-def enforce_user_agent(f):
+def cached(ctime=3600):
     """
-    View decorator enforcing feedback from the latest beta users only.
-
-    Can be disabled with settings.ENFORCE_USER_AGENT = False.
+    Per-function caching decorator.
+    http://djangosnippets.org/snippets/1852/
     """
-    def wrapped(request, *args, **kwargs):
-        if request.method != 'GET' or not settings.ENFORCE_USER_AGENT:
-            return f(request, *args, **kwargs)
-
-        # user agent GET parameter must be set and parseable
-        ua = request.GET.get('ua', None)
-        parsed = ua_parse(ua)
-        if not parsed:
-            return http.HttpResponseRedirect(settings.URL_BETA)
-
-        # compare to latest beta
-        ref_version = LATEST_BETAS[parsed['browser']]
-        if (version_int(ref_version) != version_int(parsed['version'])):
-            return http.HttpResponseRedirect(settings.URL_BETA)
-
-        # if we made it here, it's a latest beta user
-        return f(request, *args, **kwargs)
-
-    return wrapped
+    def decr(func):
+        def wrp(*args,**kargs):
+            key = sha256(func.func_name+repr(args)+repr(kargs)).hexdigest()
+            res = cache.get(key)
+            if res is None:
+                res = func(*args,**kargs)
+                cache.set(key,res,ctime)
+            return res
+        return wrp
+    return decr
