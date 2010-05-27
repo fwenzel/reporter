@@ -113,3 +113,6 @@ INSTALLED_APPS = (
 # Setting this to False allows feedback to be collected from any user agent.
 # (good for testing)
 ENFORCE_USER_AGENT = True
+
+# URLs to redirect users to that have inappropriate user agents.
+URL_BETA = 'http://www.mozilla.com/en-US/firefox/all-beta.html'

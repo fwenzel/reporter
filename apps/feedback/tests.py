@@ -1,4 +1,8 @@
 from django.test import TestCase
+from django.conf import settings
+from django.core.urlresolvers import reverse
+
+from product_details import firefox_versions
 
 from . import FIREFOX, MOBILE
 from .utils import ua_parse
@@ -37,3 +41,28 @@ class UtilTests(TestCase):
                 assert parsed['os'] == pattern[4]
             else:
                 assert parsed is None
+
+
+class ViewTests(TestCase):
+    def test_enforce_user_agent(self):
+        """Make sure unknown user agents are forwarded to download page."""
+        old_enforce_setting = settings.ENFORCE_USER_AGENT
+        settings.ENFORCE_USER_AGENT = True
+
+        # no UA: redirect
+        r = self.client.get(reverse('feedback.sad'))
+        self.assertEquals(r.status_code, 302)
+
+        # old version: redirect
+        FX_UA = ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
+                 'de; rv:1.9.2.3) Gecko/20100401 Firefox/%s')
+        r = self.client.get(reverse('feedback.sad'), {'ua': FX_UA % '3.6.3'})
+        self.assertEquals(r.status_code, 302)
+        self.assertEquals(r['Location'], settings.URL_BETA)
+
+        # latest beta: no redirect
+        r = self.client.get(reverse('feedback.sad'), {
+            'ua': FX_UA % firefox_versions['LATEST_FIREFOX_DEVEL_VERSION']})
+        self.assertEquals(r.status_code, 200)
+
+        settings.ENFORCE_USER_AGENT = old_enforce_setting
