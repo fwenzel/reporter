@@ -6,6 +6,7 @@ from django import http
 from annoying.decorators import render_to
 
 from .forms import HappyForm, SadForm, validate_ua
+from .models import Opinion
 
 
 def enforce_user_agent(f):
@@ -44,9 +45,21 @@ def give_feedback(request, positive):
         Formtype = SadForm
         data = {'TEMPLATE': 'feedback/sad.html'}
 
+        # wipe input URL if checkbox unchecked
+        if (request.method == 'POST' and
+            not request.POST.get('add_url', False)):
+            request.POST['url'] = ''
+
     if request.method == 'POST':
         form = Formtype(request.POST)
         if form.is_valid():
+            # Save to the DB
+            new_opinion = Opinion(
+                positive=positive, url=form.cleaned_data.get('url', ''),
+                description=form.cleaned_data['description'],
+                user_agent=form.cleaned_data['ua'])
+            new_opinion.save()
+
             return http.HttpResponseRedirect(reverse('feedback.thanks'))
 
     else:
