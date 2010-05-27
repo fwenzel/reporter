@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load smilies %}
+
+{% block page_title %}Submit Feedback{% endblock %}
+{% block body_id %}feedback{% endblock %}
+
+{% block content %}
+<div id="smiley">{% smiley "happy" %}</div>
+
+<div id="feedbackform">
+  <h2>Super! It's great to hear that you like our pre-released browser.
+  Please explain what you specifically like!</h2>
+  <form method="post" action="{% url feedback.happy %}">
+    {{ form.description.errors }}
+    <p>{{ form.description }}</p>
+
+    {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+      {% if hidden.errors%}
+        {{ hidden.name }}:
+        {{ hidden.errors }}
+      {% endif %}
+    {% endfor %}
+
+    <button type="submit">Submit Feedback</button>
+  </form>
+</div>
+
+{% endblock %}

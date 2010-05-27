@@ -11,6 +11,8 @@ urlpatterns = patterns('',
     # Feedback actions
     url(r'^sad/?', 'feedback.views.give_feedback', {'positive': False},
         name='feedback.sad'),
+    url(r'^happy/?', 'feedback.views.give_feedback', {'positive': True},
+        name='feedback.happy'),
     url(r'^thanks/?', direct_to_template, {'template': 'feedback/thanks.html'},
         name='feedback.thanks'),
 

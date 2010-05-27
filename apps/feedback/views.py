@@ -45,14 +45,13 @@ def give_feedback(request, positive):
         Formtype = SadForm
         data = {'TEMPLATE': 'feedback/sad.html'}
 
-        # wipe input URL if checkbox unchecked
-        if (request.method == 'POST' and
-            not request.POST.get('add_url', False)):
-            request.POST['url'] = ''
-
     if request.method == 'POST':
         form = Formtype(request.POST)
         if form.is_valid():
+            # Remove url if checkbox disabled
+            if not form.cleaned_data.get('add_url', False):
+                form.cleaned_data['url'] = ''
+
             # Save to the DB
             new_opinion = Opinion(
                 positive=positive, url=form.cleaned_data.get('url', ''),

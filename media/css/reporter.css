@@ -414,15 +414,17 @@ ul.errorlist {
 /* }}} */
 /* {{{ Feedback forms */
 #feedback #smiley {
-    float: left;
+    font-family: sans-serif;
     font-size: 2200%;
-    margin: -50px 20px 0 0;
+    position: absolute;
+    top: 30px;
+    left: 0;
 }
 #feedback #feedbackform {
-    margin-left: 25%;
+    margin-left: 30%;
 }
 #feedback #id_description {
-    width: 75%;
+    width: 80%;
 }
 #feedback #id_url {
     width: 75%;

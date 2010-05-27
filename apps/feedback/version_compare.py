@@ -1,3 +1,4 @@
+"""Version comparison module for Mozilla-style application versions."""
 import re
 
 
