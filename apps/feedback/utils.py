@@ -1,5 +1,7 @@
 import re
 
+from topia.termextract import extract
+
 from product_details import languages
 
 from . import BROWSERS
@@ -61,3 +63,17 @@ def ua_parse(ua):
     detected['locale'] = locale
 
     return detected
+
+
+def extract_terms(text):
+    """
+    Use topia.termextract to perform a simple tag extraction from
+    user comments.
+    """
+    extractor = extract.TermExtractor()
+    # Use permissive filter to find all possibly relevant terms in short texts.
+    extractor.filter = extract.permissiveFilter
+    terms = extractor(text)
+
+    # @TODO profanity filter
+    return [ t[0].lower() for t in terms ]

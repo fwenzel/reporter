@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from .utils import ua_parse
+from .utils import ua_parse, extract_terms
 
 
 class Opinion(models.Model):
@@ -31,7 +31,13 @@ class Opinion(models.Model):
         super(Opinion, self).save(*args, **kwargs)
 
         # Extract terms from description text and save them
-        # @TODO
+        terms = extract_terms(self.description)
+        for term in terms:
+            try:
+                this_term = Term.objects.get(term=term)
+            except Term.DoesNotExist:
+                this_term = Term.objects.create(term=term)
+            self.terms.add(this_term)
 
 
 class Term(models.Model):
