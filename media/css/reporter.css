@@ -430,3 +430,20 @@ ul.errorlist {
     width: 75%;
 }
 /* }}} */
+/* {{{ Thank you page */
+#thanks h1 {
+    font-size: 300%;
+}
+#thanks #next-steps li {
+    border: 1px solid #0489B7;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 2px 2px 10px #0489B7;
+    -webkit-box-shadow: 2px 2px 10px #0489B7;
+    box-shadow: 2px 2px 10px #0489B7;
+    display: inline;
+    padding: .5em;
+    margin: 1em;
+}
+/* }}} */
