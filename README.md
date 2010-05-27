@@ -1,8 +1,9 @@
-Mozilla Input
+Firefox Input
 =============
 
-[Mozilla][Mozilla] Input is a [Django][Django]-based web application to
-gather user feedback from the Firefox beta testing program.
+Firefox Input is a [Django][Django]-based web application to
+gather user feedback from the [Mozilla][Mozilla] Firefox beta
+testing program.
 
 For project goals, specifications, etc., check out the
 [Reporter Wiki Page][wikimo].
@@ -44,7 +45,7 @@ This software is licensed under the [Mozilla Tri-License][MPL]:
     for the specific language governing rights and limitations under the
     License.
 
-    The Original Code is Mozilla Input.
+    The Original Code is Firefox Input.
 
     The Initial Developer of the Original Code is Mozilla.
     Portions created by the Initial Developer are Copyright (C) 2010
