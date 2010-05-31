@@ -9,7 +9,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 path = lambda *a: os.path.join(ROOT, *a)
 
 site.addsitedir(path('apps'))
-site.addsitedir(path('lib'))
+#site.addsitedir(path('lib'))
 
 try:
     import settings_local as settings

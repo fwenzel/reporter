@@ -1,3 +1,0 @@
-[submodule "lib/product_details/json"]
-	path = lib/product_details/json
-	url = git://github.com/jbalogh/mozilla-product-details.git

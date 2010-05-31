@@ -2,7 +2,7 @@ import re
 
 from topia.termextract import extract
 
-from product_details import languages
+import product_details
 
 from . import BROWSERS
 from .decorators import cached
@@ -57,7 +57,7 @@ def ua_parse(ua):
     info = [ i.strip() for i in info_match.group(1).split(';') ]
     locale = None
     for i in info:
-        if i in languages:
+        if i in product_details.languages:
             locale = i
             break
     detected['locale'] = locale

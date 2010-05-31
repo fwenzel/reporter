@@ -1,9 +1,8 @@
 Firefox Input
 =============
 
-Firefox Input is a [Django][Django]-based web application to
-gather user feedback from the [Mozilla][Mozilla] Firefox beta
-testing program.
+Firefox Input is a [Django][Django]-based web application to gather user
+feedback from the [Mozilla][Mozilla] Firefox beta testing program.
 
 For project goals, specifications, etc., check out the
 [Reporter Wiki Page][wikimo].
@@ -24,6 +23,14 @@ to install the required Python libraries.
 [virtualenv]: http://pypi.python.org/pypi/virtualenv
 
 ### Django
+To initialize the database, run:
+
+    ./manage.py syncdb
+
+and to fetch the initial product details data, run:
+
+    ./manage.py update_product_details
+
 The Internet has plenty of of documentation on setting up a Django application
 with any web server. If you need a wsgi entry point, you can find one in
 ``wsgi/reporter.wsgi``.

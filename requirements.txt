@@ -1,6 +1,7 @@
 # Django stuff
-Django==1.2
+Django==1.2.1
 django-annoying==0.7.4
+-e git://github.com/fwenzel/django-mozilla-product-details#egg=django-mozilla-product-details
 
 # DB stuff
 MySQL-python==1.2.3c1

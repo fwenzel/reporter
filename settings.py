@@ -108,6 +108,7 @@ INSTALLED_APPS = (
 
     'annoying',
     'feedback',
+    'product_details',
 )
 
 # Setting this to False allows feedback to be collected from any user agent.
