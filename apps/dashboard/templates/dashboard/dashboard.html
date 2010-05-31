@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load smilies %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<h1><a href="{% url dashboard %}">Firefox Input Dashboard</a></h1>
+
+<noscript>
+  <div class="container">
+    <h2>Please enable JavaScript to view this page.</h2>
+  </div>
+</noscript>
+
+<div id="search" class="container">
+  <form method="post" action="{% url dashboard %}">
+    <label>Search Issues: {{ form.q }}</label>
+    <button type="submit">Search</button>
+  </form>
+</div>
+
+<div id="overview">
+  <div id="sentiment" class="container">
+    <div id="period">{{ period.period }}</div>
+    <h2>User Sentiment</h2>
+    <div class="ajaxy">
+    </div>
+    <div class="prototype">
+      <div class="emotion happy">{% smiley "happy" %}</div>
+      <div class="emotion sad">{% smiley "sad" %}</div>
+      <div class="response total">{0} total responses</div>
+      <div class="response happy">{0} happy</div>
+      <div class="response sad">{0} sad</div>
+    </div>
+  </div>
+  <div id="trends" class="container">
+    <h2>Trends</h2>
+    <div class="ajaxy"></div>
+  </div>
+  <div id="demo" class="container">
+    <h2>Demographics</h2>
+  </div>
+</div>
+
+<div id="messages" class="container">
+  <h2>Last 10 Messages</h2>
+  <!-- Show More -->
+  <!-- messages -->
+</div>
+{% endblock %}

@@ -107,6 +107,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
 
     'annoying',
+    'dashboard',
     'feedback',
     'product_details',
 )

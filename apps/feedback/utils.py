@@ -4,7 +4,7 @@ from topia.termextract import extract
 
 import product_details
 
-from . import BROWSERS
+from . import BROWSERS, OS_OTHER, OS_PATTERNS
 from .decorators import cached
 
 
@@ -40,13 +40,8 @@ def ua_parse(ua):
         return None
 
     # Detect OS
-    os_patterns = (
-        ('Win32', 'win'),
-        ('Mac', 'mac'),
-        ('Linux', 'linux'),
-    )
-    os = 'other'
-    for pattern in os_patterns:
+    os = OS_OTHER.short
+    for pattern in OS_PATTERNS:
         if ua.find(pattern[0]) >= 0:
             os = pattern[1]
             break

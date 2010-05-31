@@ -22,3 +22,27 @@ BROWSERS = (
     (MOBILE, UA_PATTERN_MOBILE),
     (FIREFOX, UA_PATTERN_FIREFOX),
 )
+
+# Operating Systems
+class WINDOWS:
+    pretty = 'Windows'
+    short = 'win'
+    ua_pattern = 'Win32'
+
+class OSX:
+    pretty = 'Mac OS X'
+    short = 'mac'
+    ua_pattern = 'Mac'
+
+class LINUX:
+    pretty = 'Linux'
+    short = 'linux'
+    ua_pattern = 'Linux'
+
+class OS_OTHER:
+    pretty = 'Other'
+    short = 'other'
+    ua_pattern = None
+
+OSES = (WINDOWS, OSX, LINUX)
+OS_PATTERNS = [ (o.ua_pattern, o.short) for o in OSES ]
