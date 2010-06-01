@@ -1,7 +1,11 @@
+import string
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 
 from product_details import firefox_versions, mobile_details
+
+import swearwords
 
 from . import FIREFOX, MOBILE
 from .utils import ua_parse
@@ -26,3 +30,15 @@ def validate_ua(ua):
         if (version_int(ref_version) != version_int(parsed['version'])):
             raise ValidationError(
                 'Submitted User Agent is not the latest beta version.')
+
+
+def validate_swearwords(str):
+    """Soft swear word filter to encourage contructive feedback."""
+    words = set([ s.strip(string.punctuation) for s in str.split() ])
+    matches = words.intersection(swearwords.WORDLIST)
+    if matches:
+        raise ValidationError(
+            'Your comment seems to contain rude words (%s). In order to '
+            'help us improve our products, please refrain from using such '
+            'words and provide constructive feedback only.' % (
+                ', '.join(matches)))
