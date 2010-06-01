@@ -63,6 +63,8 @@ $(document).ready(function() {
                 bar.text(format(bar.text(), [data[emo]]));
                 if (emo != 'total' && data[emo] > 0)
                     bar.css('width', data[emo] / data['total'] * 75 + '%');
+                else if (data[emo] == 0)
+                    bar.css('width', '0');
                 else
                     bar.css('width', '75%');
             }

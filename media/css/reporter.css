@@ -512,6 +512,7 @@ ul.errorlist {
     border-radius: 5px;
     margin: 0 0 5px 21%;
     padding: 5px;
+    white-space: nowrap;
 }
 #dashboard .response.total {
     background-color: #76d6ff;
