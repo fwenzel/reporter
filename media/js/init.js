@@ -128,11 +128,43 @@ $(document).ready(function() {
         }
     };
 
+    var messages = {
+        container: $('#messages .ajaxy'),
+
+        init: function() {
+            loading(this.container);
+            $.getJSON('/dashboard/ajax/messages', {}, this.update);
+        },
+
+        update: function(data) {
+            not_loading(messages.container);
+
+            var proto = $('#messages .prototype').clone(),
+                ul = proto.find('ul'),
+                li_proto = proto.find('li');
+            for (i in data.msg) {
+                var item = data.msg[i],
+                    target = li_proto.clone();
+                target.addClass(item.class);
+                target.html(format(target.html(), item));
+                if (item.url)
+                    target.find('a').attr('href', item.url);
+                else
+                    target.find('a').remove();
+                ul.append(target);
+            }
+            li_proto.remove();
+
+            messages.container.html(proto.html());
+        }
+    }
+
     $('#id_period').change(init_all);
 
     $('#search,#overview,#messages').show();
 
     init_all();
+    messages.init();
 });
 
 /* Fake the placeholder attribute since Firefox doesn't support it.

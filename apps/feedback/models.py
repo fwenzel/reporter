@@ -33,6 +33,9 @@ class Opinion(models.Model):
 
     objects = OpinionManager()
 
+    class Meta:
+        ordering = ('-created',)
+
     def __unicode__(self):
         return '(%s) "%s"' % (
             self.positive and '+' or '-',

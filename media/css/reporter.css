@@ -538,4 +538,21 @@ ul.errorlist {
 .terms .term.w2 { font-size: 100%; }
 .terms .term.w1 { font-size: 80%; }
 .terms .term.w0 { font-size: 60%; }
+
+#dashboard #messages li {
+    display: block;
+    border: 1px solid rgba(75, 71, 66, .5);
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+#dashboard #messages li.happy {
+}
+#dashboard #messages li.sad {
+}
+#dashboard #messages li a.url {
+    float: right;
+}
 /* }}} */

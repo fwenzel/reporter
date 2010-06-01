@@ -30,6 +30,7 @@ def period_to_date(f):
 @ajax_request
 @period_to_date
 def sentiment(request, date_start, date_end):
+    """AJAX action returning a summary of positive/negative sentiments."""
     opinions = lambda pos: Opinion.objects.between(
         date_start, date_end).filter(positive=pos).aggregate(
             cnt=Count('pk'))['cnt']
@@ -46,6 +47,7 @@ def sentiment(request, date_start, date_end):
 @ajax_request
 @period_to_date
 def trends(request, date_start, date_end):
+    """AJAX action returning a summary of frequent terms."""
     frequent_terms = Term.objects.visible().filter(
         used_in__in=Opinion.objects.between(date_start, date_end)).annotate(
         cnt=Count('used_in')).order_by('-cnt')[:10]
@@ -62,6 +64,7 @@ def trends(request, date_start, date_end):
 @ajax_request
 @period_to_date
 def demographics(request, date_start, date_end):
+    """AJAX action returning an OS/locale breakdown."""
     opinions = Opinion.objects.between(date_start, date_end)
 
     # Summarize OSes.
@@ -79,3 +82,14 @@ def demographics(request, date_start, date_end):
         'os': os_data,
         'locale': locale_data
     }
+
+
+@ajax_request
+def messages(request, count=10):
+    """AJAX action returning the most recent messages."""
+    opinions = Opinion.objects.order_by('-created')[:count]
+    return {
+        'msg': [ {'opinion': opinion.description,
+                  'url': opinion.url,
+                  'class': opinion.positive and 'happy' or 'sad'} for
+                opinion in opinions ]}
