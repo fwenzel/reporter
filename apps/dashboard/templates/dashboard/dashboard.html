@@ -23,8 +23,7 @@
   <div id="sentiment" class="container">
     <div id="period">{{ period.period }}</div>
     <h2>User Sentiment</h2>
-    <div class="ajaxy">
-    </div>
+    <div class="ajaxy"></div>
     <div class="prototype">
       <div class="emotion happy">{% smiley "happy" %}</div>
       <div class="emotion sad">{% smiley "sad" %}</div>
@@ -39,6 +38,17 @@
   </div>
   <div id="demo" class="container">
     <h2>Demographics</h2>
+    <div class="ajaxy"></div>
+    <div class="prototype">
+      <dl class="oses">
+        <dt>OS</dt>
+        <dd>{name}: <b>{count}</b></dd>
+      </dl>
+      <dl class="locales">
+        <dt>Locale</dt>
+        <dd>{locale}: <b>{count}</b></dd>
+      </dl>
+    </div>
   </div>
 </div>
 

@@ -39,6 +39,7 @@ $(document).ready(function() {
     var init_all = function() {
         sentiment.init();
         trends.init();
+        demo.init();
     };
 
     var sentiment = {
@@ -88,6 +89,42 @@ $(document).ready(function() {
                 term_html = $(format('<span class="term w{weight}">{term}</span>', term));
                 trends.container.append(term_html);
             }
+        }
+    };
+
+    var demo = {
+        container: $('#demo .ajaxy'),
+
+        init: function() {
+            loading(this.container);
+            grab_json('demographics', this.update);
+        },
+
+        update: function(data) {
+            not_loading(demo.container)
+
+            var proto = $('#demo .prototype').clone(),
+                os_proto = proto.find('dl.oses'),
+                os_item = os_proto.find('dd');
+            for (i in data.os) {
+                var item = data.os[i],
+                    target = os_item.clone();
+                target.html(format(target.html(), item));
+                os_proto.append(target);
+            }
+            os_item.remove();
+
+            var loc_proto = proto.find('dl.locales'),
+                loc_item = loc_proto.find('dd');
+            for (i in data.locale) {
+                var item = data.locale[i],
+                    target = loc_item.clone();
+                target.html(format(target.html(), item));
+                loc_proto.append(target);
+            }
+            loc_item.remove();
+
+            demo.container.html(proto.html());
         }
     };
 

@@ -4,6 +4,7 @@ from django.db.models import Count
 
 from annoying.decorators import ajax_request, render_to
 
+from feedback import OSES, OS_OTHER
 from feedback.models import Opinion, Term
 from .forms import SearchForm, PeriodForm, PERIOD_DELTAS
 
@@ -12,6 +13,7 @@ from .forms import SearchForm, PeriodForm, PERIOD_DELTAS
 def dashboard(request):
     form = SearchForm()
     period = PeriodForm()
+
     return {'form': form, 'period': period}
 
 
@@ -60,5 +62,20 @@ def trends(request, date_start, date_end):
 @ajax_request
 @period_to_date
 def demographics(request, date_start, date_end):
-    opinions = Opinion.objects.filter(
-        created__gte=date_start, created__lte=date_end)
+    opinions = Opinion.objects.between(date_start, date_end)
+
+    # Summarize OSes.
+    per_os = opinions.values('os').annotate(cnt=Count('pk'))
+    os_name = lambda short: OSES.get(short, OS_OTHER).pretty
+    os_data = [ {'name': os_name(item['os']),
+                 'count': item['cnt']} for item in per_os ]
+
+    # Summarize locales.
+    per_locale = opinions.values('locale').annotate(cnt=Count('pk'))
+    locale_data = [ {'locale': item['locale'],
+                     'count': item['cnt']} for item in per_locale ]
+
+    return {
+        'os': os_data,
+        'locale': locale_data
+    }
