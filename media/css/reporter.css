@@ -429,6 +429,7 @@ ul.errorlist {
     font-size: 300%;
 }
 #thanks #next-steps li {
+    background: rgba(255, 255, 255, .5);
     border: 1px solid #0489B7;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -522,4 +523,17 @@ ul.errorlist {
 #dashboard .response.sad {
     background-color: #ff2800;
 }
+.terms .term:after {
+    content: ' ';
+}
+.terms .term {
+    margin-right: 1em;
+    padding: 2px;
+}
+.terms .term.w5 { font-size: 160%; }
+.terms .term.w4 { font-size: 140%; }
+.terms .term.w3 { font-size: 120%; }
+.terms .term.w2 { font-size: 100%; }
+.terms .term.w1 { font-size: 80%; }
+.terms .term.w0 { font-size: 60%; }
 /* }}} */
