@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
+from annoying.decorators import autostrip
 from product_details import firefox_versions, mobile_details
 
 from . import FIREFOX, MOBILE
@@ -23,12 +24,14 @@ class FeedbackForm(forms.Form):
     ua = forms.CharField(widget=forms.HiddenInput(),
                          validators=[validate_ua])
 
+@autostrip
 class HappyForm(FeedbackForm):
     """Form for positive feedback."""
     positive = forms.BooleanField(initial=True,
                                   widget=forms.HiddenInput(),
                                   required=True)
 
+@autostrip
 class SadForm(FeedbackForm):
     """Form for negative feedback."""
     positive = forms.BooleanField(initial=False,
