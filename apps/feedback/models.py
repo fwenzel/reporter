@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -31,7 +32,8 @@ class Opinion(models.Model):
         super(Opinion, self).save(*args, **kwargs)
 
         # Extract terms from description text and save them
-        terms = extract_terms(self.description)
+        terms = [ t for t in extract_terms(self.description) if
+                 len(t) >= settings.MIN_TERM_LENGTH ]
         for term in terms:
             try:
                 this_term = Term.objects.get(term=term)
@@ -43,3 +45,6 @@ class Opinion(models.Model):
 class Term(models.Model):
     """Significant term extraced from description texts."""
     term = models.CharField(max_length=255, unique=True)
+
+    def __unicode__(self):
+        return self.term
