@@ -20,17 +20,16 @@ def period_to_date(f):
     def wrapped(request, *args, **kwargs):
         period = request.GET.get('period', '1d')
         delta = PERIOD_DELTAS.get(period, datetime.timedelta(days=1))
-        end = datetime.datetime.now()
-        start = end - delta
-        return f(request, date_start=start, date_end=end)
+        start = datetime.datetime.now() - delta
+        return f(request, date_start=start, date_end=None)
     return wrapped
 
 
 @ajax_request
 @period_to_date
 def sentiment(request, date_start, date_end):
-    opinions = lambda pos: Opinion.objects.filter(
-        created__gte=date_start, created__lte=date_end, positive=pos).aggregate(
+    opinions = lambda pos: Opinion.objects.between(
+        date_start, date_end).filter(positive=pos).aggregate(
             cnt=Count('pk'))['cnt']
     sad = opinions(False)
     happy = opinions(True)
@@ -45,9 +44,8 @@ def sentiment(request, date_start, date_end):
 @ajax_request
 @period_to_date
 def trends(request, date_start, date_end):
-    frequent_terms = Term.objects.filter(
-        used_in__created__gte=date_start,
-        used_in__created__lte=date_end).annotate(
+    frequent_terms = Term.objects.visible().filter(
+        used_in__in=Opinion.objects.between(date_start, date_end)).annotate(
         cnt=Count('used_in')).order_by('-cnt')[:10]
     if not frequent_terms:
         return {'terms': []}
@@ -57,3 +55,10 @@ def trends(request, date_start, date_end):
             {'term': ft.term,
              'weight': round(float(ft.cnt) / max_weight * 5)} for
             ft in frequent_terms ]}
+
+
+@ajax_request
+@period_to_date
+def demographics(request, date_start, date_end):
+    opinions = Opinion.objects.filter(
+        created__gte=date_start, created__lte=date_end)

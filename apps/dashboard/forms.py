@@ -4,7 +4,7 @@ from django import forms
 
 import product_details
 
-from feedback import FIREFOX, OSES
+from feedback import FIREFOX, OS_USAGE
 
 
 PROD_CHOICES = (
@@ -18,7 +18,7 @@ FIREFOX_BETA_VERSION_CHOICES = [
         key=lambda x: x[1], reverse=True))
 ]
 LOCALE_CHOICES = [ (loc[0], loc[0]) for loc in product_details.languages ]
-OS_CHOICES = [ (o.short, o.pretty) for o in OSES ]
+OS_CHOICES = [ (o.short, o.pretty) for o in OS_USAGE ]
 
 DASHBOARD_PERIODS = (
     ('1d', '1 day'),

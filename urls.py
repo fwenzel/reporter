@@ -1,9 +1,8 @@
 from django.conf.urls.defaults import *
+from django.contrib import admin
 from django.views.generic.simple import direct_to_template
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'dashboard.views.dashboard', name='dashboard'),
@@ -18,6 +17,5 @@ urlpatterns = patterns('',
 
     (r'^dashboard/', include('dashboard.urls')),
 
-    # Uncomment the next line to enable the admin:
-    # (r'^admin/', include(admin.site.urls)),
+    (r'^admin/', include(admin.site.urls)),
 )

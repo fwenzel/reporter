@@ -2,7 +2,18 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from .utils import ua_parse, extract_terms
+from . import APP_IDS, OSES
+from .utils import ua_parse, extract_terms, smart_truncate
+
+
+class OpinionManager(models.Manager):
+    def between(self, date_start=None, date_end=None):
+        ret = self
+        if date_start:
+            ret = ret.filter(created__gte=date_start)
+        if date_end:
+            ret = ret.filter(created__lte=date_end)
+        return ret
 
 
 class Opinion(models.Model):
@@ -19,6 +30,32 @@ class Opinion(models.Model):
     locale = models.CharField(max_length=30)
 
     created = models.DateTimeField(auto_now_add=True)
+
+    objects = OpinionManager()
+
+    def __unicode__(self):
+        return '(%s) "%s"' % (
+            self.positive and '+' or '-',
+            self.truncated_description)
+
+    @property
+    def truncated_description(self):
+        """Shorten opinion for list display etc."""
+        return smart_truncate(self.description, length=70)
+
+    @property
+    def product_name(self):
+        try:
+            return APP_IDS[self.product].pretty
+        except IndexError:
+            return self.product
+
+    @property
+    def os_name(self):
+        try:
+            return OSES[self.os].pretty
+        except IndexError:
+            return self.os
 
     def save(self, *args, **kwargs):
         # parse UA and stick it into separate fields
@@ -42,9 +79,21 @@ class Opinion(models.Model):
             self.terms.add(this_term)
 
 
+class TermManager(models.Manager):
+    def visible(self):
+        """All but hidden terms."""
+        return self.filter(hidden=False)
+
+
 class Term(models.Model):
     """Significant term extraced from description texts."""
     term = models.CharField(max_length=255, unique=True)
+    hidden = models.BooleanField(default=False)
+
+    objects = TermManager()
 
     def __unicode__(self):
         return self.term
+
+    class Meta:
+        ordering = ('term',)

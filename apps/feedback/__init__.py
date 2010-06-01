@@ -11,6 +11,10 @@ class MOBILE:
     pretty = 'Mobile'
     guid = '{a23983c0-fd0e-11dc-95ff-0800200c9a66}'
 
+APP_USAGE = _apps = (FIREFOX, MOBILE)
+APPS = dict((app.short, app) for app in _apps)
+APP_IDS = dict((app.id, app) for app in _apps)
+
 UA_PATTERN_FIREFOX = (
     r'^Mozilla.*(Firefox|Minefield|Namoroka|Shiretoko|GranParadiso|BonEcho|'
     'Iceweasel|Fennec|MozillaDeveloperPreview)\/([^\s]*).*$')
@@ -44,5 +48,6 @@ class OS_OTHER:
     short = 'other'
     ua_pattern = None
 
-OSES = (WINDOWS, OSX, LINUX)
-OS_PATTERNS = [ (o.ua_pattern, o.short) for o in OSES ]
+OS_USAGE = _oses = (WINDOWS, OSX, LINUX)
+OS_PATTERNS = [ (o.ua_pattern, o.short) for o in OS_USAGE ]
+OSES = dict((os.short, os) for os in _oses)
