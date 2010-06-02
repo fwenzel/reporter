@@ -406,6 +406,9 @@ table.data-table th {
 ul.errorlist {
     color: #B72324;
 }
+input.placeholder {
+    color: #4B4740;
+}
 /* }}} */
 /* {{{ Feedback forms */
 #feedback #smiley {
@@ -419,10 +422,11 @@ ul.errorlist {
     margin-left: 30%;
 }
 #feedback #id_description {
-    width: 80%;
+    font-size: 130%;
 }
+#feedback #id_description,
 #feedback #id_url {
-    width: 75%;
+    width: 90%;
 }
 /* }}} */
 /* {{{ Thank you page */

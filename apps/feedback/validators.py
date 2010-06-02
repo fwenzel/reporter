@@ -38,7 +38,7 @@ def validate_swearwords(str):
     matches = words.intersection(swearwords.WORDLIST)
     if matches:
         raise ValidationError(
-            'Your comment seems to contain rude words (%s). In order to '
-            'help us improve our products, please refrain from using such '
-            'words and provide constructive feedback only.' % (
+            'Your comments contains swear words (%s). In order to help us '
+            'improve our products, please use words that help us create an '
+            'action or to-do from your constructive feedback. Thanks!' % (
                 ', '.join(matches)))

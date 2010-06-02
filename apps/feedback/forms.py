@@ -18,10 +18,9 @@ LATEST_BETAS = {
 
 class FeedbackForm(forms.Form):
     """Feedback form fields shared between feedback types."""
-    description = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'placeholder': 'Enter your feedback here.'}),
-        validators=[validate_swearwords])
+    description = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': 'Enter your feedback here.'}),
+        max_length=140, validators=[validate_swearwords])
     ua = forms.CharField(widget=forms.HiddenInput(),
                          validators=[validate_ua])
 
