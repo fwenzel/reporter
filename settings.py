@@ -106,10 +106,18 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     'annoying',
+    'haystack',
+    'product_details',
+
     'dashboard',
     'feedback',
-    'product_details',
+    'search',
 )
+
+# Haystack Search
+HAYSTACK_SITECONF = 'search.search_sites'
+HAYSTACK_SEARCH_ENGINE = 'whoosh'
+HAYSTACK_WHOOSH_PATH = path('lib/whoosh_index')
 
 # Setting this to False allows feedback to be collected from any user agent.
 # (good for testing)

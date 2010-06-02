@@ -17,5 +17,6 @@ urlpatterns = patterns('',
 
     (r'^dashboard/', include('dashboard.urls')),
 
+    (r'^search/', include('search.urls')),
     (r'^admin/', include(admin.site.urls)),
 )

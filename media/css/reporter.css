@@ -412,8 +412,10 @@ input.placeholder {
 }
 /* }}} */
 /* {{{ Feedback forms */
-#feedback #smiley {
+.smiley {
     font-family: sans-serif;
+}
+#feedback #smiley {
     font-size: 2200%;
     position: absolute;
     top: 30px;
@@ -449,7 +451,8 @@ input.placeholder {
 }
 /* }}} */
 /* {{{ Dashboard */
-#dashboard #main-content {
+#dashboard #main-content,
+#search #main-content {
     width: 100%;
 }
 #dashboard #search,
@@ -457,7 +460,8 @@ input.placeholder {
 #dashboard #messages {
     display: none;
 }
-#dashboard .container {
+#dashboard .container,
+#search .container {
     background: rgba(255, 255, 255, .5);
     border: 1px solid rgba(75, 71, 66, .5);
     -moz-border-radius: 8px;
@@ -473,7 +477,8 @@ input.placeholder {
     background: transparent url("../img/ajax_loader.gif") no-repeat center top;
     min-height: 20px;
 }
-#dashboard .container h2 {
+#dashboard .container h2,
+#search .container h2 {
     margin: 0 0 .5em 0;
 }
 #dashboard #search {
@@ -482,18 +487,23 @@ input.placeholder {
 #dashboard #id_q {
     min-width: 40%;
 }
-#dashboard h1 {
+#dashboard h1,
+#search h1 {
     font-size: 225%;
     margin-top: 0;
 }
 #dashboard #overview,
-#dashboard #messages {
+#dashboard #messages,
+#search #results,
+#search #overview {
     width: 48%;
 }
-#dashboard #overview {
+#dashboard #overview,
+#search #results {
     float: left;
 }
-#dashboard #messages {
+#dashboard #messages,
+#search #overview {
     float: right;
 }
 #dashboard .prototype {
@@ -502,16 +512,15 @@ input.placeholder {
 #dashboard #period {
     float: right;
 }
-#dashboard #sentiment .emotion {
+#sentiment .emotion {
     float: left;
     text-align: center;
     width: 20%;
 }
-#dashboard .smiley {
-    font-family: sans-serif;
+#sentiment .smiley {
     font-size: 60pt;
 }
-#dashboard .response {
+#sentiment .response {
     border: 1px solid;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -520,14 +529,14 @@ input.placeholder {
     padding: 5px;
     white-space: nowrap;
 }
-#dashboard .response.total {
+#sentiment .response.total {
     background-color: #76d6ff;
     width: 75%;
 }
-#dashboard .response.happy {
+#sentiment .response.happy {
     background-color: #fffb00;
 }
-#dashboard .response.sad {
+#sentiment .response.sad {
     background-color: #ff2800;
 }
 .terms .term:after {
@@ -544,7 +553,8 @@ input.placeholder {
 .terms .term.w1 { font-size: 80%; }
 .terms .term.w0 { font-size: 60%; }
 
-#dashboard #messages li {
+#dashboard #messages li,
+#search #results li {
     display: block;
     border: 1px solid rgba(75, 71, 66, .5);
     -moz-border-radius: 5px;
@@ -566,5 +576,27 @@ input.placeholder {
 #dashboard #messages .urlpreview input {
     margin-left: .5em;
     width: 80%;
+}
+/* }}} */
+/* {{{ Search Results */
+#search #search_box {
+    min-height: 20px;
+    margin-bottom: 20px;
+}
+#search #search_options,
+#search #search_form {
+    width: 48%;
+}
+#search #search_options {
+    float: left;
+}
+#search #search_form {
+    float: right;
+}
+#search #results li .smiley {
+    float: left;
+    font-size: 200%;
+    margin-right: .5em;
+    vertical-align: middle;
 }
 /* }}} */
