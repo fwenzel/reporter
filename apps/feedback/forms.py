@@ -6,7 +6,7 @@ from product_details import firefox_versions, mobile_details
 
 from . import FIREFOX, MOBILE
 from .utils import ua_parse
-from .validators import validate_ua, validate_swearwords
+from .validators import validate_ua, validate_swearwords, validate_no_html
 from .version_compare import version_int
 
 
@@ -20,9 +20,8 @@ class FeedbackForm(forms.Form):
     """Feedback form fields shared between feedback types."""
     description = forms.CharField(widget=forms.TextInput(
         attrs={'placeholder': 'Enter your feedback here.'}),
-        max_length=140, validators=[validate_swearwords])
-    ua = forms.CharField(widget=forms.HiddenInput(),
-                         validators=[validate_ua])
+        max_length=140, validators=[validate_swearwords, validate_no_html])
+    ua = forms.CharField(widget=forms.HiddenInput(), validators=[validate_ua])
 
 @autostrip
 class HappyForm(FeedbackForm):

@@ -405,6 +405,7 @@ table.data-table th {
 /* {{{ Django stuff */
 ul.errorlist {
     color: #B72324;
+    margin-bottom: .2em;
 }
 input.placeholder {
     color: #4B4740;

@@ -2,6 +2,7 @@ import string
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.utils.html import strip_tags
 
 from product_details import firefox_versions, mobile_details
 
@@ -42,3 +43,9 @@ def validate_swearwords(str):
             'improve our products, please use words that help us create an '
             'action or to-do from your constructive feedback. Thanks!' % (
                 ', '.join(matches)))
+
+
+def validate_no_html(str):
+    """Disallow HTML."""
+    if strip_tags(str) != str:
+        raise ValidationError('Feedback must not contain HTML.')
