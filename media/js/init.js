@@ -132,16 +132,16 @@ $(document).ready(function() {
         container: $('#messages .ajaxy'),
 
         init: function() {
-            loading(this.container);
-            $.getJSON('/dashboard/ajax/messages', {}, this.update);
+            loading(messages.container);
+            $.getJSON('/dashboard/ajax/messages', {}, messages.update);
         },
 
         update: function(data) {
             not_loading(messages.container);
 
-            var proto = $('#messages .prototype').clone(),
-                ul = proto.find('ul'),
-                li_proto = proto.find('li');
+            var proto = $('#messages .prototype'),
+                li_proto = proto.find('li'),
+                ul = $('<ul>');
             for (i in data.msg) {
                 var item = data.msg[i],
                     target = li_proto.clone();
@@ -153,9 +153,27 @@ $(document).ready(function() {
                     target.find('a').remove();
                 ul.append(target);
             }
-            li_proto.remove();
+            messages.container.html(ul);
+            messages.update_url_previews();
+        },
 
-            messages.container.html(proto.html());
+        update_url_previews: function() {
+            messages.container.find('a.url').toggle(function(e) {
+                e.preventDefault();
+                var preview = $('#messages .prototype .urlpreview').clone(),
+                    link = $(this);
+                preview
+                    .find('input').val(link.attr('href')).end()
+                    .find('a').attr('href', link.attr('href')).end()
+                    .hide()
+                    .appendTo($(this).parent())
+                    .slideDown();
+            }, function(e) {
+                e.preventDefault();
+                $(this).siblings('.urlpreview').slideUp(function () {
+                    $(this).remove();
+                });
+            });
         }
     }
 
@@ -164,7 +182,9 @@ $(document).ready(function() {
     $('#search,#overview,#messages').show();
 
     init_all();
+    // update messages periodically
     messages.init();
+    setInterval(messages.init, 5 * 60 * 1000);
 });
 
 /* Fake the placeholder attribute since Firefox doesn't support it.

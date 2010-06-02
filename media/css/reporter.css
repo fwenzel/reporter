@@ -559,4 +559,11 @@ input.placeholder {
 #dashboard #messages li a.url {
     float: right;
 }
+#dashboard #messages .urlpreview {
+    margin-top: .5em;
+}
+#dashboard #messages .urlpreview input {
+    margin-left: .5em;
+    width: 80%;
+}
 /* }}} */
