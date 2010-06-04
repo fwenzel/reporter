@@ -39,6 +39,8 @@ The Internet has plenty of of documentation on setting up a Django application
 with any web server. If you need a wsgi entry point, you can find one in
 ``wsgi/reporter.wsgi``.
 
+[Haystack]: http://haystacksearch.org/
+
 ### Cron jobs
 There are two jobs you want to run periodically:
 
