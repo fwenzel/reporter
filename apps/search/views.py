@@ -12,7 +12,6 @@ class OpinionSearchView(SearchView):
         # TODO make sure this won't issue millions of queries
         opinion_pks = [ res.pk for res in self.results ]
 
-        # TODO (default) time restrictions
         # Aggregates:
         opinions = Opinion.objects.filter(pk__in=opinion_pks)
 

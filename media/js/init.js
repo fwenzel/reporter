@@ -2,6 +2,8 @@
 $(document).ready(function(){
     // Set up input placeholders.
     $('input[placeholder]').placeholder();
+    // initialize date pickers
+    $('.datepicker').datepicker({ maxDate: '0' });
 });
 
 /* Feedback pages */

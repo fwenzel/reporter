@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "search_base.html" %}
 {% load math %}
 {% load smilies %}
 
@@ -9,11 +9,19 @@
 
 
 <div id="search_box">
-  <div id="search_options">o hai</div>
+  <div id="search_options">
+    Description: "{{ query }}";
+    Dates: {{ form.cleaned_data.date_start }} &ndash; {{ form.cleaned_data.date_end }}
+  </div>
 
   <div id="search_form">
     <form method="get" action="{% url search %}">
-      <label>Search Issues: {{ form.q }}</label>
+      {% for field in form %}
+        <div class="fieldWrapper wrap_{{ field.name }}">
+          {{ field.errors }}
+          {{ field.label_tag }}: {{ field }}
+        </div>
+      {% endfor %}
       <button type="submit">Search</button>
     </form>
   </div>
@@ -77,5 +85,4 @@
     </div>
   </div>
 </div>
-
 {% endblock %}
