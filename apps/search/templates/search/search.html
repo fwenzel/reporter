@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load math %}
 {% load smilies %}
 
 {% block body_id %}search{% endblock %}
@@ -11,7 +12,7 @@
   <div id="search_options">o hai</div>
 
   <div id="search_form">
-    <form method="post" action="{% url dashboard %}">
+    <form method="get" action="{% url search %}">
       <label>Search Issues: {{ form.q }}</label>
       <button type="submit">Search</button>
     </form>
@@ -36,33 +37,42 @@
 </div>
 
 <div id="overview">
-  <div id="sentiment" class="container">
-    <div id="period">{{ period.period }}</div>
+  <div id="sentiment" class="container clearfix">
     <h2>User Sentiment</h2>
-    <div class="ajaxy"></div>
-    <div class="prototype">
-      <div class="emotion happy">{% smiley "happy" %}</div>
-      <div class="emotion sad">{% smiley "sad" %}</div>
-      <div class="response total">{0} total responses</div>
-      <div class="response happy">{0} happy</div>
-      <div class="response sad">{0} sad</div>
+    <div>
+      <div class="emotion {{ sent.sentiment }}">{% smiley sent.sentiment %}</div>
+      <div class="response total" style="width: 75%">{{ sent.total }} total responses</div>
+      {% if sent.total > 0 %}
+        <div class="response happy" style="width: {{ "happy"|stnew|stpush:sent.happy|stpush:sent.total|stdiv|stpush:75|stmult|stget }}%" >{{ sent.happy }} happy</div>
+        <div class="response sad" style="width: {{ "sad"|stnew|stpush:sent.sad|stpush:sent.total|stdiv|stpush:75|stmult|stget }}%">{{ sent.sad }} sad</div>
+      {% endif %}
     </div>
   </div>
-  <div id="trends" class="container">
+
+  <div id="trends" class="container clearfix">
     <h2>Trends</h2>
-    <div class="ajaxy terms"></div>
+    <div class="terms">
+      {% for term in terms %}
+      <span class="term w{{ term.weight }}">{{ term.term }}</span>
+      {% endfor %}
+    </div>
   </div>
-  <div id="demo" class="container">
+
+  <div id="demo" class="container clearfix">
     <h2>Demographics</h2>
     <div class="ajaxy"></div>
     <div class="prototype">
       <dl class="oses">
         <dt>OS</dt>
-        <dd>{name}: <b>{count}</b></dd>
+        {% for item in demographics.os %}
+        <dd>{{ item.name }}: <b>{{ item.count }}</b></dd>
+        {% endfor %}
       </dl>
       <dl class="locales">
         <dt>Locale</dt>
-        <dd>{locale}: <b>{count}</b></dd>
+        {% for item in demographics.locale %}
+        <dd>{{ item.locale }}: <b>{{ item.count }}</b></dd>
+        {% endfor %}
       </dl>
     </div>
   </div>

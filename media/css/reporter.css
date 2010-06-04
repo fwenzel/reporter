@@ -23,13 +23,19 @@ body {
 	text-align: right;
 }
 
-#doc:after {
+
+/* {{{ Clearfix */
+.clearfix:after {
     content: ".";
     display: block;
-    height: 0;
     clear: both;
+    font-size: 0;
+    height: 0;
     visibility: hidden;
 }
+*:first-child+html .clearfix { min-height: 0; }
+* html .clearfix { height: 1%; }
+/* }}} */
 
 #wrapper { min-width: 950px; }
 

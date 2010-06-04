@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Count
 
 from . import APP_IDS, OSES
 from .utils import ua_parse, extract_terms, smart_truncate
@@ -8,7 +9,7 @@ from .utils import ua_parse, extract_terms, smart_truncate
 
 class OpinionManager(models.Manager):
     def between(self, date_start=None, date_end=None):
-        ret = self
+        ret = self.get_query_set()
         if date_start:
             ret = ret.filter(created__gte=date_start)
         if date_end:
@@ -86,6 +87,12 @@ class TermManager(models.Manager):
     def visible(self):
         """All but hidden terms."""
         return self.filter(hidden=False)
+
+    def frequent(self, date_start=None, date_end=None):
+        """Frequently used terms in a given timeframe."""
+        return self.visible().filter(used_in__in=Opinion.objects.between(
+            date_start, date_end)).annotate(cnt=Count('used_in')).order_by(
+                '-cnt')
 
 
 class Term(models.Model):

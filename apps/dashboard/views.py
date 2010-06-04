@@ -4,8 +4,9 @@ from django.db.models import Count
 
 from annoying.decorators import ajax_request, render_to
 
-from feedback import OSES, OS_OTHER
 from feedback.models import Opinion, Term
+from feedback import stats
+
 from .forms import SearchForm, PeriodForm, PERIOD_DELTAS
 
 
@@ -31,57 +32,25 @@ def period_to_date(f):
 @period_to_date
 def sentiment(request, date_start, date_end):
     """AJAX action returning a summary of positive/negative sentiments."""
-    opinions = lambda pos: Opinion.objects.between(
-        date_start, date_end).filter(positive=pos).aggregate(
-            cnt=Count('pk'))['cnt']
-    sad = opinions(False)
-    happy = opinions(True)
-    return {
-        'sentiment': sad > happy and 'sad' or 'happy',
-        'total': sad+happy,
-        'sad': sad,
-        'happy': happy,
-    }
+    opinions = Opinion.objects.between(date_start, date_end)
+    return stats.sentiment(qs=opinions)
 
 
 @ajax_request
 @period_to_date
 def trends(request, date_start, date_end):
     """AJAX action returning a summary of frequent terms."""
-    frequent_terms = Term.objects.visible().filter(
-        used_in__in=Opinion.objects.between(date_start, date_end)).annotate(
-        cnt=Count('used_in')).order_by('-cnt')[:10]
-    if not frequent_terms:
-        return {'terms': []}
-    else:
-        max_weight = frequent_terms[0].cnt
-        return {'terms': [
-            {'term': ft.term,
-             'weight': round(float(ft.cnt) / max_weight * 5)} for
-            ft in frequent_terms ]}
+    frequent_terms = Term.objects.frequent(
+        date_start=date_start, date_end=date_end)[:10]
+    return {'terms': stats.frequent_terms(qs=frequent_terms)}
 
 
 @ajax_request
 @period_to_date
 def demographics(request, date_start, date_end):
-    """AJAX action returning an OS/locale breakdown."""
+    """AJAX action returning an OS/locale summary."""
     opinions = Opinion.objects.between(date_start, date_end)
-
-    # Summarize OSes.
-    per_os = opinions.values('os').annotate(cnt=Count('pk'))
-    os_name = lambda short: OSES.get(short, OS_OTHER).pretty
-    os_data = [ {'name': os_name(item['os']),
-                 'count': item['cnt']} for item in per_os ]
-
-    # Summarize locales.
-    per_locale = opinions.values('locale').annotate(cnt=Count('pk'))
-    locale_data = [ {'locale': item['locale'],
-                     'count': item['cnt']} for item in per_locale ]
-
-    return {
-        'os': os_data,
-        'locale': locale_data
-    }
+    return stats.demographics(qs=opinions)
 
 
 @ajax_request
