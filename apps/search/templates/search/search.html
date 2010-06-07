@@ -1,5 +1,4 @@
 {% extends "search_base.html" %}
-{% load math %}
 {% load smilies %}
 
 {% block body_id %}search{% endblock %}
@@ -52,8 +51,8 @@
       <div class="emotion {{ sent.sentiment }}">{% smiley sent.sentiment %}</div>
       <div class="response total" style="width: 75%">{{ sent.total }} total responses</div>
       {% if sent.total > 0 %}
-        <div class="response happy" style="width: {{ "happy"|stnew|stpush:sent.happy|stpush:sent.total|stdiv|stpush:75|stmult|stget }}%" >{{ sent.happy }} happy</div>
-        <div class="response sad" style="width: {{ "sad"|stnew|stpush:sent.sad|stpush:sent.total|stdiv|stpush:75|stmult|stget }}%">{{ sent.sad }} sad</div>
+        <div class="response happy" style="width: {% widthratio sent.happy sent.total 75 %}%" >{{ sent.happy }} happy</div>
+        <div class="response sad" style="width: {% widthratio sent.sad sent.total 75 %}%">{{ sent.sad }} sad</div>
       {% endif %}
     </div>
   </div>
