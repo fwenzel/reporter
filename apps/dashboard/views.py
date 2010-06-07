@@ -6,17 +6,17 @@ from annoying.decorators import ajax_request, render_to
 
 from feedback.models import Opinion, Term
 from feedback import stats
-from search.forms import DBSearchForm
+from search.forms import ReporterSearchForm
 
 from .forms import PeriodForm, PERIOD_DELTAS
 
 
 @render_to('dashboard/dashboard.html')
 def dashboard(request):
-    form = DBSearchForm()
+    search_form = ReporterSearchForm()
     period = PeriodForm()
 
-    return {'form': form, 'period': period}
+    return {'search_form': search_form, 'period': period}
 
 
 def period_to_date(f):

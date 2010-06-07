@@ -486,11 +486,12 @@ input.placeholder {
 #search .container h2 {
     margin: 0 0 .5em 0;
 }
-#dashboard #search {
-    text-align: center;
+#dashboard #search_form {
+    margin: 0 20%;
+    width: 60%;
 }
-#dashboard #id_q {
-    min-width: 40%;
+#dashboard #search_box #id_q {
+    min-width: 50%;
 }
 #dashboard h1,
 #search h1 {

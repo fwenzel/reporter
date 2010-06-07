@@ -26,17 +26,6 @@ def add_empty(choices):
     return [('', '-- all --')] + choices
 
 
-class DBSearchForm(forms.Form):
-    """Main search form."""
-    q = forms.CharField()
-    prod = forms.ChoiceField(choices=PROD_CHOICES)
-    version = forms.ChoiceField(choices=FIREFOX_BETA_VERSION_CHOICES)
-    locale = forms.ChoiceField(choices=LOCALE_CHOICES)
-    os = forms.ChoiceField(choices=OS_CHOICES)
-    date_from = forms.DateField()
-    date_to = forms.DateField()
-
-
 class ReporterSearchForm(SearchForm):
     q = forms.CharField(label='Search issues')
     locale = forms.ChoiceField(required=False,
