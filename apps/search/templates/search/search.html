@@ -7,24 +7,19 @@
 <h1><a href="{% url dashboard %}">Firefox Input</a> &ndash; Search Results</h1>
 
 
-<div id="search_box">
+<div id="search_box" class="clearfix">
   <div id="search_options">
+    {% if query %}
     Description: <span class="opt">"{{ query }}"</span>;
     Dates: <span class="opt">{{ form.cleaned_data.date_start }}
       &ndash; {{ form.cleaned_data.date_end }}</span>
+    <br/>
+    Locale: <span class="opt">{{ form.cleaned_data.locale|default:"all" }}</span>;
+    OS: <span class="opt">{{ form.cleaned_data.os|default:"all" }}</span>
+    {% endif %}
   </div>
 
-  <div id="search_form">
-    <form method="get" action="{% url search %}">
-      {% for field in form %}
-        <div class="fieldWrapper wrap_{{ field.name }}">
-          {{ field.errors }}
-          {{ field.label_tag }}: {{ field }}
-        </div>
-      {% endfor %}
-      <button type="submit">Search</button>
-    </form>
-  </div>
+  {% with form as search_form %}{% include "search/search_form.html" %}{% endwith %}
 </div>
 
 <div id="results" class="container">

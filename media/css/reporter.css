@@ -583,13 +583,38 @@ input.placeholder {
     width: 80%;
 }
 /* }}} */
+/* {{{ Search Form */
+#search_form {
+    line-height: 200%;
+}
+#search_form .wrap_q button,
+#search_form #show_search_adv {
+    display: none;
+}
+#search_form #show_search_adv {
+    float: right;
+    padding: 0 .2em;
+}
+#search_form .wrap_locale,
+#search_form .wrap_date_start {
+    float: left;
+}
+#search_form #id_locale,
+#search_form #id_date_start {
+    margin-right: .5em;
+}
+#search_form #id_date_start,
+#search_form #id_date_end {
+    width: 6em;
+}
+/* }}} */
 /* {{{ Search Results */
 #search #search_options .opt {
     font-weight: bold;
 }
 #search #search_box {
     min-height: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 #search #search_options,
 #search #search_form {

@@ -14,7 +14,7 @@ $(document).ready(function() {
         if (this.checked) {
             $('#id_url').removeAttr('disabled');
         } else {
-            $('#id_url').attr('disabled', 'disabled');
+            $('#id_url').attr('disabled', true);
         }
     }).change();
 
@@ -187,6 +187,34 @@ $(document).ready(function() {
     // update messages periodically
     messages.init();
     setInterval(messages.init, 5 * 60 * 1000);
+});
+
+/* search forms */
+$(document).ready(function() {
+    if ($('#search_form').length == 0) return;
+
+    var the_form = $('#search_form form'),
+        search_adv = $('#search_adv'),
+        adv_link = $('#show_search_adv'),
+        simple_button = adv_link.siblings('button');
+
+    adv_link.show();
+
+    adv_link.toggle(function () {
+        simple_button.fadeIn();
+        search_adv.slideUp();
+    }, function() {
+        simple_button.fadeOut();
+        search_adv.slideDown();
+    });
+
+    if (search_adv.find(':input[value!=""]').length == 0)
+        adv_link.click();
+
+    the_form.submit(function() {
+        // only submit non-empty fields
+        the_form.find(':input[value=""]').attr('disabled', true);
+    });
 });
 
 /* Fake the placeholder attribute since Firefox doesn't support it.

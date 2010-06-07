@@ -6,13 +6,14 @@ from annoying.decorators import ajax_request, render_to
 
 from feedback.models import Opinion, Term
 from feedback import stats
+from search.forms import DBSearchForm
 
-from .forms import SearchForm, PeriodForm, PERIOD_DELTAS
+from .forms import PeriodForm, PERIOD_DELTAS
 
 
 @render_to('dashboard/dashboard.html')
 def dashboard(request):
-    form = SearchForm()
+    form = DBSearchForm()
     period = PeriodForm()
 
     return {'form': form, 'period': period}
