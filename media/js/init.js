@@ -195,17 +195,12 @@ $(document).ready(function() {
 
     var the_form = $('#search_form form'),
         search_adv = $('#search_adv'),
-        adv_link = $('#show_search_adv'),
-        simple_button = adv_link.siblings('button');
+        adv_link = $('#show_search_adv');
 
-    adv_link.show();
+    $('#search_links').show();
 
-    adv_link.toggle(function () {
-        simple_button.fadeIn();
-        search_adv.slideUp();
-    }, function() {
-        simple_button.fadeOut();
-        search_adv.slideDown();
+    adv_link.click(function() {
+        search_adv.slideToggle();
     });
 
     if (search_adv.find(':input[value!=""]').length == 0)

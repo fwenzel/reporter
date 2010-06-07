@@ -1,22 +1,21 @@
 <div id="search_form">
   <form method="get" action="{% url search %}">
+    <div id="search_links">
+      <button type="submit">Search</button>
+      <a href="#" id="show_search_adv">Advanced</a>
+    </div>
     {% for field in search_form %}
-      {% if forloop.counter0 == 1 %}
+      {% if forloop.counter0 == 3 %}
       {# wrap advanced fields so we can show/hide them #}
       <div id="search_adv">
       {% endif %}
 
       <div class="fieldWrapper wrap_{{ field.name }}">
         {{ field.errors }}
-        {{ field.label_tag }}: {{ field }}
-        {% if forloop.counter0 == 0 %}
-        <button type="submit">Search</button>
-        <a href="#" id="show_search_adv">Advanced</a>
-        {% endif %}
+        {{ field.label_tag }} {{ field }}
       </div>
 
       {% if forloop.last %}
-      <button type="submit">Search</button>
       </div>
       {% endif %}
     {% endfor %}

@@ -487,12 +487,26 @@ input.placeholder {
     margin: 0 0 .5em 0;
 }
 #dashboard #search_form {
-    margin: 0 20%;
-    width: 60%;
+    margin: 0 15%;
+    width: 70%;
+}
+#dashboard #search_form .wrap_q,
+#dashboard #search_form .wrap_product,
+#dashboard #search_form .wrap_version {
+    float: left;
+    margin-right: .5em;
 }
 #dashboard #search_box #id_q {
-    min-width: 50%;
+    min-width: 40%;
 }
+#dashboard #search_box .wrap_product label,
+#dashboard #search_box .wrap_version label {
+    display: none;
+}
+#dashboard #search_box #search_adv {
+    clear: both;
+}
+
 #dashboard h1,
 #search h1 {
     font-size: 225%;
@@ -588,20 +602,21 @@ input.placeholder {
 #search_form {
     line-height: 200%;
 }
-#search_form .wrap_q button,
-#search_form #show_search_adv {
+#search_form #search_links {
     display: none;
+    float: right;
 }
 #search_form #show_search_adv {
-    float: right;
     padding: 0 .2em;
 }
+#search_form .wrap_product,
 #search_form .wrap_locale,
 #search_form .wrap_date_start {
     float: left;
 }
 #search_form #id_locale,
-#search_form #id_date_start {
+#search_form #id_date_start,
+#search #search_form #id_product {
     margin-right: .5em;
 }
 #search_form #id_date_start,
