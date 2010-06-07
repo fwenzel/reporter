@@ -627,10 +627,12 @@ input.placeholder {
 #search #search_form {
     float: right;
 }
+#search #results li {
+    min-height: 2.2em;
+}
 #search #results li .smiley {
     float: left;
-    font-size: 200%;
-    margin-right: .5em;
-    vertical-align: middle;
+    font-size: 250%;
+    margin: -.2em .5em 0 .2em;
 }
 /* }}} */

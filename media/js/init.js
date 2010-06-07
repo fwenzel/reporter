@@ -213,7 +213,7 @@ $(document).ready(function() {
 
     the_form.submit(function() {
         // only submit non-empty fields
-        the_form.find(':input[value=""]').attr('disabled', true);
+        the_form.find(':input[value=""]:not(button)').attr('disabled', true);
     });
 });
 
