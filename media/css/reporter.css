@@ -461,7 +461,6 @@ input.placeholder {
 #search #main-content {
     width: 100%;
 }
-#dashboard #search,
 #dashboard #overview,
 #dashboard #messages {
     display: none;
@@ -585,6 +584,9 @@ input.placeholder {
 }
 /* }}} */
 /* {{{ Search Results */
+#search #search_options .opt {
+    font-weight: bold;
+}
 #search #search_box {
     min-height: 20px;
     margin-bottom: 20px;

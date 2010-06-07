@@ -6,18 +6,18 @@
 {% block content %}
 <h1><a href="{% url dashboard %}">Firefox Input Dashboard</a></h1>
 
-<noscript>
-  <div class="container">
-    <h2>Please enable JavaScript to view this page.</h2>
-  </div>
-</noscript>
-
 <div id="search" class="container">
   <form method="get" action="{% url search %}">
     <label>Search Issues: {{ form.q }}</label>
     <button type="submit">Search</button>
   </form>
 </div>
+
+<noscript>
+  <div class="container">
+    <h2>Please enable JavaScript to view this page.</h2>
+  </div>
+</noscript>
 
 <div id="overview">
   <div id="sentiment" class="container">

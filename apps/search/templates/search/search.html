@@ -10,8 +10,9 @@
 
 <div id="search_box">
   <div id="search_options">
-    Description: "{{ query }}";
-    Dates: {{ form.cleaned_data.date_start }} &ndash; {{ form.cleaned_data.date_end }}
+    Description: <span class="opt">"{{ query }}"</span>;
+    Dates: <span class="opt">{{ form.cleaned_data.date_start }}
+      &ndash; {{ form.cleaned_data.date_end }}</span>
   </div>
 
   <div id="search_form">

@@ -181,7 +181,7 @@ $(document).ready(function() {
 
     $('#id_period').change(init_all);
 
-    $('#search,#overview,#messages').show();
+    $('#overview,#messages').show();
 
     init_all();
     // update messages periodically
