@@ -24,7 +24,9 @@ class Opinion(models.Model):
     description = models.TextField()
     terms = models.ManyToManyField('Term', related_name='used_in')
 
-    user_agent = models.CharField(max_length=255)
+    user_agent = models.CharField(
+        max_length=255, help_text=('Product name etc. are derived from user '
+                                   'agent string on save.'))
     product = models.PositiveSmallIntegerField()
     version = models.CharField(max_length=30)
     os = models.CharField(max_length=30)

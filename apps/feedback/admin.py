@@ -24,7 +24,8 @@ class OpinionAdmin(admin.ModelAdmin):
             'fields': ('terms',)
         }),
     )
-    readonly_fields = ('created', 'product_name', 'os_name')
+    readonly_fields = ('created', 'product_name', 'os_name', 'version',
+                       'locale')
 
 admin.site.register(Opinion, OpinionAdmin)
 
