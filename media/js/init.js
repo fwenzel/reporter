@@ -34,9 +34,8 @@ $(document).ready(function() {
         $(that).removeClass('ajax_loading');
     };
     var grab_json = function(what, callback) {
-        $.getJSON('/dashboard/ajax/'+what,
-            {period: $('#id_period').val()}, callback
-        );
+        var period = $('#id_period').val();
+        $.getJSON('/dashboard/ajax/'+what+'/'+period, {}, callback);
     };
     var init_all = function() {
         sentiment.init();

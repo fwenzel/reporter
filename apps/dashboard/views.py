@@ -1,6 +1,8 @@
 import datetime
 
+from django.conf import settings
 from django.db.models import Count
+from django.views.decorators.cache import cache_page
 
 from annoying.decorators import ajax_request, render_to
 
@@ -21,14 +23,14 @@ def dashboard(request):
 
 def period_to_date(f):
     """Decorator translating period string to dates."""
-    def wrapped(request, *args, **kwargs):
-        period = request.GET.get('period', '1d')
+    def wrapped(request, period='1d', *args, **kwargs):
         delta = PERIOD_DELTAS.get(period, datetime.timedelta(days=1))
         start = datetime.datetime.now() - delta
         return f(request, date_start=start, date_end=None)
     return wrapped
 
 
+@cache_page(settings.CACHE_DEFAULT_PERIOD)
 @ajax_request
 @period_to_date
 def sentiment(request, date_start, date_end):
@@ -37,6 +39,7 @@ def sentiment(request, date_start, date_end):
     return stats.sentiment(qs=opinions)
 
 
+@cache_page(settings.CACHE_DEFAULT_PERIOD)
 @ajax_request
 @period_to_date
 def trends(request, date_start, date_end):
@@ -46,6 +49,7 @@ def trends(request, date_start, date_end):
     return {'terms': stats.frequent_terms(qs=frequent_terms)}
 
 
+@cache_page(settings.CACHE_DEFAULT_PERIOD)
 @ajax_request
 @period_to_date
 def demographics(request, date_start, date_end):
@@ -54,6 +58,7 @@ def demographics(request, date_start, date_end):
     return stats.demographics(qs=opinions)
 
 
+@cache_page(60 * 5)
 @ajax_request
 def messages(request, count=10):
     """AJAX action returning the most recent messages."""
