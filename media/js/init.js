@@ -33,9 +33,10 @@ $(document).ready(function() {
     var not_loading = function(that) {
         $(that).removeClass('ajax_loading');
     };
-    var grab_json = function(what, callback) {
+    var grab_ajax = function(what, callback, type) {
         var period = $('#id_period').val();
-        $.getJSON('/dashboard/ajax/'+what+'/'+period, {}, callback);
+        if (!type) var type = 'json';
+        $.get('/dashboard/ajax/'+what+'/'+period, callback, type);
     };
     var init_all = function() {
         sentiment.init();
@@ -49,7 +50,7 @@ $(document).ready(function() {
 
         init: function() {
             loading(this.container);
-            grab_json('sentiment', this.update);
+            grab_ajax('sentiment', this.update);
         },
 
         update: function(data) {
@@ -80,16 +81,12 @@ $(document).ready(function() {
 
         init: function() {
             loading(this.container);
-            grab_json('trends', this.update);
+            grab_ajax('trends', this.update, 'html');
         },
 
         update: function(data) {
             not_loading(trends.container)
-            for (i in data.terms) {
-                var term = data.terms[i];
-                term_html = $(format('<span class="term w{weight}">{term}</span>', term));
-                trends.container.append(term_html);
-            }
+            trends.container.html(data);
         }
     };
 
@@ -98,7 +95,7 @@ $(document).ready(function() {
 
         init: function() {
             loading(this.container);
-            grab_json('demographics', this.update);
+            grab_ajax('demographics', this.update);
         },
 
         update: function(data) {

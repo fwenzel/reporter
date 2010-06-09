@@ -1,0 +1,4 @@
+{% for item in terms %}
+  <a href="{% url search %}?q={{ item.term|iriencode }}&product={{ prod.short }}"
+     class="term w{{ item.weight }}">{{ item.term }}</a>
+{% endfor %}

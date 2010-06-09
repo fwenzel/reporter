@@ -7,7 +7,7 @@ from django.views.decorators.cache import cache_page
 from annoying.decorators import ajax_request, render_to
 
 from feedback.models import Opinion, Term
-from feedback import stats
+from feedback import stats, FIREFOX
 from search.forms import ReporterSearchForm
 
 from .forms import PeriodForm, PERIOD_DELTAS
@@ -40,13 +40,15 @@ def sentiment(request, date_start, date_end):
 
 
 @cache_page(settings.CACHE_DEFAULT_PERIOD)
-@ajax_request
+@render_to('dashboard/trends.html')
 @period_to_date
 def trends(request, date_start, date_end):
     """AJAX action returning a summary of frequent terms."""
     frequent_terms = Term.objects.frequent(
         date_start=date_start, date_end=date_end)[:10]
-    return {'terms': stats.frequent_terms(qs=frequent_terms)}
+    # TODO use real product here
+    return {'terms': stats.frequent_terms(qs=frequent_terms),
+            'prod': FIREFOX}
 
 
 @cache_page(settings.CACHE_DEFAULT_PERIOD)
