@@ -65,18 +65,7 @@
     <h2>Demographics</h2>
     <div class="ajaxy"></div>
     <div class="prototype">
-      <dl class="oses">
-        <dt>OS</dt>
-        {% for item in demographics.os %}
-        <dd>{{ item.name }}: <b>{{ item.count }}</b></dd>
-        {% endfor %}
-      </dl>
-      <dl class="locales">
-        <dt>Locale</dt>
-        {% for item in demographics.locale %}
-        <dd>{{ item.locale }}: <b>{{ item.count }}</b></dd>
-        {% endfor %}
-      </dl>
+      {% include "dashboard/demographics.html" %}
     </div>
   </div>
 </div>

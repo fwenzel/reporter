@@ -39,6 +39,10 @@ $(document).ready(function() {
         $.get('/dashboard/ajax/'+what+'/'+period, callback, type);
     };
     var init_all = function() {
+        reload_all();
+        messages.init();
+    };
+    var reload_all = function() {
         sentiment.init();
         trends.init();
         demo.init();
@@ -94,35 +98,13 @@ $(document).ready(function() {
         container: $('#demo .ajaxy'),
 
         init: function() {
-            loading(this.container);
-            grab_ajax('demographics', this.update);
+            loading(demo.container);
+            grab_ajax('demographics', this.update, 'html');
         },
 
         update: function(data) {
             not_loading(demo.container)
-
-            var proto = $('#demo .prototype').clone(),
-                os_proto = proto.find('dl.oses'),
-                os_item = os_proto.find('dd');
-            for (i in data.os) {
-                var item = data.os[i],
-                    target = os_item.clone();
-                target.html(format(target.html(), item));
-                os_proto.append(target);
-            }
-            os_item.remove();
-
-            var loc_proto = proto.find('dl.locales'),
-                loc_item = loc_proto.find('dd');
-            for (i in data.locale) {
-                var item = data.locale[i],
-                    target = loc_item.clone();
-                target.html(format(target.html(), item));
-                loc_proto.append(target);
-            }
-            loc_item.remove();
-
-            demo.container.html(proto.html());
+            demo.container.html(data);
         }
     };
 
@@ -175,13 +157,12 @@ $(document).ready(function() {
         }
     }
 
-    $('#id_period').change(init_all);
+    $('#id_period').change(reload_all);
 
     $('#overview,#messages').show();
 
     init_all();
     // update messages periodically
-    messages.init();
     setInterval(messages.init, 5 * 60 * 1000);
 });
 

@@ -52,12 +52,14 @@ def trends(request, date_start, date_end):
 
 
 @cache_page(settings.CACHE_DEFAULT_PERIOD)
-@ajax_request
+@render_to('dashboard/demographics.html')
 @period_to_date
 def demographics(request, date_start, date_end):
     """AJAX action returning an OS/locale summary."""
     opinions = Opinion.objects.between(date_start, date_end)
-    return stats.demographics(qs=opinions)
+    # TODO use real product here
+    return {'demo': stats.demographics(qs=opinions),
+            'prod': FIREFOX.short }
 
 
 @cache_page(60 * 5)
