@@ -19,4 +19,8 @@ urlpatterns = patterns('',
 
     (r'^search/', include('search.urls')),
     (r'^admin/', include(admin.site.urls)),
+
+    # robots.txt
+    (r'^robots\.txt$', direct_to_template, {'template': 'robots.txt',
+                                            'mimetype': 'text/plain'}),
 )
