@@ -48,7 +48,7 @@ def trends(request, date_start, date_end):
         date_start=date_start, date_end=date_end)[:10]
     # TODO use real product here
     return {'terms': stats.frequent_terms(qs=frequent_terms),
-            'prod': FIREFOX}
+            'prod': FIREFOX.short}
 
 
 @cache_page(settings.CACHE_DEFAULT_PERIOD)

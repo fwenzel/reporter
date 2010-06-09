@@ -55,9 +55,9 @@
   <div id="trends" class="container clearfix">
     <h2>Trends</h2>
     <div class="terms">
-      {% for term in terms %}
-      <span class="term w{{ term.weight }}">{{ term.term }}</span>
-      {% endfor %}
+      {% with form.cleaned_data.product as prod %}
+        {% include "dashboard/trends.html" %}
+      {% endwith %}
     </div>
   </div>
 
