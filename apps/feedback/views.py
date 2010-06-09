@@ -69,8 +69,7 @@ def give_feedback(request, positive):
                 'User agent (ua) field is mandatory')
 
         url = request.GET.get('url', '')
-        add_url = True if url else False
-        form = Formtype(initial={'ua': ua, 'url': url, 'add_url': add_url})
+        form = Formtype(initial={'ua': ua, 'url': url, 'add_url': False})
 
     data['form'] = form
     return data
