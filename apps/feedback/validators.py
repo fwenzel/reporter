@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.html import strip_tags
 
-from product_details import firefox_versions, mobile_details
+import product_details
 
 import swearwords
 
@@ -14,8 +14,8 @@ from .version_compare import version_dict
 
 
 LATEST_BETAS = {
-    FIREFOX: firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'],
-    MOBILE: mobile_details['beta_version'],
+    FIREFOX: product_details.firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'],
+    MOBILE: product_details.mobile_details['beta_version'],
 }
 
 
@@ -32,7 +32,7 @@ def validate_ua(ua):
 
         # version parts to compare between reference version and this version.
         # check major and minor versions always
-        version_parts = ['major', 'minor1', 'minor2', 'minor3']
+        version_parts = ['major', 'minor1', 'minor2']
         # if reference is a full-fledged beta version (e.g., 3.6b5), check beta
         # status and beta version as well.
         if ref_version['alpha'] and ref_version['alpha_ver']:

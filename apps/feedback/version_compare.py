@@ -63,3 +63,34 @@ def version_int(version):
             d['minor2'], d['minor3'], d['alpha'], d['alpha_ver'], d['pre'],
             d['pre_ver'])
     return int(v)
+
+
+def simplify_version(version):
+    """Strips cruft from a version number by parsing and rebuilding it."""
+    v = version_dict(version)
+    # major and minor1 always exist
+    pieces = [v['major'], v['minor1']]
+    suffixes = []
+
+    # minors 2 and 3 are optional
+    if v['minor2']:
+        pieces.append(v['minor2'])
+    if v['minor3']:
+        pieces.append(v['minor3'])
+
+    # if this is a real beta, attach the version
+    if v['alpha'] and v['alpha_ver']:
+        suffixes += [v['alpha'], v['alpha_ver']]
+
+    # attach pre
+    if v['pre'] and v['alpha_ver']:
+        suffixes.append(v['pre'])
+        if v['pre_ver']:
+            suffixes.append(v['pre_ver'])
+
+    # stringify
+    pieces = map(str, pieces)
+    suffixes = map(str, suffixes)
+
+    # build version number
+    return '.'.join(pieces) + ''.join(suffixes)

@@ -5,6 +5,8 @@ from haystack.forms import SearchForm
 import product_details
 
 from feedback import APPS, FIREFOX, OS_USAGE
+from feedback.validators import LATEST_BETAS
+from feedback.version_compare import simplify_version
 
 
 PROD_CHOICES = (
@@ -13,9 +15,8 @@ PROD_CHOICES = (
 )
 # TODO need this for Mobile as well
 FIREFOX_BETA_VERSION_CHOICES = [
-    (v[0], v[0]) for v in (sorted(
-        product_details.firefox_history_development_releases.items(),
-        key=lambda x: x[1], reverse=True))
+    (simplify_version(LATEST_BETAS[FIREFOX]),
+     LATEST_BETAS[FIREFOX])
 ]
 LOCALE_CHOICES = [ (lang, lang) for lang in sorted(product_details.languages) ]
 OS_CHOICES = [ (o.short, o.pretty) for o in OS_USAGE ]
