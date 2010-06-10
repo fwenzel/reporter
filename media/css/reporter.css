@@ -416,6 +416,23 @@ ul.errorlist {
 input.placeholder {
     color: #4B4740;
 }
+.pagination {
+    display: block;
+    margin-top: .5em;
+    text-align: center;
+    width: 100%;
+}
+.pagination .step-links .prev {
+    float: left;
+}
+.pagination .step-links .next {
+    float: right;
+}
+
+.pagination .step-links a,
+.pagination .step-links .current {
+    padding: 5px;
+}
 /* }}} */
 /* {{{ Feedback forms */
 .smiley {
