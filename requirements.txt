@@ -7,9 +7,11 @@ django-annoying==0.7.4
 MySQL-python==1.2.3c1
 -e git://github.com/jbalogh/schematic.git#egg=schematic
 
-# Caching. Possibly want to use the C version here.
+# Templates
+-e git://github.com/jbalogh/jingo.git#egg=jingo
+
+# Caching.
 python-memcached==1.45
-#django-pylibmc==0.2.1
 
 # Term extraction
 topia.termextract==1.1.0

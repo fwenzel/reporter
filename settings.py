@@ -90,6 +90,13 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 
+def JINJA_CONFIG():
+    import jinja2
+    config = {'extensions': ['jinja2.ext.with_', 'jinja2.ext.loopcontrols',
+                             'jinja2.ext.i18n'],
+              'finalize': lambda x: x if x is not None else ''}
+    return config
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

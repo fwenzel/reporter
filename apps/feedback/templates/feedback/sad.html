@@ -1,31 +1,30 @@
 {% extends "base.html" %}
-{% load smilies %}
 
 {% block page_title %}Submit Feedback{% endblock %}
 {% block body_id %}feedback{% endblock %}
 
 {% block content %}
-<div id="smiley">{% smiley "sad" %}</div>
+<div id="smiley">{{ smiley("sad") }}</div>
 
 <div id="feedbackform">
   <h2>We are sorry that you have not had a good experience with our browser.
   Please tell us why, so we can improve it!</h2>
-  <form method="post" action="{% url feedback.sad %}">
-    {{ form.description.errors }}
-    <p>{{ form.description }}</p>
+  <form method="post" action="{{ url('feedback.sad') }}">
+    {{ form.description.errors|safe }}
+    <p>{{ form.description|safe }}</p>
 
-    {{ form.url.errors }}
+    {{ form.url.errors|safe }}
     <p>
-      <label>{{ form.add_url }} Add the URL of the website you were just visiting?</label>
-      {{ form.url }}<br/>
+      <label>{{ form.add_url|safe }} Add the URL of the website you were just visiting?</label>
+      {{ form.url|safe }}<br/>
       Had an issue with a specific website? Please add the URL, so we can find the issue faster!
     </p>
 
-    {% for hidden in form.hidden_fields %}
-      {{ hidden }}
-      {% if hidden.errors%}
+    {% for hidden in form.hidden_fields() %}
+      {{ hidden|safe }}
+      {% if hidden.errors %}
         {{ hidden.name }}:
-        {{ hidden.errors }}
+        {{ hidden.errors|safe }}
       {% endif %}
     {% endfor %}
 

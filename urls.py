@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
-from django.views.generic.simple import direct_to_template
+
+import jingo
 
 admin.autodiscover()
 
@@ -12,7 +13,7 @@ urlpatterns = patterns('',
         name='feedback.sad'),
     url(r'^happy/?', 'feedback.views.give_feedback', {'positive': True},
         name='feedback.happy'),
-    url(r'^thanks/?', direct_to_template, {'template': 'feedback/thanks.html'},
+    url(r'^thanks/?', jingo.render, {'template': 'feedback/thanks.html'},
         name='feedback.thanks'),
 
     (r'^dashboard/', include('dashboard.urls')),
@@ -21,6 +22,6 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
 
     # robots.txt
-    (r'^robots\.txt$', direct_to_template, {'template': 'robots.txt',
-                                            'mimetype': 'text/plain'}),
+    (r'^robots\.txt$', jingo.render, {'template': 'robots.txt',
+                                      'mimetype': 'text/plain'}),
 )

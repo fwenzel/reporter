@@ -1,10 +1,9 @@
 {% extends "search_base.html" %}
-{% load smilies %}
 
 {% block body_id %}search{% endblock %}
 
 {% block content %}
-<h1><a href="{% url dashboard %}">Firefox Input</a> &ndash; Search Results</h1>
+<h1><a href="{{ url('dashboard') }}">Firefox Input</a> &ndash; Search Results</h1>
 
 
 <div id="search_box" class="clearfix">
@@ -14,28 +13,26 @@
     Dates: <span class="opt">{{ form.cleaned_data.date_start }}
       &ndash; {{ form.cleaned_data.date_end }}</span>
     <br/>
-    Locale: <span class="opt">{{ form.cleaned_data.locale|default:"all" }}</span>;
-    OS: <span class="opt">{{ form.cleaned_data.os|default:"all" }}</span>
+    Locale: <span class="opt">{{ form.cleaned_data.locale|default("all", true) }}</span>;
+    OS: <span class="opt">{{ form.cleaned_data.os|default("all", true) }}</span>
     {% endif %}
   </div>
 
-  {% with form as search_form %}{% include "search/search_form.html" %}{% endwith %}
+  {% with search_form = form %}{% include "search/search_form.html" %}{% endwith %}
 </div>
 
 <div id="results" class="container">
   <ul>
-    {% for result in page.object_list %}
-    <li>
-    {% if result.object.positive %}
-      {% smiley "happy" %}
+    {% if page.object_list %}
+      {% for result in page.object_list %}
+      <li>
+        {{ smiley(result.object.positive and "happy" or "sad") }}
+        {{ result.object.description }}
+      </li>
+      {% endfor %}
     {% else %}
-      {% smiley "sad" %}
-    {% endif %}
-      {{ result.object.description }}
-    </li>
-    {% empty %}
     <li>No search results found.</li>
-    {% endfor %}
+    {% endif %}
   </ul>
 </div>
 
@@ -43,19 +40,25 @@
   <div id="sentiment" class="container clearfix">
     <h2>User Sentiment</h2>
     <div>
-      <div class="emotion {{ sent.sentiment }}">{% smiley sent.sentiment %}</div>
-      <div class="response total" style="width: 75%">{{ sent.total }} total responses</div>
-      {% if sent.total > 0 %}
-        <div class="response happy" style="width: {% widthratio sent.happy sent.total 75 %}%" >{{ sent.happy }} happy</div>
-        <div class="response sad" style="width: {% widthratio sent.sad sent.total 75 %}%">{{ sent.sad }} sad</div>
-      {% endif %}
+      <div class="emotion {{ sent.sentiment }}">{{ smiley(sent.sentiment) }}</div>
+      {% with bar_width = 75 %}
+        <div class="response total" style="width: {{ bar_width }}%">{{ sent.total }} total responses</div>
+        {% if sent.total > 0 %}
+        <div class="response happy" style="width: {{
+          sent.happy / sent.total * bar_width }}%" >{{
+          sent.happy }} happy</div>
+        <div class="response sad" style="width: {{
+          sent.sad / sent.total * bar_width }}%">{{
+          sent.sad }} sad</div>
+        {% endif %}
+      {% endwith %}
     </div>
   </div>
 
   <div id="trends" class="container clearfix">
     <h2>Trends</h2>
     <div class="terms">
-      {% with form.cleaned_data.product as prod %}
+      {% with prod = form.cleaned_data.product %}
         {% include "dashboard/trends.html" %}
       {% endwith %}
     </div>

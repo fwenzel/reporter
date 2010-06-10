@@ -1,10 +1,9 @@
 {% extends "search_base.html" %}
-{% load smilies %}
 
 {% block body_id %}dashboard{% endblock %}
 
 {% block content %}
-<h1><a href="{% url dashboard %}">Firefox Input Dashboard</a></h1>
+<h1><a href="{{ url('dashboard') }}">Firefox Input Dashboard</a></h1>
 
 <div id="search_box" class="container clearfix">
   {% include "search/search_form.html" %}
@@ -18,12 +17,12 @@
 
 <div id="overview">
   <div id="sentiment" class="container">
-    <div id="period">{{ period.period }}</div>
+    <div id="period">{{ period.period|safe }}</div>
     <h2>User Sentiment</h2>
     <div class="ajaxy"></div>
     <div class="prototype">
-      <div class="emotion happy">{% smiley "happy" %}</div>
-      <div class="emotion sad">{% smiley "sad" %}</div>
+      <div class="emotion happy">{{ smiley('happy') }}</div>
+      <div class="emotion sad">{{ smiley('sad') }}</div>
       <div class="response total">{0} total responses</div>
       <div class="response happy">{0} happy</div>
       <div class="response sad">{0} sad</div>

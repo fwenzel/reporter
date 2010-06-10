@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django import http
 
-from annoying.decorators import render_to
+import jingo
 
 from .forms import HappyForm, SadForm, validate_ua
 from .models import Opinion
@@ -32,7 +32,6 @@ def enforce_user_agent(f):
     return wrapped
 
 
-@render_to()
 @enforce_user_agent
 def give_feedback(request, positive):
     """Feedback page (positive or negative)."""
@@ -40,10 +39,10 @@ def give_feedback(request, positive):
     # positive or negative feedback form?
     if positive:
         Formtype = HappyForm
-        data = {'TEMPLATE': 'feedback/happy.html'}
+        template = 'feedback/happy.html'
     else:
         Formtype = SadForm
-        data = {'TEMPLATE': 'feedback/sad.html'}
+        template = 'feedback/sad.html'
 
     if request.method == 'POST':
         form = Formtype(request.POST)
@@ -71,5 +70,4 @@ def give_feedback(request, positive):
         url = request.GET.get('url', '')
         form = Formtype(initial={'ua': ua, 'url': url, 'add_url': False})
 
-    data['form'] = form
-    return data
+    return jingo.render(request, template, {'form': form})

@@ -3,6 +3,8 @@ from haystack.views import SearchView
 from feedback.models import Opinion, Term
 from feedback import stats, FIREFOX
 
+import jingo
+
 
 class OpinionSearchView(SearchView):
     def extra_context(self):
@@ -26,3 +28,20 @@ class OpinionSearchView(SearchView):
         extra['prod'] = FIREFOX.short
 
         return extra
+
+    def create_response(self):
+        """
+        Generates the actual HttpResponse to send back to the user.
+
+        The same as Haystack's stock SearchView, except for Jinja2 rendering.
+        """
+        (paginator, page) = self.build_page()
+
+        context = {
+            'query': self.query,
+            'form': self.form,
+            'page': page,
+            'paginator': paginator,
+        }
+        context.update(self.extra_context())
+        return jingo.render(self.request, self.template, context)
