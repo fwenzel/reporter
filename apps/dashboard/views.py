@@ -32,12 +32,12 @@ def period_to_date(f):
 
 
 @cache_page(settings.CACHE_DEFAULT_PERIOD)
-@ajax_request
 @period_to_date
 def sentiment(request, date_start, date_end):
     """AJAX action returning a summary of positive/negative sentiments."""
     opinions = Opinion.objects.between(date_start, date_end)
-    return stats.sentiment(qs=opinions)
+    data = {'sent': stats.sentiment(qs=opinions)}
+    return jingo.render(request, 'dashboard/sentiments.html', data)
 
 
 @cache_page(settings.CACHE_DEFAULT_PERIOD)
@@ -47,8 +47,7 @@ def trends(request, date_start, date_end):
     frequent_terms = Term.objects.frequent(
         date_start=date_start, date_end=date_end)[:10]
     # TODO use real product here
-    data = {'terms': stats.frequent_terms(qs=frequent_terms),
-            'prod': FIREFOX.short}
+    data = {'terms': stats.frequent_terms(qs=frequent_terms)}
     return jingo.render(request, 'dashboard/trends.html', data)
 
 
@@ -58,8 +57,7 @@ def demographics(request, date_start, date_end):
     """AJAX action returning an OS/locale summary."""
     opinions = Opinion.objects.between(date_start, date_end)
     # TODO use real product here
-    data = {'demo': stats.demographics(qs=opinions),
-            'prod': FIREFOX.short }
+    data = {'demo': stats.demographics(qs=opinions)}
     return jingo.render(request, 'dashboard/demographics.html', data)
 
 

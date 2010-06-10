@@ -54,29 +54,12 @@ $(document).ready(function() {
 
         init: function() {
             loading(this.container);
-            grab_ajax('sentiment', this.update);
+            grab_ajax('sentiment', this.update, 'html');
         },
 
         update: function(data) {
-            proto = $('#sentiment .prototype').clone();
-            if (data.sad > data.happy) {
-                proto.find('.emotion.happy').remove();
-            } else {
-                proto.find('.emotion.sad').remove();
-            }
-            for (i in sentiment.emos) {
-                var emo = sentiment.emos[i];
-                var bar = proto.find(format('.response.{0}', [emo]));
-                bar.text(format(bar.text(), [data[emo]]));
-                if (emo != 'total' && data[emo] > 0)
-                    bar.css('width', data[emo] / data['total'] * 75 + '%');
-                else if (data[emo] == 0)
-                    bar.css('width', '0');
-                else
-                    bar.css('width', '75%');
-            }
             not_loading(sentiment.container);
-            sentiment.container.html(proto.html());
+            sentiment.container.html(data);
         }
     };
 
@@ -176,7 +159,8 @@ $(document).ready(function() {
 
     $('#search_links').show();
 
-    adv_link.click(function() {
+    adv_link.click(function(e) {
+        e.preventDefault();
         search_adv.slideToggle();
     });
 

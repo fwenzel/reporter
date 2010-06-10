@@ -18,6 +18,8 @@ FIREFOX_BETA_VERSION_CHOICES = [
     (simplify_version(LATEST_BETAS[FIREFOX]),
      LATEST_BETAS[FIREFOX])
 ]
+SENTIMENTS = ('happy', 'sad')
+SENTIMENT_CHOICES = [(s, s) for s in SENTIMENTS]
 LOCALE_CHOICES = [ (lang, lang) for lang in sorted(product_details.languages) ]
 OS_CHOICES = [ (o.short, o.pretty) for o in OS_USAGE ]
 
@@ -34,6 +36,8 @@ class ReporterSearchForm(SearchForm):
     version = forms.ChoiceField(required=False,
         choices=add_empty(FIREFOX_BETA_VERSION_CHOICES),
         label='Version:')
+    sentiment = forms.ChoiceField(required=False, label='Sentiment:',
+                                  choices=add_empty(SENTIMENT_CHOICES))
     locale = forms.ChoiceField(required=False, label='Locale:',
                                choices=add_empty(LOCALE_CHOICES))
     os = forms.ChoiceField(required=False, label='OS:',
@@ -52,7 +56,6 @@ class ReporterSearchForm(SearchForm):
         if not self.cleaned_data['date_start']:
             self.cleaned_data['date_start'] = (self.cleaned_data['date_end'] -
                                                timedelta(days=30))
-
         sqs = sqs.filter(created__gte=self.cleaned_data['date_start']).filter(
             created__lte=self.cleaned_data['date_end'])
 
@@ -60,6 +63,11 @@ class ReporterSearchForm(SearchForm):
             prod = self.cleaned_data['product']
             if prod in APPS:
                 sqs = sqs.filter(product=APPS[prod].id)
+
+        # happy/sad
+        if self.cleaned_data['sentiment'] in SENTIMENTS:
+            sqs = sqs.filter(
+                positive=(self.cleaned_data['sentiment'] == 'happy'))
 
         # Apply other filters verbatim
         for field in ('version', 'locale', 'os'):

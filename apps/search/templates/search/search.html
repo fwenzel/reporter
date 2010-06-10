@@ -40,27 +40,14 @@
   <div id="sentiment" class="container clearfix">
     <h2>User Sentiment</h2>
     <div>
-      <div class="emotion {{ sent.sentiment }}">{{ smiley(sent.sentiment) }}</div>
-      {% with bar_width = 75 %}
-        <div class="response total" style="width: {{ bar_width }}%">{{ sent.total }} total responses</div>
-        {% if sent.total > 0 %}
-        <div class="response happy" style="width: {{
-          sent.happy / sent.total * bar_width }}%" >{{
-          sent.happy }} happy</div>
-        <div class="response sad" style="width: {{
-          sent.sad / sent.total * bar_width }}%">{{
-          sent.sad }} sad</div>
-        {% endif %}
-      {% endwith %}
+      {% include "dashboard/sentiments.html" %}
     </div>
   </div>
 
   <div id="trends" class="container clearfix">
     <h2>Trends</h2>
     <div class="terms">
-      {% with prod = form.cleaned_data.product %}
-        {% include "dashboard/trends.html" %}
-      {% endwith %}
+      {% include "dashboard/trends.html" %}
     </div>
   </div>
 

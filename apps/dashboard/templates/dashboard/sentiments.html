@@ -1,0 +1,12 @@
+<div class="emotion {{ sent.sentiment }}">{{ smiley(sent.sentiment) }}</div>
+{% with bar_width = 75 %}
+  <div class="response total" style="width: {{ bar_width }}%">{{ sent.total }} total responses</div>
+  {% if sent.total > 0 %}
+  <div class="response happy" style="width: {{
+    sent.happy / sent.total * bar_width }}%" ><a href="{{
+      search_url(sentiment='happy') }}">{{ sent.happy }} happy</a></div>
+  <div class="response sad" style="width: {{
+    sent.sad / sent.total * bar_width }}%"><a href="{{
+      search_url(sentiment='sad') }}">{{ sent.sad }} sad</a></div>
+  {% endif %}
+{% endwith %}

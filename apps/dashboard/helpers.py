@@ -8,8 +8,8 @@ import jinja2
 from feedback import FIREFOX
 
 @register.function
-def search_url(q=None, product=FIREFOX.short, version=None, locale=None,
-               os=None, date_start=None, date_end=None):
+def search_url(q=None, product=FIREFOX.short, version=None, sentiment=None,
+               locale=None, os=None, date_start=None, date_end=None):
     input = locals()
 
     search = reverse('search')
