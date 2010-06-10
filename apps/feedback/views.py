@@ -2,6 +2,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django import http
+from django.views.decorators.vary import vary_on_headers
 
 import jingo
 
@@ -24,7 +25,7 @@ def enforce_user_agent(f):
         try:
             validate_ua(ua)
         except ValidationError:
-            return http.HttpResponseRedirect(settings.URL_BETA)
+            return http.HttpResponseRedirect(reverse('feedback.need_beta'))
 
         # if we made it here, it's a latest beta user
         return f(request, *args, **kwargs)
@@ -32,6 +33,7 @@ def enforce_user_agent(f):
     return wrapped
 
 
+@vary_on_headers('User-Agent')
 @enforce_user_agent
 def give_feedback(request, positive):
     """Feedback page (positive or negative)."""

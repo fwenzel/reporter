@@ -134,8 +134,5 @@ HAYSTACK_WHOOSH_PATH = path('lib/whoosh_index')
 # (good for testing)
 ENFORCE_USER_AGENT = True
 
-# URLs to redirect users to that have inappropriate user agents.
-URL_BETA = 'http://www.mozilla.com/en-US/firefox/all-beta.html'
-
 # Term filter options
 MIN_TERM_LENGTH = 3

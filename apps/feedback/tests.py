@@ -51,14 +51,14 @@ class ViewTests(TestCase):
 
         # no UA: redirect
         r = self.client.get(reverse('feedback.sad'))
-        self.assertEquals(r.status_code, 302)
+        self.assertEquals(r.status_code, 400)
 
         # old version: redirect
         FX_UA = ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
                  'de; rv:1.9.2.3) Gecko/20100401 Firefox/%s')
         r = self.client.get(reverse('feedback.sad'), {'ua': FX_UA % '3.6.3'})
         self.assertEquals(r.status_code, 302)
-        self.assertEquals(r['Location'], settings.URL_BETA)
+        self.assertTrue(r['Location'].endswith(reverse('feedback.need_beta')))
 
         # latest beta: no redirect
         r = self.client.get(reverse('feedback.sad'), {
