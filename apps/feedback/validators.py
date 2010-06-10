@@ -10,7 +10,7 @@ import swearwords
 
 from . import FIREFOX, MOBILE
 from .utils import ua_parse
-from .version_compare import version_int
+from .version_compare import version_dict
 
 
 LATEST_BETAS = {
@@ -27,10 +27,21 @@ def validate_ua(ua):
 
     # compare to latest beta, if UA enforced.
     if settings.ENFORCE_USER_AGENT:
-        ref_version = LATEST_BETAS[parsed['browser']]
-        if (version_int(ref_version) != version_int(parsed['version'])):
-            raise ValidationError(
-                'Submitted User Agent is not the latest beta version.')
+        ref_version = version_dict(LATEST_BETAS[parsed['browser']])
+        this_version = version_dict(parsed['version'])
+
+        # version parts to compare between reference version and this version.
+        # check major and minor versions always
+        version_parts = ['major', 'minor1', 'minor2', 'minor3']
+        # if reference is a full-fledged beta version (e.g., 3.6b5), check beta
+        # status and beta version as well.
+        if ref_version['alpha'] and ref_version['alpha_ver']:
+            version_parts += ['alpha', 'alpha_ver']
+
+        for version_part in version_parts:
+            if ref_version[version_part] != this_version[version_part]:
+                raise ValidationError('Submitted User Agent is not the '
+                                      'latest beta version.')
 
 
 def validate_swearwords(str):
