@@ -15,9 +15,15 @@ def search_url(defaults=None, extra=None, **kwargs):
         defaults = {}
     data = []
 
+    # fallbacks other than None
+    fallbacks = {
+        'product': FIREFOX.short,
+    }
+
     # get field data from keyword args or defaults
     for field in ReporterSearchForm.base_fields:
-        val = kwargs.get(field, defaults.get(field, None))
+        val = kwargs.get(field, defaults.get(
+            field, fallbacks.get(field, None)))
         if val:
             data.append((field, unicode(val).encode('utf-8')))
 
