@@ -15,9 +15,8 @@
 
     {{ form.url.errors|safe }}
     <p>
-      <label>{{ form.add_url|safe }} Add the URL of the website you were just visiting?</label>
-      {{ form.url|safe }}<br/>
-      Had an issue with a specific website? Please add the URL, so we can find the issue faster!
+      <label>{{ form.add_url|safe }} Had an issue with a specific website? Please add the URL, so we can find the issue faster!</label>
+      {{ form.url|safe }}
     </p>
 
     {% for hidden in form.hidden_fields() %}
