@@ -1,14 +1,14 @@
 <dl class="oses">
   <dt>OS</dt>
   {% for item in demo.os %}
-  <dd><a href="{{ url('search') }}?os={{ item.os|iriencode }}&product={{ prod }}">{{ item.name }}</a>:
+  <dd><a href="{{ search_url(os=item.os) }}">{{ item.name }}</a>:
     <b>{{ item.count }}</b></dd>
   {% endfor %}
 </dl>
 <dl class="locales">
   <dt>Locale</dt>
   {% for item in demo.locale %}
-  <dd><a href="{{ url('search') }}?locale={{ item.locale }}&product={{ prod }}">{{ item.locale }}</a>:
+  <dd><a href="{{ search_url(locale=item.locale) }}">{{ item.locale }}</a>:
     <b>{{ item.count }}</b></dd>
   {% endfor %}
 </dl>
