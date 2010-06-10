@@ -18,6 +18,6 @@ def search_url(q=None, product=FIREFOX.short, version=None, locale=None,
     # set defaults
     for (name, val) in input.items():
         if val:
-            data[name] = val
+            data[name] = val.encode('utf-8')
 
-    return jinja2.Markup('%s?%s' % (search, urlencode(data)))
+    return jinja2.Markup(u'%s?%s' % (search, urlencode(data)))
