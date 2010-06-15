@@ -3,22 +3,43 @@
   <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <title>{% block page_title %}Welcome!{% endblock %} &mdash; Firefox Input</title>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
     <link href="{{ MEDIA_URL }}css/reporter.css" type="text/css" rel="stylesheet">
     <link rel="shortcut icon" href="{{ MEDIA_URL }}img/favicon.ico"/>
     {% block extra_headers %}{% endblock %}
   </head>
   <body id="{% block body_id %}{% endblock %}">
+    <nav id="nav-access">
+    <ul>
+      <li><a href="#main-content">Proceed to main content</a></li>
+      <li><a href="#footer">Proceed to footer</a></li>
+    </ul>
+    </nav>
+
     <div id="wrapper">
+      <header>
+        <div class="stripe-shadow"><div></div></div>
+        <div class="logobox clearfix">
+          <a class="logo" href="{{ url('dashboard') }}">
+            <img src="{{ MEDIA_URL }}img/fx-white.png" alt="Firefox" class="fxlogo"/>
+            <h1>Input Dashboard</h1>
+          </a>
+        </div>
+        <div class="stripe"></div>
+      </header>
+
       <div id="doc" class="clearfix">
-        <div id="main-content">
+        <section id="main-content">
           {% block content %}
           {% endblock %}
-        </div>
+        </section>
       </div><!-- end #doc -->
     </div><!-- end #wrapper -->
 
     <!-- start #footer -->
-    <div id="footer">
+    <footer id="footer">
       <div id="footer-contents">
         <div id="copyright">
           <p id="footer-links">
@@ -32,7 +53,7 @@
             Commons Attribution Share-Alike License v3.0</a> or any later version.</p>
         </div>
       </div>
-    </div>
+    </footer>
     <!-- end #footer -->
 
     <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.min.js"></script>

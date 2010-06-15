@@ -9,7 +9,64 @@ body {
 	font-family: verdana;
 }
 
-#nav-access { display: none; }
+#nav-access {
+    position: absolute;
+    top: -10000px;
+}
+
+header .stripe-shadow,
+header .stripe,
+header .stripe-shadow div {
+    width: 100%;
+}
+header .stripe-shadow {
+    height: 15px;
+    overflow: hidden;
+}
+header .stripe-shadow div,
+header .stripe {
+    height: 10px;
+}
+header .stripe {
+    background-color: #1e4262;
+    position: absolute;
+    top: 0;
+}
+header .logobox {
+	margin: -5px auto 10px;
+	text-align: left;
+	width: 950px;
+}
+header .stripe-shadow div,
+header .logobox .logo {
+    -moz-box-shadow: 0 0 10px #4B4742;
+    -webkit-box-shadow: 0 0 10px #4B4742;
+    box-shadow: 0 0 10px #4B4742;
+}
+header .logobox .logo {
+    background-color: #1e4262;
+    border-radius: 0 0 16px 16px;
+    -moz-border-radius: 0 0 16px 16px;
+    -webkit-border-bottom-left-radius: 16px;
+    -webkit-border-bottom-right-radius: 16px;
+    float: left;
+    margin-left: 30px;
+    padding: 8px 16px;
+}
+header .logobox a:hover,
+header .logobox a:active {
+    text-decoration: none;
+}
+header .logo h1 {
+    color: #0089b7;
+    display: inline;
+    font-size: 180%;
+}
+header img.fxlogo {
+    height: 21px;
+    width: 76px;
+    margin-right: .8em;
+}
 
 #doc {
 	width: 950px;
@@ -456,7 +513,7 @@ input.placeholder {
 }
 /* }}} */
 /* {{{ Thank you page */
-#thanks h1 {
+#thanks #main-content h1 {
     font-size: 300%;
 }
 #thanks #next-steps p {
@@ -561,8 +618,7 @@ input.placeholder {
     clear: both;
 }
 
-#dashboard h1,
-#search h1 {
+#search #main-content h1 {
     font-size: 225%;
     margin-top: 0;
 }
