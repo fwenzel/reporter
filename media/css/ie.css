@@ -1,0 +1,8 @@
+#dashboard .container,
+#search .container {
+    border: 1px solid #4B4742;
+}
+
+.opinions li {
+    border: 1px solid #4B4742;
+}
