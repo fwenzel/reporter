@@ -17,28 +17,29 @@ def enforce_user_agent(f):
     Can be disabled with settings.ENFORCE_USER_AGENT = False.
     """
     def wrapped(request, *args, **kwargs):
-        if request.method != 'GET' or not settings.ENFORCE_USER_AGENT:
-            return f(request, *args, **kwargs)
-
-        # validate user agent GET parameter
-        ua = request.GET.get('ua', None)
+        # Validate User-Agent request header.
+        ua = request.META.get('HTTP_USER_AGENT', None)
         try:
             validate_ua(ua)
         except ValidationError:
-            return http.HttpResponseRedirect(reverse('feedback.need_beta'))
+            if request.method == 'GET':
+                return http.HttpResponseRedirect(reverse('feedback.need_beta'))
+            else:
+                return http.HttpResponseBadRequest(
+                    'User-Agent request header must be set.')
 
         # if we made it here, it's a latest beta user
-        return f(request, *args, **kwargs)
+        return f(request, ua=ua, *args, **kwargs)
 
     return wrapped
 
 
 @vary_on_headers('User-Agent')
 @enforce_user_agent
-def give_feedback(request, positive):
+def give_feedback(request, ua, positive):
     """Feedback page (positive or negative)."""
 
-    # positive or negative feedback form?
+    # Positive or negative feedback form?
     if positive:
         Formtype = HappyForm
         template = 'feedback/happy.html'
@@ -49,27 +50,22 @@ def give_feedback(request, positive):
     if request.method == 'POST':
         form = Formtype(request.POST)
         if form.is_valid():
-            # Remove url if checkbox disabled
+            # Remove URL if checkbox disabled.
             if not form.cleaned_data.get('add_url', False):
                 form.cleaned_data['url'] = ''
 
-            # Save to the DB
+            # Save to the DB.
             new_opinion = Opinion(
                 positive=positive, url=form.cleaned_data.get('url', ''),
                 description=form.cleaned_data['description'],
-                user_agent=form.cleaned_data['ua'])
+                user_agent=ua)
             new_opinion.save()
 
             return http.HttpResponseRedirect(reverse('feedback.thanks'))
 
     else:
-        # UA and URL are fed in by the feedback extension.
-        ua = request.GET.get('ua', None)
-        if not ua:
-            return http.HttpResponseBadRequest(
-                'User agent (ua) field is mandatory')
-
+        # URL is fed in by the feedback extension.
         url = request.GET.get('url', '')
-        form = Formtype(initial={'ua': ua, 'url': url, 'add_url': False})
+        form = Formtype(initial={'url': url, 'add_url': False})
 
     return jingo.render(request, template, {'form': form})

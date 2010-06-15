@@ -23,7 +23,7 @@ def validate_ua(ua):
     """Ensure a UA string represents a valid latest beta version."""
     parsed = ua_parse(ua)
     if not parsed:
-        return ValidationError('User agent string was not recognizable.')
+        raise ValidationError('User agent string was not recognizable.')
 
     # compare to latest beta, if UA enforced.
     if settings.ENFORCE_USER_AGENT:
