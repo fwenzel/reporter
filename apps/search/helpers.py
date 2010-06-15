@@ -10,6 +10,7 @@ from .forms import ReporterSearchForm
 
 @register.function
 def search_url(defaults=None, extra=None, **kwargs):
+    """Build a search URL with default values unless specified otherwise."""
     search = reverse('search')
     if not defaults:
         defaults = {}
