@@ -1,0 +1,20 @@
+{% if opinions %}
+  <ul class="opinions">
+  {% for opinion in opinions %}
+    {# search results wrap models inside a result object (fail): #}
+    {% if opinion.object %}{% set opinion = opinion.object %}{% endif %}
+
+    <li class="{{ opinion.positive and 'happy' or 'sad' }}">
+      {{ smiley(opinion.positive and "happy" or "sad") }}
+      {{ opinion.description }}
+      {% if opinion.url %}
+        <a class="url" href="{{ opinion.url }}">(URL)</a>
+        <div class="urlpreview">
+          <a href="{{ opinion.url }}">visit &rarr;</a>
+          <input type="text" readonly value="{{ opinion.url }}"/>
+        </div>
+      {% endif %}
+    </li>
+  {% endfor %}
+  </ul>
+{% endif %}

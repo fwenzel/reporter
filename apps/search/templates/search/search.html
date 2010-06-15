@@ -24,12 +24,9 @@
 <div id="results" class="container">
   <ul>
     {% if page.object_list %}
-      {% for result in page.object_list %}
-      <li>
-        {{ smiley(result.object.positive and "happy" or "sad") }}
-        {{ result.object.description }}
-      </li>
-      {% endfor %}
+      {% with opinions = page.object_list %}
+        {% include "dashboard/messages.html" %}
+      {% endwith %}
     {% else %}
     <li>No search results found.</li>
     {% endif %}

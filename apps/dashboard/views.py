@@ -4,7 +4,6 @@ from django.conf import settings
 from django.db.models import Count
 from django.views.decorators.cache import cache_page
 
-from annoying.decorators import ajax_request
 import jingo
 
 from feedback.models import Opinion, Term
@@ -62,12 +61,8 @@ def demographics(request, date_start, date_end):
 
 
 @cache_page(60 * 5)
-@ajax_request
 def messages(request, count=10):
     """AJAX action returning the most recent messages."""
     opinions = Opinion.objects.order_by('-created')[:count]
-    return {
-        'msg': [ {'opinion': opinion.description,
-                  'url': opinion.url,
-                  'class': opinion.positive and 'happy' or 'sad'} for
-                opinion in opinions ]}
+    data = {'opinions': opinions}
+    return jingo.render(request, 'dashboard/messages.html', data)
