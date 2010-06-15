@@ -459,18 +459,45 @@ input.placeholder {
 #thanks h1 {
     font-size: 300%;
 }
-#thanks #next-steps li {
-    background: rgba(255, 255, 255, .5);
-    border: 1px solid #0489B7;
+#thanks #next-steps p {
+    margin-bottom: 0;
+}
+#thanks #next-steps nav div,
+#thanks #next-steps nav div a {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    -moz-box-shadow: 2px 2px 10px #0489B7;
-    -webkit-box-shadow: 2px 2px 10px #0489B7;
-    box-shadow: 2px 2px 10px #0489B7;
-    display: inline;
-    padding: .5em;
+}
+#thanks #next-steps nav div {
+    background: rgb(173, 254, 16);
+    border: 1px solid transparent;
+    -moz-box-shadow: 2px 2px 10px #4B4742;
+    -webkit-box-shadow: 2px 2px 10px #4B4742;
+    box-shadow: 2px 2px 10px #4B4742;
     margin: 1em;
+    float: left;
+}
+#thanks #next-steps nav div:hover {
+    border: 1px solid #09700b;
+}
+#thanks #next-steps nav div a {
+    background: rgba(255, 255, 255, .85) url(../img/thanks-icons.png) no-repeat;
+    color: #09700b;
+    display: block;
+    font-size: 125%;
+    padding: .5em .5em .5em 40px;
+}
+#thanks #next-steps nav div a:hover {
+    text-decoration: none;
+}
+#thanks #next-steps nav div.fb a {
+    background-position: 8px 8px;
+}
+#thanks #next-steps nav div.moz a {
+    background-position: 8px -66px;
+}
+#thanks #next-steps nav div.tw a {
+    background-position: 8px -140px;
 }
 /* }}} */
 /* {{{ Need Beta page */
