@@ -664,23 +664,40 @@ input.placeholder {
     font-size: 60pt;
 }
 #sentiment .response {
+    height: 30px;
+    margin: 0 0 5px 21%;
+}
+#sentiment .response .lbl {
+    float: left;
+    padding: 5px;
+    width: 15%;
+}
+#sentiment .response .lbl a {
+    display: block;
+}
+#sentiment .response .bar {
     border: 1px solid;
+    border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
-    border-radius: 5px;
-    margin: 0 0 5px 21%;
+    float: left;
+    margin-bottom: .2em;
     padding: 5px;
     white-space: nowrap;
 }
-#sentiment .response.total {
+#sentiment .response.total .bar {
     background-color: #76d6ff;
     width: 75%;
 }
-#sentiment .response.happy {
+#sentiment .response.happy .bar {
     background-color: #fffb00;
 }
-#sentiment .response.sad {
+#sentiment .response.sad .bar {
     background-color: #ff2800;
+}
+#sentiment .response .out-cnt {
+    float: left;
+    padding: 5px;
 }
 .terms .term {
     margin-right: 1em;

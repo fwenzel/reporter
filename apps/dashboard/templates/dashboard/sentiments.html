@@ -1,14 +1,26 @@
+{% macro bar(name, cnt, total, link=None): %}
+  {% with width = cnt / total * 75 if total > 0 else 0 %}
+    <div class="response {{ name }}">
+      <div class="lbl">
+        {% if link %}
+          <a href="{{ link }}">{{ name }}</a>
+        {% else %}
+          {{ name }}
+        {% endif %}
+      </div>
+      <div class="bar" style="width: {{ width }}%">
+        {% if width > 10 %}{{ cnt }}{% endif %}&nbsp;
+      </div>
+      {% if width <= 10 %}<div class="out-cnt">{{ cnt }}</div>{% endif %}
+    </div>
+  {% endwith %}
+{% endmacro %}
+
 {% with defaults = form.cleaned_data if form else None %}
   <div class="emotion {{ sent.sentiment }}">{{ smiley(sent.sentiment) }}</div>
-  {% with bar_width = 75 %}
-    <div class="response total" style="width: {{ bar_width }}%">{{ sent.total }} total responses</div>
+    {{ bar('total', sent.total, sent.total) }}
     {% if sent.total > 0 %}
-    <div class="response happy" style="width: {{
-      sent.happy / sent.total * bar_width }}%" ><a href="{{
-        search_url(sentiment='happy') }}">{{ sent.happy }} happy</a></div>
-    <div class="response sad" style="width: {{
-      sent.sad / sent.total * bar_width }}%"><a href="{{
-        search_url(sentiment='sad') }}">{{ sent.sad }} sad</a></div>
+      {{ bar('happy', sent.happy, sent.total, search_url(sentiment='happy')) }}
+      {{ bar('sad', sent.sad, sent.total, search_url(sentiment='sad')) }}
     {% endif %}
-  {% endwith %}
 {% endwith %}
