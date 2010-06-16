@@ -20,6 +20,7 @@
     </nav>
 
     <div id="wrapper">
+      {% block global_header %}
       <header>
         <div class="stripe-shadow"><div></div></div>
         <div class="logobox clearfix">
@@ -30,6 +31,7 @@
         </div>
         <div class="stripe"></div>
       </header>
+      {% endblock %}
 
       <div id="doc" class="clearfix">
         <section id="main-content">
