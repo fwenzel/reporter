@@ -92,9 +92,12 @@ class TermManager(models.Manager):
 
     def frequent(self, date_start=None, date_end=None):
         """Frequently used terms in a given timeframe."""
-        return self.visible().filter(used_in__in=Opinion.objects.between(
-            date_start, date_end)).annotate(cnt=Count('used_in')).order_by(
-                '-cnt')
+        terms = self.visible()
+        if date_start or date_end:
+            terms = terms.filter(used_in__in=Opinion.objects.between(
+                date_start, date_end))
+        terms = terms.annotate(cnt=Count('used_in')).order_by('-cnt')
+        return terms
 
 
 class Term(models.Model):

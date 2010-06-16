@@ -24,8 +24,11 @@ def dashboard(request):
 def period_to_date(f):
     """Decorator translating period string to dates."""
     def wrapped(request, period='1d', *args, **kwargs):
-        delta = PERIOD_DELTAS.get(period, datetime.timedelta(days=1))
-        start = datetime.datetime.now() - delta
+        if period == 'all':
+            start = None
+        else:
+            delta = PERIOD_DELTAS.get(period, datetime.timedelta(days=1))
+            start = datetime.datetime.now() - delta
         return f(request, date_start=start, date_end=None)
     return wrapped
 

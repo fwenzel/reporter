@@ -7,6 +7,7 @@ DASHBOARD_PERIODS = (
     ('1d', '1 day'),
     ('1w', '1 week'),
     ('1m', '1 month'),
+    ('all', 'all'),
 )
 PERIOD_DELTAS = {
     '1d': timedelta(days=1),
