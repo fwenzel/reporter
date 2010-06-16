@@ -712,6 +712,7 @@ input.placeholder {
 /* }}} */
 /* {{{ Opinion lists */
 .opinions li {
+    background-color: #fff;
     display: block;
     border: 1px solid rgba(75, 71, 66, .5);
     -moz-border-radius: 5px;
