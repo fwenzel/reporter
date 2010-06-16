@@ -30,7 +30,8 @@ def add_empty(choices):
 
 
 class ReporterSearchForm(SearchForm):
-    q = forms.CharField(label='Search issues:')
+    q = forms.CharField(label='', widget=forms.TextInput(
+        attrs={'placeholder': 'Search Terms'}))
     product = forms.ChoiceField(choices=PROD_CHOICES,
                                 label='Product:')
     version = forms.ChoiceField(required=False,
@@ -43,9 +44,9 @@ class ReporterSearchForm(SearchForm):
     os = forms.ChoiceField(required=False, label='OS:',
                            choices=add_empty(OS_CHOICES))
     date_start = forms.DateField(required=False, widget=forms.DateInput(
-        attrs={'class': 'datepicker'}), label='From date:')
+        attrs={'class': 'datepicker'}), label='Date range:')
     date_end = forms.DateField(required=False, widget=forms.DateInput(
-        attrs={'class': 'datepicker'}), label='Until date:')
+        attrs={'class': 'datepicker'}), label='to')
 
     def search(self):
         sqs = super(ReporterSearchForm, self).search()

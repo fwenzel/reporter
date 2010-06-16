@@ -1,23 +1,32 @@
+{% macro fieldbox(name): %}
+  {% with field = search_form[name] %}
+    <div class="fieldWrapper wrap_{{ field.name }}">
+      {{ field.errors|safe }}
+      {{ field.label_tag()|safe }} {{ field|safe }}
+    </div>
+  {% endwith %}
+{% endmacro %}
+
 <div id="search_form">
   <form method="get" action="{{ url('search') }}">
-    <div id="search_links">
-      <button type="submit">Search</button>
-      <a href="#" id="show_search_adv">Advanced</a>
+    <div id="search_basic" class="clearfix">
+      {{ fieldbox('q') }}
+
+      <div id="show_search_adv" class="active">
+        <a href="#">Advanced</a>
+      </div>
+
+      {{ fieldbox('product') }}
+      {{ fieldbox('version') }}
     </div>
-    {% for field in search_form %}
-      {% if loop.index0 == 3 %}
-      {# wrap advanced fields so we can show/hide them #}
-      <div id="search_adv">
-      {% endif %}
 
-      <div class="fieldWrapper wrap_{{ field.name }}">
-        {{ field.errors|safe }}
-        {{ field.label_tag()|safe }} {{ field|safe }}
-      </div>
-
-      {% if loop.last %}
-      </div>
-      {% endif %}
-    {% endfor %}
+    <div id="search_adv" class="clearfix">
+      {{ fieldbox('sentiment') }}
+      {{ fieldbox('os') }}
+      {{ fieldbox('locale') }}
+      {{ fieldbox('date_start') }}
+      {{ fieldbox('date_end') }}
+    </div>
+    <button type="submit">Search</button>
   </form>
 </div>

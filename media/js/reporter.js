@@ -114,14 +114,21 @@ $(document).ready(function() {
 
     var the_form = $('#search_form form'),
         search_adv = $('#search_adv'),
-        adv_link = $('#show_search_adv');
+        adv_link_box = $('#show_search_adv'),
+        adv_link = $('#show_search_adv a');
 
-    $('#search_links').show();
-
-    adv_link.click(function(e) {
+    adv_link.toggle(function(e) {
+        adv_link_box.removeClass('active');
+        search_adv.slideUp();
+    }, function(e) {
+        search_adv.slideDown(function() {
+            adv_link_box.addClass('active');
+        });
+    }).click(function(e) {
         e.preventDefault();
-        search_adv.slideToggle();
+        $(this).blur();
     });
+    adv_link_box.show();
 
     if (search_adv.find(':input[value!=""]').length == 0)
         adv_link.click();
