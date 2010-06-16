@@ -95,7 +95,7 @@ $(document).ready(function() {
             not_loading(messages.container);
 
             messages.container.html(data);
-            $(messages.container).show_url_previews();
+            $(messages.container).show_opinion_meta();
         }
     }
 
@@ -135,21 +135,25 @@ $(document).ready(function() {
 /* search results page */
 $(document).ready(function () {
     if ($('body#search').length == 0) return;
-    $('#results').show_url_previews();
+    $('#results').show_opinion_meta();
 });
 
-/* Bind click events for URL previews. */
-jQuery.fn.show_url_previews = function() {
-    $(this).find('a.url').toggle(function(e) {
+/* Bind click events for URL/UA metadata. */
+jQuery.fn.show_opinion_meta = function() {
+    // URL
+    $(this).find('a.url').click(function(e) {
         e.preventDefault();
-        $(this).siblings('.urlpreview').slideDown();
-        $(this).blur();
-    }, function(e) {
-        e.preventDefault();
-        $(this).siblings('.urlpreview').slideUp();
+        $(this).siblings('.urlpreview').slideToggle();
         $(this).blur();
     });
     $(this).find('.urlpreview input').click(function() {
         $(this).select();
+    });
+
+    // UA
+    $(this).find('a.ua').click(function(e) {
+        e.preventDefault();
+        $(this).siblings('.uapreview').slideToggle();
+        $(this).blur();
     });
 }

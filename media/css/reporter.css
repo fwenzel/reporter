@@ -703,16 +703,26 @@ input.placeholder {
     font-size: 250%;
     margin: -.2em .5em 0 .2em;
 }
-.opinions li a.url {
+.opinions li a.url,
+.opinions li a.ua {
     float: right;
+    margin-left: .5em;
 }
-.opinions .urlpreview {
+.opinions .urlpreview,
+.opinions .uapreview {
+    clear: both;
     display: none;
     margin-top: .5em;
 }
 .opinions .urlpreview input {
     margin-left: .5em;
     width: 80%;
+}
+.opinions .uapreview .os {
+    float: left;
+}
+.opinions .uapreview .locale {
+    float: right;
 }
 /* }}} */
 /* {{{ Search Form */

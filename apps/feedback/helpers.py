@@ -4,13 +4,23 @@ from django.template import defaultfilters
 from jingo import register
 import jinja2
 
+from feedback import OSES, OS_OTHER
+
+
 # Yanking filters from Django.
 register.filter(defaultfilters.iriencode)
+
 
 @register.function
 def url(viewname, *args, **kwargs):
     """Helper for Django's ``reverse`` in templates."""
     return reverse(viewname, args=args, kwargs=kwargs)
+
+
+@register.function
+def os_name(os):
+    """Convert an OS short name into a human readable version."""
+    return OSES.get(os, OS_OTHER).pretty
 
 
 @register.function
