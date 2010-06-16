@@ -9,7 +9,7 @@
 <div id="feedbackform">
   <h2>We are sorry that you have not had a good experience with our browser.
   Please tell us why, so we can improve it!</h2>
-  <form method="post" action="{{ url('feedback.sad') }}">
+  <form method="post" action="{{ url('feedback.sad') }}" autocomplete="off">
     {{ form.description.errors|safe }}
     <p>{{ form.description|safe }}</p>
 
