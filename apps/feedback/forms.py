@@ -1,3 +1,5 @@
+import datetime
+
 from django import forms
 from django.core.exceptions import ValidationError
 
@@ -5,6 +7,7 @@ from annoying.decorators import autostrip
 from product_details import firefox_versions, mobile_details
 
 from . import FIREFOX, MOBILE
+from .models import Opinion
 from .utils import ua_parse
 from .validators import validate_ua, validate_swearwords, validate_no_html
 from .version_compare import version_int
@@ -21,6 +24,18 @@ class FeedbackForm(forms.Form):
     description = forms.CharField(widget=forms.TextInput(
         attrs={'placeholder': 'Enter your feedback here.'}),
         max_length=140, validators=[validate_swearwords, validate_no_html])
+
+    def clean(self):
+        # Ensure this is not a recent duplicate submission.
+        dupes = Opinion.objects.filter(
+            description=self.cleaned_data['description'],
+            created__gte=(datetime.datetime.now() -
+                          datetime.timedelta(minutes=5)))[:1]
+        if dupes:
+            raise ValidationError('We already got your feedback! Thanks.')
+
+        return super(FeedbackForm, self).clean()
+
 
 @autostrip
 class HappyForm(FeedbackForm):

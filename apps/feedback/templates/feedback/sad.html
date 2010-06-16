@@ -27,6 +27,7 @@
       {% endif %}
     {% endfor %}
 
+    {{ form.errors['__all__']|safe }}
     <button type="submit">Submit Feedback</button>
   </form>
 </div>
