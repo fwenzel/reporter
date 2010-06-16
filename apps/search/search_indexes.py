@@ -1,3 +1,5 @@
+from urlparse import urlparse
+
 from haystack.indexes import *
 from haystack import site
 
@@ -13,5 +15,23 @@ class OpinionIndex(SearchIndex):
     version = CharField(model_attr='version')
     os = CharField(model_attr='os')
     locale = CharField(model_attr='locale')
+
+    def prepare_text(self, obj):
+        """Include URL parts in searchable text."""
+        indexable = [obj.description]
+        if obj.url:
+            parsed = urlparse(obj.url)
+            # Domain
+            domain_split = parsed.netloc.split('.')
+            if domain_split and domain_split[0] == 'www':
+                indexable += domain_split[1:]
+                indexable.append('.'.join(domain_split[1:]))
+            else:
+                indexable += domain_split
+                indexable.append(parsed.netloc)
+
+            # Path
+            indexable += parsed.path.split('/')
+        return "\n".join(indexable)
 
 site.register(Opinion, OpinionIndex)
