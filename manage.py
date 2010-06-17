@@ -10,6 +10,7 @@ path = lambda *a: os.path.join(ROOT, *a)
 
 site.addsitedir(path('apps'))
 site.addsitedir(path('lib'))
+site.addsitedir(path('vendor'))
 
 try:
     import settings_local as settings

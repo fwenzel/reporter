@@ -4,7 +4,6 @@ django-annoying==0.7.4
 -e git://github.com/fwenzel/django-mozilla-product-details#egg=django-mozilla-product-details
 
 # DB stuff
-MySQL-python==1.2.3c1
 -e git://github.com/jbalogh/schematic.git#egg=schematic
 
 # Templates

@@ -4,3 +4,4 @@ settings_local.py
 pip-log.txt
 .DS_Store
 lib/whoosh_index
+vendor

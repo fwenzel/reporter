@@ -17,7 +17,14 @@ Getting Started
 You need Python 2.6. Also, you probably want to run this application in a
 [virtualenv][virtualenv] environment.
 
-Run ``easy_install pip`` followed by ``pip install -r requirements.txt``
+Run
+
+    easy_install pip
+
+followed by
+
+    pip install -r requirements/prod.txt -r requirements/compiled.txt
+
 to install the required Python libraries.
 
 [virtualenv]: http://pypi.python.org/pypi/virtualenv
