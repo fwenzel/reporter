@@ -16,11 +16,13 @@
   {% endwith %}
 {% endmacro %}
 
-{% with defaults = form.cleaned_data if form else None %}
+{% with defaults = form.data if form else None %}
   <div class="emotion {{ sent.sentiment }}">{{ smiley(sent.sentiment) }}</div>
-    {{ bar('total', sent.total, sent.total) }}
+    {{ bar('total', sent.total, sent.total, search_url(defaults=defaults)) }}
     {% if sent.total > 0 %}
-      {{ bar('happy', sent.happy, sent.total, search_url(sentiment='happy')) }}
-      {{ bar('sad', sent.sad, sent.total, search_url(sentiment='sad')) }}
+      {{ bar('happy', sent.happy, sent.total,
+             search_url(defaults=defaults, sentiment='happy')) }}
+      {{ bar('sad', sent.sad, sent.total,
+             search_url(defaults=defaults, sentiment='sad')) }}
     {% endif %}
 {% endwith %}

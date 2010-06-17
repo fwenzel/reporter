@@ -30,7 +30,7 @@ def add_empty(choices):
 
 
 class ReporterSearchForm(SearchForm):
-    q = forms.CharField(label='', widget=forms.TextInput(
+    q = forms.CharField(required=False, label='', widget=forms.TextInput(
         attrs={'placeholder': 'Search Terms'}))
     product = forms.ChoiceField(choices=PROD_CHOICES,
                                 label='Product:')
@@ -48,30 +48,41 @@ class ReporterSearchForm(SearchForm):
     date_end = forms.DateField(required=False, widget=forms.DateInput(
         attrs={'class': 'datepicker'}), label='to')
 
+    def clean(self):
+        cleaned = super(ReporterSearchForm, self).clean()
+
+        # Set "positive" value according to sentiment choice.
+        if cleaned['sentiment'] in SENTIMENTS:
+            cleaned['positive'] = (cleaned['sentiment'] == 'happy')
+        else:
+            cleaned['positive'] = None
+
+        # Sane default dates to avoid fetching huge amounts of data by default
+        if not cleaned['date_end']:
+            cleaned['date_end'] = date.today()
+        if not cleaned['date_start']:
+            cleaned['date_start'] = (cleaned['date_end'] - timedelta(days=30))
+        return cleaned
+
+    def clean_product(self):
+        """Map product short names to id."""
+        data = self.cleaned_data['product']
+        return APPS[data].id
+
     def search(self):
         sqs = super(ReporterSearchForm, self).search()
 
-        # Sane default dates to avoid fetching huge amounts of data by default
-        if not self.cleaned_data['date_end']:
-            self.cleaned_data['date_end'] = date.today()
-        if not self.cleaned_data['date_start']:
-            self.cleaned_data['date_start'] = (self.cleaned_data['date_end'] -
-                                               timedelta(days=30))
-        sqs = sqs.filter(created__gte=self.cleaned_data['date_start']).filter(
+        # Always restrict by date.
+        sqs = sqs.filter(
+            created__gte=self.cleaned_data['date_start']).filter(
             created__lte=self.cleaned_data['date_end'])
 
-        if self.cleaned_data['product']:
-            prod = self.cleaned_data['product']
-            if prod in APPS:
-                sqs = sqs.filter(product=APPS[prod].id)
-
         # happy/sad
-        if self.cleaned_data['sentiment'] in SENTIMENTS:
-            sqs = sqs.filter(
-                positive=(self.cleaned_data['sentiment'] == 'happy'))
+        if self.cleaned_data['positive'] is not None:
+            sqs = sqs.filter(positive=self.cleaned_data['positive'])
 
         # Apply other filters verbatim
-        for field in ('version', 'locale', 'os'):
+        for field in ('product', 'version', 'locale', 'os'):
             if self.cleaned_data[field]:
                 filter = { field: self.cleaned_data[field] }
                 sqs = sqs.filter(**filter)

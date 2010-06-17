@@ -649,6 +649,10 @@ input.placeholder {
 #search #overview {
     float: right;
 }
+#dashboard #messages a.more {
+    float: right;
+    margin-top: .5em;
+}
 #dashboard .prototype {
     display: none;
 }

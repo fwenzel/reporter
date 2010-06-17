@@ -1,4 +1,4 @@
-{% with defaults = form.cleaned_data if form else None %}
+{% with defaults = form.data if form else None %}
 {% for item in terms %}
   <a href="{{ search_url(defaults=defaults, q=item.term) }}"
      class="term w{{ item.weight }}">{{ item.term }}</a>

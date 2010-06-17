@@ -7,8 +7,8 @@
 
 <div id="search_box" class="clearfix">
   <div id="search_options">
-    {% if query %}
-    Description: <span class="opt">"{{ query }}"</span>;
+    {% if page.object_list %}
+    {% if query %}Description: <span class="opt">"{{ query }}"</span>;{% endif %}
     Dates: <span class="opt">{{ form.cleaned_data.date_start }}
       &ndash; {{ form.cleaned_data.date_end }}</span>
     <br/>

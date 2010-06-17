@@ -3,11 +3,29 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Count
 
+from search.forms import ReporterSearchForm
+
 from . import APP_IDS, OSES
 from .utils import ua_parse, extract_terms, smart_truncate
 
 
 class OpinionManager(models.Manager):
+    def browse(self, **kwargs):
+        """Browse all opinions, restricted by search criteria."""
+        opt = lambda x: kwargs.get(x, None)
+        # apply complex filters first
+        qs = self.between(date_start=opt('date_start'),
+                          date_end=opt('date_end'))
+        if opt('positive'):
+            qs = qs.filter(positive=opt('positive'))
+
+        # apply other filters verbatim
+        for field in ('product', 'version', 'locale', 'os'):
+            if opt(field):
+                qs = qs.filter(**{field: opt(field)})
+
+        return qs
+
     def between(self, date_start=None, date_end=None):
         ret = self.get_query_set()
         if date_start:

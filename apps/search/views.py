@@ -1,12 +1,18 @@
 from haystack.views import SearchView
+import jingo
 
 from feedback.models import Opinion, Term
 from feedback import stats, FIREFOX
 
-import jingo
-
 
 class OpinionSearchView(SearchView):
+    def get_results(self):
+        """If no query is selected, browse dataset."""
+        if self.form.is_valid() and not self.query:
+            return Opinion.objects.browse(**self.form.cleaned_data)
+        else:
+            return super(OpinionSearchView, self).get_results()
+
     def extra_context(self):
         """Gather sentiments/trends/demographic info for these search results."""
         extra = super(OpinionSearchView, self).extra_context()

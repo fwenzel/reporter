@@ -1,4 +1,4 @@
-{% with defaults = form.cleaned_data if form else None %}
+{% with defaults = form.data if form else None %}
 <dl class="oses">
   <dt>OS</dt>
   {% for item in demo.os %}
