@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{% block page_title %}Not Found{% endblock %}</h1>
+
+<p>I'm sorry, I could not find what you were looking for.</p>
+
+<p>Please start over on the <a href="{{ url('dashboard') }}">dashboard</a>.</p>
+<p>If you were following a broken link, please
+<a href="https://bugzilla.mozilla.org/enter_bug.cgi?product=Webtools&component=Input">file a bug.</a>
+Thanks!</p>
+{% endblock %}

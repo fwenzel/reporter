@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{% block page_title %}Internal Server Error{% endblock %}</h1>
+
+<p>An unhandled error occurred in the application. The error has been logged
+and an administrator was notified. We apologize for the inconvenience!</p>
+
+<p>Please start over on the <a href="{{ url('dashboard') }}">dashboard</a>.</p>
+
+<p>If you have additional information how to reproduce this problem, please
+<a href="https://bugzilla.mozilla.org/enter_bug.cgi?product=Webtools&component=Input">file a bug.</a>
+Thanks!</p>
+{% endblock %}
