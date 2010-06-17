@@ -27,12 +27,13 @@ class FeedbackForm(forms.Form):
 
     def clean(self):
         # Ensure this is not a recent duplicate submission.
-        dupes = Opinion.objects.filter(
-            description=self.cleaned_data['description'],
-            created__gte=(datetime.datetime.now() -
-                          datetime.timedelta(minutes=5)))[:1]
-        if dupes:
-            raise ValidationError('We already got your feedback! Thanks.')
+        if 'description' in self.cleaned_data:
+            dupes = Opinion.objects.filter(
+                description=self.cleaned_data['description'],
+                created__gte=(datetime.datetime.now() -
+                              datetime.timedelta(minutes=5)))[:1]
+            if dupes:
+                raise ValidationError('We already got your feedback! Thanks.')
 
         return super(FeedbackForm, self).clean()
 
