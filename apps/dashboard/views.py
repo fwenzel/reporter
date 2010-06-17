@@ -6,11 +6,18 @@ from django.views.decorators.cache import cache_page
 
 import jingo
 
-from feedback.models import Opinion, Term
 from feedback import stats, FIREFOX
+from feedback.models import Opinion, Term
+from feedback.validators import LATEST_BETAS
+from feedback.version_compare import simplify_version
 from search.forms import ReporterSearchForm
 
 from .forms import PeriodForm, PERIOD_DELTAS
+
+
+# Dashboard defaults (TODO something other than Firefox)
+DASH_PROD = FIREFOX
+DASH_VER = simplify_version(LATEST_BETAS[FIREFOX])
 
 
 def dashboard(request):
@@ -37,7 +44,8 @@ def period_to_date(f):
 @period_to_date
 def sentiment(request, date_start, date_end):
     """AJAX action returning a summary of positive/negative sentiments."""
-    opinions = Opinion.objects.between(date_start, date_end)
+    opinions = Opinion.objects.between(date_start, date_end).filter(
+        product=DASH_PROD.id, version=DASH_VER)
     data = {'sent': stats.sentiment(qs=opinions)}
     return jingo.render(request, 'dashboard/sentiments.html', data)
 
@@ -47,7 +55,8 @@ def sentiment(request, date_start, date_end):
 def trends(request, date_start, date_end):
     """AJAX action returning a summary of frequent terms."""
     frequent_terms = Term.objects.frequent(
-        date_start=date_start, date_end=date_end)[:10]
+        date_start=date_start, date_end=date_end).filter(
+            used_in__product=DASH_PROD.id, used_in__version=DASH_VER)[:10]
     # TODO use real product here
     data = {'terms': stats.frequent_terms(qs=frequent_terms)}
     return jingo.render(request, 'dashboard/trends.html', data)
@@ -57,7 +66,8 @@ def trends(request, date_start, date_end):
 @period_to_date
 def demographics(request, date_start, date_end):
     """AJAX action returning an OS/locale summary."""
-    opinions = Opinion.objects.between(date_start, date_end)
+    opinions = Opinion.objects.between(date_start, date_end).filter(
+        product=DASH_PROD.id, version=DASH_VER)
     # TODO use real product here
     data = {'demo': stats.demographics(qs=opinions)}
     return jingo.render(request, 'dashboard/demographics.html', data)
@@ -66,6 +76,7 @@ def demographics(request, date_start, date_end):
 @cache_page(60 * 5)
 def messages(request, count=10):
     """AJAX action returning the most recent messages."""
-    opinions = Opinion.objects.order_by('-created')[:count]
+    opinions = Opinion.objects.filter(
+        product=DASH_PROD.id, version=DASH_VER).order_by('-created')[:count]
     data = {'opinions': opinions}
     return jingo.render(request, 'dashboard/messages.html', data)

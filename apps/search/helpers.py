@@ -6,6 +6,8 @@ from jingo import register
 import jinja2
 
 from feedback import FIREFOX
+from feedback.validators import LATEST_BETAS
+from feedback.version_compare import simplify_version
 from .forms import ReporterSearchForm
 
 @register.function
@@ -17,9 +19,12 @@ def search_url(defaults=None, extra=None, **kwargs):
     data = []
 
     # fallbacks other than None
-    fallbacks = {
-        'product': FIREFOX.short,
-    }
+    fallbacks = {}
+    if not 'products' in defaults or not 'products' in kwargs:
+        fallbacks.update({
+            'product': FIREFOX.short,
+            'version': simplify_version(LATEST_BETAS[FIREFOX]),
+        })
 
     # get field data from keyword args or defaults
     for field in ReporterSearchForm.base_fields:

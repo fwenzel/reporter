@@ -54,13 +54,12 @@ def sentiment(qs=None):
     else:
         opinions = qs
 
-    aggregated = lambda pos: opinions.filter(positive=pos).aggregate(
-        cnt=Count('pk'))['cnt']
-    sad = aggregated(False)
-    happy = aggregated(True)
+    total = opinions.count()
+    sad = opinions.filter(positive=False).aggregate(cnt=Count('pk'))['cnt']
+    happy = total - sad
     return {
         'sentiment': sad > happy and 'sad' or 'happy',
-        'total': sad+happy,
+        'total': total,
         'sad': sad,
         'happy': happy,
     }
