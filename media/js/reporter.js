@@ -117,21 +117,25 @@ $(document).ready(function() {
         adv_link_box = $('#show_search_adv'),
         adv_link = $('#show_search_adv a');
 
-    adv_link.toggle(function(e) {
-        adv_link_box.removeClass('active');
-        search_adv.slideUp();
-    }, function(e) {
-        search_adv.slideDown(function() {
-            adv_link_box.addClass('active');
-        });
-    }).click(function(e) {
+    adv_link.click(function(e) {
         e.preventDefault();
         $(this).blur();
+        if (adv_link_box.hasClass('active')) {
+            adv_link_box.removeClass('active');
+            search_adv.slideUp();
+        } else {
+            search_adv.slideDown(function() {
+                adv_link_box.addClass('active');
+            });
+        }
     });
     adv_link_box.show();
 
-    if (search_adv.find(':input[value!=""]').length == 0)
-        adv_link.click();
+    // no advanced options chosen? close the box.
+    if (search_adv.find(':input[value!=""]').length == 0) {
+        search_adv.hide();
+        adv_link_box.removeClass('active');
+    }
 
     the_form.submit(function() {
         // only submit non-empty fields
