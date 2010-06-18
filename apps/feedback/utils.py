@@ -70,7 +70,9 @@ def extract_terms(text):
     extractor.filter = extract.permissiveFilter
     terms = extractor(text)
 
-    return [ t[0].lower() for t in terms ]
+    # Collect terms in lower case, but only the ones that consist of single
+    # words (t[2] == 1).
+    return [ t[0].lower() for t in terms if t[2] == 1 ]
 
 
 def smart_truncate(content, length=100, suffix='...'):
