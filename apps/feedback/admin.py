@@ -33,4 +33,5 @@ admin.site.register(Opinion, OpinionAdmin)
 class TermAdmin(admin.ModelAdmin):
     list_display = ('term', 'hidden')
     list_filter = ('hidden',)
+    search_fields = ['term']
 admin.site.register(Term, TermAdmin)
