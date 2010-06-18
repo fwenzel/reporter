@@ -9,9 +9,9 @@
       {{ opinion.description }}
         <a class="ua" href="#" title="{{ opinion.user_agent }}">(UA)</a>
       {% if opinion.url %}
-        <a class="url" href="{{ opinion.url }}">(URL)</a>
+        <a class="url" href="{{ opinion.url }}" rel="nofollow">(URL)</a>
         <div class="urlpreview">
-          <a href="{{ opinion.url }}">visit &rarr;</a>
+          <a href="{{ opinion.url }}" rel="nofollow">visit &rarr;</a>
           <input type="text" readonly value="{{ opinion.url }}"/>
         </div>
       {% endif %}
