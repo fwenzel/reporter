@@ -497,13 +497,22 @@ input.placeholder {
 /* }}} */
 /* {{{ Feedback forms */
 .smiley {
-    font-family: sans-serif;
+    color: transparent;
 }
-#feedback #smiley {
-    font-size: 2200%;
+#feedback .smiley {
+    display: block;
+    background: url(../img/smilies228.png) no-repeat left top;
+    height: 228px;
+    width: 228px;
     position: absolute;
-    top: 30px;
+    top: 50px;
     left: 0;
+}
+#feedback .smiley.sad {
+    background-position: 0 0;
+}
+#feedback .smiley.happy {
+    background-position: 0 -278px;
 }
 #feedback #feedbackform {
     margin-left: 30%;
@@ -664,9 +673,21 @@ input.placeholder {
     text-align: center;
     width: 20%;
 }
+
 #sentiment .smiley {
-    font-size: 60pt;
+    background: url(../img/smilies60.png) no-repeat left top;
+    display: block;
+    margin-left: 1em;
+    height: 60px;
+    width: 60px;
 }
+#sentiment .smiley.sad {
+    background-position: 0 0;
+}
+#sentiment .smiley.happy {
+    background-position: 0 -110px;
+}
+
 #sentiment .response {
     height: 30px;
     margin: 0 0 5px 21%;
@@ -727,9 +748,17 @@ input.placeholder {
     min-height: 2.2em;
 }
 .opinions li .smiley {
+    background: url(../img/smilies16.png) no-repeat left top;
     float: left;
-    font-size: 250%;
-    margin: -.2em .5em 0 .2em;
+    height: 16px;
+    width: 16px;
+    margin: .3em .5em .3em .2em;
+}
+.opinions li .smiley.sad {
+    background-position: 0 0;
+}
+.opinions li .smiley.sad {
+    background-position: 0 -66px;
 }
 .opinions li a.url,
 .opinions li a.ua {

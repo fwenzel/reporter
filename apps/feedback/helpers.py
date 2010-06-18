@@ -26,8 +26,9 @@ def os_name(os):
 @register.function
 def smiley(style):
     """
-    Renders a big smiley.
-    style can be "sad" or "happy".
+    Renders a smiley.
+
+    Style can be "sad" or "happy".
     """
     if not style in ('happy', 'sad'):
         return ''
@@ -38,4 +39,5 @@ def smiley(style):
         character = '&#9785;'
         title = 'sad face'
     return jinja2.Markup(
-        u'<span title="%s" class="smiley">%s</span>' % (title, character))
+        u'<span title="%s" class="smiley %s">%s</span>' % (
+            title, style, character))
