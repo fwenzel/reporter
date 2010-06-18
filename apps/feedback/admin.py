@@ -11,6 +11,7 @@ class OpinionAdmin(admin.ModelAdmin):
     list_display_links = ('truncated_description',)
     list_filter = ('positive', 'version', 'os', 'locale')
     ordering = ('-created',)
+    search_fields = ['description']
 
     fieldsets = (
         (None, {
