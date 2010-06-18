@@ -32,8 +32,13 @@ def add_empty(choices):
     return [('', '-- all --')] + choices
 
 
+class SearchInput(forms.TextInput):
+    """HTML5 Search Input field."""
+    input_type = 'search'
+
+
 class ReporterSearchForm(SearchForm):
-    q = forms.CharField(required=False, label='', widget=forms.TextInput(
+    q = forms.CharField(required=False, label='', widget=SearchInput(
         attrs={'placeholder': 'Search Terms'}))
     product = forms.ChoiceField(choices=PROD_CHOICES,
                                 label='Product:')
