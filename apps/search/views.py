@@ -30,9 +30,6 @@ class OpinionSearchView(SearchView):
             used_in__in=opinion_pks)[:20]
         extra['terms'] = stats.frequent_terms(qs=frequent_terms)
 
-        # TODO this is a lame way to generate search URLs
-        extra['prod'] = FIREFOX.short
-
         return extra
 
     def create_response(self):

@@ -76,9 +76,10 @@ class ReporterSearchForm(SearchForm):
         sqs = super(ReporterSearchForm, self).search()
 
         # Always restrict by date.
+        date_end = self.cleaned_data['date_end'] + timedelta(days=1)
         sqs = sqs.filter(
             created__gte=self.cleaned_data['date_start']).filter(
-            created__lte=self.cleaned_data['date_end'])
+            created__lt=date_end)
 
         # happy/sad
         if self.cleaned_data['positive'] is not None:

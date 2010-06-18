@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -31,7 +33,7 @@ class OpinionManager(models.Manager):
         if date_start:
             ret = ret.filter(created__gte=date_start)
         if date_end:
-            ret = ret.filter(created__lte=date_end)
+            ret = ret.filter(created__lt=date_end + timedelta(days=1))
         return ret
 
 
