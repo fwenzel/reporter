@@ -10,7 +10,8 @@ from product_details import firefox_versions, mobile_details
 from . import FIREFOX, MOBILE, LATEST_BETAS
 from .models import Opinion
 from .utils import ua_parse
-from .validators import validate_ua, validate_swearwords, validate_no_html
+from .validators import (validate_ua, validate_swearwords, validate_no_html,
+                         validate_no_email)
 from .version_compare import version_int
 
 
@@ -18,7 +19,8 @@ class FeedbackForm(forms.Form):
     """Feedback form fields shared between feedback types."""
     description = forms.CharField(widget=forms.TextInput(
         attrs={'placeholder': 'Enter your feedback here.'}),
-        max_length=140, validators=[validate_swearwords, validate_no_html])
+        max_length=140, validators=[validate_swearwords, validate_no_html,
+                                    validate_no_email])
 
     def clean(self):
         # Ensure this is not a recent duplicate submission.

@@ -1,3 +1,4 @@
+import re
 import string
 
 from django.conf import settings
@@ -11,6 +12,10 @@ import swearwords
 from . import FIREFOX, MOBILE, LATEST_BETAS
 from .utils import ua_parse
 from .version_compare import version_dict
+
+
+# Simple email regex to keep people from submitting personal data.
+EMAIL_RE = re.compile(r'\w+@\w+\.\w{2,6}')
 
 
 def validate_ua(ua):
@@ -54,3 +59,11 @@ def validate_no_html(str):
     """Disallow HTML."""
     if strip_tags(str) != str:
         raise ValidationError('Feedback must not contain HTML.')
+
+
+def validate_no_email(str):
+    """Disallow texts possibly containing emails addresses."""
+    if EMAIL_RE.search(str):
+        raise ValidationError(
+            'Your feedback seems to contain an email address. Please remove '
+            'this and similar personal data from the text, then try again. Thanks!')
