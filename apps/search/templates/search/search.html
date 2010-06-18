@@ -2,9 +2,11 @@
 
 {% block body_id %}search{% endblock %}
 
-{% block content %}
-<h1>Search Results</h1>
+{% block page_title %}Search Results{% endblock %}
 
+{% block title_text %}Search Results{% endblock %}
+
+{% block content %}
 <div id="search_box" class="clearfix">
   <div id="search_options">
     {% if page.object_list %}

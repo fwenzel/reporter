@@ -70,6 +70,11 @@ header img.fxlogo {
     width: 76px;
     margin-right: .8em;
 }
+header .logobox h2 {
+    float: left;
+    margin: 0;
+    padding: 8px 0 0 1em;
+}
 
 #doc {
 	width: 950px;
