@@ -1,4 +1,5 @@
 import datetime
+import urlparse
 
 from django import forms
 from django.core.exceptions import ValidationError
@@ -54,3 +55,15 @@ class SadForm(FeedbackForm):
     add_url = forms.BooleanField(initial=True, required=False)
     url = forms.URLField(required=False, widget=forms.TextInput(
         attrs={'placeholder': 'http://'}))
+
+    def clean_url(self):
+        """Sanitize URL input, remove PWs, etc."""
+        url = self.cleaned_data['url']
+        parsed = urlparse.urlparse(url)
+
+        # Note: http/https is already enforced by URL field type.
+
+        # Rebuild URL to drop query strings, passwords, and the like.
+        new_url = (parsed.scheme, parsed.hostname, parsed.path, None, None,
+                   None)
+        return urlparse.urlunparse(new_url)
