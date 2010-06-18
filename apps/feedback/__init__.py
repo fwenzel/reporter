@@ -43,7 +43,7 @@ except AttributeError:
 class WINDOWS:
     pretty = 'Windows'
     short = 'win'
-    ua_pattern = 'Win32'
+    ua_pattern = 'Windows'
 
 class OSX:
     pretty = 'Mac OS X'

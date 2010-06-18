@@ -16,6 +16,9 @@ class UtilTests(TestCase):
             ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; de; rv:1.9.2.3) '
              'Gecko/20100401 Firefox/3.6.3',
              FIREFOX, '3.6.3', 'de', 'mac'),
+            ('Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.4) '
+             'Gecko/20100611 Firefox/3.6.4 (.NET CLR 3.5.30729)',
+             FIREFOX, '3.6.4', 'en-US', 'win'),
 
             # valid Fennec
             ('Mozilla/5.0 (X11; U; Linux armv6l; fr; rv:1.9.1b1pre) Gecko/'
