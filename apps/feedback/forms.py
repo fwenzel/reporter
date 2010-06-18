@@ -7,17 +7,11 @@ from django.core.exceptions import ValidationError
 from annoying.decorators import autostrip
 from product_details import firefox_versions, mobile_details
 
-from . import FIREFOX, MOBILE
+from . import FIREFOX, MOBILE, LATEST_BETAS
 from .models import Opinion
 from .utils import ua_parse
 from .validators import validate_ua, validate_swearwords, validate_no_html
 from .version_compare import version_int
-
-
-LATEST_BETAS = {
-    FIREFOX: firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'],
-    MOBILE: mobile_details['beta_version'],
-}
 
 
 class FeedbackForm(forms.Form):

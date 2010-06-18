@@ -129,6 +129,9 @@ INSTALLED_APPS = (
     'search',
 )
 
+# Where to store product details
+PROD_DETAILS_DIR = path('lib/product_details_json')
+
 # Haystack Search
 HAYSTACK_SITECONF = 'search.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'whoosh'

@@ -4,8 +4,7 @@ from django import forms
 from haystack.forms import SearchForm
 import product_details
 
-from feedback import APPS, FIREFOX, OS_USAGE
-from feedback.validators import LATEST_BETAS
+from feedback import APPS, FIREFOX, OS_USAGE, LATEST_BETAS
 from feedback.version_compare import simplify_version
 
 
@@ -20,8 +19,12 @@ FIREFOX_BETA_VERSION_CHOICES = [
 ]
 SENTIMENTS = ('happy', 'sad')
 SENTIMENT_CHOICES = [(s, s) for s in SENTIMENTS]
-LOCALE_CHOICES = [ (lang, lang) for lang in sorted(product_details.languages) ]
 OS_CHOICES = [ (o.short, o.pretty) for o in OS_USAGE ]
+try:
+    LOCALE_CHOICES = [ (lang, lang) for lang in sorted(product_details.languages) ]
+except AttributeError:
+    # no product details?
+    LOCALE_CHOICES = []
 
 
 def add_empty(choices):

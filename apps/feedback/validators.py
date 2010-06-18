@@ -8,15 +8,9 @@ import product_details
 
 import swearwords
 
-from . import FIREFOX, MOBILE
+from . import FIREFOX, MOBILE, LATEST_BETAS
 from .utils import ua_parse
 from .version_compare import version_dict
-
-
-LATEST_BETAS = {
-    FIREFOX: product_details.firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'],
-    MOBILE: product_details.mobile_details['beta_version'],
-}
 
 
 def validate_ua(ua):

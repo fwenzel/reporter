@@ -1,3 +1,6 @@
+import product_details
+
+
 # Applications, shamelessly snagged from AMO
 class FIREFOX:
     id = 1
@@ -26,6 +29,15 @@ BROWSERS = (
     (MOBILE, UA_PATTERN_MOBILE),
     (FIREFOX, UA_PATTERN_FIREFOX),
 )
+
+try:
+    LATEST_BETAS = {
+        FIREFOX: product_details.firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'],
+        MOBILE: product_details.mobile_details['beta_version'],
+    }
+except AttributeError:
+    # no product details data?
+    LATEST_BETAS = { FIREFOX: None, MOBILE: None }
 
 # Operating Systems
 class WINDOWS:

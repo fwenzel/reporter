@@ -6,9 +6,8 @@ from django.views.decorators.cache import cache_page
 
 import jingo
 
-from feedback import stats, FIREFOX
+from feedback import stats, FIREFOX, LATEST_BETAS
 from feedback.models import Opinion, Term
-from feedback.validators import LATEST_BETAS
 from feedback.version_compare import simplify_version
 from search.forms import ReporterSearchForm
 

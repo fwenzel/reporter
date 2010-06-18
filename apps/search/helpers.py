@@ -5,10 +5,10 @@ from django.core.urlresolvers import reverse
 from jingo import register
 import jinja2
 
-from feedback import FIREFOX
-from feedback.validators import LATEST_BETAS
+from feedback import FIREFOX, LATEST_BETAS
 from feedback.version_compare import simplify_version
 from .forms import ReporterSearchForm
+
 
 @register.function
 def search_url(defaults=None, extra=None, **kwargs):
