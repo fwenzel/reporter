@@ -50,7 +50,7 @@ class Opinion(models.Model):
     product = models.PositiveSmallIntegerField()
     version = models.CharField(max_length=30)
     os = models.CharField(max_length=30)
-    locale = models.CharField(max_length=30)
+    locale = models.CharField(max_length=30, blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
 
@@ -90,7 +90,7 @@ class Opinion(models.Model):
             self.product = parsed['browser'].id
             self.version = parsed['version']
             self.os = parsed['os']
-            self.locale = parsed['locale']
+            self.locale = parsed['locale'] or ''
 
         super(Opinion, self).save(*args, **kwargs)
 
