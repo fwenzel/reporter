@@ -143,3 +143,4 @@ ENFORCE_USER_AGENT = True
 
 # Term filter options
 MIN_TERM_LENGTH = 3
+MAX_TERM_LENGTH = 25
