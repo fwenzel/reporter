@@ -154,7 +154,7 @@ jQuery.fn.show_opinion_meta = function() {
     // URL
     $(this).find('a.url').click(function(e) {
         e.preventDefault();
-        $(this).siblings('.urlpreview').slideToggle();
+        $(this).siblings('.urlpreview').toggle();
         $(this).blur();
     });
     $(this).find('.urlpreview input').click(function() {
@@ -164,7 +164,7 @@ jQuery.fn.show_opinion_meta = function() {
     // UA
     $(this).find('a.ua').click(function(e) {
         e.preventDefault();
-        $(this).siblings('.uapreview').slideToggle();
+        $(this).siblings('.uapreview').toggle();
         $(this).blur();
     });
 }
