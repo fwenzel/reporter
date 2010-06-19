@@ -38,13 +38,13 @@
       <span class="step-links">
         {% if page.has_previous() %}
         <a href="{{ search_url(
-          defaults=form.cleaned_data, extra={'page': page.previous_page_number()})
+          defaults=form.data, extra={'page': page.previous_page_number()})
           }}" class="prev">&laquo; previous</a>
         {% endif %}
 
         {% if page.has_next() %}
         <a href="{{ search_url(
-          defaults=form.cleaned_data, extra={'page': page.next_page_number()})
+          defaults=form.data, extra={'page': page.next_page_number()})
           }}" class="next">next &raquo;</a>
         {% endif %}
 

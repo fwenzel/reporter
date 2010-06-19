@@ -60,15 +60,15 @@ class ReporterSearchForm(SearchForm):
         cleaned = super(ReporterSearchForm, self).clean()
 
         # Set "positive" value according to sentiment choice.
-        if cleaned['sentiment'] in SENTIMENTS:
+        if cleaned.get('sentiment', None) in SENTIMENTS:
             cleaned['positive'] = (cleaned['sentiment'] == 'happy')
         else:
             cleaned['positive'] = None
 
         # Sane default dates to avoid fetching huge amounts of data by default
-        if not cleaned['date_end']:
+        if not cleaned.get('date_end', None):
             cleaned['date_end'] = date.today()
-        if not cleaned['date_start']:
+        if not cleaned.get('date_start', None):
             cleaned['date_start'] = (cleaned['date_end'] - timedelta(days=30))
         return cleaned
 
