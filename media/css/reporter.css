@@ -765,6 +765,9 @@ input.placeholder {
 .opinions li .smiley.happy {
     background-position: 0 -66px;
 }
+.opinions li .msg {
+    overflow-x: auto;
+}
 .opinions li a.url,
 .opinions li a.ua {
     float: right;
