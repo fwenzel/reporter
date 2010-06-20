@@ -45,8 +45,7 @@ def validate_ua(ua):
 
 def validate_swearwords(str):
     """Soft swear word filter to encourage contructive feedback."""
-    words = set([ s.strip(string.punctuation) for s in str.split() ])
-    matches = words.intersection(swearwords.WORDLIST)
+    matches = swearwords.find_swearwords(str)
     if matches:
         raise ValidationError(
             'Your comments contains swear words (%s). In order to help us '

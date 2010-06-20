@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     'dashboard',
     'feedback',
     'search',
+    'swearwords',
 )
 
 # Where to store product details
