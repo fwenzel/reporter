@@ -624,8 +624,7 @@ input.placeholder {
     width: 100%;
 }
 #dashboard #search_form .wrap_q {
-    min-width: 40%;
-    width: 65%;
+    width: 60%;
 }
 #dashboard #search_form #id_q {
     width: 94%;
@@ -796,7 +795,8 @@ input.placeholder {
     position: relative;
 }
 #search_form button {
-    display: none;
+    font-family: inherit;
+    font-size: inherit;
 }
 #search_form #id_q {
     background: #fff url(../img/magnifying-glass.gif) no-repeat .3em center;
@@ -877,7 +877,8 @@ input.placeholder {
 }
 #search #search_form .wrap_product,
 #search #search_form .wrap_version,
-#search #search_form .wrap_os {
+#search #search_form .wrap_os,
+#search #search_form button {
     margin-left: 1em;
 }
 #search #search_adv {
