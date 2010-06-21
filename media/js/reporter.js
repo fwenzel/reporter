@@ -120,14 +120,9 @@ $(document).ready(function() {
     adv_link.click(function(e) {
         e.preventDefault();
         $(this).blur();
-        if (adv_link_box.hasClass('active')) {
-            adv_link_box.removeClass('active');
-            search_adv.slideUp();
-        } else {
-            search_adv.slideDown(function() {
-                adv_link_box.addClass('active');
-            });
-        }
+
+        adv_link_box.toggleClass('active');
+        search_adv.toggle();
     });
     adv_link_box.show();
 
