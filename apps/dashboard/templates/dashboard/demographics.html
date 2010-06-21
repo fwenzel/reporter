@@ -9,7 +9,9 @@
 <dl class="locales">
   <dt>Locale</dt>
   {% for item in demo.locale %}
-  <dd><a href="{{ search_url(defaults=defaults, locale=item.locale) }}">{{ item.locale }}</a>:
+  <dd><a href="{{ search_url(defaults=defaults, locale=item.locale)
+    }}" title="{{ locale_name(item.locale, native=True, default='') }}">{{
+    locale_name(item.locale) }}</a>:
     <b>{{ item.count }}</b></dd>
   {% endfor %}
 </dl>

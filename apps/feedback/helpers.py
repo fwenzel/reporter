@@ -3,6 +3,7 @@ from django.template import defaultfilters
 
 from jingo import register
 import jinja2
+import product_details
 
 from feedback import OSES, OS_OTHER
 
@@ -21,6 +22,16 @@ def url(viewname, *args, **kwargs):
 def os_name(os):
     """Convert an OS short name into a human readable version."""
     return OSES.get(os, OS_OTHER).pretty
+
+
+@register.function
+def locale_name(locale, native=False, default='unknown'):
+    """Convert a locale code into a human readable locale name."""
+    if locale in product_details.languages:
+        return product_details.languages[locale][
+            native and 'native' or 'English']
+    else:
+        return default
 
 
 @register.function
