@@ -1,8 +1,17 @@
+from django.conf import settings
+from django.utils.hashcompat import md5_constructor
+
 from haystack.views import SearchView
 import jingo
+from view_cache_utils import cache_page_with_prefix
 
 from feedback.models import Opinion, Term
 from feedback import stats, FIREFOX
+
+
+def search_view_cache_key(request):
+    """Generate a cache key for a search view based on its GET parameters."""
+    return md5_constructor(str(request.GET)).hexdigest()
 
 
 class OpinionSearchView(SearchView):
@@ -48,3 +57,17 @@ class OpinionSearchView(SearchView):
         }
         context.update(self.extra_context())
         return jingo.render(self.request, self.template, context)
+
+
+    def __call__(self, request):
+        """Main view entrypoint. Cached."""
+
+        @cache_page_with_prefix(settings.CACHE_DEFAULT_PERIOD,
+                                search_view_cache_key)
+        def cache_wrapper(request):
+            """
+            Cache decorator expects request, not self, to be the first
+            positional argument, so let's cater to that by using a closure.
+            """
+            return super(OpinionSearchView, self).__call__(request)
+        return cache_wrapper(request)
