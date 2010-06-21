@@ -74,7 +74,7 @@ def demographics(request, date_start, date_end):
     return jingo.render(request, 'dashboard/demographics.html', data)
 
 
-@cache_page(60 * 5)
+@cache_page(settings.CACHE_DEFAULT_PERIOD)
 def messages(request, count=10):
     """AJAX action returning the most recent messages."""
     opinions = Opinion.objects.filter(
