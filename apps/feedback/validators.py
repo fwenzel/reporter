@@ -15,7 +15,10 @@ from .version_compare import version_dict
 
 
 # Simple email regex to keep people from submitting personal data.
-EMAIL_RE = re.compile(r'\w+@\w+\.\w{2,6}')
+EMAIL_RE = re.compile(r'[^\s]+@[^\s]+\.[^\s]{2,6}')
+
+# Simple "possibly a URL" regex
+URL_RE = re.compile(r'(://|www\.[^\s]|\.\w{2,}/)')
 
 
 def validate_ua(ua):
@@ -66,3 +69,11 @@ def validate_no_email(str):
         raise ValidationError(
             'Your feedback seems to contain an email address. Please remove '
             'this and similar personal data from the text, then try again. Thanks!')
+
+
+def validate_no_urls(str):
+    """Disallow text possibly containing a URL."""
+    if URL_RE.search(str):
+        raise ValidationError(
+            'Your feedback seems to contain a URL. Please remove this and '
+            'similar personal data from the text, then try again. Thanks!')

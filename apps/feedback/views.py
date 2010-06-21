@@ -6,8 +6,9 @@ from django.views.decorators.vary import vary_on_headers
 
 import jingo
 
-from .forms import HappyForm, SadForm, validate_ua
+from .forms import HappyForm, SadForm
 from .models import Opinion
+from .validators import validate_ua
 
 
 def enforce_user_agent(f):

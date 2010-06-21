@@ -1,17 +1,19 @@
 from django.test import TestCase
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 
 from product_details import firefox_versions
 
 from . import FIREFOX, MOBILE
 from .utils import ua_parse
+from .validators import validate_no_urls
 
 
 class UtilTests(TestCase):
     def test_ua_parse(self):
         """Test user agent parser for Firefox."""
-        patterns = [
+        patterns = (
             # valid Fx
             ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; de; rv:1.9.2.3) '
              'Gecko/20100401 Firefox/3.6.3',
@@ -33,7 +35,7 @@ class UtilTests(TestCase):
             ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-us) '
              'AppleWebKit/531.22.7 (KHTML, like Gecko) Version/4.0.5 '
              'Safari/531.22.7', None),
-        ]
+        )
 
         for pattern in patterns:
             parsed = ua_parse(pattern[0])
@@ -44,6 +46,25 @@ class UtilTests(TestCase):
                 assert parsed['os'] == pattern[4]
             else:
                 assert parsed is None
+
+
+class ValidatorTests(TestCase):
+    def test_url(self):
+        """Find URLs in text."""
+        patterns = (
+            ('This contains no URLs.', False),
+            ('I like the www. Do you?', False),
+            ('If I write youtube.com, what happens?', False),
+            ('Visit example.com/~myhomepage!', True),
+            ('OMG http://foo.de', True),
+            ('www.youtube.com is the best', True),
+        )
+        for pattern in patterns:
+            if pattern[1]:
+                self.assertRaises(ValidationError, validate_no_urls,
+                                  pattern[0])
+            else:
+                validate_no_urls(pattern[0]) # Will fail if exception raised.
 
 
 class ViewTests(TestCase):
