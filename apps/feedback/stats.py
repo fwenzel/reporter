@@ -12,14 +12,15 @@ def demographics(qs=None):
         opinions = qs
 
     # Summarize OSes.
-    per_os = opinions.values('os').annotate(cnt=Count('pk'))
+    per_os = opinions.values('os').annotate(cnt=Count('pk')).order_by('-cnt')
     os_name = lambda short: OSES.get(short, OS_OTHER).pretty
     os_data = [ {'os': item['os'],
                  'name': os_name(item['os']),
                  'count': item['cnt']} for item in per_os ]
 
     # Summarize locales.
-    per_locale = opinions.values('locale').annotate(cnt=Count('pk'))
+    per_locale = opinions.values('locale').annotate(cnt=Count('pk')).order_by(
+        '-cnt')
     locale_data = [ {'locale': item['locale'],
                      'count': item['cnt']} for item in per_locale ]
 
