@@ -19,7 +19,9 @@ DASH_PROD = FIREFOX
 DASH_VER = simplify_version(LATEST_BETAS[FIREFOX])
 
 
+@cache_page(settings.CACHE_DEFAULT_PERIOD)
 def dashboard(request):
+    """Front page view."""
     search_form = ReporterSearchForm()
     period = PeriodForm()
 

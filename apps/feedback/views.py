@@ -2,6 +2,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django import http
+from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
 
 import jingo
@@ -37,6 +38,7 @@ def enforce_user_agent(f):
 
 @vary_on_headers('User-Agent')
 @enforce_user_agent
+@cache_page(settings.CACHE_DEFAULT_PERIOD)
 def give_feedback(request, ua, positive):
     """Feedback page (positive or negative)."""
 
