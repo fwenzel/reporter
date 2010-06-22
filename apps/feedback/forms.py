@@ -48,8 +48,12 @@ class SadForm(FeedbackForm):
                                   widget=forms.HiddenInput(),
                                   required=False)
     add_url = forms.BooleanField(initial=True, required=False)
+
+    # NB: The ID 'id_url' is hard-coded in the Testpilot extension to
+    # accommodate pre-filling the field client-side.
+    # Do not change unless you know what you are doing.
     url = forms.URLField(required=False, widget=forms.TextInput(
-        attrs={'placeholder': 'http://'}))
+        attrs={'placeholder': 'http://', 'id': 'id_url'}))
 
     def clean_url(self):
         """Sanitize URL input, remove PWs, etc."""
