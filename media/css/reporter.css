@@ -71,7 +71,6 @@ header img.fxlogo {
     margin-right: .8em;
 }
 header .logobox h2 {
-    color: #fff;
     float: left;
     margin: 0;
     padding: 8px 0 0 1em;
@@ -111,7 +110,7 @@ header .logobox h2 {
 /* {{{ Header */
 
 body {
-    background: url(../img/background.png) repeat-x center top #fff;
+	background: #fff url(../img/background-tile.png) 50% 0 repeat-x;
 }
 
 /* }}} */
@@ -245,6 +244,10 @@ body {
 
 /* }}} */
 /* {{{ Main Feature */
+
+#wrapper {
+	background: url(../img/background-feature.jpg) top center no-repeat;
+}
 
 /* }}} */
 /* {{{ Columns */
@@ -438,13 +441,12 @@ table.data-table th {
 /* {{{ Footer */
 
 #footer {
-    background:url("../img/footer-bg.png") repeat-x scroll center top #FFFFFF;
+    background:url("../img/footer-portal-border.png") repeat-x scroll center top #FFFFFF;
     clear:both;
     color:#898378;
     font-family:verdana;
     font-size:90%;
     margin-top:100px;
-    margin-bottom: -2em;
     text-align:center;
     min-height: 120px;
 }
@@ -508,7 +510,7 @@ input.placeholder {
     height: 228px;
     width: 228px;
     position: absolute;
-    top: 80px;
+    top: 50px;
     left: 0;
 }
 #feedback .smiley.sad {
@@ -518,7 +520,7 @@ input.placeholder {
     background-position: 0 -278px;
 }
 #feedback #feedbackform {
-    margin: 6em 0 0 30%;
+    margin-left: 30%;
 }
 #feedback #id_description {
     font-size: 130%;
@@ -594,7 +596,7 @@ input.placeholder {
 }
 #dashboard .container,
 #search .container {
-    background: #fff;
+    background: rgba(255, 255, 255, .5);
     border: 1px solid rgba(75, 71, 66, .5);
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
@@ -819,16 +821,12 @@ input.placeholder {
     right: 0;
     top: 0;
 }
-#search_form #show_search_adv.active {
-    background-color: #fff;
-}
 #search_form #show_search_adv a {
-    color: #fff;
     display: block;
     padding: 0 .6em;
 }
-#search_form #show_search_adv.active a {
-    color: #0489B7;
+#search_form #show_search_adv.active {
+    background-color: #fff;
 }
 #search_form #search_adv {
     background-color: #fff;
