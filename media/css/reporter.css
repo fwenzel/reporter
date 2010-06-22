@@ -525,9 +525,34 @@ input.placeholder {
 #feedback #id_description {
     font-size: 130%;
 }
+#feedbackform p {
+    width: 90%;
+}
 #feedback #id_description,
 #feedback #id_url {
-    width: 90%;
+    width: 100%;
+}
+#feedback button {
+    float: right;
+    font-size: 90%;
+    margin-right: 10%;
+}
+#feedback aside {
+	background: #FFDEAE url(../img/privacy.png) 5px center no-repeat;
+    border: 1px solid #D54900;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    color: #D54900;
+    display: block;
+    float: left;
+    min-height: 55px;
+    padding: 5px 5px 5px 70px;
+    width: 50%;
+}
+#feedback aside span {
+    display: block;
+    padding-top: 10px;
 }
 /* }}} */
 /* {{{ Thank you page */

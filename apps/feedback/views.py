@@ -43,12 +43,7 @@ def give_feedback(request, ua, positive):
     """Feedback page (positive or negative)."""
 
     # Positive or negative feedback form?
-    if positive:
-        Formtype = HappyForm
-        template = 'feedback/happy.html'
-    else:
-        Formtype = SadForm
-        template = 'feedback/sad.html'
+    Formtype = positive and HappyForm or SadForm
 
     if request.method == 'POST':
         form = Formtype(request.POST)
@@ -71,4 +66,5 @@ def give_feedback(request, ua, positive):
         url = request.GET.get('url', '')
         form = Formtype(initial={'url': url, 'add_url': False})
 
-    return jingo.render(request, template, {'form': form})
+    data = {'form': form, 'positive': positive}
+    return jingo.render(request, 'feedback/feedback.html', data)

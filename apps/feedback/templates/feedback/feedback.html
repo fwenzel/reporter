@@ -1,0 +1,49 @@
+{% extends "base_noheader.html" %}
+
+{% block page_title %}Submit Feedback{% endblock %}
+{% block body_id %}feedback{% endblock %}
+
+{% block content %}
+
+{{ smiley(positive and "happy" or "sad") }}
+
+<div id="feedbackform">
+  {% if positive %}
+    <h2>Super! It's great to hear that you like our pre-released browser.
+    Please explain what you specifically like!</h2>
+  {% else %}
+    <h2>We are sorry that you have not had a good experience with our browser.
+    Please tell us why, so we can improve it!</h2>
+  {% endif %}
+  <form method="post" action="" autocomplete="off">
+    {{ form.description.errors|safe }}
+    <p>{{ form.description|safe }}</p>
+
+    {% if not positive %}
+      {{ form.url.errors|safe }}
+      <p>
+        <label>{{ form.add_url|safe }} Had an issue with a specific website?
+          Please add the URL, so we can find the issue faster!</label>
+        {{ form.url|safe }}
+      </p>
+    {% endif %}
+
+    {% for hidden in form.hidden_fields() %}
+      {{ hidden|safe }}
+      {% if hidden.errors %}
+        {{ hidden.name }}:
+        {{ hidden.errors|safe }}
+      {% endif %}
+    {% endfor %}
+
+    {{ form.errors['__all__']|safe }}
+
+    <aside>
+    <span>Note: Please ensure that there is no personally identifiable information
+      here.</span>
+    </aside>
+    <button type="submit">Submit Feedback</button>
+  </form>
+</div>
+
+{% endblock %}
