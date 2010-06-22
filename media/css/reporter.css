@@ -525,12 +525,9 @@ input.placeholder {
 #feedback #id_description {
     font-size: 130%;
 }
-#feedbackform p {
-    width: 90%;
-}
 #feedback #id_description,
 #feedback #id_url {
-    width: 100%;
+    width: 90%;
 }
 #feedback button {
     float: right;
