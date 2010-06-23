@@ -601,9 +601,9 @@ input.placeholder {
 /* }}} */
 /* {{{ Need Beta page */
 #need-beta #doc {
-    background:url("../img/firefox-logo.png") no-repeat 30px 30px;
+    background:url("../img/firefox-logo.png") no-repeat 30px 50px;
 }
-#need-beta #oops {
+#need-beta #main-content p {
     display: block;
     font-size: 2em;
     margin: 30px 0 0 330px;
