@@ -90,4 +90,9 @@ class ViewTests(TestCase):
             FX_UA % firefox_versions['LATEST_FIREFOX_DEVEL_VERSION']))
         self.assertEquals(r.status_code, 200)
 
+        # version newer than current: no redirect
+        r = self.client.get(reverse('feedback.sad'),
+                            HTTP_USER_AGENT=(FX_UA % '20.0'))
+        self.assertEquals(r.status_code, 200)
+
         settings.ENFORCE_USER_AGENT = old_enforce_setting
