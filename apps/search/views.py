@@ -36,7 +36,7 @@ class OpinionSearchView(SearchView):
         extra['demo'] = stats.demographics(qs=opinions)
 
         frequent_terms = Term.objects.frequent().filter(
-            used_in__in=opinion_pks)[:20]
+            used_in__in=opinion_pks)[:settings.TRENDS_COUNT]
         extra['terms'] = stats.frequent_terms(qs=frequent_terms)
 
         return extra

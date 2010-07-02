@@ -55,7 +55,7 @@ def trends(request, date_start, date_end):
     """AJAX action returning a summary of frequent terms."""
     frequent_terms = Term.objects.frequent(
         date_start=date_start, date_end=date_end).filter(
-            used_in__product=DASH_PROD.id)[:10]
+            used_in__product=DASH_PROD.id)[:settings.TRENDS_COUNT]
     # TODO use real product here
     data = {'terms': stats.frequent_terms(qs=frequent_terms)}
     return jingo.render(request, 'dashboard/trends.html', data)
@@ -73,7 +73,7 @@ def demographics(request, date_start, date_end):
 
 
 @cache_page(settings.CACHE_DEFAULT_PERIOD)
-def messages(request, count=10):
+def messages(request, count=settings.MESSAGES_COUNT):
     """AJAX action returning the most recent messages."""
     opinions = Opinion.objects.filter(
         product=DASH_PROD.id).order_by('-created')[:count]

@@ -145,3 +145,7 @@ ENFORCE_USER_AGENT = True
 # Term filter options
 MIN_TERM_LENGTH = 3
 MAX_TERM_LENGTH = 25
+
+# Number of items to show in the "Trends" box and Messages box.
+MESSAGES_COUNT = 10
+TRENDS_COUNT = 10
