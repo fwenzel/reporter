@@ -9,6 +9,12 @@ body {
 	font-family: verdana;
 }
 
+/* background fix: bug 574031 */
+body,
+header .stripe {
+    min-width: 1040px;
+}
+
 #nav-access {
     position: absolute;
     top: -10000px;
