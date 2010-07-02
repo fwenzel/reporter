@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from jingo import register
 import jinja2
 
-from feedback import FIREFOX, LATEST_BETAS
+from feedback import FIREFOX
 from feedback.version_compare import simplify_version
 from .forms import ReporterSearchForm
 
@@ -20,11 +20,8 @@ def search_url(defaults=None, extra=None, **kwargs):
 
     # fallbacks other than None
     fallbacks = {}
-    if not 'products' in defaults or not 'products' in kwargs:
-        fallbacks.update({
-            'product': FIREFOX.short,
-            'version': simplify_version(LATEST_BETAS[FIREFOX]),
-        })
+    if not 'products' in defaults and not 'products' in kwargs:
+        fallbacks['product'] = FIREFOX.short
 
     # get field data from keyword args or defaults
     for field in ReporterSearchForm.base_fields:
