@@ -30,6 +30,27 @@ to install the required Python libraries.
 [virtualenv]: http://pypi.python.org/pypi/virtualenv
 
 ### Django
+Put your database settings in `settings_local.py`:
+
+        from settings import *
+
+        # ...
+
+        DATABASES = {
+            'default': {
+                'ENGINE': 'mysql',
+                'NAME': 'firefox_input',
+                'USER': 'root',
+                'PASSWORD': '',
+                'HOST': 'localhost',
+                'PORT': '',
+                'OPTIONS': {'init_command': 'SET storage_engine=InnoDB',
+                            'charset' : 'utf8',
+                            'use_unicode' : True,
+                           },
+            }
+        }
+
 To initialize the database, run:
 
     ./manage.py syncdb
