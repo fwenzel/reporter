@@ -5,3 +5,4 @@ pip-log.txt
 .DS_Store
 lib/whoosh_index
 vendor
+tmp
