@@ -749,7 +749,7 @@ input.placeholder {
     width: 75%;
 }
 #sentiment .response.happy .bar {
-    background-color: #fffb00;
+    background-color: #8FD73B;
 }
 #sentiment .response.sad .bar {
     background-color: #ff2800;
