@@ -1,0 +1,710 @@
+[
+    {
+        "pk": 29,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "Let's see if this works.",
+            "created": "2010-06-22 00:38:17",
+            "url": "",
+            "positive": false,
+            "locale": "en-US",
+            "version": "3.7a6pre",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.3a6pre) Gecko/20100620 Minefield/3.7a6pre",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 28,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "I don't know what we're yelling about!",
+            "created": "2010-06-22 00:22:56",
+            "url": "http://www.google.com/",
+            "positive": false,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 27,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "Why don't you go visit youtube.com",
+            "created": "2010-06-21 00:30:45",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 26,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "ohai!",
+            "created": "2010-06-19 04:39:30",
+            "url": "",
+            "positive": true,
+            "locale": "",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 25,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "I am trying to send an email to me@example.com and it does not work!",
+            "created": "2010-06-18 04:32:41",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 24,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "Firefox's improved stability makes it hard for me to claim I lost my homework due to a browser crash.",
+            "created": "2010-06-18 00:47:24",
+            "url": "",
+            "positive": false,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 23,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "Firefox makes wasting my time on Facebook so much easier!",
+            "created": "2010-06-18 00:46:16",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 22,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "I have a problem with Google and I think it is Mozilla's fault.",
+            "created": "2010-06-18 00:44:58",
+            "url": "http://www.google.de/",
+            "positive": false,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 21,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "I like Firefox more than Internet Explorer.",
+            "created": "2010-06-18 00:02:47",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 20,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "I don't heart Firefox Input",
+            "created": "2010-06-17 23:56:39",
+            "url": "http://example.com/meh",
+            "positive": false,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 19,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "I \u00e2\u2122\u00a5 unicode",
+            "created": "2010-06-17 23:31:18",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 18,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "The more feedback, the better.",
+            "created": "2010-06-16 02:41:24",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100527 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 17,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "Happy happy, joy joy.",
+            "created": "2010-06-16 02:40:59",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100527 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 16,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "Happy happy, joy joy.",
+            "created": "2010-06-16 02:35:48",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100527 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 15,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "Happy happy, joy joy.",
+            "created": "2010-06-16 02:27:12",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100527 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 14,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "Happy happy, joy joy.",
+            "created": "2010-06-16 02:27:06",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100527 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "This version of Firefox is the best version ever.",
+            "created": "2010-06-15 05:21:21",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.4",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100527 Firefox/3.6.4",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "I like all about it. Firefox is teh awesome.",
+            "created": "2010-06-10 02:14:58",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.3",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "I have something negative to say. Meh!",
+            "created": "2010-06-02 03:39:54",
+            "url": "",
+            "positive": false,
+            "locale": "en-US",
+            "version": "3.6.3",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "This is a super helpful feedback message. I don't like Firefox because a, b, and c are wrong with it.",
+            "created": "2010-06-01 08:54:40",
+            "url": "http://google.com/",
+            "positive": false,
+            "locale": "de",
+            "version": "3.6.3",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; de; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "mozilla firefox sucks. thats a good thing since i like it better than internet explorer.",
+            "created": "2010-06-01 02:38:39",
+            "url": "http://localhost:8100/thanks",
+            "positive": false,
+            "locale": "en-US",
+            "version": "3.6.3",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "having flash debugger version in firefox really sucks. Half the sites I go to have actionscript errors. sadface, g4tv.com =[",
+            "created": "2010-06-01 01:31:45",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.3",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "having flash debugger version in firefox really sucks. Half the sites I go to have actionscript errors. sadface, g4tv.com =[",
+            "created": "2010-06-01 01:31:22",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.3",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "Firefox for iPhone seems not possible at this moment, but the Firefox Home tool is also good enough. Mozilla is now developing a new app Firefox Home which could help to sync all the tabs settings, bookmarks and history to the iPhone. After simple setup, users would be able to browse those things on the iPhone, and view the websites with the internal Safari browser. Mozilla didn\u00e2\u20ac\u2122t announce the release day, but this tool will be free for sure. ",
+            "created": "2010-05-27 06:32:21",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.3",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "Firefox for iPhone seems not possible at this moment, but the Firefox Home tool is also good enough. Mozilla is now developing a new app Firefox Home which could help to sync all the tabs settings, bookmarks and history to the iPhone. After simple setup, users would be able to browse those things on the iPhone, and view the websites with the internal Safari browser. Mozilla didn\u00e2\u20ac\u2122t announce the release day, but this tool will be free for sure.",
+            "created": "2010-05-27 06:28:01",
+            "url": "",
+            "positive": true,
+            "locale": "en-US",
+            "version": "3.6.3",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "Internet Exploder has always been shit, Firefox got fat, Safari is great  but Chrome wins the prize.",
+            "created": "2010-05-27 06:27:02",
+            "url": "",
+            "positive": false,
+            "locale": "en-US",
+            "version": "3.6.3",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "still nothing. i tried firefox and internet explorer - got the red X. i told you. yfrog sucks a nut. MRAW! :(",
+            "created": "2010-05-27 03:38:10",
+            "url": "http://www.mozilla.com/en-US/firefox/all-beta.html",
+            "positive": false,
+            "locale": "en-US",
+            "version": "3.6.3",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "feedback.opinion",
+        "fields": {
+            "product": 1,
+            "description": "My alternative browser to #Firefox  is now Internet Explorer, simply because Google #Chrome crashes way too often. It sucks! Shame on Google.",
+            "created": "2010-05-27 03:36:55",
+            "url": "http://www.mozilla.com/en-US/firefox/all-beta.html",
+            "positive": false,
+            "locale": "en-US",
+            "version": "3.6.3",
+            "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
+            "os": "mac"
+        }
+    },
+    {
+        "pk": 28,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_logentry",
+            "name": "Can add log entry",
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 29,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_logentry",
+            "name": "Can change log entry",
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 30,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_logentry",
+            "name": "Can delete log entry",
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 4,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_group",
+            "name": "Can add group",
+            "content_type": 2
+        }
+    },
+    {
+        "pk": 5,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_group",
+            "name": "Can change group",
+            "content_type": 2
+        }
+    },
+    {
+        "pk": 6,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_group",
+            "name": "Can delete group",
+            "content_type": 2
+        }
+    },
+    {
+        "pk": 10,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_message",
+            "name": "Can add message",
+            "content_type": 4
+        }
+    },
+    {
+        "pk": 11,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_message",
+            "name": "Can change message",
+            "content_type": 4
+        }
+    },
+    {
+        "pk": 12,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_message",
+            "name": "Can delete message",
+            "content_type": 4
+        }
+    },
+    {
+        "pk": 1,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_permission",
+            "name": "Can add permission",
+            "content_type": 1
+        }
+    },
+    {
+        "pk": 2,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_permission",
+            "name": "Can change permission",
+            "content_type": 1
+        }
+    },
+    {
+        "pk": 3,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_permission",
+            "name": "Can delete permission",
+            "content_type": 1
+        }
+    },
+    {
+        "pk": 7,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_user",
+            "name": "Can add user",
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 8,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_user",
+            "name": "Can change user",
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 9,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_user",
+            "name": "Can delete user",
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 13,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_contenttype",
+            "name": "Can add content type",
+            "content_type": 5
+        }
+    },
+    {
+        "pk": 14,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_contenttype",
+            "name": "Can change content type",
+            "content_type": 5
+        }
+    },
+    {
+        "pk": 15,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_contenttype",
+            "name": "Can delete content type",
+            "content_type": 5
+        }
+    },
+    {
+        "pk": 22,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_opinion",
+            "name": "Can add opinion",
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 23,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_opinion",
+            "name": "Can change opinion",
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 24,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_opinion",
+            "name": "Can delete opinion",
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 25,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_term",
+            "name": "Can add term",
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 26,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_term",
+            "name": "Can change term",
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 27,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_term",
+            "name": "Can delete term",
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 16,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_session",
+            "name": "Can add session",
+            "content_type": 6
+        }
+    },
+    {
+        "pk": 17,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_session",
+            "name": "Can change session",
+            "content_type": 6
+        }
+    },
+    {
+        "pk": 18,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_session",
+            "name": "Can delete session",
+            "content_type": 6
+        }
+    },
+    {
+        "pk": 19,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_site",
+            "name": "Can add site",
+            "content_type": 7
+        }
+    },
+    {
+        "pk": 20,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_site",
+            "name": "Can change site",
+            "content_type": 7
+        }
+    },
+    {
+        "pk": 21,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_site",
+            "name": "Can delete site",
+            "content_type": 7
+        }
+    },
+    {
+        "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "username": "fred",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2010-06-22 00:38:49",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha1$efa99$160da6091257e7996fb4f75d3a056ce67ea5d9ae",
+            "email": "freeed@gmail.com",
+            "date_joined": "2010-05-25 11:09:57"
+        }
+    }
+]

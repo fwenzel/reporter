@@ -112,7 +112,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'reporter.urls'
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -128,7 +128,7 @@ INSTALLED_APPS = (
     'feedback',
     'search',
     'swearwords',
-)
+]
 
 # Where to store product details
 PROD_DETAILS_DIR = path('lib/product_details_json')
@@ -149,3 +149,14 @@ MAX_TERM_LENGTH = 25
 # Number of items to show in the "Trends" box and Messages box.
 MESSAGES_COUNT = 10
 TRENDS_COUNT = 10
+
+SPHINX_HOST = '127.0.0.1'
+SPHINX_PORT = 3314
+SPHINX_SEARCHD = 'searchd'
+SPHINX_INDEXER = 'indexer'
+SPHINX_CATALOG_PATH = path('tmp/data/sphinx')
+SPHINX_LOG_PATH = path('tmp')
+SPHINX_CONFIG_PATH = path('configs/sphinx/sphinx.conf')
+
+
+TEST_RUNNER = 'test_utils.runner.RadicalTestSuiteRunner'

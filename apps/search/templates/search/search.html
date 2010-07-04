@@ -9,7 +9,7 @@
 {% block content %}
 <div id="search_box" class="clearfix">
   <div id="search_options">
-    {% if page.object_list %}
+    {% if opinions %}
     {% if query %}Description: <span class="opt">"{{ query }}"</span>;{% endif %}
     Dates: <span class="opt">{{ form.cleaned_data.date_start }}
       &ndash; {{ form.cleaned_data.date_end }}</span>
@@ -24,16 +24,14 @@
 
 <div id="results" class="container">
   <ul>
-    {% if page.object_list %}
-      {% with opinions = page.object_list %}
+    {% if opinions %}
         {% include "dashboard/messages.html" %}
-      {% endwith %}
     {% else %}
     <li>No search results found.</li>
     {% endif %}
   </ul>
 
-  {% if page.object_list %}
+  {% if 0 %}
     <nav class="pagination">
       <span class="step-links">
         {% if page.has_previous() %}
@@ -55,7 +53,7 @@
     </nav>
   {% endif %}
 </div>
-
+{% if opinions %}
 <div id="overview">
   <div id="sentiment" class="container clearfix">
     <h2>Overview</h2>
@@ -78,4 +76,5 @@
     </div>
   </div>
 </div>
+{% endif %}
 {% endblock %}
