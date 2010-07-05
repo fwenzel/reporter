@@ -121,7 +121,6 @@ INSTALLED_APPS = [
     'django.contrib.admin',
 
     'annoying',
-    'haystack',
     'product_details',
 
     'dashboard',
@@ -132,11 +131,6 @@ INSTALLED_APPS = [
 
 # Where to store product details
 PROD_DETAILS_DIR = path('lib/product_details_json')
-
-# Haystack Search
-HAYSTACK_SITECONF = 'search.search_sites'
-HAYSTACK_SEARCH_ENGINE = 'whoosh'
-HAYSTACK_WHOOSH_PATH = path('lib/whoosh_index')
 
 # Setting this to False allows feedback to be collected from any user agent.
 # (good for testing)
@@ -150,6 +144,7 @@ MAX_TERM_LENGTH = 25
 MESSAGES_COUNT = 10
 TRENDS_COUNT = 10
 
+# Sphinx Search Index
 SPHINX_HOST = '127.0.0.1'
 SPHINX_PORT = 3314
 SPHINX_SEARCHD = 'searchd'
@@ -157,6 +152,5 @@ SPHINX_INDEXER = 'indexer'
 SPHINX_CATALOG_PATH = path('tmp/data/sphinx')
 SPHINX_LOG_PATH = path('tmp')
 SPHINX_CONFIG_PATH = path('configs/sphinx/sphinx.conf')
-
 
 TEST_RUNNER = 'test_utils.runner.RadicalTestSuiteRunner'

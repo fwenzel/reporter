@@ -1,7 +1,6 @@
 from datetime import date, timedelta
 
 from django import forms
-from haystack.forms import SearchForm
 import product_details
 
 from feedback import APPS, FIREFOX, OS_USAGE, LATEST_BETAS
@@ -37,7 +36,7 @@ class SearchInput(forms.TextInput):
     input_type = 'search'
 
 
-class ReporterSearchForm(SearchForm):
+class ReporterSearchForm(forms.Form):
     q = forms.CharField(required=False, label='', widget=SearchInput(
         attrs={'placeholder': 'Search Terms'}))
     product = forms.ChoiceField(choices=PROD_CHOICES,

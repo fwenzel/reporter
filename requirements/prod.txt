@@ -17,5 +17,4 @@ django-view-cache-utils==0.1.1
 topia.termextract==1.1.0
 
 # Search
-django-haystack==1.0.1-final
 Whoosh==0.3.18

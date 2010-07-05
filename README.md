@@ -29,6 +29,18 @@ to install the required Python libraries.
 
 [virtualenv]: http://pypi.python.org/pypi/virtualenv
 
+### Sphinx
+
+For searching, we use [Sphinx][sphinx]. Set up an instance of it, and adjust
+the SPHINX\_\* settings in settings.py to match your setup. There are three
+management commands to go with it:
+
+* ``start_sphinx`` starts the sphinx daemon
+* ``stop_sphinx`` stops it
+* ``update_index`` updates the search index (see below)
+
+[sphinx]: http://www.sphinxsearch.com/
+
 ### Django
 Put your database settings in `settings_local.py`:
 
@@ -59,15 +71,13 @@ and to fetch the initial product details data, run:
 
     ./manage.py update_product_details
 
-Finally, to initialize the [search index][Haystack], run:
+Finally, to initialize the search index, run:
 
-    ./manage.py rebuild_index
+    ./manage.py update_index
 
 The Internet has plenty of of documentation on setting up a Django application
 with any web server. If you need a wsgi entry point, you can find one in
 ``wsgi/reporter.wsgi``.
-
-[Haystack]: http://haystacksearch.org/
 
 ### Cron jobs
 There are two jobs you want to run periodically:
