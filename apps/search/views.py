@@ -7,7 +7,7 @@ from view_cache_utils import cache_page_with_prefix
 from feedback import stats
 from feedback.models import Term
 
-from .client import Client
+from .client import Client, SearchError
 from .forms import ReporterSearchForm
 
 
@@ -24,8 +24,13 @@ def index(request):
     if form.is_valid():
         query = form.cleaned_data.get('q', '')
         search_opts = form.cleaned_data
-        c = Client()
-        opinions = c.query(query, **search_opts)
+        try:
+            c = Client()
+            opinions = c.query(query, **search_opts)
+        except SearchError, e:
+            return jingo.render(request, 'search/unavailable.html',
+                                {'search_error': e}, status=500)
+
     else:
         query = ''
         opinions = None
