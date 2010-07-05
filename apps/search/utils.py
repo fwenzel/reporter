@@ -18,7 +18,7 @@ def reindex(rotate=False):
     if rotate:  # pragma: no cover
         calls.append('--rotate')
 
-    call(calls)
+    print call(calls)[0]
 
 
 def start_sphinx():
@@ -26,8 +26,8 @@ def start_sphinx():
     Starts sphinx.  Note this is only to be used in dev and test environments.
     """
 
-    call([settings.SPHINX_SEARCHD, '--config',
-        settings.SPHINX_CONFIG_PATH])
+    print call([settings.SPHINX_SEARCHD, '--config',
+                settings.SPHINX_CONFIG_PATH])[0]
 
 
 def stop_sphinx():
@@ -35,5 +35,5 @@ def stop_sphinx():
     Stops sphinx.  Note this is only to be used in dev and test environments.
     """
 
-    call([settings.SPHINX_SEARCHD, '--stop', '--config',
-        settings.SPHINX_CONFIG_PATH])
+    print call([settings.SPHINX_SEARCHD, '--stop', '--config',
+                settings.SPHINX_CONFIG_PATH])[0]

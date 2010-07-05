@@ -83,7 +83,7 @@ with any web server. If you need a wsgi entry point, you can find one in
 There are two jobs you want to run periodically:
 
     ./manage.py update_product_details  # Mozilla Product Details update
-    ./manage.py update_index            # update search index
+    ./manage.py update_index -r         # update and rotate search index
 
 The frequency is up to you, but you probably want to run the search index
 updates relatively frequently, while the product details can wait a little
