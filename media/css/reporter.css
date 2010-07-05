@@ -744,10 +744,6 @@ input.placeholder {
     padding: 5px;
     white-space: nowrap;
 }
-#sentiment .response.total .bar {
-    background-color: #76d6ff;
-    width: 75%;
-}
 #sentiment .response.happy .bar {
     background-color: #8FD73B;
 }
