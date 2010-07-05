@@ -19,7 +19,7 @@
 {% with defaults = form.data if form else None %}
   <div class="emotion {{ sent.sentiment }}">{{
     smiley(sent.sentiment) }}
-    Total: {{ sent.total }}
+    <a href="{{ search_url(defaults=defaults) }}">Total</a>: {{ sent.total }}
   </div>
   {% if sent.total > 0 %}
     {{ bar('happy', sent.happy, sent.total,
