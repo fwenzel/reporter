@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{% block page_title %}Search Unavailable{% endblock %}</h1>
+
+<p>I'm sorry, there was an error with your search.</p>
+
+<p>Our search engine might be currently unavailable. You may start over on
+the <a href="{{ url('dashboard') }}">dashboard</a> and try again later.</p>
+
+<p>If the problem persists, please
+  <a href="https://bugzilla.mozilla.org/enter_bug.cgi?product=Webtools&component=Input">file a bug</a>,
+  mentioning the URL you were accessing.
+  {% if search_error %}
+    Include the following error message in your bug report:
+    <pre>{{ search_error }}</pre>
+  {% endif %}
+  Thanks!</p>
+{% endblock %}
