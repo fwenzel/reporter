@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.paginator import Paginator
 from django.utils.hashcompat import md5_constructor
 
 import jingo
@@ -20,13 +21,16 @@ def search_view_cache_key(request):
 def index(request):
     form = ReporterSearchForm(request.GET)
     data = {'form': form}
+    pp = 20
 
     if form.is_valid():
         query = form.cleaned_data.get('q', '')
         search_opts = form.cleaned_data
+        page = search_opts.get('page', 1)
+
         try:
             c = Client()
-            opinions = c.query(query, **search_opts)
+            opinions = c.query(query, limit=pp, **search_opts)
         except SearchError, e:
             return jingo.render(request, 'search/unavailable.html',
                                 {'search_error': e}, status=500)
@@ -36,9 +40,11 @@ def index(request):
         opinions = None
 
     if opinions:
-        data['opinions'] = opinions
-        data['sent'] = stats.sentiment(qs=opinions)
-        data['demo'] = stats.demographics(qs=opinions)
+        pager = Paginator(opinions, pp)
+        data['page'] = pager.page(page)
+        data['opinions'] = pager.object_list
+        data['sent'] = stats.sentiment(qs=opinions.queryset)
+        data['demo'] = stats.demographics(qs=opinions.queryset)
 
         frequent_terms = Term.objects.frequent().filter(
             used_in__in=opinions)[:settings.TRENDS_COUNT]

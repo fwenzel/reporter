@@ -25,13 +25,13 @@
 <div id="results" class="container">
   <ul>
     {% if opinions %}
-        {% include "dashboard/messages.html" %}
+      {% include "dashboard/messages.html" %}
     {% else %}
     <li>No search results found.</li>
     {% endif %}
   </ul>
 
-  {% if 0 %}
+  {% if page.has_other_pages() %}
     <nav class="pagination">
       <span class="step-links">
         {% if page.has_previous() %}

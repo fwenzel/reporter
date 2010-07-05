@@ -55,20 +55,26 @@ class ReporterSearchForm(forms.Form):
     date_end = forms.DateField(required=False, widget=forms.DateInput(
         attrs={'class': 'datepicker'}), label='to')
 
+    page = forms.IntegerField(widget=forms.HiddenInput, required=False)
+
     def clean(self):
         cleaned = super(ReporterSearchForm, self).clean()
 
         # Set "positive" value according to sentiment choice.
-        if cleaned.get('sentiment', None) in SENTIMENTS:
+        if cleaned.get('sentiment') in SENTIMENTS:
             cleaned['positive'] = (cleaned['sentiment'] == 'happy')
         else:
             cleaned['positive'] = None
 
         # Sane default dates to avoid fetching huge amounts of data by default
-        if not cleaned.get('date_end', None):
+        if not cleaned.get('date_end'):
             cleaned['date_end'] = date.today()
-        if not cleaned.get('date_start', None):
+        if not cleaned.get('date_start'):
             cleaned['date_start'] = (cleaned['date_end'] - timedelta(days=30))
+
+        if not cleaned.get('page'):
+            cleaned['page'] = 1
+
         return cleaned
 
     def clean_product(self):
