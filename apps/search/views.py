@@ -1,6 +1,8 @@
 from django.conf import settings
+from django.utils.hashcompat import md5_constructor
 
 import jingo
+from view_cache_utils import cache_page_with_prefix
 
 from feedback import stats
 from feedback.models import Term
@@ -9,6 +11,12 @@ from .client import Client
 from .forms import ReporterSearchForm
 
 
+def search_view_cache_key(request):
+    """Generate a cache key for a search view based on its GET parameters."""
+    return md5_constructor(str(request.GET)).hexdigest()
+
+
+@cache_page_with_prefix(settings.CACHE_DEFAULT_PERIOD, search_view_cache_key)
 def index(request):
     form = ReporterSearchForm(request.GET)
     data = {'form': form}
@@ -27,7 +35,7 @@ def index(request):
         data['sent'] = stats.sentiment(qs=opinions)
         data['demo'] = stats.demographics(qs=opinions)
 
-        frequent_terms = opinions.terms.frequent()Term.objects.frequent().filter(
+        frequent_terms = Term.objects.frequent().filter(
             used_in__in=opinions)[:settings.TRENDS_COUNT]
         data['terms'] = stats.frequent_terms(qs=frequent_terms)
 
