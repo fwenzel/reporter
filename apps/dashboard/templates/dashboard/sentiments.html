@@ -9,9 +9,9 @@
         {% endif %}
       </div>
       <div class="bar" style="width: {{ width }}%">
-        {% if width > 10 %}{{ cnt }}{% endif %}&nbsp;
+        {% if width > 5 %}{{ cnt }}{% endif %}&nbsp;
       </div>
-      {% if width <= 10 %}<div class="out-cnt">{{ cnt }}</div>{% endif %}
+      {% if width <= 5 %}<div class="out-cnt">{{ cnt }}</div>{% endif %}
     </div>
   {% endwith %}
 {% endmacro %}
