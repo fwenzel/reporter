@@ -32,6 +32,7 @@ def search_url(defaults=None, extra=None, **kwargs):
 
     # append extra fields
     if extra:
-        data += extra.items()
+        data = dict(data)
+        data.update(extra)
 
     return jinja2.Markup(u'%s?%s' % (search, urlencode(data)))
