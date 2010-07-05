@@ -59,10 +59,10 @@ num_results = lambda x='', **kwargs: len(query(x, **kwargs))
 class SearchTest(SphinxTestCase):
 
     def test_query(self):
-        eq_(num_results(), 20)
+        eq_(num_results(), 28)
 
     def test_product_filter(self):
-        eq_(num_results(product=1), 20)
+        eq_(num_results(product=1), 28)
         eq_(num_results(product=2), 0)
 
     def test_version_filter(self):
@@ -74,11 +74,11 @@ class SearchTest(SphinxTestCase):
         eq_(num_results(positive=0), 11)
 
     def test_os_filter(self):
-        eq_(num_results(os='mac'), 20)
+        eq_(num_results(os='mac'), 28)
         eq_(num_results(os='palm'), 0)
 
     def test_locale_filter(self):
-        eq_(num_results(locale='en-US'), 20)
+        eq_(num_results(locale='en-US'), 26)
         eq_(num_results(locale='de'), 1)
 
     def test_date_filter(self):

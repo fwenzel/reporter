@@ -30,7 +30,7 @@ def index(request):
 
         try:
             c = Client()
-            opinions = c.query(query, limit=pp, **search_opts)
+            opinions = c.query(query, **search_opts)
         except SearchError, e:
             return jingo.render(request, 'search/unavailable.html',
                                 {'search_error': e}, status=500)
@@ -42,9 +42,9 @@ def index(request):
     if opinions:
         pager = Paginator(opinions, pp)
         data['page'] = pager.page(page)
-        data['opinions'] = pager.object_list
-        data['sent'] = stats.sentiment(qs=opinions.queryset)
-        data['demo'] = stats.demographics(qs=opinions.queryset)
+        data['opinions'] = data['page'].object_list
+        data['sent'] = stats.sentiment(qs=opinions)
+        data['demo'] = stats.demographics(qs=opinions)
 
         frequent_terms = Term.objects.frequent().filter(
             used_in__in=opinions)[:settings.TRENDS_COUNT]

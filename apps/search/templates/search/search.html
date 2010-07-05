@@ -31,7 +31,7 @@
     {% endif %}
   </ul>
 
-  {% if page.has_other_pages() %}
+  {% if page and page.has_other_pages() %}
     <nav class="pagination">
       <span class="step-links">
         {% if page.has_previous() %}
