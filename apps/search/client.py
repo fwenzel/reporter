@@ -1,3 +1,4 @@
+from datetime import timedelta
 import socket
 import time
 
@@ -42,7 +43,8 @@ class Client():
 
         if kwargs.get('date_end') and kwargs.get('date_start'):
             start = int(time.mktime(kwargs['date_start'].timetuple()))
-            end = int(time.mktime(kwargs['date_end'].timetuple()))
+            end_date = kwargs['date_end'] + timedelta(days=1)
+            end = int(time.mktime(end_date.timetuple()))
             sc.SetFilterRange('created', start, end)
 
         try:
