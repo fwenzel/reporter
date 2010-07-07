@@ -36,7 +36,7 @@ $(document).ready(function() {
     };
     var reload_all = function() {
         sentiment.init();
-        trends.init();
+        //trends.init();
         demo.init();
     };
 
