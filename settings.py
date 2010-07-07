@@ -41,8 +41,9 @@ DATABASE_ROUTERS = ('multidb.MasterSlaveRouter',)
 SLAVE_DATABASES = []
 
 # Caching
-#CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+#CACHE_BACKEND = 'caching.backends.memcached://127.0.0.1:11211/'
 CACHE_DEFAULT_PERIOD = 60 * 5  # 5 minutes
+CACHE_COUNT_TIMEOUT = 60  # seconds
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

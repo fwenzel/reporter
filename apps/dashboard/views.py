@@ -53,12 +53,12 @@ def sentiment(request, date_start, date_end):
 @period_to_date
 def trends(request, date_start, date_end):
     """AJAX action returning a summary of frequent terms."""
+    opinions = Opinion.objects.between(date_start, date_end).filter(
+        product=DASH_PROD.id)
     frequent_terms = Term.objects.frequent(
-        date_start=date_start, date_end=date_end).filter(
-            used_in__product=DASH_PROD.id)[:settings.TRENDS_COUNT]
+        opinions=opinions)[:settings.TRENDS_COUNT]
     # TODO use real product here
-    #data = {'terms': stats.frequent_terms(qs=frequent_terms)}
-    data = {'terms': []}
+    data = {'terms': stats.frequent_terms(qs=frequent_terms)}
     return jingo.render(request, 'dashboard/trends.html', data)
 
 

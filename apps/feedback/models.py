@@ -4,11 +4,23 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Count
+from django.db.models.query import QuerySet
+
+import caching.base
 
 from search.forms import ReporterSearchForm
 
-from . import APP_IDS, OSES
+from . import APP_IDS, OSES, query
 from .utils import ua_parse, extract_terms, smart_truncate
+
+
+class ModelBase(caching.base.CachingMixin, models.Model):
+    """Common base model for all models: Implements caching."""
+
+    objects = caching.base.CachingManager()
+
+    class Meta:
+        abstract = True
 
 
 class OpinionManager(models.Manager):
@@ -37,7 +49,7 @@ class OpinionManager(models.Manager):
         return ret
 
 
-class Opinion(models.Model):
+class Opinion(ModelBase):
     """A single feedback item."""
     positive = models.BooleanField(help_text='Positive/happy sentiment?')
     url = models.URLField(verify_exists=False, blank=True)
@@ -106,21 +118,31 @@ class Opinion(models.Model):
 
 
 class TermManager(models.Manager):
+    def get_query_set(self):
+        """Use a query that won't use left joins."""
+        return QuerySet(self.model, using=self._db,
+                        query=query.InnerQuery(self.model))
+
     def visible(self):
         """All but hidden terms."""
         return self.filter(hidden=False)
 
-    def frequent(self, date_start=None, date_end=None):
+    def frequent(self, opinions=None, date_start=None, date_end=None):
         """Frequently used terms in a given timeframe."""
+        # Either you feed in opinions or a date range. Not both.
+        assert(not (opinions and (date_start or date_end)))
+
         terms = self.visible()
-        if date_start or date_end:
+        if opinions:
+            terms = terms.filter(used_in__in=opinions)
+        elif date_start or date_end:
             terms = terms.filter(used_in__in=Opinion.objects.between(
                 date_start, date_end))
         terms = terms.annotate(cnt=Count('used_in')).order_by('-cnt')
         return terms
 
 
-class Term(models.Model):
+class Term(ModelBase):
     """Significant term extraced from description texts."""
     term = models.CharField(max_length=255, unique=True)
     hidden = models.BooleanField(default=False)

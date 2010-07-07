@@ -46,8 +46,8 @@ def index(request):
         data['sent'] = stats.sentiment(qs=opinions)
         data['demo'] = stats.demographics(qs=opinions)
 
-#        frequent_terms = Term.objects.frequent().filter(
-#            used_in__in=opinions)[:settings.TRENDS_COUNT]
-#        data['terms'] = stats.frequent_terms(qs=frequent_terms)
+        frequent_terms = Term.objects.frequent(
+            opinions=opinions)[:settings.TRENDS_COUNT]
+        data['terms'] = stats.frequent_terms(qs=frequent_terms)
 
     return jingo.render(request, 'search/search.html', data)
