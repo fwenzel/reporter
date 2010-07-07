@@ -924,4 +924,15 @@ input.placeholder {
 #search #search_form .wrap_locale {
     clear: left;
 }
+#search .warning {
+	background: #FFDEAE;
+    border: 1px solid #D54900;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    color: #D54900;
+    margin: 0 0 20px;
+    padding: 5px;
+    float: left;
+}
 /* }}} */

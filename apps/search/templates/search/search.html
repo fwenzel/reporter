@@ -7,6 +7,10 @@
 {% block title_text %}Search Results{% endblock %}
 
 {% block content %}
+{% if page and page.paginator.count == 1000 %}
+<aside class="warning clearfix">Due to software constraints, we can only show the last 1000 messages for this search query.</aside>
+{% endif %}
+
 <div id="search_box" class="clearfix">
   <div id="search_options">
     {% if opinions %}
