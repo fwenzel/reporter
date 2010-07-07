@@ -57,7 +57,8 @@ def trends(request, date_start, date_end):
         date_start=date_start, date_end=date_end).filter(
             used_in__product=DASH_PROD.id)[:settings.TRENDS_COUNT]
     # TODO use real product here
-    data = {'terms': stats.frequent_terms(qs=frequent_terms)}
+    #data = {'terms': stats.frequent_terms(qs=frequent_terms)}
+    data = {'terms': []}
     return jingo.render(request, 'dashboard/trends.html', data)
 
 
