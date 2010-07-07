@@ -13,6 +13,7 @@ django-annoying==0.7.4
 # Caching.
 python-memcached==1.45
 django-view-cache-utils==0.1.1
+-e git://github.com/jbalogh/django-cache-machine.git#egg=django-cache-machine
 
 # Term extraction
 topia.termextract==1.1.0
