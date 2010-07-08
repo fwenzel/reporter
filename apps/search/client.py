@@ -60,7 +60,6 @@ class Client():
         if sc.GetLastError():
             raise SearchError(sc.GetLastError())
 
-
         opinion_ids = [m['id'] for m in result['matches']]
-        addons = manual_order(Opinion.objects.all(), opinion_ids)
-        return addons
+        opinions = manual_order(Opinion.objects.all(), opinion_ids)
+        return opinions
