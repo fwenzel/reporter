@@ -81,24 +81,3 @@ class ReporterSearchForm(forms.Form):
         """Map product short names to id."""
         data = self.cleaned_data['product']
         return APPS[data].id
-
-    def search(self):
-        sqs = super(ReporterSearchForm, self).search()
-
-        # Always restrict by date.
-        date_end = self.cleaned_data['date_end'] + timedelta(days=1)
-        sqs = sqs.filter(
-            created__gte=self.cleaned_data['date_start']).filter(
-            created__lt=date_end)
-
-        # happy/sad
-        if self.cleaned_data['positive'] is not None:
-            sqs = sqs.filter(positive=self.cleaned_data['positive'])
-
-        # Apply other filters verbatim
-        for field in ('product', 'version', 'locale', 'os'):
-            if self.cleaned_data[field]:
-                filter = { field: self.cleaned_data[field] }
-                sqs = sqs.filter(**filter)
-
-        return sqs
