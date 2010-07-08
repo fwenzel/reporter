@@ -20,7 +20,8 @@ SENTIMENTS = ('happy', 'sad')
 SENTIMENT_CHOICES = [(s, s) for s in SENTIMENTS]
 OS_CHOICES = [ (o.short, o.pretty) for o in OS_USAGE ]
 try:
-    LOCALE_CHOICES = [ (lang, lang) for lang in sorted(product_details.languages) ]
+    LOCALE_CHOICES = [ ('unknown', 'unknown') ] + [
+        (lang, lang) for lang in sorted(product_details.languages) ]
 except AttributeError:
     # no product details?
     LOCALE_CHOICES = []

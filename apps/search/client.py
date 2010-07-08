@@ -24,7 +24,7 @@ class Client():
     def query(self, term, **kwargs):
         """Submits formatted query, retrieves ids, returns Opinions."""
         sc = self.sphinx
-        sc.SetLimits(0, 1000)
+        sc.SetLimits(0, SPHINX_HARD_LIMIT)
 
         if isinstance(kwargs.get('product'), int):
             sc.SetFilter('product', (kwargs['product'],))
@@ -39,7 +39,10 @@ class Client():
             sc.SetFilter('os', (crc32(kwargs['os']),))
 
         if kwargs.get('locale'):
-            sc.SetFilter('locale', (crc32(kwargs['locale']),))
+            if kwargs['locale'] == 'unknown':
+                sc.SetFilter('locale', (crc32(''),))
+            else:
+                sc.SetFilter('locale', (crc32(kwargs['locale']),))
 
         if kwargs.get('date_end') and kwargs.get('date_start'):
             start = int(time.mktime(kwargs['date_start'].timetuple()))
