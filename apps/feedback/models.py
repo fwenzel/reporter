@@ -7,6 +7,7 @@ from django.db.models.query import QuerySet
 
 import caching.base
 
+from input.urlresolvers import reverse
 from . import APP_IDS, OSES, query
 from .utils import ua_parse, extract_terms, smart_truncate
 
@@ -151,3 +152,41 @@ class Term(ModelBase):
 
     class Meta:
         ordering = ('term',)
+
+
+class ClusterType(ModelBase):
+    """A single type of cluster.  E.g. weekly_happy, weekly_sad."""
+    feeling = models.CharField(max_length=20)  # happy or sad
+    platform = models.CharField(max_length=255)
+    version = models.CharField(max_length=255)
+    frequency = models.CharField(max_length=255)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def get_url_path(self):
+        args = [self.feeling, self.platform, self.version, self.frequency]
+        return reverse('cluster', args=args)
+
+    class Meta:
+        unique_together = (("feeling", "platform", "version", "frequency"),)
+
+
+class Cluster(ModelBase):
+    type = models.ForeignKey(ClusterType, db_index=True,
+                             related_name='clusters')
+    pivot = models.ForeignKey(Opinion, related_name='clusters')
+    opinions = models.ManyToManyField(Opinion, through='ClusterItem')
+    num_opinions = models.IntegerField(default=0, db_index=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-num_opinions', )
+
+
+class ClusterItem(ModelBase):
+    cluster = models.ForeignKey(Cluster)
+    opinion = models.ForeignKey(Opinion)
+    score = models.FloatField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-score', )

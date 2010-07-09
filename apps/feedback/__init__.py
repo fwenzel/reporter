@@ -38,10 +38,20 @@ LATEST_BETAS = {
 }
 
 # Operating Systems
-class WINDOWS:
-    pretty = _(u'Windows')
-    short = 'win'
-    ua_pattern = 'Windows'
+class WINDOWS_XP:
+    pretty = _(u'Windows XP')
+    short = 'winxp'
+    ua_pattern = 'Windows NT 5.1'
+
+class WINDOWS_7:
+    pretty = _(u'Windows 7')
+    short = 'win7'
+    ua_pattern = 'Windows NT 6.1'
+
+class WINDOWS_VISTA:
+    pretty = _(u'Windows Vista')
+    short = 'vista'
+    ua_pattern = 'Windows NT 6.0'
 
 class OSX:
     pretty = _(u'Mac OS X')
@@ -58,6 +68,6 @@ class OS_OTHER:
     short = 'other'
     ua_pattern = None
 
-OS_USAGE = _oses = (WINDOWS, OSX, LINUX)
+OS_USAGE = _oses = (WINDOWS_XP, WINDOWS_VISTA, WINDOWS_7, OSX, LINUX)
 OS_PATTERNS = [ (o.ua_pattern, o.short) for o in OS_USAGE ]
 OSES = dict((os.short, os) for os in _oses)

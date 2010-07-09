@@ -1,6 +1,4 @@
-from django.conf.urls.defaults import *
-
-import jingo
+from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('feedback.views',
     url(r'^sad/?', 'give_feedback', {'positive': False},
@@ -9,4 +7,8 @@ urlpatterns = patterns('feedback.views',
         name='feedback.happy'),
     url(r'^thanks/?', 'thanks', name='feedback.thanks'),
     url(r'^download/?', 'need_beta', name='feedback.need_beta'),
+    url(r'^clusters/?$', 'clusters', name='clusters'),
+    url(r'^cluster/(?P<feeling>[^/]+)/(?P<platform>[^/]+)/(?P<version>[^/]+)/'
+        '(?P<frequency>[^/]+)$',
+        'cluster', name='cluster'),
 )

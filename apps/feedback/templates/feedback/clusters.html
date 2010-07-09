@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block page_title %}{{ _('Clusters of Opinions') }}{% endblock %}
+{% block body_id %}clusters{% endblock %}
+
+{% block content %}
+{% if clusters %}
+<ul>
+  {% for cluster in clusters[:20] %}
+  <li>
+  <a href="{{ cluster.get_url_path() }}">
+    {{ cluster.feeling }},
+    {{ cluster.version }},
+    {{ cluster.platform }}
+  </a> ({{ cluster.frequency }})
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No clusters of opinions found.</p>
+{% endif %}
+{% endblock %}

@@ -25,21 +25,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.',
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-        'OPTIONS': {'init_command': 'SET storage_engine=InnoDB',
-                    'charset' : 'utf8',
-                    'use_unicode' : True,
-                   },
-    }
-}
-
 DATABASE_ROUTERS = ('multidb.MasterSlaveRouter',)
 SLAVE_DATABASES = []
 
@@ -85,7 +70,8 @@ USE_L10N = True
 INPUT_LANGUAGES = ('ar', 'cs', 'de', 'el', 'en-US', 'es-ES', 'fr', 'gl', 'he',
                    'it', 'nb-NO', 'pl', 'pt-PT', 'ru', 'sk', 'sq', 'vi',
                    'zh-TW')
-RTL_LANGUAGES = ('ar', 'he',) # ('fa', 'fa-IR')
+RTL_LANGUAGES = ('ar', 'he',)  # ('fa', 'fa-IR')
+
 
 # Override Django's built-in with our native names
 class LazyLangs(dict):
@@ -161,8 +147,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'search.context_processors.product_versions',
 )
 
+
 def JINJA_CONFIG():
-    import jinja2
     config = {'extensions': ['jinja2.ext.with_', 'jinja2.ext.loopcontrols',
                              'jinja2.ext.i18n'],
               'finalize': lambda x: x if x is not None else ''}
@@ -199,6 +185,7 @@ INSTALLED_APPS = [
     'annoying',
     'product_details',
     'tower',
+    'cronjobs',
 ]
 
 # Where to store product details
@@ -227,6 +214,9 @@ SPHINX_INDEXER = 'indexer'
 SPHINX_CATALOG_PATH = path('tmp/data/sphinx')
 SPHINX_LOG_PATH = path('tmp/log/searchd')
 SPHINX_CONFIG_PATH = path('configs/sphinx/sphinx.conf')
-SEARCH_PERPAGE = 20 # results per page
+SEARCH_PERPAGE = 20  # results per page
 
 TEST_RUNNER = 'test_utils.runner.RadicalTestSuiteRunner'
+
+import logging
+logging.basicConfig()
