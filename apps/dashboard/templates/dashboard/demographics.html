@@ -13,7 +13,7 @@
                              locale=(item.locale|default('unknown', true)))
     }}" title="{{ locale_name(item.locale, native=True, default='') }}">{{
     locale_name(item.locale) }}</a>:
-    <b>{{ item.count }}</b></dd>
+    <b>{{ item.count|numberfmt }}</b></dd>
   {% endfor %}
 </dl>
 {% endwith %}

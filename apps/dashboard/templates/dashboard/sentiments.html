@@ -9,9 +9,9 @@
         {% endif %}
       </div>
       <div class="bar" style="width: {{ width }}%">
-        {% if width > 5 %}{{ cnt }}{% endif %}&nbsp;
+        {% if width > 5 %}{{ cnt|numberfmt }}{% endif %}&nbsp;
       </div>
-      {% if width <= 5 %}<div class="out-cnt">{{ cnt }}</div>{% endif %}
+      {% if width <= 5 %}<div class="out-cnt">{{ cnt|numberfmt }}</div>{% endif %}
     </div>
   {% endwith %}
 {% endmacro %}
@@ -19,7 +19,7 @@
 {% with defaults = form.data if form else None %}
   <div class="emotion {{ sent.sentiment }}">{{
     smiley(sent.sentiment) }}
-    <a href="{{ search_url(defaults=defaults) }}">Total</a>: {{ sent.total }}
+    <a href="{{ search_url(defaults=defaults) }}">Total</a>: {{ sent.total|numberfmt }}
   </div>
   {% if sent.total > 0 %}
     {{ bar('happy', sent.happy, sent.total,
