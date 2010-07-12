@@ -15,5 +15,10 @@ python-memcached==1.45
 django-view-cache-utils==0.1.1
 -e git://github.com/jbalogh/django-cache-machine.git#egg=django-cache-machine
 
+# L10n.
+Babel>=0.9.4
+-e git://github.com/clouserw/tower.git#egg=tower
+pytz
+
 # Term extraction
 topia.termextract==1.1.0
