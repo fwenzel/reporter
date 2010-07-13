@@ -14,8 +14,8 @@
   <body id="{% block body_id %}{% endblock %}">
     <nav id="nav-access">
     <ul>
-      <li><a href="#main-content">Proceed to main content</a></li>
-      <li><a href="#footer">Proceed to footer</a></li>
+      <li><a href="#main-content">{{ _('Proceed to main content') }}</a></li>
+      <li><a href="#footer">{{ _('Proceed to footer') }}</a></li>
     </ul>
     </nav>
 
@@ -26,7 +26,7 @@
         <div class="logobox clearfix">
           <a class="logo" href="{{ url('dashboard') }}">
             <img src="{{ MEDIA_URL }}img/fx-white.png" alt="Firefox" class="fxlogo"/>
-            <h1>Input Dashboard</h1>
+            <h1>{{ _('Input Dashboard') }}</h1>
           </a>
           <h2>{% block title_text %}{% endblock %}</h2>
         </div>
@@ -47,14 +47,19 @@
       <div id="footer-contents">
         <div id="copyright">
           <p id="footer-links">
-            <a href="http://www.mozilla.com/en-US/privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp;
-            <a href="http://www.mozilla.com/en-US/about/legal.html">Legal Notices</a> &nbsp;|&nbsp;
-            <a href="http://www.mozilla.com/en-US/legal/fraud-report/index.html">Report Trademark Abuse</a>
+            <a href="http://www.mozilla.com/en-US/privacy-policy.html">{{ _('Privacy Policy') }}</a> &nbsp;|&nbsp;
+            <a href="http://www.mozilla.com/en-US/about/legal.html">{{ _('Legal Notices') }}</a> &nbsp;|&nbsp;
+            <a href="http://www.mozilla.com/en-US/legal/fraud-report/index.html">{{ _('Report Trademark Abuse') }}</a>
           </p>
-          <p>Except where otherwise <a href="http://www.mozilla.com/en-US/about/legal.html#site">noted</a>,
-          content on this site is licensed under the <br/>
-          <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative
-            Commons Attribution Share-Alike License v3.0</a> or any later version.</p>
+          <p>
+            {% trans legal_url='http://www.mozilla.com/en-US/about/legal.html#site',
+                     license_url='http://creativecommons.org/licenses/by-sa/3.0/' %}
+              Except where otherwise <a href="{{ legal_url }}">noted</a>,
+              content on this site is licensed under the <br/>
+              <a href="{{ license_url }}">Creative Commons Attribution Share-Alike License v3.0</a>
+              or any later version.
+            {% endtrans %}
+          </p>
         </div>
       </div>
     </footer>

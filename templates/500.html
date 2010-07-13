@@ -1,14 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{% block page_title %}Internal Server Error{% endblock %}</h1>
+<h1>{% block page_title %}{{ _('Internal Server Error') }}{% endblock %}</h1>
 
-<p>An unhandled error occurred in the application. The error has been logged
-and an administrator was notified. We apologize for the inconvenience!</p>
+<p>
+  {% trans %}
+  An unhandled error occurred in the application. The error has been logged
+  and an administrator was notified. We apologize for the inconvenience!
+  {% endtrans %}
+</p>
 
-<p>Please start over on the <a href="{{ url('dashboard') }}">dashboard</a>.</p>
+<p>
+  {% trans dashboard_url=url('dashboard') %}
+  Please start over on the <a href="{{ dashboard_url }}">dashboard</a>.
+  {% endtrans %}
+</p>
 
-<p>If you have additional information how to reproduce this problem, please
-<a href="https://bugzilla.mozilla.org/enter_bug.cgi?product=Webtools&component=Input">file a bug.</a>
-Thanks!</p>
+<p>
+  {% trans bug_url='https://bugzilla.mozilla.org/enter_bug.cgi?product=Webtools&component=Input' %}
+  If you have additional information how to reproduce this problem, please
+  <a href="{{ bug_url }}">file a bug.</a> Thanks!
+  {% endtrans %}
+</p>
 {% endblock %}

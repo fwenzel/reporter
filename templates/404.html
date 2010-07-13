@@ -1,12 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{% block page_title %}Not Found{% endblock %}</h1>
+<h1>{% block page_title %}{{ _('Not Found') }}{% endblock %}</h1>
 
-<p>I'm sorry, I could not find what you were looking for.</p>
+<p>{{ _("I'm sorry, I could not find what you were looking for.") }}</p>
 
-<p>Please start over on the <a href="{{ url('dashboard') }}">dashboard</a>.</p>
-<p>If you were following a broken link, please
-<a href="https://bugzilla.mozilla.org/enter_bug.cgi?product=Webtools&component=Input">file a bug.</a>
-Thanks!</p>
+<p>
+  {% trans dashboard_url=url('dashboard') %}
+  Please start over on the <a href="{{ dashboard_url }}">dashboard</a>.
+  {% endtrans %}
+</p>
+<p>
+  {% trans bug_url='https://bugzilla.mozilla.org/enter_bug.cgi?product=Webtools&component=Input' %}
+  If you were following a broken link, please <a href="{{ bug_url }}">file a bug.</a> Thanks!
+  {% endtrans %}
+</p>
 {% endblock %}
