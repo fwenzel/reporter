@@ -3,6 +3,9 @@
 import os
 import logging
 
+import product_details
+
+
 # Make filepaths relative to settings.
 ROOT = os.path.dirname(os.path.abspath(__file__))
 path = lambda *a: os.path.join(ROOT, *a)
@@ -45,6 +48,8 @@ SLAVE_DATABASES = []
 CACHE_DEFAULT_PERIOD = 60 * 5  # 5 minutes
 CACHE_COUNT_TIMEOUT = 60  # seconds
 
+# L10n
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -56,7 +61,7 @@ TIME_ZONE = 'America/Los_Angeles'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-US'
 
 SITE_ID = 1
 
@@ -67,6 +72,40 @@ USE_I18N = True
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
 USE_L10N = True
+
+# Accepted locales
+INPUT_LANGUAGES = ('en-US',)
+
+# Override Django's built-in with our native names
+try:
+    LANGUAGES = dict([(i.lower(), product_details.languages[i]['native'])
+                      for i in INPUT_LANGUAGES])
+except AttributeError: # product_details not available yet
+    LANGUAGES = {}
+RTL_LANGUAGES = None # ('ar', 'fa', 'fa-IR', 'he')
+LANGUAGE_URL_MAP = dict([(i.lower(), i) for i in INPUT_LANGUAGES])
+
+# Paths that don't require a locale prefix.
+SUPPORTED_NONLOCALES = ('media', 'admin')
+
+TEXT_DOMAIN = 'z-messages'
+
+# Tells the extract script what files to look for l10n in and what function
+# handles the extraction. The Tower library expects this.
+DOMAIN_METHODS = {
+    'messages': [
+        ('apps/**.py',
+            'tower.management.commands.extract.extract_tower_python'),
+        ('**/templates/**.html',
+            'tower.management.commands.extract.extract_tower_template'),
+    ],
+    'javascript': [
+        # We can't say **.js because that would dive into mochikit and timeplot
+        # and all the other baggage we're carrying. Timeplot, in particular,
+        # crashes the extractor with bad unicode data.
+        ('media/js/*.js', 'javascript'),
+    ],
+}
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
@@ -98,6 +137,16 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.media',
+    'django.core.context_processors.request',
+    'django.core.context_processors.csrf',
+
+    'input.context_processors.i18n',
+)
+
 def JINJA_CONFIG():
     import jinja2
     config = {'extensions': ['jinja2.ext.with_', 'jinja2.ext.loopcontrols',
@@ -106,6 +155,8 @@ def JINJA_CONFIG():
     return config
 
 MIDDLEWARE_CLASSES = (
+    'input.middleware.LocaleURLMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -124,13 +175,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.admin',
 
-    'annoying',
-    'product_details',
-
     'dashboard',
     'feedback',
+    'input',
     'search',
     'swearwords',
+
+    'annoying',
+    'product_details',
+    'tower',
 ]
 
 # Where to store product details

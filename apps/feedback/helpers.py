@@ -1,24 +1,8 @@
-from django.core.urlresolvers import reverse
-from django.template import defaultfilters
-from django.utils import translation
-
-from babel import Locale
-from babel.support import Format
 from jingo import register
 import jinja2
 import product_details
 
 from feedback import OSES, OS_OTHER
-
-
-# Yanking filters from Django.
-register.filter(defaultfilters.iriencode)
-
-
-@register.function
-def url(viewname, *args, **kwargs):
-    """Helper for Django's ``reverse`` in templates."""
-    return reverse(viewname, args=args, kwargs=kwargs)
 
 
 @register.function
@@ -35,17 +19,6 @@ def locale_name(locale, native=False, default='unknown'):
             native and 'native' or 'English']
     else:
         return default
-
-
-def _get_format():
-    lang = translation.get_language()
-    locale = Locale(translation.to_locale(lang))
-    return Format(locale)
-
-
-@register.filter
-def numberfmt(num, format=None):
-    return _get_format().decimal(num, format)
 
 
 @register.function

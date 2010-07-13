@@ -4,3 +4,4 @@
 
 -r prod.txt
 -e git://github.com/jbalogh/test-utils.git#egg=test-utils
+translate-toolkit==1.6.0
