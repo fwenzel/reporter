@@ -209,5 +209,6 @@ SPHINX_INDEXER = 'indexer'
 SPHINX_CATALOG_PATH = path('tmp/data/sphinx')
 SPHINX_LOG_PATH = path('tmp')
 SPHINX_CONFIG_PATH = path('configs/sphinx/sphinx.conf')
+SEARCH_PERPAGE = 20 # results per page
 
 TEST_RUNNER = 'test_utils.runner.RadicalTestSuiteRunner'

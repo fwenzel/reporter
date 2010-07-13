@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.hashcompat import md5_constructor
 
 import jingo
@@ -21,7 +21,7 @@ def search_view_cache_key(request):
 def index(request):
     form = ReporterSearchForm(request.GET)
     data = {'form': form}
-    pp = 20
+    pp = settings.SEARCH_PERPAGE
 
     if form.is_valid():
         query = form.cleaned_data.get('q', '')
@@ -41,7 +41,12 @@ def index(request):
 
     if opinions:
         pager = Paginator(opinions, pp)
-        data['page'] = pager.page(page)
+        # If page request (9999) is out of range, deliver last page of results.
+        try:
+            data['page'] = pager.page(page)
+        except (EmptyPage, InvalidPage):
+            data['page'] = pager.page(pager.num_pages)
+
         data['opinions'] = data['page'].object_list
         data['sent'] = stats.sentiment(qs=opinions)
         data['demo'] = stats.demographics(qs=opinions)

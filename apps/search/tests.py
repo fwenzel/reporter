@@ -8,6 +8,7 @@ from django.conf import settings
 from nose.tools import eq_
 import test_utils
 
+from input.urlresolvers import reverse
 from search.client import Client
 from search.utils import start_sphinx, stop_sphinx, reindex
 
@@ -83,6 +84,14 @@ class SearchTest(SphinxTestCase):
 
     def test_date_filter(self):
         start = datetime.datetime(2010, 5, 27)
-        end = datetime.datetime(2010, 5, 28)
+        end = datetime.datetime(2010, 5, 27)
         eq_(num_results(date_start=start, date_end=end), 5)
-        pass
+
+
+class SearchViewTest(test_utils.TestCase):
+    """Tests relating to the search template rendering."""
+
+    def test_pagination_max(self):
+        response = self.client.get(reverse('search'),
+                                   {'product': 'firefox', 'page': '700'}, True)
+        self.failUnlessEqual(response.status_code, 200)
