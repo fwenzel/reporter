@@ -2,12 +2,12 @@
 <html lang="{{ LANG }}" dir="{{ DIR }}">
   <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-    <title>{% block page_title %}Welcome!{% endblock %} &mdash; Firefox Input</title>
+    <title>{% block page_title %}{{ _('Welcome!') }}{% endblock %} &mdash; Firefox Input</title>
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link href="{{ MEDIA_URL }}css/reporter.css" type="text/css" rel="stylesheet">
-    <!--[if IE]><link href="{{ MEDIA_URL }}css/ie.css" rel="stylesheet" type="text/css"> <![endif]-->
+    <!--[if IE]><link href="{{ MEDIA_URL }}css/ie.css" rel="stylesheet" type="text/css"><![endif]-->
     <link rel="shortcut icon" href="{{ MEDIA_URL }}img/favicon.ico"/>
     {% block extra_headers %}{% endblock %}
   </head>

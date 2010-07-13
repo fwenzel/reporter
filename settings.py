@@ -88,7 +88,7 @@ LANGUAGE_URL_MAP = dict([(i.lower(), i) for i in INPUT_LANGUAGES])
 # Paths that don't require a locale prefix.
 SUPPORTED_NONLOCALES = ('media', 'admin')
 
-TEXT_DOMAIN = 'z-messages'
+TEXT_DOMAIN = 'messages'
 
 # Tells the extract script what files to look for l10n in and what function
 # handles the extraction. The Tower library expects this.
@@ -98,12 +98,6 @@ DOMAIN_METHODS = {
             'tower.management.commands.extract.extract_tower_python'),
         ('**/templates/**.html',
             'tower.management.commands.extract.extract_tower_template'),
-    ],
-    'javascript': [
-        # We can't say **.js because that would dive into mochikit and timeplot
-        # and all the other baggage we're carrying. Timeplot, in particular,
-        # crashes the extractor with bad unicode data.
-        ('media/js/*.js', 'javascript'),
     ],
 }
 
