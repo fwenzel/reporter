@@ -1,6 +1,6 @@
+from calendar import timegm
 from datetime import timedelta
 import socket
-import time
 
 from django.conf import settings
 
@@ -45,9 +45,9 @@ class Client():
                 sc.SetFilter('locale', (crc32(kwargs['locale']),))
 
         if kwargs.get('date_end') and kwargs.get('date_start'):
-            start = int(time.mktime(kwargs['date_start'].timetuple()))
+            start = int(timegm(kwargs['date_start'].timetuple()))
             end_date = kwargs['date_end'] + timedelta(days=1)
-            end = int(time.mktime(end_date.timetuple()))
+            end = int(timegm(end_date.timetuple()))
             sc.SetFilterRange('created', start, end)
 
         try:
