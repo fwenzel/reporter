@@ -16,10 +16,10 @@
         </div>
       {% endif %}
         <div class="uapreview clearfix">
-          <span class="os">OS: {{ os_name(opinion.os) }}</span>
+          <span class="os">{{ _('OS: {os_name}')|f(os_name=os_name(opinion.os)) }}</span>
           <span class="locale" title="{{ locale_name(opinion.locale,
-            native=True, default='') }}">Locale: {{
-            locale_name(opinion.locale) }}</span>
+            native=True, default='') }}">{{ _('Locale: {locale}')|f(
+            locale=locale_name(opinion.locale)) }}</span>
         </div>
     </li>
   {% endfor %}

@@ -9,30 +9,32 @@
 
 <noscript>
   <div class="container">
-    <h2>Please enable JavaScript to view this page.</h2>
+    <h2>{{ _('Please enable JavaScript to view this page.') }}</h2>
   </div>
 </noscript>
 
 <div id="overview">
   <div id="sentiment" class="container clearfix">
     <div id="period">{{ period.period|safe }}</div>
-    <h2>Overview</h2>
+    <h2>{{ _('Overview') }}</h2>
     <div class="ajaxy"></div>
   </div>
   <div id="trends" class="container">
-    <h2>Trends</h2>
+    <h2>{{ _('Trends') }}</h2>
     <div class="ajaxy terms"></div>
   </div>
   <div id="demo" class="container">
-    <h2>Demographics</h2>
+    <h2>{{ _('Demographics') }}</h2>
     <div class="ajaxy"></div>
   </div>
 </div>
 
 <div id="messages" class="container">
-  <a href="{{ search_url() }}" class="more">Show more</a>
-  <h2>Last 10 Messages</h2>
-  <!-- Show More -->
+  <a href="{{ search_url() }}" class="more">
+    {# L10n: Link on the dashboard to show more messages. #}
+    {{ _('Show more') }}
+  </a>
+  <h2>{{ _('Last {count} Messages')|f(count=messages_count) }}</h2>
   <div class="ajaxy"></div>
 </div>
 {% endblock %}

@@ -19,12 +19,16 @@
 {% with defaults = form.data if form else None %}
   <div class="emotion {{ sent.sentiment }}">{{
     smiley(sent.sentiment) }}
-    <a href="{{ search_url(defaults=defaults) }}">Total</a>: {{ sent.total|numberfmt }}
+    {# L10n: Total refers to a message count. #}
+    {% trans url=search_url(defaults=defaults),
+             count=sent.total|numberfmt %}
+      <a href="{{ url }}">Total</a>: {{ count }}
+    {% endtrans %}
   </div>
   {% if sent.total > 0 %}
-    {{ bar('happy', sent.happy, sent.total,
+    {{ bar(_('happy'), sent.happy, sent.total,
            search_url(defaults=defaults, sentiment='happy')) }}
-    {{ bar('sad', sent.sad, sent.total,
+    {{ bar(_('sad'), sent.sad, sent.total,
            search_url(defaults=defaults, sentiment='sad')) }}
   {% endif %}
 {% endwith %}

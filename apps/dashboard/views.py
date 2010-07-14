@@ -23,7 +23,8 @@ def dashboard(request):
     search_form = ReporterSearchForm()
     period = PeriodForm()
 
-    data = {'search_form': search_form, 'period': period}
+    data = {'search_form': search_form, 'period': period,
+            'messages_count': settings.MESSAGES_COUNT}
     return jingo.render(request, 'dashboard/dashboard.html', data)
 
 
