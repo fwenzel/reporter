@@ -1,12 +1,19 @@
 {% extends "base_noheader.html" %}
 
-{% block page_title %}Download Beta{% endblock %}
+{% block page_title %}{{ _('Download Beta') }}{% endblock %}
 {% block body_id %}need-beta{% endblock %}
 
 {% block content %}
-<p>Oh! So, you want to offer us feedback on the next version of Firefox. Thank
-you, but you'll need to be a part of our Beta Program.</p>
-<p>To join, simply go to our download page and get
-<a href="http://www.mozilla.com/en-US/firefox/all-beta.html">the latest Firefox
-  Beta!</a></p>
+<p>
+  {% trans %}
+  Oh! So, you want to offer us feedback on the next version of Firefox. Thank
+  you, but you'll need to be a part of our Beta Program.
+  {% endtrans %}
+</p>
+<p>
+  {% trans url='http://www.mozilla.com/en-US/firefox/all-beta.html' %}
+  To join, simply go to our download page and get <a href="{{ url }}">the
+    latest Firefox Beta!</a>
+  {% endtrans %}
+</p>
 {% endblock %}

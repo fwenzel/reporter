@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 
 from annoying.decorators import autostrip
 from product_details import firefox_versions, mobile_details
+from tower import ugettext as _
 
 from . import FIREFOX, MOBILE, LATEST_BETAS
 from .models import Opinion
@@ -17,7 +18,7 @@ from .version_compare import version_int
 class FeedbackForm(forms.Form):
     """Feedback form fields shared between feedback types."""
     description = forms.CharField(widget=forms.TextInput(
-        attrs={'placeholder': 'Enter your feedback here.'}),
+        attrs={'placeholder': _('Enter your feedback here.')}),
         max_length=140, validators=[validate_swearwords, validate_no_html,
                                     validate_no_email, validate_no_urls])
 
@@ -29,7 +30,7 @@ class FeedbackForm(forms.Form):
                 created__gte=(datetime.datetime.now() -
                               datetime.timedelta(minutes=5)))[:1]
             if dupes:
-                raise ValidationError('We already got your feedback! Thanks.')
+                raise ValidationError(_('We already got your feedback! Thanks.'))
 
         return super(FeedbackForm, self).clean()
 

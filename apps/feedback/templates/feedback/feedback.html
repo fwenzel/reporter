@@ -9,11 +9,19 @@
 
 <div id="feedbackform">
   {% if positive %}
-    <h2>Super! It's great to hear that you like our pre-released browser.
-    Please explain what you specifically like!</h2>
+    <h2>
+      {% trans %}
+      Super! It's great to hear that you like our pre-released browser.
+      Please explain what you specifically like!
+      {% endtrans %}
+    </h2>
   {% else %}
-    <h2>We are sorry that you have not had a good experience with our browser.
-    Please tell us why, so we can improve it!</h2>
+    <h2>
+      {% trans %}
+      We are sorry that you have not had a good experience with our browser.
+      Please tell us why, so we can improve it!
+      {% endtrans %}
+    </h2>
   {% endif %}
   <form method="post" action="" autocomplete="off">
     {{ form.description.errors|safe }}
@@ -22,8 +30,12 @@
     {% if not positive %}
       {{ form.url.errors|safe }}
       <p>
-        <label>{{ form.add_url|safe }} Had an issue with a specific website?
-          Please add the URL, so we can find the issue faster!</label>
+        <label>{{ form.add_url|safe }}
+          {% trans %}
+          Had an issue with a specific website? Please add the URL, so we can
+          find the issue faster!
+          {% endtrans %}
+        </label>
         {{ form.url|safe }}
       </p>
     {% endif %}
@@ -39,9 +51,9 @@
     {{ form.errors['__all__']|safe }}
 
     <aside>
-    <span>Please ensure that there is no personally identifiable information here.</span>
+      <span>{{ _('Please ensure that there is no personally identifiable information here.') }}</span>
     </aside>
-    <button type="submit">Submit Feedback</button>
+    <button type="submit">{{ _('Submit Feedback') }}</button>
   </form>
 </div>
 

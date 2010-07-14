@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.utils.html import strip_tags
 
 import product_details
+from tower import ugettext as _
 
 import swearwords
 
@@ -25,7 +26,7 @@ def validate_ua(ua):
     """Ensure a UA string represents a valid latest beta version."""
     parsed = ua_parse(ua)
     if not parsed:
-        raise ValidationError('User agent string was not recognizable.')
+        raise ValidationError(_('User agent string was not recognizable.'))
 
     # compare to latest beta, if UA enforced.
     if settings.ENFORCE_USER_AGENT:
@@ -33,8 +34,8 @@ def validate_ua(ua):
         this_version = version_int(parsed['version'])
 
         if ref_version > this_version:
-            raise ValidationError('Submitted User Agent is not the '
-                                  'latest beta version.')
+            raise ValidationError(_('Submitted User Agent is not the '
+                                  'latest beta version.'))
 
 
 def validate_swearwords(str):
@@ -42,29 +43,30 @@ def validate_swearwords(str):
     matches = swearwords.find_swearwords(str)
     if matches:
         raise ValidationError(
-            'Your comments contains swear words (%s). In order to help us '
-            'improve our products, please use words that help us create an '
-            'action or to-do from your constructive feedback. Thanks!' % (
+            _('Your comment contains swear words (%s). In order to help us '
+              'improve our products, please use words that help us create an '
+              'action or to-do from your constructive feedback. Thanks!') % (
                 ', '.join(matches)))
 
 
 def validate_no_html(str):
     """Disallow HTML."""
     if strip_tags(str) != str:
-        raise ValidationError('Feedback must not contain HTML.')
+        raise ValidationError(_('Feedback must not contain HTML.'))
 
 
 def validate_no_email(str):
     """Disallow texts possibly containing emails addresses."""
     if EMAIL_RE.search(str):
         raise ValidationError(
-            'Your feedback seems to contain an email address. Please remove '
-            'this and similar personal data from the text, then try again. Thanks!')
+            _('Your feedback seems to contain an email address. Please remove '
+              'this and similar personal data from the text, then try again. '
+              'Thanks!'))
 
 
 def validate_no_urls(str):
     """Disallow text possibly containing a URL."""
     if URL_RE.search(str):
         raise ValidationError(
-            'Your feedback seems to contain a URL. Please remove this and '
-            'similar personal data from the text, then try again. Thanks!')
+            _('Your feedback seems to contain a URL. Please remove this and '
+              'similar personal data from the text, then try again. Thanks!'))

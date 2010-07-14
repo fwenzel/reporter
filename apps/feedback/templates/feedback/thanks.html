@@ -1,16 +1,20 @@
 {% extends "base_noheader.html" %}
 
-{% block page_title %}Thanks for Your Feedback{% endblock %}
+{% block page_title %}{{ _('Thanks for Your Feedback') }}{% endblock %}
 {% block body_id %}thanks{% endblock %}
 
 {% block content %}
-<h1>Thanks for sending us your feedback!</h1>
+<h1>{{ _('Thanks for sending us your feedback!') }}</h1>
 
-<h2>If you want to see where your feedback was sent to, take a look at our
-  <a href="{{ url('dashboard') }}">Firefox Input Dashboard</a>.</h2>
+<h2>
+  {% trans url=url('dashboard') %}
+  If you want to see where your feedback was sent to, take a look at our
+  <a href="{{ url }}">Firefox Input Dashboard</a>.
+  {% endtrans %}
+</h2>
 
 <div id="next-steps">
-  <p>Find out the latest news from Mozilla:</p>
+  <p>{{ _('Find out the latest news from Mozilla:') }}</p>
   <nav>
     <div class="tw"><a href="http://twitter.com/firefox/">Twitter</a></div>
     <div class="fb"><a href="http://www.facebook.com/group.php?v=wall&amp;gid=173578463110">Facebook</a></div>

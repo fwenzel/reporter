@@ -1,6 +1,7 @@
 from jingo import register
 import jinja2
 import product_details
+from tower import ugettext as _
 
 from feedback import OSES, OS_OTHER
 
@@ -12,7 +13,7 @@ def os_name(os):
 
 
 @register.function
-def locale_name(locale, native=False, default='unknown'):
+def locale_name(locale, native=False, default=_('unknown')):
     """Convert a locale code into a human readable locale name."""
     if locale in product_details.languages:
         return product_details.languages[locale][
@@ -32,10 +33,10 @@ def smiley(style):
         return ''
     if style == 'happy': # positive smiley
         character = '&#9786;'
-        title = 'happy face'
+        title = _('happy face')
     else: # negative smiley
         character = '&#9785;'
-        title = 'sad face'
+        title = _('sad face')
     return jinja2.Markup(
         u'<span title="%s" class="smiley %s">%s</span>' % (
             title, style, character))

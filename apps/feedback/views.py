@@ -6,6 +6,7 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
 
 import jingo
+from tower import ugettext as _
 
 from .forms import HappyForm, SadForm
 from .models import Opinion
@@ -28,7 +29,7 @@ def enforce_user_agent(f):
                 return http.HttpResponseRedirect(reverse('feedback.need_beta'))
             else:
                 return http.HttpResponseBadRequest(
-                    'User-Agent request header must be set.')
+                    _('User-Agent request header must be set.'))
 
         # if we made it here, it's a latest beta user
         return f(request, ua=ua, *args, **kwargs)
