@@ -1,19 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{% block page_title %}Search Unavailable{% endblock %}</h1>
+<h1>{% block page_title %}{{ _('Search Unavailable') }}{% endblock %}</h1>
 
-<p>I'm sorry, there was an error with your search.</p>
+<p>{{ _("I'm sorry, there was an error with your search.") }}</p>
 
-<p>Our search engine might be currently unavailable. You may start over on
-the <a href="{{ url('dashboard') }}">dashboard</a> and try again later.</p>
+<p>
+  {% trans url=url('dashboard') %}
+  Our search engine might be currently unavailable. You may start over on
+  the <a href="{{ url }}">dashboard</a> and try again later.
+  {% endtrans %}
+</p>
 
-<p>If the problem persists, please
-  <a href="https://bugzilla.mozilla.org/enter_bug.cgi?product=Webtools&component=Input">file a bug</a>,
+<p>
+  {% trans bug_url='https://bugzilla.mozilla.org/enter_bug.cgi?product=Webtools&component=Input' %}
+  If the problem persists, please <a href="{{ bug_url }}">file a bug</a>,
   mentioning the URL you were accessing.
+  {% endtrans %}
+
   {% if search_error %}
-    Include the following error message in your bug report:
+    {{ _('Include the following error message in your bug report:') }}
     <pre>{{ search_error }}</pre>
   {% endif %}
-  Thanks!</p>
+  {{ _('Thanks!') }}</p>
 {% endblock %}

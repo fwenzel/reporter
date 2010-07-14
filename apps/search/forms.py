@@ -2,6 +2,7 @@ from datetime import date, timedelta
 
 from django import forms
 import product_details
+from tower import ugettext as _, ugettext_lazy as _lazy
 
 from feedback import APPS, FIREFOX, OS_USAGE, LATEST_BETAS
 from feedback.version_compare import simplify_version
@@ -16,11 +17,14 @@ FIREFOX_BETA_VERSION_CHOICES = [
     (simplify_version(LATEST_BETAS[FIREFOX]),
      LATEST_BETAS[FIREFOX])
 ]
+SENTIMENT_CHOICES = [
+    ('happy', _lazy('happy')),
+    ('sad', _lazy('sad')),
+]
 SENTIMENTS = ('happy', 'sad')
-SENTIMENT_CHOICES = [(s, s) for s in SENTIMENTS]
 OS_CHOICES = [ (o.short, o.pretty) for o in OS_USAGE ]
 try:
-    LOCALE_CHOICES = [ ('unknown', 'unknown') ] + [
+    LOCALE_CHOICES = [ ('unknown', _lazy('unknown')) ] + [
         (lang, lang) for lang in sorted(product_details.languages) ]
 except AttributeError:
     # no product details?
@@ -29,7 +33,8 @@ except AttributeError:
 
 def add_empty(choices):
     """Adds an empty choice to a list of choices."""
-    return [('', '-- all --')] + choices
+    # L10n: This is a placeholder in the search form, for all items in a list.
+    return [('', _lazy('-- all --'))] + choices
 
 
 class SearchInput(forms.TextInput):
@@ -39,22 +44,23 @@ class SearchInput(forms.TextInput):
 
 class ReporterSearchForm(forms.Form):
     q = forms.CharField(required=False, label='', widget=SearchInput(
-        attrs={'placeholder': 'Search Terms'}))
+        attrs={'placeholder': _('Search Terms')}))
     product = forms.ChoiceField(choices=PROD_CHOICES,
-                                label='Product:')
+                                label=_('Product:'))
     version = forms.ChoiceField(required=False,
         choices=add_empty(FIREFOX_BETA_VERSION_CHOICES),
-        label='Version:')
-    sentiment = forms.ChoiceField(required=False, label='Sentiment:',
+        label=_('Version:'))
+    sentiment = forms.ChoiceField(required=False, label=_('Sentiment:'),
                                   choices=add_empty(SENTIMENT_CHOICES))
-    locale = forms.ChoiceField(required=False, label='Locale:',
+    locale = forms.ChoiceField(required=False, label=_('Locale:'),
                                choices=add_empty(LOCALE_CHOICES))
-    os = forms.ChoiceField(required=False, label='OS:',
+    os = forms.ChoiceField(required=False, label=_('OS:'),
                            choices=add_empty(OS_CHOICES))
     date_start = forms.DateField(required=False, widget=forms.DateInput(
-        attrs={'class': 'datepicker'}), label='Date range:')
+        attrs={'class': 'datepicker'}), label=_('Date range:'))
     date_end = forms.DateField(required=False, widget=forms.DateInput(
-        attrs={'class': 'datepicker'}), label='to')
+        # L10n: This indicates the second part of a date range.
+        attrs={'class': 'datepicker'}), label=_('to'))
 
     page = forms.IntegerField(widget=forms.HiddenInput, required=False)
 

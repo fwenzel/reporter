@@ -1,12 +1,12 @@
 from urllib import urlencode
 
-from django.core.urlresolvers import reverse
 
 from jingo import register
 import jinja2
 
 from feedback import FIREFOX
 from feedback.version_compare import simplify_version
+from input.urlresolvers import reverse
 from .forms import ReporterSearchForm
 
 

@@ -2,28 +2,43 @@
 
 {% block body_id %}search{% endblock %}
 
-{% block page_title %}Search Results{% endblock %}
+{% block page_title %}{{ _('Search Results') }}{% endblock %}
 
-{% block title_text %}Search Results{% endblock %}
+{% block title_text %}{{ _('Search Results') }}{% endblock %}
 
 {% block content %}
 {% if page and page.paginator.count == 1000 %}
-<aside class="warning clearfix">Due to software constraints, we can only show the last 1000 messages for this search query.</aside>
+<aside class="warning clearfix">
+  {% trans %}
+  Due to software constraints, we can only show the last 1000 messages for
+  this search query.
+  {% endtrans %}
+</aside>
 {% endif %}
 
 <div id="search_box" class="clearfix">
   <div id="search_options">
     {% if opinions %}
-    {% if query %}Description: <span class="opt">"{{ query }}"</span>;{% endif %}
-    Dates: <span class="opt">{{ form.cleaned_data.date_start }}
-      &ndash; {{ form.cleaned_data.date_end }}</span>
-    <br/>
-    Locale: <span class="opt">{{ form.cleaned_data.locale|default("all", true) }}</span>;
-    OS: <span class="opt">{{ form.cleaned_data.os|default("all", true) }}</span>
+      {% if query %}
+        {% trans %}
+        Description: <span class="opt">"{{ query }}"</span>;
+        {% endtrans %}
+      {% endif %}
+      {% trans start_date=form.cleaned_data.date_start,
+               end_date=form.cleaned_data.date_end %}
+        Dates: <span class="opt">{{ start_date }} &ndash; {{ end_date }}</span>
+      {% endtrans %}
+      <br/>
+      {% trans locale=form.cleaned_data.locale|default(_("all"), true) %}
+        Locale: <span class="opt">{{ locale }}</span>;
+      {% endtrans %}
+      {% trans os=form.cleaned_data.os|default(_("all"), true) %}
+        OS: <span class="opt">{{ os }}</span>
+      {% endtrans %}
     {% endif %}
   </div>
 
-  {% with search_form = form %}{% include "search/search_form.html" %}{% endwith %}
+  {% with search_form=form %}{% include "search/search_form.html" %}{% endwith %}
 </div>
 
 <div id="results" class="container">
@@ -31,7 +46,7 @@
     {% if opinions %}
       {% include "dashboard/messages.html" %}
     {% else %}
-    <li>No search results found.</li>
+      <li>{{ _('No search results found.') }}</li>
     {% endif %}
   </ul>
 
@@ -41,17 +56,19 @@
         {% if page.has_previous() %}
         <a href="{{ search_url(
           defaults=form.data, extra={'page': page.previous_page_number()})
-          }}" class="prev">&laquo; previous</a>
+          }}" class="prev">{{ _('&laquo; previous')|safe }}</a>
         {% endif %}
 
         {% if page.has_next() %}
         <a href="{{ search_url(
           defaults=form.data, extra={'page': page.next_page_number()})
-          }}" class="next">next &raquo;</a>
+          }}" class="next">{{ _('next &raquo;')|safe }}</a>
         {% endif %}
 
         <span class="current">
-          page {{ page.number }} of {{ page.paginator.num_pages }}
+          {% trans pagenum=page.number, total=page.paginator.num_pages %}
+            page {{ pagenum }} of {{ total }}
+          {% endtrans %}
         </span>
       </span>
     </nav>
@@ -60,21 +77,21 @@
 {% if opinions %}
 <div id="overview">
   <div id="sentiment" class="container clearfix">
-    <h2>Overview</h2>
+    <h2>{{ _('Overview') }}</h2>
     <div>
       {% include "dashboard/sentiments.html" %}
     </div>
   </div>
 
   <div id="trends" class="container clearfix">
-    <h2>Trends</h2>
+    <h2>{{ _('Trends') }}</h2>
     <div class="terms">
       {% include "dashboard/trends.html" %}
     </div>
   </div>
 
   <div id="demo" class="container clearfix">
-    <h2>Demographics</h2>
+    <h2>{{ _('Demographics') }}</h2>
     <div>
       {% include "dashboard/demographics.html" %}
     </div>

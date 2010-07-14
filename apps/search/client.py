@@ -4,9 +4,13 @@ import socket
 
 from django.conf import settings
 
-import sphinxapi as sphinx
+from tower import ugettext as _
+
 from reporter.utils import crc32, manual_order
 from feedback.models import Opinion
+
+from . import sphinxapi as sphinx
+
 
 SPHINX_HARD_LIMIT = 1000  # A hard limit that sphinx imposes.
 
@@ -53,9 +57,9 @@ class Client():
         try:
             result = sc.Query(term, 'opinions')
         except socket.timeout:
-            raise SearchError("Query has timed out.")
+            raise SearchError(_("Query has timed out."))
         except Exception, e:
-            raise SearchError("Sphinx threw an unknown exception: %s" % e)
+            raise SearchError(_("Sphinx threw an unknown exception: %s") % e)
 
         if sc.GetLastError():
             raise SearchError(sc.GetLastError())
