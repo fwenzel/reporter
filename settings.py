@@ -3,7 +3,7 @@
 import os
 import logging
 
-import product_details
+from django.utils.functional import lazy
 
 
 # Make filepaths relative to settings.
@@ -74,14 +74,16 @@ USE_I18N = True
 USE_L10N = True
 
 # Accepted locales
-INPUT_LANGUAGES = ('en-US',)
+INPUT_LANGUAGES = ('en-US','de')
 
 # Override Django's built-in with our native names
-try:
-    LANGUAGES = dict([(i.lower(), product_details.languages[i]['native'])
-                      for i in INPUT_LANGUAGES])
-except AttributeError: # product_details not available yet
-    LANGUAGES = {}
+class LazyLangs(list):
+    def __new__(self):
+        import product_details
+        return [(lang.lower(), product_details.languages[lang]['native'])
+                for lang in INPUT_LANGUAGES]
+LANGUAGES = lazy(LazyLangs, list)()
+
 RTL_LANGUAGES = None # ('ar', 'fa', 'fa-IR', 'he')
 LANGUAGE_URL_MAP = dict([(i.lower(), i) for i in INPUT_LANGUAGES])
 
