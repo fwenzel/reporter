@@ -2,7 +2,7 @@ from datetime import date, timedelta
 
 from django import forms
 import product_details
-from tower import ugettext as _, ugettext_lazy as _lazy
+from tower import ugettext_lazy as _lazy
 
 from feedback import APPS, FIREFOX, OS_USAGE, LATEST_BETAS
 from feedback.version_compare import simplify_version
@@ -44,23 +44,23 @@ class SearchInput(forms.TextInput):
 
 class ReporterSearchForm(forms.Form):
     q = forms.CharField(required=False, label='', widget=SearchInput(
-        attrs={'placeholder': _('Search Terms')}))
+        attrs={'placeholder': _lazy('Search Terms')}))
     product = forms.ChoiceField(choices=PROD_CHOICES,
-                                label=_('Product:'))
+                                label=_lazy('Product:'))
     version = forms.ChoiceField(required=False,
         choices=add_empty(FIREFOX_BETA_VERSION_CHOICES),
-        label=_('Version:'))
-    sentiment = forms.ChoiceField(required=False, label=_('Sentiment:'),
+        label=_lazy('Version:'))
+    sentiment = forms.ChoiceField(required=False, label=_lazy('Sentiment:'),
                                   choices=add_empty(SENTIMENT_CHOICES))
-    locale = forms.ChoiceField(required=False, label=_('Locale:'),
+    locale = forms.ChoiceField(required=False, label=_lazy('Locale:'),
                                choices=add_empty(LOCALE_CHOICES))
-    os = forms.ChoiceField(required=False, label=_('OS:'),
+    os = forms.ChoiceField(required=False, label=_lazy('OS:'),
                            choices=add_empty(OS_CHOICES))
     date_start = forms.DateField(required=False, widget=forms.DateInput(
-        attrs={'class': 'datepicker'}), label=_('Date range:'))
+        attrs={'class': 'datepicker'}), label=_lazy('Date range:'))
     date_end = forms.DateField(required=False, widget=forms.DateInput(
         # L10n: This indicates the second part of a date range.
-        attrs={'class': 'datepicker'}), label=_('to'))
+        attrs={'class': 'datepicker'}), label=_lazy('to'))
 
     page = forms.IntegerField(widget=forms.HiddenInput, required=False)
 

@@ -7,11 +7,14 @@
     <li class="{{ opinion.positive and 'happy' or 'sad' }} clearfix">
       {{ smiley(opinion.positive and "happy" or "sad") }}
       <div class="msg">{{ opinion.description }}</div>
-        <a class="ua" href="#" title="{{ opinion.user_agent }}">(UA)</a>
+        {# L10n: Link to user agent info. #}
+        <a class="ua" href="#" title="{{ opinion.user_agent }}">{{ _('(UA)') }}</a>
       {% if opinion.url %}
-        <a class="url" href="{{ opinion.url }}" rel="nofollow">(URL)</a>
+        {# L10n: Link to an opinion's URL. #}
+        <a class="url" href="{{ opinion.url }}" rel="nofollow">{{ _('(URL)') }}</a>
         <div class="urlpreview">
-          <a href="{{ opinion.url }}" rel="nofollow">visit &rarr;</a>
+          {# L10n: This is a link to the URL associated with an opinion. #}
+          <a href="{{ opinion.url }}" rel="nofollow">{{ _('visit &rarr;') }}</a>
           <input type="text" readonly value="{{ opinion.url }}"/>
         </div>
       {% endif %}
