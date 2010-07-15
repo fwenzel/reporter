@@ -770,17 +770,17 @@ input.placeholder {
 .terms .term.w0 { font-size: 60%; }
 /* }}} */
 /* {{{ Opinion lists */
-.opinions li {
-    background-color: #fff;
+.opinions li.msg {
     display: block;
-    border: 1px solid rgba(75, 71, 66, .5);
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
+    border-top: 1px solid rgba(75, 71, 66, .5);
     margin-bottom: 5px;
-    padding: 5px;
+    padding: 8px 5px;
     min-height: 2.2em;
 }
+.opinions li.msg:first-child {
+    border: 0;
+}
+
 .opinions li .smiley {
     background: url(../img/smilies16.png) no-repeat left top;
     float: left;
@@ -794,14 +794,27 @@ input.placeholder {
 .opinions li .smiley.happy {
     background-position: 0 -66px;
 }
-.opinions li .msg {
+
+.opinions li .desc {
     overflow-x: auto;
 }
-.opinions li a.url,
-.opinions li a.ua {
+
+.opinions ul.msgopt {
     float: right;
-    margin-left: .5em;
 }
+.opinions ul.msgopt li {
+    border-left: 1px solid #4B4742;
+    display: inline;
+    margin-left: .5em;
+    padding-left: .5em;
+}
+.opinions ul.msgopt li:first-child {
+    border: 0;
+}
+.opinions ul.msgopt li a {
+    padding: 2px 4px;
+}
+
 .opinions .urlpreview,
 .opinions .uapreview {
     clear: both;
