@@ -91,6 +91,7 @@ LANGUAGE_URL_MAP = dict([(i.lower(), i) for i in INPUT_LANGUAGES])
 SUPPORTED_NONLOCALES = ('media', 'admin')
 
 TEXT_DOMAIN = 'messages'
+STANDALONE_DOMAINS = []
 
 # Tells the extract script what files to look for l10n in and what function
 # handles the extraction. The Tower library expects this.
@@ -102,6 +103,11 @@ DOMAIN_METHODS = {
             'tower.management.commands.extract.extract_tower_template'),
     ],
 }
+
+TOWER_KEYWORDS = {'_lazy': None}
+
+
+# Media
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"

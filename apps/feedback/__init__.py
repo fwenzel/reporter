@@ -1,18 +1,18 @@
 import product_details
-from tower import ugettext_lazy as _lazy
+from tower import ugettext_lazy as _
 
 
 # Applications, shamelessly snagged from AMO
 class FIREFOX:
     id = 1
     short = 'firefox'
-    pretty = _lazy('Firefox')
+    pretty = _(u'Firefox')
     guid = '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}'
 
 class MOBILE:
     id = 60
     short = 'mobile'
-    pretty = _lazy('Mobile')
+    pretty = _(u'Mobile')
     guid = '{a23983c0-fd0e-11dc-95ff-0800200c9a66}'
 
 APP_USAGE = _apps = (FIREFOX, MOBILE)
@@ -42,22 +42,22 @@ except AttributeError:
 
 # Operating Systems
 class WINDOWS:
-    pretty = _lazy('Windows')
+    pretty = _(u'Windows')
     short = 'win'
     ua_pattern = 'Windows'
 
 class OSX:
-    pretty = _lazy('Mac OS X')
+    pretty = _(u'Mac OS X')
     short = 'mac'
     ua_pattern = 'Mac'
 
 class LINUX:
-    pretty = _lazy('Linux')
+    pretty = _(u'Linux')
     short = 'linux'
     ua_pattern = 'Linux'
 
 class OS_OTHER:
-    pretty = _lazy('Other')
+    pretty = _(u'Other')
     short = 'other'
     ua_pattern = None
 

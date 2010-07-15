@@ -2,14 +2,14 @@ from datetime import timedelta
 
 from django import forms
 
-from tower import ugettext_lazy as _lazy
+from tower import ugettext_lazy as _
 
 
 DASHBOARD_PERIODS = (
-    ('1d', _lazy('1 day')),
-    ('1w', _lazy('1 week')),
-    ('1m', _lazy('1 month')),
-    ('all', _lazy('all')),
+    ('1d', _(u'1 day')),
+    ('1w', _(u'1 week')),
+    ('1m', _(u'1 month')),
+    ('all', _(u'all')),
 )
 PERIOD_DELTAS = {
     '1d': timedelta(days=1),
