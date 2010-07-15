@@ -1,9 +1,9 @@
-{% macro bar(name, cnt, total, link=None): %}
+{% macro bar(name, desc, cnt, total, link=None): %}
   {% with width = cnt / total * 75 if total > 0 else 0 %}
     <div class="response {{ name }}">
       <div class="lbl">
         {% if link %}
-          <a href="{{ link }}">{{ name }}</a>
+          <a href="{{ link }}">{{ desc }}</a>
         {% else %}
           {{ name }}
         {% endif %}
@@ -26,9 +26,9 @@
     {% endtrans %}
   </div>
   {% if sent.total > 0 %}
-    {{ bar(_('happy'), sent.happy, sent.total,
+    {{ bar('happy', _('happy'), sent.happy, sent.total,
            search_url(defaults=defaults, sentiment='happy')) }}
-    {{ bar(_('sad'), sent.sad, sent.total,
+    {{ bar('sad', _('sad'), sent.sad, sent.total,
            search_url(defaults=defaults, sentiment='sad')) }}
   {% endif %}
 {% endwith %}
