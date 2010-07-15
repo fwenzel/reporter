@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
 from django import http
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
@@ -8,6 +7,7 @@ from django.views.decorators.vary import vary_on_headers
 import jingo
 from tower import ugettext as _
 
+from input.urlresolvers import reverse
 from .forms import HappyForm, SadForm
 from .models import Opinion
 from .validators import validate_ua

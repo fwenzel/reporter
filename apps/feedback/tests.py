@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
+from input.urlresolvers import reverse
 
 from product_details import firefox_versions
 
@@ -72,6 +72,9 @@ class ViewTests(TestCase):
         """Make sure unknown user agents are forwarded to download page."""
         old_enforce_setting = settings.ENFORCE_USER_AGENT
         settings.ENFORCE_USER_AGENT = True
+
+        # Let's detect the locale first
+        self.client.get('/')
 
         # no UA: redirect
         r = self.client.get(reverse('feedback.sad'))
