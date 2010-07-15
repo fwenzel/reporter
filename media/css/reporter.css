@@ -249,6 +249,10 @@ body {
 #footer-divider hr { display: none; }
 #footer-divider { clear: both;}
 
+#footer .languages {
+    float: right;
+}
+
 /* }}} */
 /* {{{ Main Feature */
 

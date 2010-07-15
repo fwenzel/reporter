@@ -77,12 +77,12 @@ USE_L10N = True
 INPUT_LANGUAGES = ('en-US','de')
 
 # Override Django's built-in with our native names
-class LazyLangs(list):
+class LazyLangs(dict):
     def __new__(self):
         import product_details
-        return [(lang.lower(), product_details.languages[lang]['native'])
-                for lang in INPUT_LANGUAGES]
-LANGUAGES = lazy(LazyLangs, list)()
+        return dict([(lang.lower(), product_details.languages[lang]['native'])
+                     for lang in INPUT_LANGUAGES])
+LANGUAGES = lazy(LazyLangs, dict)()
 
 RTL_LANGUAGES = None # ('ar', 'fa', 'fa-IR', 'he')
 LANGUAGE_URL_MAP = dict([(i.lower(), i) for i in INPUT_LANGUAGES])

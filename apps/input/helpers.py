@@ -1,5 +1,6 @@
 import cgi
 import datetime
+import urllib
 import urlparse
 
 from django.conf import settings
@@ -70,8 +71,16 @@ names, which will be replaced.
     items = [(k, unicode(v).encode('raw_unicode_escape')) for
              k, v in items if v is not None]
 
-    query_string = urlencode(items)
+    query_string = _urlencode(items)
 
     new = urlparse.ParseResult(url_.scheme, url_.netloc, url_.path,
                                url_.params, query_string, fragment)
     return jinja2.Markup(new.geturl())
+
+
+def _urlencode(items):
+    """A Unicode-safe URLencoder."""
+    try:
+        return urllib.urlencode(items)
+    except UnicodeEncodeError:
+        return urllib.urlencode([(k, smart_str(v)) for k, v in items])

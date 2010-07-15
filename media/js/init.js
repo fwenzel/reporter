@@ -2,8 +2,16 @@
 $(document).ready(function(){
     // Set up input placeholders.
     $('input[placeholder]').placeholder();
+
     // initialize date pickers
     if ($.datepicker) $('.datepicker').datepicker({ maxDate: '0' });
+
+    // Submit on locale choice
+    $('form.languages')
+        .find('select').change(function(){
+            this.form.submit();
+        }).end()
+        .find('button').hide();
 });
 
 /* Fake the placeholder attribute since Firefox doesn't support it.
