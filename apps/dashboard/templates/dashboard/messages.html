@@ -24,7 +24,7 @@
       {% if opinion.url %}
         <div class="urlpreview">
           {# L10n: This is a link to the URL associated with an opinion. #}
-          <a href="{{ opinion.url }}" rel="nofollow">{{ _('visit &rarr;') }}</a>
+          <a href="{{ opinion.url }}" rel="nofollow">{{ _('visit &rarr;')|safe }}</a>
           <input type="text" readonly value="{{ opinion.url }}"/>
         </div>
       {% endif %}

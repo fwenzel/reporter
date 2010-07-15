@@ -146,20 +146,23 @@ $(document).ready(function () {
 
 /* Bind click events for URL/UA metadata. */
 jQuery.fn.show_opinion_meta = function() {
-    // URL
-    $(this).find('a.url').click(function(e) {
-        e.preventDefault();
-        $(this).siblings('.urlpreview').toggle();
-        $(this).blur();
-    });
-    $(this).find('.urlpreview input').click(function() {
-        $(this).select();
-    });
+    $(this).find('.msg').each(function() {
+        var msg = $(this);
+        // URL
+        msg.find('a.url').click(function(e) {
+            e.preventDefault();
+            msg.find('.urlpreview').toggle();
+            $(this).blur();
+        });
+        msg.find('.urlpreview input').click(function() {
+            $(this).select();
+        });
 
-    // UA
-    $(this).find('a.ua').click(function(e) {
-        e.preventDefault();
-        $(this).siblings('.uapreview').toggle();
-        $(this).blur();
+        // UA
+        msg.find('a.ua').click(function(e) {
+            e.preventDefault();
+            msg.find('.uapreview').toggle();
+            $(this).blur();
+        });
     });
 }
