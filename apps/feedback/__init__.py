@@ -8,6 +8,7 @@ class FIREFOX:
     short = 'firefox'
     pretty = _(u'Firefox')
     guid = '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}'
+    hide_below = '3.6.4build7'
 
 class MOBILE:
     id = 60

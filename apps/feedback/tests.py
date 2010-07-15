@@ -8,6 +8,7 @@ from product_details import firefox_versions
 from . import FIREFOX, MOBILE
 from .utils import ua_parse
 from .validators import validate_no_urls
+from .version_compare import simplify_version
 
 
 class UtilTests(TestCase):
@@ -65,6 +66,20 @@ class ValidatorTests(TestCase):
                                   pattern[0])
             else:
                 validate_no_urls(pattern[0]) # Will fail if exception raised.
+
+
+class VersionCompareTest(TestCase):
+    def test_simplify_version(self):
+        """Make sure version simplification works."""
+        versions = {
+            '4.0b1': '4.0b1',
+            '3.6': '3.6',
+            '3.6.4b1': '3.6.4b1',
+            '3.6.4build1': '3.6.4',
+            '3.6.4build17': '3.6.4',
+        }
+        for v in versions:
+            self.assertEquals(simplify_version(v), versions[v])
 
 
 class ViewTests(TestCase):

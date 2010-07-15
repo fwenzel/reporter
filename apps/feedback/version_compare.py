@@ -1,6 +1,8 @@
 """Version comparison module for Mozilla-style application versions."""
 import re
 
+from django.utils.functional import memoize
+
 
 version_re = re.compile(r"""(?P<major>\d+)      # major (x in x.y)
                             \.(?P<minor1>\d+)   # minor1 (y in x.y)
@@ -47,6 +49,8 @@ def version_dict(version):
         d = dict((k, None) for k in numbers)
         d.update((k, None) for k in letters)
     return d
+_version_dict_cache = {}
+version_dict = memoize(version_dict, _version_dict_cache, 1)
 
 
 def version_int(version):
@@ -63,11 +67,16 @@ def version_int(version):
             d['minor2'], d['minor3'], d['alpha'], d['alpha_ver'], d['pre'],
             d['pre_ver'])
     return int(v)
+_version_int_cache = {}
+version_int = memoize(version_int, _version_int_cache, 1)
 
 
 def simplify_version(version):
-    """Strips cruft from a version number by parsing and rebuilding it."""
-    v = version_dict(version)
+    """
+    Strips cruft (like build1, which won't show up in a UA string) from a
+    version number by parsing and rebuilding it.
+    """
+    v = dict_from_int(version_int(version))
     # major and minor1 always exist
     pieces = [v['major'], v['minor1']]
     suffixes = []
