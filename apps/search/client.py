@@ -30,6 +30,10 @@ class Client():
         sc = self.sphinx
         sc.SetLimits(0, SPHINX_HARD_LIMIT)
 
+        if not term:
+            # Sort in reverse chronological order if we're not using relevance.
+            sc.SetSortMode(sphinx.SPH_SORT_ATTR_DESC, 'created')
+
         if isinstance(kwargs.get('product'), int):
             sc.SetFilter('product', (kwargs['product'],))
 

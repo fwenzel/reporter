@@ -57,6 +57,7 @@ class SphinxTestCase(test_utils.TransactionTestCase):
 
 query = lambda x='', **kwargs: Client().query(x, **kwargs)
 num_results = lambda x='', **kwargs: len(query(x, **kwargs))
+
 class SearchTest(SphinxTestCase):
 
     def test_query(self):
@@ -64,7 +65,9 @@ class SearchTest(SphinxTestCase):
 
     def test_default_ordering(self):
         "An empty query should return results in rev-chron order."
-        import pdb; pdb.set_trace()
+        r = query()
+        dates = [o.created for o in r]
+        eq_(dates, sorted(dates, reverse=True), "These aren't revchron.")
 
     def test_product_filter(self):
         eq_(num_results(product=1), 28)
