@@ -62,6 +62,10 @@ class SearchTest(SphinxTestCase):
     def test_query(self):
         eq_(num_results(), 28)
 
+    def test_default_ordering(self):
+        "An empty query should return results in rev-chron order."
+        import pdb; pdb.set_trace()
+
     def test_product_filter(self):
         eq_(num_results(product=1), 28)
         eq_(num_results(product=2), 0)
@@ -88,7 +92,7 @@ class SearchTest(SphinxTestCase):
         eq_(num_results(date_start=start, date_end=end), 5)
 
 
-class SearchViewTest(test_utils.TestCase):
+class SearchViewTest(SphinxTestCase):
     """Tests relating to the search template rendering."""
 
     def test_pagination_max(self):

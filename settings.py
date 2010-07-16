@@ -209,7 +209,7 @@ SPHINX_PORT = 3314
 SPHINX_SEARCHD = 'searchd'
 SPHINX_INDEXER = 'indexer'
 SPHINX_CATALOG_PATH = path('tmp/data/sphinx')
-SPHINX_LOG_PATH = path('tmp')
+SPHINX_LOG_PATH = path('tmp/log/searchd')
 SPHINX_CONFIG_PATH = path('configs/sphinx/sphinx.conf')
 SEARCH_PERPAGE = 20 # results per page
 
