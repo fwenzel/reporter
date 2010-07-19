@@ -10,7 +10,19 @@ $(document).ready(function() {
         }
     }).change();
 
-    $('#id_description').focus();
+    var minlength = function() {
+        if ($(this).hasClass('placeholder') ||
+            $(this).val().length < $(this).attr('data-minlength')) {
+            $('#feedbackform button').attr('disabled', true);
+        } else {
+            $('#feedbackform button').removeAttr('disabled');
+        }
+    };
+    $('#id_description')
+        .keyup(minlength)
+        .change(minlength)
+        .change()
+        .focus();
 });
 
 /* Dashboard */

@@ -2,11 +2,12 @@ import datetime
 import urlparse
 
 from django import forms
+from django.conf import settings
 from django.core.exceptions import ValidationError
 
 from annoying.decorators import autostrip
 from product_details import firefox_versions, mobile_details
-from tower import ugettext as _
+from tower import ugettext as _, ugettext_lazy as _lazy
 
 from . import FIREFOX, MOBILE, LATEST_BETAS
 from .models import Opinion
@@ -18,9 +19,12 @@ from .version_compare import version_int
 class FeedbackForm(forms.Form):
     """Feedback form fields shared between feedback types."""
     description = forms.CharField(widget=forms.TextInput(
-        attrs={'placeholder': _('Enter your feedback here.')}),
-        max_length=140, validators=[validate_swearwords, validate_no_html,
-                                    validate_no_email, validate_no_urls])
+        attrs={'placeholder': _lazy('Enter your feedback here.'),
+               'data-minlength': settings.MIN_FEEDBACK_LENGTH}),
+        max_length=settings.MAX_FEEDBACK_LENGTH,
+        min_length=settings.MIN_FEEDBACK_LENGTH,
+        validators=[validate_swearwords, validate_no_html,
+                    validate_no_email, validate_no_urls])
 
     def clean(self):
         # Ensure this is not a recent duplicate submission.
