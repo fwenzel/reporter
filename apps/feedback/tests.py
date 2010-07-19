@@ -22,6 +22,17 @@ class UtilTests(TestCase):
             ('Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.4) '
              'Gecko/20100611 Firefox/3.6.4 (.NET CLR 3.5.30729)',
              FIREFOX, '3.6.4', 'en-US', 'win'),
+            # additional parentheses (bug 578339)
+            ('Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-US; rv:2.0b1) '
+             'Gecko/20100628 Firefox/4.0b1',
+             FIREFOX, '4.0b1', 'en-US', 'linux'),
+            # locale fallback (bug 578339)
+            ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; fr-FR; rv:2.0b1) '
+             'Gecko/20100628 Firefox/4.0b1',
+             FIREFOX, '4.0b1', 'fr', 'mac'),
+            ('Mozilla/5.0 (X11; U; Linux x86_64; cs-CZ; rv:2.0b2pre) Gecko/20100630 '
+             'Minefield/4.0b2pre',
+             FIREFOX, '4.0b2pre', 'cs', 'linux'),
 
             # valid Fennec
             ('Mozilla/5.0 (X11; U; Linux armv6l; fr; rv:1.9.1b1pre) Gecko/'
@@ -41,12 +52,12 @@ class UtilTests(TestCase):
         for pattern in patterns:
             parsed = ua_parse(pattern[0])
             if pattern[1]:
-                assert parsed['browser'] == pattern[1]
-                assert parsed['version'] == pattern[2]
-                assert parsed['locale'] == pattern[3]
-                assert parsed['os'] == pattern[4]
+                self.assertEquals(parsed['browser'], pattern[1])
+                self.assertEquals(parsed['version'], pattern[2])
+                self.assertEquals(parsed['locale'], pattern[3])
+                self.assertEquals(parsed['os'], pattern[4])
             else:
-                assert parsed is None
+                self.assert_(parsed is None)
 
 
 class ValidatorTests(TestCase):

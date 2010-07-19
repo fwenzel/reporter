@@ -9,6 +9,10 @@ from . import BROWSERS, OS_OTHER, OS_PATTERNS
 from .decorators import cached
 
 
+# UA Regexes
+UA_INFO_REGEX = re.compile(r'Mozilla[^(]+\((.+)\).*$')
+LANG_REGEX = re.compile(r'([a-z]+)-[A-Z]+')
+
 @cached()
 def ua_parse(ua):
     """
@@ -49,13 +53,21 @@ def ua_parse(ua):
     detected['os'] = os
 
     # Detect locale
-    info_match = re.match(r'Mozilla[^(]+\(([^)]+)\).*$', ua)
-    info = [ i.strip() for i in info_match.group(1).split(';') ]
+    info_match = UA_INFO_REGEX.match(ua)
+    try:
+        test_locale = info_match.group(1).split(';')[-2].strip()
+    except (AttributeError, IndexError):
+        detected['locale'] = None
+        return detected
+
     locale = None
-    for i in info:
-        if i in product_details.languages:
-            locale = i
-            break
+    if test_locale in product_details.languages:
+        locale = test_locale
+    elif LANG_REGEX.match(test_locale):
+        # perform lang fallback if no locale was found
+        test_locale = test_locale.split('-')[0]
+        if test_locale in product_details.languages:
+            locale = test_locale
     detected['locale'] = locale
 
     return detected
