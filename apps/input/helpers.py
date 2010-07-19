@@ -8,6 +8,7 @@ from django.template import defaultfilters
 from django.utils import translation
 
 from babel import Locale
+from babel.dates import format_datetime
 from babel.support import Format
 from jingo import register
 import jinja2
@@ -42,6 +43,11 @@ def isotime(t):
 def _append_tz(t):
     tz = pytz.timezone(settings.TIME_ZONE)
     return tz.localize(t)
+
+
+@register.filter
+def babel_datetime(t, format='medium'):
+    return _get_format().datetime(t, format=format)
 
 
 @register.function

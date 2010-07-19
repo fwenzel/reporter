@@ -7,6 +7,10 @@
     <li class="{{ opinion.positive and 'happy' or 'sad' }} clearfix msg">
       {{ smiley(opinion.positive and "happy" or "sad") }}
       <div class="desc">{{ opinion.description }}</div>
+
+      <time datetime="{{ opinion.created|isotime }}">{{
+        opinion.created|babel_datetime(format='short') }}</time>
+
       <ul class="msgopt">
         {# L10n: Link to Google Translator #}
         <li><a href="{{ 'http://translate.google.com/'|urlparams(sl='auto', q=opinion.description) }}"

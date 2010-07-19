@@ -781,6 +781,15 @@ input.placeholder {
     border: 0;
 }
 
+.opinions li time {
+    clear: both;
+    color: #888;
+    display: inline;
+    float: left;
+    font-size: 80%;
+    margin-top: .2em;
+}
+
 .opinions li .smiley {
     background: url(../img/smilies16.png) no-repeat left top;
     float: left;
