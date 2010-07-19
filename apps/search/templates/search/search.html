@@ -6,6 +6,13 @@
 
 {% block title_text %}{{ _('Search Results') }}{% endblock %}
 
+{% block feeds %}
+{# TODO(davedash): Localize title #}
+<link href="{{ search_url(defaults=form.data, feed=True) }}"
+type="application/atom+xml" rel="alternate"
+title="ATOM Feed for {{form.data.get('query', 'Latest Results') }}" />
+{% endblock %}
+
 {% block content %}
 {% if page and page.paginator.count == 1000 %}
 <aside class="warning clearfix">
@@ -29,10 +36,10 @@
         Dates: <span class="opt">{{ start_date }} &ndash; {{ end_date }}</span>
       {% endtrans %}
       <br/>
-      {% trans locale=form.cleaned_data.locale|default(_("all"), true) %}
+      {% trans locale=form.data.locale|default(_("all"), true) %}
         Locale: <span class="opt">{{ locale }}</span>;
       {% endtrans %}
-      {% trans os=form.cleaned_data.os|default(_("all"), true) %}
+      {% trans os=form.data.os|default(_("all"), true) %}
         OS: <span class="opt">{{ os }}</span>
       {% endtrans %}
     {% endif %}

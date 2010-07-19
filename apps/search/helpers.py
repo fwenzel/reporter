@@ -11,9 +11,13 @@ from .forms import ReporterSearchForm
 
 
 @register.function
-def search_url(defaults=None, extra=None, **kwargs):
+def search_url(defaults=None, extra=None, feed=False, **kwargs):
     """Build a search URL with default values unless specified otherwise."""
-    search = reverse('search')
+
+    if feed:
+        search = reverse('search.feed')
+    else:
+        search = reverse('search')
     if not defaults:
         defaults = {}
     data = []

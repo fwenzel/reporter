@@ -2,14 +2,20 @@ import os
 import shutil
 import time
 import datetime
+import socket
 
 from django.conf import settings
+from django.contrib.sites.models import Site
+from django.test.client import Client as TestClient
 
+from mock import patch
+from nose import SkipTest
 from nose.tools import eq_
+from pyquery import PyQuery as pq
 import test_utils
 
 from input.urlresolvers import reverse
-from search.client import Client
+from search.client import Client, SearchError
 from search.utils import start_sphinx, stop_sphinx, reindex
 
 
@@ -54,9 +60,9 @@ class SphinxTestCase(test_utils.TransactionTestCase):
             stop_sphinx()
             SphinxTestCase.sphinx_is_running = False
 
-
 query = lambda x='', **kwargs: Client().query(x, **kwargs)
 num_results = lambda x='', **kwargs: len(query(x, **kwargs))
+
 
 class SearchTest(SphinxTestCase):
 
@@ -88,17 +94,66 @@ class SearchTest(SphinxTestCase):
     def test_locale_filter(self):
         eq_(num_results(locale='en-US'), 26)
         eq_(num_results(locale='de'), 1)
+        eq_(num_results(locale='unknown'), 1)
 
     def test_date_filter(self):
         start = datetime.datetime(2010, 5, 27)
         end = datetime.datetime(2010, 5, 27)
         eq_(num_results(date_start=start, date_end=end), 5)
 
+    @patch('search.client.sphinx.SphinxClient.Query')
+    def test_errors(self, sphinx):
+        for error in (socket.timeout(), Exception(),):
+            sphinx.side_effect = error
+            self.assertRaises(SearchError, query)
+
+    @patch('search.client.sphinx.SphinxClient.GetLastError')
+    def test_getlasterror(self, sphinx):
+        sphinx = lambda: True
+        self.assertRaises(SearchError, query)
+
+
+def search_request(product='firefox', **kwargs):
+    kwargs['product'] = product
+    return TestClient().get(reverse('search'), kwargs, follow=True)
+
 
 class SearchViewTest(SphinxTestCase):
     """Tests relating to the search template rendering."""
 
     def test_pagination_max(self):
-        response = self.client.get(reverse('search'),
-                                   {'product': 'firefox', 'page': '700'}, True)
-        self.failUnlessEqual(response.status_code, 200)
+        r = search_request(page=700)
+        self.failUnlessEqual(r.status_code, 200)
+
+    @patch('search.views._get_results')
+    def test_error(self, get_results):
+        get_results.side_effect = SearchError()
+        r = search_request()
+        eq_(r.status_code, 500)
+
+    def test_atom_link(self):
+        r = search_request()
+        doc = pq(r.content)
+        eq_(len(doc('link[type="application/atom+xml"]')), 1)
+
+
+class FeedTest(SphinxTestCase):
+    def test_invalid_form(self):
+        # Sunbird is always the wrong product.
+        r = self.client.get(reverse('search.feed'), {'search': 'sunbird'},
+                            True)
+        self.failUnlessEqual(r.status_code, 200)
+
+    def test_title(self):
+        r = self.client.get(reverse('search.feed'),
+                            {'product': 'firefox', 'q': 'lol'})
+        doc = pq(r.content.replace('xmlns', 'xmlnamespace'))
+        eq_(doc('title').text(), "Search for 'lol'")
+
+    def test_query(self):
+        r = self.client.get(reverse('search.feed'), {'product': 'firefox'})
+        doc = pq(r.content.replace('xmlns', 'xmfail'))
+        s = Site.objects.all()[0]
+        url_base = 'http://%s/' % s.domain
+        eq_(doc('entry link').attr['href'], '%s%s' % (url_base, '#29'))
+

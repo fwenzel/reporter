@@ -1,14 +1,11 @@
 from datetime import timedelta
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Count
 from django.db.models.query import QuerySet
 
 import caching.base
-
-from search.forms import ReporterSearchForm
 
 from . import APP_IDS, OSES, query
 from .utils import ua_parse, extract_terms, smart_truncate
@@ -72,7 +69,7 @@ class Opinion(ModelBase):
         ordering = ('-created',)
 
     def __unicode__(self):
-        return '(%s) "%s"' % (
+        return '(%s) %s' % (
             self.positive and '+' or '-',
             self.truncated_description)
 
@@ -107,8 +104,8 @@ class Opinion(ModelBase):
         super(Opinion, self).save(*args, **kwargs)
 
         # Extract terms from description text and save them
-        terms = [ t for t in extract_terms(self.description) if
-                 len(t) >= settings.MIN_TERM_LENGTH ]
+        terms = [t for t in extract_terms(self.description) if
+                 len(t) >= settings.MIN_TERM_LENGTH]
         for term in terms:
             try:
                 this_term = Term.objects.get(term=term)
