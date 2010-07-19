@@ -6,6 +6,7 @@ from tower import ugettext_lazy as _lazy
 
 from feedback import APPS, FIREFOX, OS_USAGE, LATEST_BETAS
 from feedback.version_compare import simplify_version, version_int
+from input.fields import DateInput, SearchInput
 from input.utils import uniquifier
 
 
@@ -40,11 +41,6 @@ def add_empty(choices):
     return [('', _lazy('-- all --'))] + choices
 
 
-class SearchInput(forms.TextInput):
-    """HTML5 Search Input field."""
-    input_type = 'search'
-
-
 class ReporterSearchForm(forms.Form):
     q = forms.CharField(required=False, label='', widget=SearchInput(
         attrs={'placeholder': _lazy('Search Terms')}))
@@ -59,9 +55,9 @@ class ReporterSearchForm(forms.Form):
                                choices=add_empty(LOCALE_CHOICES))
     os = forms.ChoiceField(required=False, label=_lazy('OS:'),
                            choices=add_empty(OS_CHOICES))
-    date_start = forms.DateField(required=False, widget=forms.DateInput(
+    date_start = forms.DateField(required=False, widget=DateInput(
         attrs={'class': 'datepicker'}), label=_lazy('Date range:'))
-    date_end = forms.DateField(required=False, widget=forms.DateInput(
+    date_end = forms.DateField(required=False, widget=DateInput(
         # L10n: This indicates the second part of a date range.
         attrs={'class': 'datepicker'}), label=_lazy('to'))
 
