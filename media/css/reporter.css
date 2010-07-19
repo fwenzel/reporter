@@ -878,6 +878,10 @@ input.placeholder {
     right: 0;
     top: 0;
 }
+#search #search_form #show_search_adv {
+    padding: 0 0 15%;
+}
+
 #search_form #show_search_adv.active {
     background-color: #fff;
 }

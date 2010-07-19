@@ -1,8 +1,8 @@
-{% macro fieldbox(name): %}
+{% macro fieldbox(name, show_errors=True): %}
   {% with field = search_form[name] %}
     <div class="fieldWrapper wrap_{{ field.name }}">
-      {{ field.errors|safe }}
       {{ field.label_tag()|safe }} {{ field|safe }}
+      {% if show_errors %}{{ field.errors|safe }}{% endif %}
     </div>
   {% endwith %}
 {% endmacro %}
@@ -12,10 +12,15 @@
     <div id="search_basic" class="clearfix">
       {{ fieldbox('q') }}
 
-      {{ fieldbox('product') }}
-      {{ fieldbox('version') }}
+      {{ fieldbox('product', show_errors=False) }}
+      {{ fieldbox('version', show_errors=False) }}
 
       <button type="submit">{{ _('Search') }}</button>
+    </div>
+
+    <div>
+      {{ search_form.product.errors|safe }}
+      {{ search_form.version.errors|safe }}
     </div>
 
     <div id="show_search_adv" class="active">
