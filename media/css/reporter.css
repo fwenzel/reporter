@@ -758,6 +758,11 @@ input.placeholder {
     float: left;
     padding: 5px;
 }
+#sentiment .response .perc {
+    float: right;
+    padding: 5px;
+}
+
 .terms .term {
     margin-right: 1em;
     padding: 2px;
