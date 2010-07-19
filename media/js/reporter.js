@@ -17,6 +17,8 @@ $(document).ready(function() {
 $(document).ready(function() {
     if (!$('#dashboard').length) return;
 
+    var lang = $('html').attr('lang');
+
     var loading = function(that) {
         $(that).html('')
             .addClass('ajax_loading')
@@ -28,7 +30,7 @@ $(document).ready(function() {
     var grab_ajax = function(what, callback, type) {
         var period = $('#id_period').val();
         if (!type) var type = 'json';
-        $.get('/dashboard/ajax/'+what+'/'+period, callback, type);
+        $.get('/'+lang+'/dashboard/ajax/'+what+'/'+period, callback, type);
     };
     var init_all = function() {
         reload_all();
@@ -88,7 +90,7 @@ $(document).ready(function() {
 
         init: function() {
             loading(messages.container);
-            $.get('/dashboard/ajax/messages', messages.update, 'html');
+            $.get('/'+lang+'/dashboard/ajax/messages', messages.update, 'html');
         },
 
         update: function(data) {
