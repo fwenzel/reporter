@@ -24,8 +24,8 @@
         Description: <span class="opt">"{{ query }}"</span>;
         {% endtrans %}
       {% endif %}
-      {% trans start_date=form.cleaned_data.date_start,
-               end_date=form.cleaned_data.date_end %}
+      {% trans start_date=form.cleaned_data.date_start|babel_date,
+               end_date=form.cleaned_data.date_end|babel_date %}
         Dates: <span class="opt">{{ start_date }} &ndash; {{ end_date }}</span>
       {% endtrans %}
       <br/>

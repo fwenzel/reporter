@@ -46,6 +46,11 @@ def _append_tz(t):
 
 
 @register.filter
+def babel_date(t, format='medium'):
+    return _get_format().date(t, format=format)
+
+
+@register.filter
 def babel_datetime(t, format='medium'):
     return _get_format().datetime(t, format=format)
 
