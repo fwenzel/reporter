@@ -6,10 +6,10 @@ from tower import ugettext_lazy as _
 
 
 DASHBOARD_PERIODS = (
-    ('1d', _(u'1 day')),
-    ('1w', _(u'1 week')),
-    ('1m', _(u'1 month')),
-    ('all', _(u'all')),
+    ('1d', _(u'1 day', 'dashboard_period')),
+    ('1w', _(u'1 week', 'dashboard_period')),
+    ('1m', _(u'1 month', 'dashboard_period')),
+    ('all', _(u'all', 'dashboard_period')),
 )
 PERIOD_DELTAS = {
     '1d': timedelta(days=1),

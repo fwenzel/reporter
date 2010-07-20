@@ -15,30 +15,33 @@ PROD_CHOICES = (
 #    (MOBILE.short, MOBILE.pretty),
 )
 # TODO need this for Mobile as well
-FIREFOX_BETA_VERSION_CHOICES = uniquifier(
+FIREFOX_BETA_VERSION_CHOICES = [
+    ('', _lazy('-- all --', 'version_choice'))] + uniquifier(
     [(simplify_version(v[0]), v[0]) for v in
      sorted(product_details.firefox_history_development_releases.items(),
             key=lambda x: x[1], reverse=True) if
      version_int(v[0]) >= version_int(FIREFOX.hide_below)
     ], key=lambda x: x[0])
+
 SENTIMENT_CHOICES = [
+    ('', _lazy('-- all --', 'sentiment_choice')),
     ('happy', _lazy('happy')),
     ('sad', _lazy('sad')),
 ]
 SENTIMENTS = ('happy', 'sad')
-OS_CHOICES = [ (o.short, o.pretty) for o in OS_USAGE ]
+
+
+OS_CHOICES = ([('', _lazy('-- all --', 'os_choice'))] +
+              [(o.short, o.pretty) for o in OS_USAGE])
+
 try:
-    LOCALE_CHOICES = [ ('unknown', _lazy('unknown')) ] + [
-        (lang, lang) for lang in sorted(product_details.languages) ]
+    LOCALE_CHOICES = [
+        ('', _lazy('-- all --', 'locale_choice')),
+        ('unknown', _lazy('unknown')),
+    ] + [(lang, lang) for lang in sorted(product_details.languages)]
 except AttributeError:
     # no product details?
     LOCALE_CHOICES = []
-
-
-def add_empty(choices):
-    """Adds an empty choice to a list of choices."""
-    # L10n: This is a placeholder in the search form, for all items in a list.
-    return [('', _lazy('-- all --'))] + choices
 
 
 class ReporterSearchForm(forms.Form):
@@ -47,14 +50,13 @@ class ReporterSearchForm(forms.Form):
     product = forms.ChoiceField(choices=PROD_CHOICES,
                                 label=_lazy('Product:'))
     version = forms.ChoiceField(required=False,
-        choices=add_empty(FIREFOX_BETA_VERSION_CHOICES),
-        label=_lazy('Version:'))
+        choices=FIREFOX_BETA_VERSION_CHOICES, label=_lazy('Version:'))
     sentiment = forms.ChoiceField(required=False, label=_lazy('Sentiment:'),
-                                  choices=add_empty(SENTIMENT_CHOICES))
+                                  choices=SENTIMENT_CHOICES)
     locale = forms.ChoiceField(required=False, label=_lazy('Locale:'),
-                               choices=add_empty(LOCALE_CHOICES))
+                               choices=LOCALE_CHOICES)
     os = forms.ChoiceField(required=False, label=_lazy('OS:'),
-                           choices=add_empty(OS_CHOICES))
+                           choices=OS_CHOICES)
     date_start = forms.DateField(required=False, widget=DateInput(
         attrs={'class': 'datepicker'}), label=_lazy('Date range:'))
     date_end = forms.DateField(required=False, widget=DateInput(
