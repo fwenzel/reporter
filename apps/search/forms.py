@@ -34,14 +34,10 @@ SENTIMENTS = ('happy', 'sad')
 OS_CHOICES = ([('', _lazy('-- all --', 'os_choice'))] +
               [(o.short, o.pretty) for o in OS_USAGE])
 
-try:
-    LOCALE_CHOICES = [
-        ('', _lazy('-- all --', 'locale_choice')),
-        ('unknown', _lazy('unknown')),
-    ] + [(lang, lang) for lang in sorted(product_details.languages)]
-except AttributeError:
-    # no product details?
-    LOCALE_CHOICES = []
+LOCALE_CHOICES = [
+    ('', _lazy('-- all --', 'locale_choice')),
+    ('unknown', _lazy('unknown')),
+] + [(lang, lang) for lang in sorted(product_details.languages)]
 
 
 class ReporterSearchForm(forms.Form):

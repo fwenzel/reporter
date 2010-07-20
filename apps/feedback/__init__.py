@@ -32,14 +32,10 @@ BROWSERS = (
     (FIREFOX, UA_PATTERN_FIREFOX),
 )
 
-try:
-    LATEST_BETAS = {
-        FIREFOX: product_details.firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'],
-        MOBILE: product_details.mobile_details['beta_version'],
-    }
-except AttributeError:
-    # no product details data?
-    LATEST_BETAS = { FIREFOX: None, MOBILE: None }
+LATEST_BETAS = {
+    FIREFOX: product_details.firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'],
+    MOBILE: product_details.mobile_details['beta_version'],
+}
 
 # Operating Systems
 class WINDOWS:
