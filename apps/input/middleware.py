@@ -69,3 +69,5 @@ class MobileSiteMiddleware(object):
             # Keep existing setting
             return
         settings.SITE_ID = site.id
+
+        request.mobile_site = (settings.SITE_ID == settings.MOBILE_SITE_ID)
