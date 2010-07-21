@@ -75,7 +75,7 @@ USE_L10N = True
 
 # Accepted locales
 INPUT_LANGUAGES = ('cs', 'de', 'el', 'en-US', 'es-ES', 'fr', 'gl', 'it', 'pl',
-                   'pt-PT')
+                   'pt-PT', 'vi')
 
 # Override Django's built-in with our native names
 class LazyLangs(dict):
