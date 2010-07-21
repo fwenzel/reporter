@@ -74,8 +74,8 @@ USE_I18N = True
 USE_L10N = True
 
 # Accepted locales
-INPUT_LANGUAGES = ('cs', 'de', 'el', 'en-US', 'es-ES', 'fr', 'gl', 'it', 'pl',
-                   'pt-PT', 'vi')
+INPUT_LANGUAGES = ('cs', 'de', 'el', 'en-US', 'es-ES', 'fr', 'gl', 'he', 'it',
+                   'pl', 'pt-PT', 'vi')
 
 # Override Django's built-in with our native names
 class LazyLangs(dict):
@@ -85,7 +85,7 @@ class LazyLangs(dict):
                      for lang in INPUT_LANGUAGES])
 LANGUAGES = lazy(LazyLangs, dict)()
 
-RTL_LANGUAGES = None # ('ar', 'fa', 'fa-IR', 'he')
+RTL_LANGUAGES = ('he',) # ('ar', 'fa', 'fa-IR', 'he')
 LANGUAGE_URL_MAP = dict([(i.lower(), i) for i in INPUT_LANGUAGES])
 
 # Paths that don't require a locale prefix.
