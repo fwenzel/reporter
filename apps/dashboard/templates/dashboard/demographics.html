@@ -3,7 +3,7 @@
   <dt>{{ _('OS') }}</dt>
   {% for item in demo.os %}
   <dd><a href="{{ search_url(defaults=defaults, os=item.os) }}">{{ item.name }}</a>:
-    <b>{{ item.count }}</b></dd>
+    <b>{{ item.count|numberfmt }}</b></dd>
   {% endfor %}
 </dl>
 <dl class="locales">
