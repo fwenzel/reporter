@@ -733,6 +733,7 @@ input.placeholder {
 #sentiment .response .lbl {
     float: left;
     padding: 5px;
+    width: 25%;
 }
 #sentiment .response .lbl a {
     display: block;
