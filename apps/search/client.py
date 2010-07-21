@@ -63,6 +63,7 @@ class Client():
         except socket.timeout:
             raise SearchError(_("Query has timed out."))
         except Exception, e:
+            # L10n: Sphinx is the name of the search engine software.
             raise SearchError(_("Sphinx threw an unknown exception: %s") % e)
 
         if sc.GetLastError():

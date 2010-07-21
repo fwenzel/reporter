@@ -42,6 +42,7 @@ def validate_swearwords(str):
     """Soft swear word filter to encourage contructive feedback."""
     matches = swearwords.find_swearwords(str)
     if matches:
+        # L10n: "Swear words" are cuss words/offensive words.
         raise ValidationError(
             _('Your comment contains swear words (%s). In order to help us '
               'improve our products, please use words that help us create an '
