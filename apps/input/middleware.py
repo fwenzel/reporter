@@ -1,11 +1,7 @@
-"""
-Taken from zamboni.amo.middleware.
-
-Tried to use localeurl but it choked on 'en-US' with capital letters.
-"""
-
 import urllib
 
+from django.conf import settings
+from django.contrib.sites.models import Site
 from django.http import HttpResponsePermanentRedirect
 from django.utils.encoding import smart_str
 
@@ -56,3 +52,20 @@ class LocaleURLMiddleware(object):
         request.path_info = '/' + prefixer.shortened_path
         request.locale = prefixer.locale
         tower.activate(prefixer.locale)
+
+
+class MobileSiteMiddleware(object):
+    """
+    Change the settings.SITE_ID to match the request.META['HTTP_HOST'].
+    Used to detect our Mobile site from the URL.
+
+    Borrowed from http://code.djangoproject.com/ticket/4438
+    """
+
+    def process_request(self, request):
+        try:
+            site = Site.objects.get(domain=request.META['HTTP_HOST'])
+        except Site.DoesNotExist:
+            # Keep existing setting
+            return
+        settings.SITE_ID = site.id

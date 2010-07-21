@@ -63,7 +63,11 @@ TIME_ZONE = 'America/Los_Angeles'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-US'
 
+# Site ID. Site 1 is the desktop site, site == MOBILE_SITE_ID is the mobile
+# site. This is set automatically in input.middleware.MobileSiteMiddleware
+# according to the request domain.
 SITE_ID = 1
+MOBILE_SITE_ID = 2
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -148,6 +152,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.csrf',
 
     'input.context_processors.i18n',
+    'input.context_processors.mobile',
 )
 
 def JINJA_CONFIG():
@@ -158,6 +163,7 @@ def JINJA_CONFIG():
     return config
 
 MIDDLEWARE_CLASSES = (
+    'input.middleware.MobileSiteMiddleware',
     'input.middleware.LocaleURLMiddleware',
 
     'django.middleware.common.CommonMiddleware',

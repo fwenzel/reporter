@@ -8,3 +8,6 @@ def i18n(request):
                     or translation.get_language(),
             'DIR': 'rtl' if translation.get_language_bidi() else 'ltr',
             }
+
+def mobile(request):
+    return {'MOBILE': (settings.SITE_ID == settings.MOBILE_SITE_ID)}

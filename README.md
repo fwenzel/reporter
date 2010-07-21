@@ -83,11 +83,25 @@ with any web server. If you need a wsgi entry point, you can find one in
 There are two jobs you want to run periodically:
 
     ./manage.py update_product_details  # Mozilla Product Details update
-    ./manage.py update_index -r         # update and rotate search index
+    ./manage.py update_index            # update and rotate search index
 
 The frequency is up to you, but you probably want to run the search index
 updates relatively frequently, while the product details can wait a little
 longer.
+
+### Mobile vs. Desktop site
+We are using the [Django Sites Framework][sites] to distinguish between the
+mobile site and the desktop site. The default is site ID 1 == desktop. If
+you create another site using the admin interface, requests for that site's
+domain will show the mobile site (set ``settings.MOBILE_SITE_ID`` accordingly,
+though the default of 2 is probably correct).
+
+For development, you can create an alias of localhost (``m.localhost``, for
+example) in ``/etc/hosts``, and use that as the domain for the second site.
+Make sure to include the port (``m.localhost:8000``).
+
+[sites]: http://docs.djangoproject.com/en/dev/ref/contrib/sites/
+
 
 License
 -------
