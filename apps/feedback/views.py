@@ -68,4 +68,6 @@ def give_feedback(request, ua, positive):
         form = Formtype(initial={'url': url, 'add_url': False})
 
     data = {'form': form, 'positive': positive}
-    return jingo.render(request, 'feedback/feedback.html', data)
+    template = ('feedback/mobile/feedback.html' if request.mobile_site else
+                'feedback/feedback.html')
+    return jingo.render(request, template, data)

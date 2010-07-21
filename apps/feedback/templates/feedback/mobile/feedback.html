@@ -1,0 +1,51 @@
+{% extends "base_mobile.html" %}
+
+{% block page_title %}{{ _('Submit Feedback') }}{% endblock %}
+{% block body_id %}feedback{% endblock %}
+{% block global_header %}{% endblock %}
+
+{% block content %}
+
+<div id="feedbackform">
+  <h2>
+    {{ smiley(positive and "happy" or "sad") }}
+    {% if positive %}
+      {{ _('Super! Please tell us more!') }}
+    {% else %}
+      {{ _('Sorry! Please tell us more!') }}
+  {% endif %}
+  </h2>
+  <form method="post" action="" autocomplete="off">
+    {{ form.description.errors|safe }}
+    <p>{{ form.description|safe }}</p>
+
+    {% if not positive %}
+      {{ form.url.errors|safe }}
+      <p>
+        <label>{{ form.add_url|safe }}
+          {% trans %}
+          Add URL of last visited page?
+          {% endtrans %}
+        </label>
+        {{ form.url|safe }}
+      </p>
+    {% endif %}
+
+    {% for hidden in form.hidden_fields() %}
+      {{ hidden|safe }}
+      {% if hidden.errors %}
+        {{ hidden.name }}:
+        {{ hidden.errors|safe }}
+      {% endif %}
+    {% endfor %}
+
+    {{ form.errors['__all__']|safe }}
+
+    <aside>
+      <span>{{ _('Please ensure that there is no personally identifiable information here.') }}</span>
+    </aside>
+    <button type="submit">{{ _('Submit Feedback') }}</button>
+  </form>
+</div>
+
+{% endblock %}

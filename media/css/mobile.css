@@ -1,0 +1,55 @@
+/** Site layout */
+body.mobile {
+    min-width: 0;
+    font-size: 110%;
+}
+.mobile #wrapper {
+    min-width: 0;
+}
+.mobile #doc {
+    min-width: 0;
+    width: 480px;
+}
+.mobile #main-content {
+    width: 480px;
+}
+
+/** Footer */
+.mobile #footer-contents {
+    width: 480px;
+}
+.mobile #footer .languages {
+    float: none;
+    margin-bottom: 1em;
+}
+
+/** Feedback pages */
+.mobile #feedbackform .smiley {
+    background: url(../img/smilies60.png) no-repeat left top;
+    display: block;
+    margin-right: 1em;
+    height: 60px;
+    width: 60px;
+    position: static;
+}
+.mobile #feedbackform .smiley.sad {
+    background-position: 0 0;
+}
+.mobile #feedbackform .smiley.happy {
+    background-position: 0 -110px;
+}
+.mobile#feedback #feedbackform {
+    margin: 0;
+}
+.mobile#feedback #id_description {
+    width: 100%;
+}
+.mobile#feedback aside {
+    float: none;
+    width: 80%;
+}
+.mobile#feedback button {
+    clear: both;
+    font-size: 110%;
+    margin-top: 1em;
+}
