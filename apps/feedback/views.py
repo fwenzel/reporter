@@ -71,3 +71,11 @@ def give_feedback(request, ua, positive):
     template = ('feedback/mobile/feedback.html' if request.mobile_site else
                 'feedback/feedback.html')
     return jingo.render(request, template, data)
+
+
+def need_beta(request):
+    """Encourage people to download a current beta version."""
+
+    template = 'feedback/%sneed_beta.html' % (
+        'mobile/' if request.mobile_site else '')
+    return jingo.render(request, template)

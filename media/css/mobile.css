@@ -53,3 +53,13 @@ body.mobile {
     font-size: 110%;
     margin-top: 1em;
 }
+
+/** Need Beta */
+.mobile#need-beta #doc {
+    background: none;
+}
+.mobile#need-beta #main-content p {
+    background: url("../img/firefox-logo.png") no-repeat center bottom;
+    margin: 0;
+    padding: 0 0 320px 0;
+}

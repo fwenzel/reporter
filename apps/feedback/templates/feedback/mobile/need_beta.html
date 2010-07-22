@@ -1,0 +1,14 @@
+{% extends "base_mobile.html" %}
+
+{% block page_title %}{{ _('Download Beta') }}{% endblock %}
+{% block body_id %}need-beta{% endblock %}
+{% block global_header %}{% endblock %}
+
+{% block content %}
+<p>
+  {% trans url='http://www.mozilla.com/en-US/firefox/all-beta.html' %}
+  Oh! So, you want to offer us feedback. You'll need the latest Beta! Head
+  over to our beta page and <a href="{{ url }}">download it!</a>
+  {% endtrans %}
+</p>
+{% endblock %}
