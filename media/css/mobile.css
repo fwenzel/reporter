@@ -30,7 +30,7 @@ body.mobile {
     -webkit-border-bottom-left-radius: 16px;
     -webkit-border-bottom-right-radius: 16px;
     margin: 0;
-    padding: 8px 16px;
+    padding: 10px 16px 8px;
 }
 .mobile header img.fxlogo {
     margin-right: .2em;
