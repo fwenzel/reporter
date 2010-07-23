@@ -1,0 +1,18 @@
+{% extends "base_mobile.html" %}
+
+{% block page_title %}{{ _('Thanks for Your Feedback') }}{% endblock %}
+{% block body_id %}thanks{% endblock %}
+{% block global_header %}{% endblock %}
+
+{% block content %}
+<h1>{{ _('Thanks for sending us your feedback!') }}</h1>
+
+<div id="next-steps">
+  <p>{{ _('Some ways to help out more:') }}</p>
+  <nav>
+    <div class="tw"><a href="http://twitter.com/firefox/">Twitter</a></div>
+    <div class="fb"><a href="http://www.facebook.com/group.php?v=wall&amp;gid=173578463110">Facebook</a></div>
+    <div class="moz"><a href="http://planet.mozilla.org">Planet Mozilla</a></div>
+  </nav>
+</div>
+{% endblock %}

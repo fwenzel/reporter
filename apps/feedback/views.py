@@ -79,3 +79,11 @@ def need_beta(request):
     template = 'feedback/%sneed_beta.html' % (
         'mobile/' if request.mobile_site else '')
     return jingo.render(request, template)
+
+
+def thanks(request):
+    """Thank you for your feedback."""
+
+    template = 'feedback/%sthanks.html' % (
+        'mobile/' if request.mobile_site else '')
+    return jingo.render(request, template)

@@ -12,7 +12,7 @@ body.mobile {
 }
 .mobile #main-content {
     margin: 2em 0 0;
-    width: 480px;
+    width: auto;
 }
 
 /** Footer */
@@ -63,4 +63,17 @@ body.mobile {
     background: url("../img/firefox-logo.png") no-repeat center bottom;
     margin: 0;
     padding: 0 0 320px 0;
+}
+
+/** Thanks */
+.mobile#thanks #main-content h1 {
+    font-size: 200%;
+    margin-top: 0;
+}
+.mobile#thanks #next-steps nav div {
+    clear: left;
+    margin-bottom: 0;
+}
+.mobile#thanks #next-steps nav div a {
+    font-size: 100%;
 }

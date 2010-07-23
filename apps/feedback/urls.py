@@ -7,7 +7,6 @@ urlpatterns = patterns('feedback.views',
         name='feedback.sad'),
     url(r'^happy/?', 'give_feedback', {'positive': True},
         name='feedback.happy'),
-    url(r'^thanks/?', jingo.render, {'template': 'feedback/thanks.html'},
-        name='feedback.thanks'),
+    url(r'^thanks/?', 'thanks', name='feedback.thanks'),
     url(r'^download/?', 'need_beta', name='feedback.need_beta'),
 )
