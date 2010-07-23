@@ -158,6 +158,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
     'input.context_processors.i18n',
     'input.context_processors.mobile',
+    'search.context_processors.product_versions',
 )
 
 def JINJA_CONFIG():

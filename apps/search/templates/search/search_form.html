@@ -8,7 +8,8 @@
 {% endmacro %}
 
 <div id="search_form">
-  <form method="get" action="{{ url('search') }}">
+  <form method="get" action="{{ url('search') }}"
+        data-versions="{{ PROD_VERSIONS_JSON }}">
     <div id="search_basic" class="clearfix">
       {{ fieldbox('q') }}
 

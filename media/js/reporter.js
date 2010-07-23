@@ -158,9 +158,22 @@ $(document).ready(function() {
         adv_link_box.removeClass('active');
     }
 
+    // only submit non-empty fields
     the_form.submit(function() {
-        // only submit non-empty fields
         the_form.find(':input[value=""]:not(button)').attr('disabled', true);
+    });
+
+    // show correct versions when product changes
+    $('#id_product').change(function() {
+        var prod = $(this).val(),
+            versions = JSON.parse(the_form.attr('data-versions')),
+            ver_select = $('#id_version');;
+        ver_select.html('');
+        for (i in versions[prod]) {
+            var v = versions[prod][i],
+                opt = $('<option/>').val(v[0]).text(v[1]);
+            ver_select.append(opt);
+        }
     });
 });
 
