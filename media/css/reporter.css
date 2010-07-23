@@ -12,7 +12,7 @@ body {
 /* background fix: bug 574031 */
 body,
 header .stripe {
-    min-width: 1040px;
+    min-width: 1100px;
 }
 
 #nav-access {
@@ -263,7 +263,8 @@ body {
 	float: left;
 	display: inline; /* Fix IE double margin float bug */
     width:auto;
-    margin:2em 30px 0;
+    margin: 2em 0 0;
+    padding: 0 30px;
 	font-size: 125%;
 }
 

@@ -1,6 +1,6 @@
 /** Site layout */
 body.mobile {
-    min-width: 0;
+    min-width: 480px;
     font-size: 110%;
 }
 .mobile #wrapper {
@@ -11,6 +11,7 @@ body.mobile {
     width: 480px;
 }
 .mobile #main-content {
+    margin: 2em 0 0;
     width: 480px;
 }
 
