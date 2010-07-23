@@ -4,14 +4,14 @@ from urllib import urlencode
 from jingo import register
 import jinja2
 
-from feedback import FIREFOX
 from feedback.version_compare import simplify_version
 from input.urlresolvers import reverse
 from .forms import ReporterSearchForm
 
 
 @register.function
-def search_url(defaults=None, extra=None, feed=False, **kwargs):
+@jinja2.contextfunction
+def search_url(context, defaults=None, extra=None, feed=False, **kwargs):
     """Build a search URL with default values unless specified otherwise."""
 
     if feed:
@@ -25,7 +25,7 @@ def search_url(defaults=None, extra=None, feed=False, **kwargs):
     # fallbacks other than None
     fallbacks = {}
     if not 'products' in defaults and not 'products' in kwargs:
-        fallbacks['product'] = FIREFOX.short
+        fallbacks['product'] = context['request'].default_app.short
 
     # get field data from keyword args or defaults
     for field in ReporterSearchForm.base_fields:

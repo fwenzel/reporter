@@ -6,16 +6,12 @@ from django.db.models import Count
 
 import jingo
 
-from feedback import stats, FIREFOX, LATEST_BETAS
+from feedback import stats, FIREFOX, MOBILE
 from feedback.models import Opinion, Term
 from input.decorators import cache_page
 from search.forms import ReporterSearchForm
 
 from .forms import PeriodForm, PERIOD_DELTAS
-
-
-# Dashboard defaults (TODO something other than Firefox)
-DASH_PROD = FIREFOX
 
 
 @cache_page()
@@ -49,7 +45,7 @@ def period_to_date(f):
 def sentiment(request, date_start, date_end):
     """AJAX action returning a summary of positive/negative sentiments."""
     opinions = Opinion.objects.between(date_start, date_end).filter(
-        product=DASH_PROD.id)
+        product=request.default_app.id)
     data = {'sent': stats.sentiment(qs=opinions)}
     return jingo.render(request, 'dashboard/sentiments.html', data)
 
@@ -59,10 +55,9 @@ def sentiment(request, date_start, date_end):
 def trends(request, date_start, date_end):
     """AJAX action returning a summary of frequent terms."""
     opinions = Opinion.objects.between(date_start, date_end).filter(
-        product=DASH_PROD.id)
+        product=request.default_app.id)
     frequent_terms = Term.objects.frequent(
         opinions=opinions)[:settings.TRENDS_COUNT]
-    # TODO use real product here
     data = {'terms': stats.frequent_terms(qs=frequent_terms)}
     return jingo.render(request, 'dashboard/trends.html', data)
 
@@ -72,8 +67,7 @@ def trends(request, date_start, date_end):
 def demographics(request, date_start, date_end):
     """AJAX action returning an OS/locale summary."""
     opinions = Opinion.objects.between(date_start, date_end).filter(
-        product=DASH_PROD.id)
-    # TODO use real product here
+        product=request.default_app.id)
     data = {'demo': stats.demographics(qs=opinions)}
     return jingo.render(request, 'dashboard/demographics.html', data)
 
@@ -82,6 +76,6 @@ def demographics(request, date_start, date_end):
 def messages(request, count=settings.MESSAGES_COUNT):
     """AJAX action returning the most recent messages."""
     opinions = Opinion.objects.filter(
-        product=DASH_PROD.id).order_by('-created')[:count]
+        product=request.default_app.id).order_by('-created')[:count]
     data = {'opinions': opinions}
     return jingo.render(request, 'dashboard/messages.html', data)

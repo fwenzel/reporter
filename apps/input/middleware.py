@@ -7,6 +7,7 @@ from django.utils.encoding import smart_str
 
 import tower
 
+from feedback import FIREFOX, MOBILE
 from . import urlresolvers
 from .helpers import urlparams
 
@@ -73,7 +74,4 @@ class MobileSiteMiddleware(object):
 
         # Keep mobile site status in request object
         request.mobile_site = (settings.SITE_ID == settings.MOBILE_SITE_ID)
-
-        if request.mobile_site:
-            # Cache mobile pages separately from desktop
-            settings.CACHE_PREFIX += 'mobile:'
+        request.default_app = request.mobile_site and MOBILE or FIREFOX

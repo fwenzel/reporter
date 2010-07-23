@@ -10,4 +10,4 @@ def i18n(request):
             }
 
 def mobile(request):
-    return {'MOBILE': (settings.SITE_ID == settings.MOBILE_SITE_ID)}
+    return {'MOBILE': request.mobile_site}
