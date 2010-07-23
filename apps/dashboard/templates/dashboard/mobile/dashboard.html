@@ -13,15 +13,6 @@
   </div>
 </noscript>
 
-<div id="messages" class="container">
-  <a href="{{ search_url() }}" class="more">
-    {# L10n: Link on the dashboard to show more messages. #}
-    {{ _('Show more') }}
-  </a>
-  <h2>{{ _('Last {count} Messages')|f(count=messages_count) }}</h2>
-  <div class="ajaxy"></div>
-</div>
-
 <div id="overview" class="container">
   <div id="sentiment" class="clearfix">
     <div id="period">{{ period.period|safe }}</div>
@@ -37,4 +28,14 @@
     <div class="ajaxy accordion hidden"></div>
   </div>
 </div>
+
+<div id="messages" class="container">
+  <a href="{{ search_url() }}" class="more">
+    {# L10n: Link on the dashboard to show more messages. #}
+    {{ _('Show more') }}
+  </a>
+  <h2>{{ _('Last {count} Messages')|f(count=messages_count) }}</h2>
+  <div class="ajaxy"></div>
+</div>
+
 {% endblock %}
