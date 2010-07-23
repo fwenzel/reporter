@@ -12,7 +12,32 @@ body.mobile {
 }
 .mobile #main-content {
     margin: 2em 0 0;
+    padding: 0;
     width: auto;
+}
+
+/* Header */
+.mobile header {
+    padding-top: 8px;
+}
+.mobile header h1 {
+    color: #0089b7;
+    display: inline;
+    font-size: 160%;
+    background-color: #1e4262;
+    border-radius: 0 0 16px 16px;
+    -moz-border-radius: 0 0 16px 16px;
+    -webkit-border-bottom-left-radius: 16px;
+    -webkit-border-bottom-right-radius: 16px;
+    margin: 0;
+    padding: 8px 16px;
+}
+.mobile header img.fxlogo {
+    margin-right: .2em;
+}
+.mobile header a:hover,
+.mobile header a:active {
+    text-decoration: none;
 }
 
 /** Footer */
@@ -76,4 +101,44 @@ body.mobile {
 }
 .mobile#thanks #next-steps nav div a {
     font-size: 100%;
+}
+
+/** Dashboard */
+.mobile#dashboard #overview, .mobile#dashboard #messages {
+    float: none;
+    width: 460px;
+}
+.mobile#dashboard h2 {
+    font-size: 150%;
+}
+.mobile#dashboard #overview h2 {
+    border-bottom: 1px solid #ccc;
+}
+.mobile#dashboard #overview .accordion {
+    margin-bottom: 1em;
+}
+.mobile#dashboard #overview .accordion.hidden {
+    position: absolute;
+    left: -10000px;
+}
+.mobile #sentiment .response .barwrapper {
+    width: 45%;
+}
+
+/** Search */
+.mobile#dashboard #main-content {
+    margin: 1em 0;
+}
+.mobile#dashboard #search_form .wrap_q {
+    margin-right: 1.5em;
+    width: 45%;
+}
+.mobile #search_form #show_search_adv.active {
+    padding-bottom: 180px;
+}
+.mobile #search_form .wrap_product {
+    clear: left;
+}
+.mobile#dashboard #search_form .wrap_date_end {
+    margin-right: 0;
 }

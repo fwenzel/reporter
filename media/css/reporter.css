@@ -728,7 +728,7 @@ input.placeholder {
 }
 
 #sentiment .response {
-    height: 30px;
+    height: 36px;
     margin: 0 0 5px 21%;
 }
 #sentiment .response .lbl {
@@ -738,6 +738,9 @@ input.placeholder {
 }
 #sentiment .response .lbl a {
     display: block;
+}
+#sentiment .response .barwrapper {
+    width: 55%;
 }
 #sentiment .response .bar {
     border: 1px solid;

@@ -1,6 +1,5 @@
 {% macro bar(name, desc, cnt, total, link=None): %}
-  {% with perc = cnt / total * 100 if total > 0 else 0,
-          width = perc * 0.55 %}
+  {% with perc = cnt / total * 100 if total > 0 else 0 %}
     <div class="response {{ name }}">
       <div class="lbl">
         {% if link %}
@@ -9,10 +8,12 @@
           {{ name }}
         {% endif %}
       </div>
-      <div class="bar" style="width: {{ width }}%">
-        {% if width > 5 %}{{ cnt|numberfmt }}{% endif %}&nbsp;
+      <div class="barwrapper">
+        <div class="bar" style="width: {{ perc }}%">
+          {% if perc > 5 %}{{ cnt|numberfmt }}{% endif %}&nbsp;
+        </div>
+      {% if perc <= 5 %}<div class="out-cnt">{{ cnt|numberfmt }}</div>{% endif %}
       </div>
-      {% if width <= 5 %}<div class="out-cnt">{{ cnt|numberfmt }}</div>{% endif %}
 
       <div class="perc">{{ perc|int }}%</div>
     </div>

@@ -21,7 +21,12 @@
     <div id="wrapper">
       {% block global_header %}
       <header>
-        <h1>{{ _('Firefox Input Dashboard') }}</h1>
+        <h1>
+          <a href="{{ url('dashboard') }}">
+            <img src="{{ MEDIA_URL }}img/fx-white.png" alt="Firefox" class="fxlogo"/>
+            {{ _('Input Dashboard') }}
+          </a>
+        </h1>
       </header>
       {% endblock %}
 

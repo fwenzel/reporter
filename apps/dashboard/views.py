@@ -26,7 +26,9 @@ def dashboard(request):
 
     data = {'search_form': search_form, 'period': period,
             'messages_count': settings.MESSAGES_COUNT}
-    return jingo.render(request, 'dashboard/dashboard.html', data)
+    template = 'dashboard/%sdashboard.html' % (
+        'mobile/' if request.mobile_site else '')
+    return jingo.render(request, template, data)
 
 
 def period_to_date(f):

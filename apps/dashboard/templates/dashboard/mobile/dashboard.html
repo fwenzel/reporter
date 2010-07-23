@@ -1,0 +1,40 @@
+{% extends "search_base_mobile.html" %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div id="search_box" class="clearfix">
+  {% include "search/search_form.html" %}
+</div>
+
+<noscript>
+  <div class="container">
+    <h2>{{ _('Please enable JavaScript to view this page.') }}</h2>
+  </div>
+</noscript>
+
+<div id="messages" class="container">
+  <a href="{{ search_url() }}" class="more">
+    {# L10n: Link on the dashboard to show more messages. #}
+    {{ _('Show more') }}
+  </a>
+  <h2>{{ _('Last {count} Messages')|f(count=messages_count) }}</h2>
+  <div class="ajaxy"></div>
+</div>
+
+<div id="overview" class="container">
+  <div id="sentiment" class="clearfix">
+    <div id="period">{{ period.period|safe }}</div>
+    <h2><a href="#">{{ _('Overview') }}</a></h2>
+    <div class="ajaxy accordion clearfix"></div>
+  </div>
+  <div id="trends">
+    <h2><a href="#">{{ _('Trends') }}</a></h2>
+    <div class="ajaxy accordion terms hidden"></div>
+  </div>
+  <div id="demo">
+    <h2><a href="#">{{ _('Demographics') }}</a></h2>
+    <div class="ajaxy accordion hidden"></div>
+  </div>
+</div>
+{% endblock %}
