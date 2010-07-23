@@ -67,7 +67,13 @@ class MobileSiteMiddleware(object):
             site = Site.objects.get(domain=request.META['HTTP_HOST'])
         except Site.DoesNotExist:
             # Keep existing setting
-            return
-        settings.SITE_ID = site.id
+            settings.SITE_ID = settings.DESKTOP_SITE_ID
+        else:
+            settings.SITE_ID = site.id
 
+        # Keep mobile site status in request object
         request.mobile_site = (settings.SITE_ID == settings.MOBILE_SITE_ID)
+
+        if request.mobile_site:
+            # Cache mobile pages separately from desktop
+            settings.CACHE_PREFIX += 'mobile:'

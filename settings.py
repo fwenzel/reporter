@@ -45,8 +45,9 @@ SLAVE_DATABASES = []
 
 # Caching
 #CACHE_BACKEND = 'caching.backends.memcached://127.0.0.1:11211/'
-CACHE_DEFAULT_PERIOD = 60 * 5  # 5 minutes
+CACHE_DEFAULT_PERIOD = CACHE_MIDDLEWARE_SECONDS = 60 * 5  # 5 minutes
 CACHE_COUNT_TIMEOUT = 60  # seconds
+CACHE_PREFIX = CACHE_MIDDLEWARE_KEY_PREFIX = 'reporter:'
 
 # L10n
 
@@ -63,11 +64,14 @@ TIME_ZONE = 'America/Los_Angeles'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-US'
 
-# Site ID. Site 1 is the desktop site, site == MOBILE_SITE_ID is the mobile
-# site. This is set automatically in input.middleware.MobileSiteMiddleware
-# according to the request domain.
-SITE_ID = 1
+# Site ID.
+# Site 1 is the desktop site, site == MOBILE_SITE_ID is the mobile site. This
+# is set automatically in input.middleware.MobileSiteMiddleware according to
+# the request domain.
+DESKTOP_SITE_ID = 1
 MOBILE_SITE_ID = 2
+# The desktop version is the default.
+SITE_ID = DESKTOP_SITE_ID
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.

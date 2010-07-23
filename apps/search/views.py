@@ -2,13 +2,12 @@ from django.conf import settings
 from django.contrib.syndication.views import Feed
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.feedgenerator import Atom1Feed
-from django.utils.hashcompat import md5_constructor
 
 import jingo
-from view_cache_utils import cache_page_with_prefix
 
 from feedback import stats
 from feedback.models import Term
+from input.decorators import cache_page
 from input.urlresolvers import reverse
 
 from .client import Client, SearchError
@@ -62,12 +61,7 @@ class SearchFeed(Feed):
         return item.description
 
 
-def search_view_cache_key(request):
-    """Generate a cache key for a search view based on its GET parameters."""
-    return md5_constructor(str(request.GET)).hexdigest()
-
-
-@cache_page_with_prefix(settings.CACHE_DEFAULT_PERIOD, search_view_cache_key)
+@cache_page(use_get=True)
 def index(request):
     try:
         (opinions, form) = _get_results(request)
