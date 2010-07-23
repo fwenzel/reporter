@@ -740,6 +740,7 @@ input.placeholder {
     display: block;
 }
 #sentiment .response .barwrapper {
+    float: left;
     width: 55%;
 }
 #sentiment .response .bar {
