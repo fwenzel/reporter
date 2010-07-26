@@ -46,7 +46,6 @@ body.mobile {
     float: none;
 }
 .mobile header nav ul {
-    background: -moz-linear-gradient(top, #5F7E95 25%, #295372 65%);
     display: inline-block;
     float: none;
     margin: 7px 0 0 0;

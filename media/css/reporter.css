@@ -98,7 +98,11 @@ header .logobox h2 {
     padding: 8px 0 0 1em;
 }
 header .gradient {
+    background: #295372;
     background: -moz-linear-gradient(top, #5F7E95 25%, #295372 65%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(.25, #5F7E95), color-stop(.65, #295372));
+}
+header .buttons {
     float: left;
     margin-left: 30px;
 }
