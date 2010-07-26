@@ -122,9 +122,9 @@ $(document).ready(function() {
     setInterval(messages.init, 5 * 60 * 1000);
 });
 
-/* Mobile Dashboard */
+/* Mobile Dashboard/Search accordions */
 $(document).ready(function() {
-    if ($('.mobile#dashboard').length == 0) return;
+    if ($('.mobile#dashboard,.mobile#search').length == 0) return;
 
     $('#overview h2 a').click(function(e) {
         e.preventDefault();

@@ -1,0 +1,107 @@
+{% extends "search_base_mobile.html" %}
+
+{% block body_id %}search{% endblock %}
+
+{% block page_title %}{{ _('Search Results') }}{% endblock %}
+{% block title_text %}{{ _('Search Results') }}{% endblock %}
+
+{% block feeds %}
+{# TODO(davedash): Localize title #}
+<link href="{{ search_url(defaults=form.data, feed=True) }}"
+type="application/atom+xml" rel="alternate"
+title="ATOM Feed for {{form.data.get('query', 'Latest Results') }}" />
+{% endblock %}
+
+{% block content %}
+{% if page and page.paginator.count == 1000 %}
+<aside class="warning clearfix">
+  {% trans %}
+  Due to software constraints, we can only show the last 1000 messages for
+  this search query.
+  {% endtrans %}
+</aside>
+{% endif %}
+
+<div id="search_box" class="clearfix">
+  {% with search_form=form %}{% include "search/search_form.html" %}{% endwith %}
+
+  <div id="search_options">
+    {% if opinions %}
+      {% if query %}
+        {% trans %}
+        Description: <span class="opt">"{{ query }}"</span>;
+        {% endtrans %}
+      {% endif %}
+      {% trans start_date=form.cleaned_data.date_start|babel_date,
+               end_date=form.cleaned_data.date_end|babel_date %}
+        Dates: <span class="opt">{{ start_date }} &ndash; {{ end_date }}</span>
+      {% endtrans %}
+      <br/>
+      {% trans locale=form.data.locale|default(_("all"), true) %}
+        Locale: <span class="opt">{{ locale }}</span>;
+      {% endtrans %}
+      {% trans os=form.data.os|default(_("all"), true) %}
+        OS: <span class="opt">{{ os }}</span>
+      {% endtrans %}
+    {% endif %}
+  </div>
+</div>
+
+<div id="results" class="container">
+  <ul>
+    {% if opinions %}
+      {% include "dashboard/messages.html" %}
+    {% else %}
+      <li>{{ _('No search results found.') }}</li>
+    {% endif %}
+  </ul>
+
+  {% if page and page.has_other_pages() %}
+    <nav class="pagination">
+      <span class="step-links">
+        {% if page.has_previous() %}
+        <a href="{{ search_url(
+          defaults=form.data, extra={'page': page.previous_page_number()})
+          }}" class="prev">{{ _('&laquo; previous')|safe }}</a>
+        {% endif %}
+
+        {% if page.has_next() %}
+        <a href="{{ search_url(
+          defaults=form.data, extra={'page': page.next_page_number()})
+          }}" class="next">{{ _('next &raquo;')|safe }}</a>
+        {% endif %}
+
+        <span class="current">
+          {% trans pagenum=page.number, total=page.paginator.num_pages %}
+            page {{ pagenum }} of {{ total }}
+          {% endtrans %}
+        </span>
+      </span>
+    </nav>
+  {% endif %}
+</div>
+{% if opinions %}
+<div id="overview" class="container">
+  <div id="sentiment" class="clearfix">
+    <h2><a href="#">{{ _('Overview') }}</a></h2>
+    <div class="accordion">
+      {% include "dashboard/sentiments.html" %}
+    </div>
+  </div>
+
+  <div id="trends" class="clearfix">
+    <h2><a href="#">{{ _('Trends') }}</a></h2>
+    <div class="terms accordion hidden">
+      {% include "dashboard/trends.html" %}
+    </div>
+  </div>
+
+  <div id="demo" class="clearfix">
+    <h2><a href="#">{{ _('Demographics') }}</a></h2>
+    <div class="accordion hidden">
+      {% include "dashboard/demographics.html" %}
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -111,18 +111,20 @@ body.mobile {
 .mobile#dashboard h2 {
     font-size: 150%;
 }
-.mobile#dashboard #overview h2 {
-    border-bottom: 1px solid #ccc;
-}
-.mobile#dashboard #overview .accordion {
-    margin-bottom: 1em;
-}
-.mobile#dashboard #overview .accordion.hidden {
-    position: absolute;
-    left: -10000px;
-}
 .mobile #sentiment .response .barwrapper {
     width: 45%;
+}
+
+/** Stats Accordions */
+.mobile #overview h2 {
+    border-bottom: 1px solid #ccc;
+}
+.mobile #overview .accordion {
+    margin-bottom: 1em;
+}
+.mobile #overview .accordion.hidden {
+    position: absolute;
+    left: -10000px;
 }
 
 /** Search */
@@ -141,4 +143,14 @@ body.mobile {
 }
 .mobile#dashboard #search_form .wrap_date_end {
     margin-right: 0;
+}
+.mobile#search #search_form #show_search_adv {
+    top: 50px;
+}
+
+/** Search results */
+.mobile#search #search_form, .mobile#search #search_options,
+.mobile#search #results, .mobile#search #overview {
+    float: none;
+    width: auto;
 }

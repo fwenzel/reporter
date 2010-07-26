@@ -90,4 +90,6 @@ def index(request):
             opinions=opinions)[:settings.TRENDS_COUNT]
         data['terms'] = stats.frequent_terms(qs=frequent_terms)
 
-    return jingo.render(request, 'search/search.html', data)
+    template = 'search/%ssearch.html' % (
+        'mobile/' if request.mobile_site else '')
+    return jingo.render(request, template, data)
