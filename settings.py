@@ -175,6 +175,7 @@ INSTALLED_APPS = [
     'feedback',
     'search',
     'swearwords',
+    'website_issues',
 
     'annoying',
     'cronjobs',
