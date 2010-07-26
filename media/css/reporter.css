@@ -20,6 +20,19 @@ header .stripe {
     top: -10000px;
 }
 
+#doc {
+	width: 950px;
+	margin: auto;
+	text-align: left;
+	position: relative;
+	z-index: 1;
+}
+
+[dir="rtl"] #doc {
+	text-align: right;
+}
+
+/** Main header */
 header {
     display: block;
 }
@@ -47,19 +60,21 @@ header .logobox {
 	width: 950px;
 }
 header .stripe-shadow div,
-header .logobox .logo {
+header .gradient {
     -moz-box-shadow: 0 0 10px #4B4742;
     -webkit-box-shadow: 0 0 10px #4B4742;
     box-shadow: 0 0 10px #4B4742;
 }
-header .logobox .logo {
-    background-color: #1e4262;
+header .logobox .logo,
+header .gradient {
     border-radius: 0 0 16px 16px;
     -moz-border-radius: 0 0 16px 16px;
     -webkit-border-bottom-left-radius: 16px;
     -webkit-border-bottom-right-radius: 16px;
+}
+header .logobox .logo {
+    background-color: #1e4262;
     float: left;
-    margin-left: 30px;
     padding: 8px 16px;
 }
 header .logobox a:hover,
@@ -82,19 +97,39 @@ header .logobox h2 {
     margin: 0;
     padding: 8px 0 0 1em;
 }
-
-#doc {
-	width: 950px;
-	margin: auto;
-	text-align: left;
-	position: relative;
-	z-index: 1;
+header .gradient {
+    background: -moz-linear-gradient(top, #5F7E95 25%, #295372 65%);
+    float: left;
+    margin-left: 30px;
 }
-
-[dir="rtl"] #doc {
-	text-align: right;
+header nav {
+    float: left;
 }
-
+header nav ul {
+    margin-left: .5em;
+}
+header nav li {
+    border-left: 1px solid #1F4262;
+    border-right: 1px solid #879EB0;
+    display: block;
+    float: left;
+    min-width: 8em;
+    text-align: center;
+}
+header nav li.first {
+    border-left: 0;
+}
+header nav li.last {
+    border-right: none;
+}
+header nav li a:link,
+header nav li a:visited {
+    display: block;
+    color: #fff;
+    font-family: sans-serif;
+    font-weight: bold;
+    padding: 1.1em 0;
+}
 
 /* {{{ Clearfix */
 .clearfix:after {

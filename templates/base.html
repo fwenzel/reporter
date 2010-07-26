@@ -25,10 +25,18 @@
       <header>
         <div class="stripe-shadow"><div></div></div>
         <div class="logobox clearfix">
-          <a class="logo" href="{{ url('dashboard') }}">
-            <img src="{{ MEDIA_URL }}img/fx-white.png" alt="Firefox" class="fxlogo"/>
-            <h1>{{ _('Input Dashboard') }}</h1>
-          </a>
+          <div class="gradient clearfix">
+            <a class="logo" href="{{ url('dashboard') }}">
+              <img src="{{ MEDIA_URL }}img/fx-white.png" alt="Firefox" class="fxlogo"/>
+              <h1>{{ _('Input Dashboard') }}</h1>
+            </a>
+            <nav>
+              <ul>
+                <li class="first"><a href="#">{{ _('Clusters', 'nav_item') }}</a></li>
+                <li class="last"><a href="#">{{ _('Sites', 'nav_item') }}</a></li>
+              </ul>
+            </nav>
+          </div>
           <h2>{% block title_text %}{% endblock %}</h2>
         </div>
         <div class="stripe"></div>
