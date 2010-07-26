@@ -19,17 +19,15 @@
     {{ form.description.errors|safe }}
     <p>{{ form.description|safe }}</p>
 
-    {% if not positive %}
-      {{ form.url.errors|safe }}
-      <p>
-        <label>{{ form.add_url|safe }}
-          {% trans %}
-          Add URL of last visited page?
-          {% endtrans %}
-        </label>
-        {{ form.url|safe }}
-      </p>
-    {% endif %}
+    {{ form.url.errors|safe }}
+    <p>
+      <label>{{ form.add_url|safe }}
+        {% trans %}
+        Add URL of last visited page?
+        {% endtrans %}
+      </label>
+      {{ form.url|safe }}
+    </p>
 
     {% for hidden in form.hidden_fields() %}
       {{ hidden|safe }}

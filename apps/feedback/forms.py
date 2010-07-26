@@ -26,6 +26,14 @@ class FeedbackForm(forms.Form):
         validators=[validate_swearwords, validate_no_html,
                     validate_no_email, validate_no_urls])
 
+    add_url = forms.BooleanField(initial=True, required=False)
+
+    # NB: The ID 'id_url' is hard-coded in the Testpilot extension to
+    # accommodate pre-filling the field client-side.
+    # Do not change unless you know what you are doing.
+    url = forms.URLField(required=False, widget=forms.TextInput(
+        attrs={'placeholder': 'http://', 'id': 'id_url'}))
+
     def clean(self):
         # Ensure this is not a recent duplicate submission.
         if 'description' in self.cleaned_data:
@@ -37,6 +45,18 @@ class FeedbackForm(forms.Form):
                 raise ValidationError(_('We already got your feedback! Thanks.'))
 
         return super(FeedbackForm, self).clean()
+
+    def clean_url(self):
+        """Sanitize URL input, remove PWs, etc."""
+        url = self.cleaned_data['url']
+        parsed = urlparse.urlparse(url)
+
+        # Note: http/https is already enforced by URL field type.
+
+        # Rebuild URL to drop query strings, passwords, and the like.
+        new_url = (parsed.scheme, parsed.hostname, parsed.path, None, None,
+                   None)
+        return urlparse.urlunparse(new_url)
 
 
 @autostrip
@@ -52,22 +72,3 @@ class SadForm(FeedbackForm):
     positive = forms.BooleanField(initial=False,
                                   widget=forms.HiddenInput(),
                                   required=False)
-    add_url = forms.BooleanField(initial=True, required=False)
-
-    # NB: The ID 'id_url' is hard-coded in the Testpilot extension to
-    # accommodate pre-filling the field client-side.
-    # Do not change unless you know what you are doing.
-    url = forms.URLField(required=False, widget=forms.TextInput(
-        attrs={'placeholder': 'http://', 'id': 'id_url'}))
-
-    def clean_url(self):
-        """Sanitize URL input, remove PWs, etc."""
-        url = self.cleaned_data['url']
-        parsed = urlparse.urlparse(url)
-
-        # Note: http/https is already enforced by URL field type.
-
-        # Rebuild URL to drop query strings, passwords, and the like.
-        new_url = (parsed.scheme, parsed.hostname, parsed.path, None, None,
-                   None)
-        return urlparse.urlunparse(new_url)

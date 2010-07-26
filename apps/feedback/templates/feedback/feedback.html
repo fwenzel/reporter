@@ -27,18 +27,26 @@
     {{ form.description.errors|safe }}
     <p>{{ form.description|safe }}</p>
 
-    {% if not positive %}
       {{ form.url.errors|safe }}
       <p>
-        <label>{{ form.add_url|safe }}
-          {% trans %}
-          Had an issue with a specific website? Please add the URL, so we can
-          find the issue faster!
-          {% endtrans %}
-        </label>
+        {% if positive %}
+          <label>{{ form.add_url|safe }}
+            {% trans %}
+            Have a website that Firefox worked on better than before? Please
+            add the URL so we know!
+            {% endtrans %}
+          </label>
+        {% else %}
+          <label>{{ form.add_url|safe }}
+            {% trans %}
+            Had an issue with a specific website? Please add the URL, so we can
+            find the issue faster!
+            {% endtrans %}
+          </label>
+        {% endif %}
+
         {{ form.url|safe }}
       </p>
-    {% endif %}
 
     {% for hidden in form.hidden_fields() %}
       {{ hidden|safe }}
