@@ -30,9 +30,9 @@
     {% endtrans %}
   </div>
   {% if sent.total > 0 %}
-    {{ bar('happy', _('happy'), sent.happy, sent.total,
+    {{ bar('happy', _('Praise'), sent.happy, sent.total,
            search_url(defaults=defaults, sentiment='happy')) }}
-    {{ bar('sad', _('sad'), sent.sad, sent.total,
+    {{ bar('sad', _('Issues'), sent.sad, sent.total,
            search_url(defaults=defaults, sentiment='sad')) }}
   {% endif %}
 {% endwith %}
