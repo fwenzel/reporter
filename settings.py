@@ -149,8 +149,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 
 def JINJA_CONFIG():
-    config = {'extensions': ['jinja2.ext.with_', 'jinja2.ext.loopcontrols',
-                             'jinja2.ext.i18n'],
+    import jinja2
+    config = {'extensions': ['tower.template.i18n', 'jinja2.ext.loopcontrols',
+                             'jinja2.ext.with_'],
               'finalize': lambda x: x if x is not None else ''}
     return config
 
@@ -169,23 +170,23 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'reporter.urls'
 
 INSTALLED_APPS = [
+    'input', # comes first so it always takes precedence.
+    'dashboard',
+    'feedback',
+    'search',
+    'swearwords',
+
+    'annoying',
+    'cronjobs',
+    'product_details',
+    'tower',
+
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'django.contrib.admin',
-
-    'dashboard',
-    'feedback',
-    'input',
-    'search',
-    'swearwords',
-
-    'annoying',
-    'product_details',
-    'tower',
-    'cronjobs',
 ]
 
 # Where to store product details
