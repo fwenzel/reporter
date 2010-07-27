@@ -87,17 +87,19 @@ body.mobile {
 .mobile#feedback #feedbackform {
     margin: 0;
 }
-.mobile#feedback #id_description {
-    width: 100%;
+.mobile#feedback #id_description,
+.mobile#feedback #id_url {
+    width: 460px;
 }
 .mobile#feedback aside {
     float: none;
-    width: 80%;
+    width: 390px;
 }
 .mobile#feedback button {
     clear: both;
     font-size: 110%;
     margin-top: 1em;
+    margin-right: 15px;
 }
 
 /** Need Beta */
