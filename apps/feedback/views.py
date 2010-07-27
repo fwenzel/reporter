@@ -40,7 +40,7 @@ def enforce_user_agent(f):
 
 @vary_on_headers('User-Agent')
 @enforce_user_agent
-@cache_page()
+@cache_page
 def give_feedback(request, ua, positive):
     """Feedback page (positive or negative)."""
 

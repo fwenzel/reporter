@@ -14,7 +14,7 @@ from search.forms import ReporterSearchForm
 from .forms import PeriodForm, PERIOD_DELTAS
 
 
-@cache_page()
+@cache_page
 def dashboard(request):
     """Front page view."""
     search_form = ReporterSearchForm()
@@ -40,7 +40,7 @@ def period_to_date(f):
     return wrapped
 
 
-@cache_page()
+@cache_page
 @period_to_date
 def sentiment(request, date_start, date_end):
     """AJAX action returning a summary of positive/negative sentiments."""
@@ -50,7 +50,7 @@ def sentiment(request, date_start, date_end):
     return jingo.render(request, 'dashboard/sentiments.html', data)
 
 
-@cache_page()
+@cache_page
 @period_to_date
 def trends(request, date_start, date_end):
     """AJAX action returning a summary of frequent terms."""
@@ -62,7 +62,7 @@ def trends(request, date_start, date_end):
     return jingo.render(request, 'dashboard/trends.html', data)
 
 
-@cache_page()
+@cache_page
 @period_to_date
 def demographics(request, date_start, date_end):
     """AJAX action returning an OS/locale summary."""
@@ -72,7 +72,7 @@ def demographics(request, date_start, date_end):
     return jingo.render(request, 'dashboard/demographics.html', data)
 
 
-@cache_page()
+@cache_page
 def messages(request, count=settings.MESSAGES_COUNT):
     """AJAX action returning the most recent messages."""
     opinions = Opinion.objects.filter(
