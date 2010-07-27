@@ -33,8 +33,8 @@ VERSION_CHOICES = {
 
 SENTIMENT_CHOICES = [
     ('', _lazy('-- all --', 'sentiment_choice')),
-    ('happy', _lazy('happy')),
-    ('sad', _lazy('sad')),
+    ('happy', _lazy('Praise')),
+    ('sad', _lazy('Issues')),
 ]
 SENTIMENTS = ('happy', 'sad')
 
@@ -55,7 +55,7 @@ class ReporterSearchForm(forms.Form):
                                 initial=FIREFOX.short)
     version = forms.ChoiceField(required=False, label=_lazy('Version:'),
                                 choices=VERSION_CHOICES[FIREFOX])
-    sentiment = forms.ChoiceField(required=False, label=_lazy('Sentiment:'),
+    sentiment = forms.ChoiceField(required=False, label=_lazy('Kind:'),
                                   choices=SENTIMENT_CHOICES)
     locale = forms.ChoiceField(required=False, label=_lazy('Locale:'),
                                choices=LOCALE_CHOICES)

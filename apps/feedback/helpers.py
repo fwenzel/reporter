@@ -33,10 +33,10 @@ def smiley(style):
         return ''
     if style == 'happy': # positive smiley
         character = '&#9786;'
-        title = _('happy face')
+        title = _('Praise')
     else: # negative smiley
         character = '&#9785;'
-        title = _('sad face')
+        title = _('Issue')
     return jinja2.Markup(
         u'<span title="%s" class="smiley %s">%s</span>' % (
             title, style, character))
