@@ -213,7 +213,6 @@ MIN_TERM_LENGTH = 3
 MAX_TERM_LENGTH = 25
 
 # Feedback length restrictions
-MIN_FEEDBACK_LENGTH = 15
 MAX_FEEDBACK_LENGTH = 140
 
 # Number of items to show in the "Trends" box and Messages box.

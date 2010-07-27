@@ -19,10 +19,8 @@ from .version_compare import version_int
 class FeedbackForm(forms.Form):
     """Feedback form fields shared between feedback types."""
     description = forms.CharField(widget=forms.TextInput(
-        attrs={'placeholder': _lazy('Enter your feedback here.'),
-               'data-minlength': settings.MIN_FEEDBACK_LENGTH}),
+        attrs={'placeholder': _lazy('Enter your feedback here.')}),
         max_length=settings.MAX_FEEDBACK_LENGTH,
-        min_length=settings.MIN_FEEDBACK_LENGTH,
         validators=[validate_swearwords, validate_no_html,
                     validate_no_email, validate_no_urls])
 
