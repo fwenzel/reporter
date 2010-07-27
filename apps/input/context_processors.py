@@ -10,4 +10,4 @@ def i18n(request):
             }
 
 def mobile(request):
-    return {'MOBILE': request.mobile_site}
+    return {'MOBILE': getattr(request, 'mobile_site', False)}
