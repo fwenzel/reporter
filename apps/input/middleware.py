@@ -66,8 +66,8 @@ class MobileSiteMiddleware(object):
     def process_request(self, request):
         try:
             site = Site.objects.get(domain=request.META['HTTP_HOST'])
-        except Site.DoesNotExist:
-            # Keep existing setting
+        except (Site.DoesNotExist, KeyError):
+            # Serve Desktop site.
             settings.SITE_ID = settings.DESKTOP_SITE_ID
         else:
             settings.SITE_ID = site.id
