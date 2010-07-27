@@ -21,7 +21,7 @@ class UtilTests(TestCase):
              FIREFOX, '3.6.3', 'de', 'mac'),
             ('Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.4) '
              'Gecko/20100611 Firefox/3.6.4 (.NET CLR 3.5.30729)',
-             FIREFOX, '3.6.4', 'en-US', 'win'),
+             FIREFOX, '3.6.4', 'en-US', 'winxp'),
             # additional parentheses (bug 578339)
             ('Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-US; rv:2.0b1) '
              'Gecko/20100628 Firefox/4.0b1',
