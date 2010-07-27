@@ -70,8 +70,12 @@ class SearchTest(SphinxTestCase):
         eq_(num_results(), 28)
 
     def test_default_ordering(self):
-        "An empty query should return results in rev-chron order."
+        """Any query should return results in rev-chron order."""
         r = query()
+        dates = [o.created for o in r]
+        eq_(dates, sorted(dates, reverse=True), "These aren't revchron.")
+
+        r = query('Firefox')
         dates = [o.created for o in r]
         eq_(dates, sorted(dates, reverse=True), "These aren't revchron.")
 
