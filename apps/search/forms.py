@@ -55,7 +55,7 @@ class ReporterSearchForm(forms.Form):
                                 initial=FIREFOX.short)
     version = forms.ChoiceField(required=False, label=_lazy('Version:'),
                                 choices=VERSION_CHOICES[FIREFOX])
-    sentiment = forms.ChoiceField(required=False, label=_lazy('Kind:'),
+    sentiment = forms.ChoiceField(required=False, label=_lazy('Sentiment:'),
                                   choices=SENTIMENT_CHOICES)
     locale = forms.ChoiceField(required=False, label=_lazy('Locale:'),
                                choices=LOCALE_CHOICES)
