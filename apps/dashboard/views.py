@@ -6,8 +6,9 @@ from django.db.models import Count
 
 import jingo
 
-from feedback import stats, FIREFOX, MOBILE
+from feedback import stats, FIREFOX, MOBILE, LATEST_BETAS
 from feedback.models import Opinion, Term
+from feedback.version_compare import simplify_version
 from input.decorators import cache_page
 from search.forms import ReporterSearchForm
 
@@ -45,7 +46,8 @@ def period_to_date(f):
 def sentiment(request, date_start, date_end):
     """AJAX action returning a summary of positive/negative sentiments."""
     opinions = Opinion.objects.between(date_start, date_end).filter(
-        product=request.default_app.id)
+        product=request.default_app.id,
+        version=simplify_version(LATEST_BETAS[request.default_app]))
     data = {'sent': stats.sentiment(qs=opinions)}
     return jingo.render(request, 'dashboard/sentiments.html', data)
 
@@ -55,7 +57,8 @@ def sentiment(request, date_start, date_end):
 def trends(request, date_start, date_end):
     """AJAX action returning a summary of frequent terms."""
     opinions = Opinion.objects.between(date_start, date_end).filter(
-        product=request.default_app.id)
+        product=request.default_app.id,
+        version=simplify_version(LATEST_BETAS[request.default_app]))
     frequent_terms = Term.objects.frequent(
         opinions=opinions)[:settings.TRENDS_COUNT]
     data = {'terms': stats.frequent_terms(qs=frequent_terms)}
@@ -67,7 +70,8 @@ def trends(request, date_start, date_end):
 def demographics(request, date_start, date_end):
     """AJAX action returning an OS/locale summary."""
     opinions = Opinion.objects.between(date_start, date_end).filter(
-        product=request.default_app.id)
+        product=request.default_app.id,
+        version=simplify_version(LATEST_BETAS[request.default_app]))
     data = {'demo': stats.demographics(qs=opinions)}
     return jingo.render(request, 'dashboard/demographics.html', data)
 
@@ -76,6 +80,8 @@ def demographics(request, date_start, date_end):
 def messages(request, count=settings.MESSAGES_COUNT):
     """AJAX action returning the most recent messages."""
     opinions = Opinion.objects.filter(
-        product=request.default_app.id).order_by('-created')[:count]
+        product=request.default_app.id,
+        version=simplify_version(LATEST_BETAS[request.default_app])).order_by(
+            '-created')[:count]
     data = {'opinions': opinions}
     return jingo.render(request, 'dashboard/messages.html', data)
