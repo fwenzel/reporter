@@ -100,7 +100,6 @@ class Opinion(ModelBase):
             self.product = parsed['browser'].id
             self.version = parsed['version']
             self.os = parsed['os']
-            self.locale = parsed['locale'] or ''
 
         super(Opinion, self).save(*args, **kwargs)
 

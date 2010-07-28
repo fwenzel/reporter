@@ -11,6 +11,7 @@ from input.decorators import cache_page
 from input.urlresolvers import reverse
 from .forms import HappyForm, SadForm
 from .models import Opinion, ClusterType
+from .utils import detect_language
 from .validators import validate_ua
 
 
@@ -54,11 +55,13 @@ def give_feedback(request, ua, positive):
             if not form.cleaned_data.get('add_url', False):
                 form.cleaned_data['url'] = ''
 
+            locale = detect_language(request)
+
             # Save to the DB.
             new_opinion = Opinion(
                 positive=positive, url=form.cleaned_data.get('url', ''),
                 description=form.cleaned_data['description'],
-                user_agent=ua)
+                user_agent=ua, locale=locale)
             new_opinion.save()
 
             return http.HttpResponseRedirect(reverse('feedback.thanks'))
@@ -74,6 +77,7 @@ def give_feedback(request, ua, positive):
     return jingo.render(request, template, data)
 
 
+@cache_page
 def need_beta(request):
     """Encourage people to download a current beta version."""
 
@@ -82,6 +86,7 @@ def need_beta(request):
     return jingo.render(request, template)
 
 
+@cache_page
 def thanks(request):
     """Thank you for your feedback."""
 

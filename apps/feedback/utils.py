@@ -1,6 +1,8 @@
 import re
 
 from django.conf import settings
+from django.utils.translation import to_locale
+from django.utils.translation.trans_real import parse_accept_lang_header
 
 import product_details
 from topia.termextract import extract
@@ -8,10 +10,6 @@ from topia.termextract import extract
 from . import BROWSERS, OS_OTHER, OS_PATTERNS
 from .decorators import cached
 
-
-# UA Regexes
-UA_INFO_REGEX = re.compile(r'Mozilla[^(]+\((.+)\).*$')
-LANG_REGEX = re.compile(r'([a-z]+)-[A-Z]+')
 
 @cached()
 def ua_parse(ua):
@@ -52,25 +50,29 @@ def ua_parse(ua):
             break
     detected['os'] = os
 
-    # Detect locale
-    info_match = UA_INFO_REGEX.match(ua)
-    try:
-        test_locale = info_match.group(1).split(';')[-2].strip()
-    except (AttributeError, IndexError):
-        detected['locale'] = None
-        return detected
-
-    locale = None
-    if test_locale in product_details.languages:
-        locale = test_locale
-    elif LANG_REGEX.match(test_locale):
-        # perform lang fallback if no locale was found
-        test_locale = test_locale.split('-')[0]
-        if test_locale in product_details.languages:
-            locale = test_locale
-    detected['locale'] = locale
-
     return detected
+
+
+def detect_language(request):
+    """
+    Pick a user's preferred language from their Accept-Language headers.
+    """
+    accept = request.META.get('HTTP_ACCEPT_LANGUAGE')
+    if not accept:
+        return ''
+
+    ranked_languages = parse_accept_lang_header(accept)
+    for lang, q in ranked_languages:
+        locale = to_locale(lang).replace('_', '-')
+        if locale in product_details.languages:
+            return locale
+        shortened_locale = locale.split('-')[0]
+        if (shortened_locale != locale and
+            shortened_locale in product_details.languages):
+            return shortened_locale
+
+    # No dice.
+    return ''
 
 
 def extract_terms(text):
