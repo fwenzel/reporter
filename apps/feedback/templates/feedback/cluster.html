@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block page_title %}Clusters of Opinions{% endblock %}
+{% block page_title %}{{ _('Clusters of Opinions') }}{% endblock %}
 {% block body_id %}cluster{% endblock %}
 
 {% block content %}
@@ -12,7 +12,9 @@
     {{ cluster.num_opinions }} opinions similar to
     <q>{{ cluster.pivot.description }}</q>
   </h3>
-  <p>Showing the first 5:</p>
+  {# TODO davedash: make the number configurable. #}
+  {# L10n: This is referring to the first few clusters. #}
+  <p>{{ _('Showing the first {count}')|f({'count': 5}) }}:</p>
     {% with opinions = cluster.opinions.all()[:5] %}
     {% include 'dashboard/messages.html' %}
     {% endwith %}
@@ -20,6 +22,6 @@
   {% endfor %}
 </ul>
 {% else %}
-<p>No clusters of opinions found.</p>
+<p>{{ _('No clusters of opinions found.') }}</p>
 {% endif %}
 {% endblock %}
