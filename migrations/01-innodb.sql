@@ -1,3 +1,4 @@
+DROP TABLE feedback_cluster IF EXISTS;
 CREATE TABLE `feedback_cluster` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type_id` int(11) NOT NULL,
@@ -15,7 +16,7 @@ CREATE TABLE `feedback_cluster` (
 --
 -- Table structure for table `feedback_clusteritem`
 --
-
+DROP TABLE feedback_clusteritem IF EXISTS;
 CREATE TABLE `feedback_clusteritem` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cluster_id` int(11) NOT NULL,
@@ -32,7 +33,7 @@ CREATE TABLE `feedback_clusteritem` (
 --
 -- Table structure for table `feedback_clustertype`
 --
-
+DROP TABLE feedback_clustertype IF EXISTS;
 CREATE TABLE `feedback_clustertype` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `feeling` varchar(20) NOT NULL,
