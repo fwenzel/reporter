@@ -12,9 +12,9 @@ CREATE TABLE `feedback_cluster` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `feedback_clusteritem`
--- 
+--
 
 CREATE TABLE `feedback_clusteritem` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -29,9 +29,9 @@ CREATE TABLE `feedback_clusteritem` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `feedback_clustertype`
--- 
+--
 
 CREATE TABLE `feedback_clustertype` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -44,22 +44,22 @@ CREATE TABLE `feedback_clustertype` (
   UNIQUE KEY `feeling` (`feeling`,`platform`,`version`,`frequency`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 
+--
 -- Constraints for dumped tables
--- 
+--
 
--- 
+--
 -- Constraints for table `feedback_cluster`
--- 
+--
 ALTER TABLE `feedback_cluster`
-  ADD CONSTRAINT `pivot_id_refs_id_b4ecc931` FOREIGN KEY (`pivot_id`) REFERENCES `feedback_opinion` (`id`),
-  ADD CONSTRAINT `type_id_refs_id_1ce7ecdd` FOREIGN KEY (`type_id`) REFERENCES `feedback_clustertype` (`id`);
+  ADD CONSTRAINT FOREIGN KEY (`pivot_id`) REFERENCES `feedback_opinion` (`id`),
+  ADD CONSTRAINT FOREIGN KEY (`type_id`) REFERENCES `feedback_clustertype` (`id`);
 
--- 
+--
 -- Constraints for table `feedback_clusteritem`
--- 
+--
 ALTER TABLE `feedback_clusteritem`
-  ADD CONSTRAINT `cluster_id_refs_id_ab49c3aa` FOREIGN KEY (`cluster_id`) REFERENCES `feedback_cluster` (`id`),
-  ADD CONSTRAINT `opinion_id_refs_id_2fe99cfe` FOREIGN KEY (`opinion_id`) REFERENCES `feedback_opinion` (`id`);
+  ADD CONSTRAINT FOREIGN KEY (`cluster_id`) REFERENCES `feedback_cluster` (`id`),
+  ADD CONSTRAINT FOREIGN KEY (`opinion_id`) REFERENCES `feedback_opinion` (`id`);
 
 ALTER TABLE feedback_opinion ENGINE=InnoDB;
