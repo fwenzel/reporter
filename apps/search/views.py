@@ -86,9 +86,9 @@ def index(request):
         data['sent'] = stats.sentiment(qs=opinions)
         data['demo'] = stats.demographics(qs=opinions)
 
-        frequent_terms = Term.objects.frequent(
-            opinions=(o.id for o in opinions))[:settings.TRENDS_COUNT]
-        data['terms'] = stats.frequent_terms(qs=frequent_terms)
+        #frequent_terms = Term.objects.frequent(
+        #    opinions=(o.id for o in opinions))[:settings.TRENDS_COUNT]
+        #data['terms'] = stats.frequent_terms(qs=frequent_terms)
 
     template = 'search/%ssearch.html' % (
         'mobile/' if request.mobile_site else '')
