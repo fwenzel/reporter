@@ -4,6 +4,7 @@
 {% block body_id %}clusters{% endblock %}
 
 {% block content %}
+<div class="container">
 {% if clusters %}
 <ul>
   {% for cluster in clusters[:20] %}
@@ -19,4 +20,5 @@
 {% else %}
 <p>{{ _('No clusters of opinions found.') }}</p>
 {% endif %}
+</div>
 {% endblock %}

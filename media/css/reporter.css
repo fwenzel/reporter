@@ -668,8 +668,7 @@ input.placeholder {
 #dashboard #messages {
     display: none;
 }
-#dashboard .container,
-#search .container {
+.container {
     background: #fff;
     border: 1px solid rgba(75, 71, 66, .5);
     -moz-border-radius: 8px;
