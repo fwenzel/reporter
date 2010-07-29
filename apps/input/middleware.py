@@ -5,6 +5,7 @@ from django.contrib.sites.models import Site
 from django.http import HttpResponsePermanentRedirect
 from django.utils.encoding import smart_str
 
+from caching.base import cached
 import tower
 
 from feedback import FIREFOX, MOBILE
@@ -64,8 +65,11 @@ class MobileSiteMiddleware(object):
     """
 
     def process_request(self, request):
+        domain = request.META['HTTP_HOST']
         try:
-            site = Site.objects.get(domain=request.META['HTTP_HOST'])
+            site = cached(lambda: Site.objects.get(domain=domain),
+                          ''.join((settings.CACHE_PREFIX, 'dom:', domain)),
+                          settings.CACHE_COUNT_TIMEOUT)
         except (Site.DoesNotExist, KeyError):
             # Serve Desktop site.
             settings.SITE_ID = settings.DESKTOP_SITE_ID
