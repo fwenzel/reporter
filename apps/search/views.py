@@ -87,7 +87,7 @@ def index(request):
         data['demo'] = stats.demographics(qs=opinions)
 
         frequent_terms = Term.objects.frequent(
-            opinions=opinions)[:settings.TRENDS_COUNT]
+            opinions=(o.id for o in opinions))[:settings.TRENDS_COUNT]
         data['terms'] = stats.frequent_terms(qs=frequent_terms)
 
     template = 'search/%ssearch.html' % (
