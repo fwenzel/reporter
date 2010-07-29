@@ -14,7 +14,7 @@
   </h3>
   {# TODO davedash: make the number configurable. #}
   {# L10n: This is referring to the first few clusters. #}
-  <p>{{ _('Showing the first {count}')|f({'count': 5}) }}:</p>
+  <p>{{ _('Showing the first {count}')|f(count=5) }}:</p>
     {% with opinions = cluster.opinions.all()[:5] %}
     {% include 'dashboard/messages.html' %}
     {% endwith %}
