@@ -21,7 +21,7 @@ class ModelBase(caching.base.CachingMixin, models.Model):
         abstract = True
 
 
-class OpinionManager(models.Manager):
+class OpinionManager(caching.base.CachingManager):
     def browse(self, **kwargs):
         """Browse all opinions, restricted by search criteria."""
         opt = lambda x: kwargs.get(x, None)
@@ -117,24 +117,34 @@ class Opinion(ModelBase):
 class TermManager(models.Manager):
     def get_query_set(self):
         """Use a query that won't use left joins."""
-        return QuerySet(self.model, using=self._db,
-                        query=query.InnerQuery(self.model))
+        return caching.base.CachingQuerySet(
+            self.model, using=self._db, query=query.InnerQuery(self.model))
 
     def visible(self):
         """All but hidden terms."""
         return self.filter(hidden=False)
 
-    def frequent(self, opinions=None, date_start=None, date_end=None):
+    def frequent(self, opinions=None, date_start=None, date_end=None,
+                 **kwargs):
         """Frequently used terms in a given timeframe."""
-        # Either you feed in opinions or a date range. Not both.
-        assert(not (opinions and (date_start or date_end)))
-
         terms = self.visible()
         if opinions:
             terms = terms.filter(used_in__in=opinions)
-        elif date_start or date_end:
-            terms = terms.filter(used_in__in=Opinion.objects.between(
-                date_start, date_end))
+        else:
+            params = {}
+            if date_start:
+                params['used_in__created__gte'] = date_start
+            if date_end:
+                params['used_in__created__lt'] = (
+                    date_end + timedelta(days=1))
+            # Allow filtering by any opinion field in kwargs
+            for field in (f.name for f in Opinion._meta.fields):
+                if kwargs.get(field):
+                    params['used_in__'+field] = kwargs[field]
+
+            if params:
+                terms = terms.filter(**params)
+
         terms = terms.annotate(cnt=Count('used_in')).order_by('-cnt')
         return terms
 
