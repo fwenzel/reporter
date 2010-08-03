@@ -767,7 +767,7 @@ input.placeholder {
 
 #sentiment .response {
     height: 36px;
-    margin: 0 0 5px 21%;
+    margin: 0 0 5px 0;
 }
 #sentiment .response .lbl {
     float: left;

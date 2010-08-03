@@ -21,18 +21,17 @@
 {% endmacro %}
 
 {% with defaults = form.data if form else None %}
-  <div class="emotion {{ sent.sentiment }}">{{
-    smiley(sent.sentiment) }}
-    {# L10n: Total refers to a message count. #}
-    {% trans url=search_url(defaults=defaults),
-             count=sent.total|numberfmt %}
-      <a href="{{ url }}">Total</a>: {{ count }}
-    {% endtrans %}
-  </div>
-  {% if sent.total > 0 %}
+ {% if sent.total > 0 %}
     {{ bar('happy', _('Praise'), sent.happy, sent.total,
            search_url(defaults=defaults, sentiment='happy')) }}
     {{ bar('sad', _('Issues'), sent.sad, sent.total,
            search_url(defaults=defaults, sentiment='sad')) }}
   {% endif %}
-{% endwith %}
+  <p>
+    {# L10n: Total refers to a message count. #}
+    {% trans url=search_url(defaults=defaults),
+             count=sent.total|numberfmt %}
+      <a href="{{ url }}">Total</a>: {{ count }}
+    {% endtrans %}
+  </p>
+ {% endwith %}
