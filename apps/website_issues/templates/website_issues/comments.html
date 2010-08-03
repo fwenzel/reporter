@@ -1,3 +1,5 @@
-{% for c in expanded_comments %}
-<li>{{ c|replace('"','') }}</li>
+{% cache objects %}
+{% for comment in expanded_comments %}
+<li>{{ comment.description|as_unicode }}</li>
 {% endfor %}
+{% endcache %}
