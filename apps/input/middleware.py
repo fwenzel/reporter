@@ -65,8 +65,8 @@ class MobileSiteMiddleware(object):
     """
 
     def process_request(self, request):
-        domain = request.META['HTTP_HOST']
         try:
+            domain = request.META['HTTP_HOST']
             site = cached(lambda: Site.objects.get(domain=domain),
                           ''.join((settings.CACHE_PREFIX, 'dom:', domain)),
                           settings.CACHE_COUNT_TIMEOUT)
