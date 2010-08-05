@@ -60,11 +60,14 @@ class SearchFeed(Feed):
         return obj['opinions']
 
     def item_categories(self, item):
-        """Categorize comments. For now, only "positive" or "negative"."""
-        categories = [APP_IDS.get(item.product).short, item.version, item.os,
-                      item.locale]
-        categories.append('positive' if item.positive else 'negative')
-        return categories
+        """Categorize comments. Style: "product:firefox" etc."""
+        categories = {'product': APP_IDS.get(item.product).short,
+                      'version': item.version,
+                      'os': item.os,
+                      'locale': item.locale,
+                      'sentiment': 'positive' if item.positive else 'negative',
+                     }
+        return (':'.join(i) for i in categories.items())
 
     def item_description(self, item):
         """A comment's main text."""
