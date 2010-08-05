@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% macro fieldbox(name, show_errors=True): %}
+  {% with field = form[name] %}
+    <div class="fieldWrapper wrap_{{ field.name }}">
+      {{ field.label_tag()|safe }} {{ field|safe }}
+      {% if show_errors %}{{ field.errors|safe }}{% endif %}
+    </div>
+  {% endwith %}
+{% endmacro %}
+
+{% macro button(name, value='', label='', classes='') %}
+  {% if form.cleaned_data[name] == value %}
+  <a class="button active {{ classes }}"
+  {% else %}
+  <a class="button {{ classes }}"
+  {% endif %}
+     href="{{ sites_url(form,**{name: value}) }}"> {{ label }}
+  </a>
+{% endmacro %}
+
+{% block page_title %}{{ _('Input Dashboard - Sites') }}{% endblock %}
+{% block body_id %}website_issues{% endblock %}
+
+{% block content %}
+<h2>{{ _('Input Dashboard – Sites') }}</h2>
+<div id="top_menu">
+{{ button('show_one_offs', False,
+          _('Show sites with clusters'), 'left') }}
+{{ button('show_one_offs', True,
+          _('Show sites with only one message'), 'right') }}
+</div>
+<div class="container" id="results"
+     data-expanded-cluster="{{ expanded_cluster_id }}"
+     data-clusters-url="{{ url('website_issues_cluster', 0) }}">
+  {% if sites|length == 0 %}
+  <div id="none-found">
+    {{ _('Oh, no results!') }}<p>
+    <a href="{{ url('website_issues') }}">{{ _('reset my search') }}</a>
+  </div>
+  {% endif %}
+  <ul id="cluster-sites">
+  {% for site in sites %}
+    <li>
+      <h3><a title="visit this site"
+             id="site-{{ site.id }}" href="{{ site.url|as_unicode }}">
+          <span class="protocol">{{ site.url|protocol|as_unicode }} </span>{{
+            site.url|without_protocol|as_unicode }}</a></h3>
+      <h3 class="site_count">({{ _('{0} comments')|f(site.size) }})</h3>
+      <ul class="clusters">
+      {% for cluster in site.all_clusters %}
+        {% if loop.index0 == 3 and site.id != expanded_site_id %}
+        <li class="more">
+          <a href="{{ sites_url(form, 'site-%i' % site.id, site=site.id) }}"
+          >{{_('more')}}</a>
+        </li>
+        {% endif %}
+
+        {% if loop.index0 >= 3 and site.id != expanded_site_id %}
+        <li class="less extra" id="cluster-{{cluster.id}}">
+        {% else %}
+        <li id="cluster-{{ cluster.id }}">
+        {% endif %}
+          <h4>
+            <em>{{ cluster.primary_description|as_unicode }}</em>
+            {% if cluster.size > 1 %}
+            <a href="{{ sites_url(form, 'site-%i' % site.id, cluster='') }}"
+               title="{{ _('Hide similar comments',
+                           'Hide comments from this cluster') }}"
+               class="{% if cluster.id != expanded_cluster_id %}less {% endif
+                      %}hide_similar">
+               ({{ _('hide similar') }})
+            </a>
+            <a href="{{ sites_url(form, 'site-%i' % site.id,
+                                  cluster=cluster.id) }}"
+                  title="{{ _('Similar comments',
+                              'Show all comments from this cluster') }}"
+                  class="{% if cluster.id == expanded_cluster_id %}less {%
+                         endif %}show_similar">
+               ({{ _('{count} similar')|f(count = cluster.size) }})
+            </a>
+            {% endif %}
+          </h4>
+          <ol class="{% if cluster.id != expanded_cluster_id
+                     %}less {% endif %}cluster_comments">
+             {% cache objects %}
+             {% for comment in expanded_comments %}
+             <li>{{ comment.description|as_unicode }}</li>
+             {% endfor %}
+             {% endcache %}
+          </ol>
+        </li>
+      {% endfor %}
+        <div class="quick_sentiments">
+          <a title="Show positive comments"
+             href="{{ sites_url(form, 'site-%i' % site.id,
+                                sentiment='happy') }}">
+             {{ _('{count} praises')|f(count=site.praise_count) }}</a>
+          |
+          <a title="Show negative comments"
+             href="{{ sites_url(form, 'site-%i' % site.id,
+                                sentiment='sad') }}">
+             {{ _('{count} issues')|f(count=site.issues_count) }}</a>
+        </div>
+      </ul>
+    </li>
+  {% endfor %}
+  </ul>
+
+  {% if page and page.has_other_pages() %}
+    <nav class="pagination">
+      <span class="step-links">
+        {% if page.has_previous() %}
+        <a href="{{ sites_url(form, page=page.previous_page_number()) }}"
+           class="prev">{{ _('&laquo; previous')|safe }}</a>
+        {% endif %}
+
+        {% if page.has_next() %}
+        <a href="{{ sites_url(form, page=page.next_page_number()) }}"
+           class="next">{{ _('next &raquo;')|safe }}</a>
+        {% endif %}
+
+        <span class="current">
+          {% trans pagenum=page.number, total=page.paginator.num_pages %}
+            page {{ pagenum }} of {{ total }}
+          {% endtrans %}
+        </span>
+      </span>
+    </nav>
+  {% endif %}
+
+</div>
+
+<div id="search_form">
+  <form method="get" action="{{ url('website_issues') }}">
+    <div id="search-basic" class="clearfix">
+      {{ fieldbox('q') }}
+      {# make hidden input fields for settings to keep on text-search #}
+      {{ fieldbox('sentiment') }}
+      {{ fieldbox('search_type') }}
+      {{ fieldbox('show_one_offs') }}
+      <div>
+      {{ button('sentiment', 'happy', _('Praise'), 'left') }}{{
+        button('sentiment', '', _('Both')) }}{{
+        button('sentiment', 'sad', _('Issues'), 'right') }}
+      </div>
+      <div>
+      {{ button('search_type', 'latest beta', _('Latest Beta'), 'left') }}
+      {{ button('search_type', 'week', _('7 Days'), 'right') }}
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block js %}
+<script type="text/javascript" src="/media/js/website_issues.js"></script>
+{% endblock %}
+
