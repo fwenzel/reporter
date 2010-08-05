@@ -4,6 +4,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.feedgenerator import Atom1Feed
 
 import jingo
+from tower import ugettext as _, ugettext_lazy as _lazy
 
 from feedback import stats
 from feedback.models import Term
@@ -33,7 +34,7 @@ def _get_results(request):
 
 class SearchFeed(Feed):
     feed_type = Atom1Feed
-    subtitle = "Feed of search results."
+    subtitle = _lazy("Search Results in Firefox Beta Feedback.")
 
     def get_object(self, request):
         data = dict(opinions=_get_results(request)[0], request=request)
@@ -46,10 +47,9 @@ class SearchFeed(Feed):
         request = obj['request']
         query = request.GET.get('q')
 
-        if query:
-            return "Search for '%s'" % query
-
-        return "Search for input"
+        # L10n: This is the title to the Search ATOM feed.
+        return (_("Firefox Input: '{query}'").format(query=query) if query else
+                _('Firefox Input'))
 
     def items(self, obj):
         return obj['opinions']
