@@ -4,10 +4,11 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from input.urlresolvers import reverse
 
+from nose.tools import eq_
 from product_details import firefox_versions
 
 from . import FIREFOX, MOBILE
-from .utils import detect_language, ua_parse
+from .utils import detect_language, ua_parse, smart_truncate
 from .validators import validate_no_urls
 from .version_compare import simplify_version
 
@@ -72,6 +73,16 @@ class UtilTests(TestCase):
             req = http.HttpRequest()
             req.META['HTTP_ACCEPT_LANGUAGE'] = pattern[0]
             self.assertEquals(detect_language(req), pattern[1])
+
+    def test_smart_truncate(self):
+        """Test text truncation on word boundaries."""
+        patterns = (
+            ('text, teeext', 10, 'text,...'),
+            ('somethingreallylongwithnospaces', 10, 'somethingr...'),
+            ('short enough', 12, 'short enough'),
+        )
+        for pattern in patterns:
+            eq_(smart_truncate(pattern[0], length=pattern[1]), pattern[2])
 
 
 class ValidatorTests(TestCase):
