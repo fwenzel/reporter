@@ -6,7 +6,7 @@ from django.utils.feedgenerator import Atom1Feed
 import jingo
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from feedback import stats
+from feedback import APP_IDS, stats
 from feedback.models import Term
 from input.decorators import cache_page
 from input.urlresolvers import reverse
@@ -34,6 +34,8 @@ def _get_results(request):
 
 class SearchFeed(Feed):
     feed_type = Atom1Feed
+
+    author_name = _lazy('Firefox Input')
     subtitle = _lazy("Search Results in Firefox Beta Feedback.")
 
     def get_object(self, request):
@@ -41,9 +43,11 @@ class SearchFeed(Feed):
         return data
 
     def link(self, obj):
+        """Global feed link. Also used as GUID."""
         return reverse('search') + '?' + obj['request'].META['QUERY_STRING']
 
     def title(self, obj):
+        """Global feed title."""
         request = obj['request']
         query = request.GET.get('q')
 
@@ -52,13 +56,32 @@ class SearchFeed(Feed):
                 _('Firefox Input'))
 
     def items(self, obj):
+        """List of comments."""
         return obj['opinions']
 
-    def item_link(self, item):
-        return '/#%d' % item.id
+    def item_categories(self, item):
+        """Categorize comments. For now, only "positive" or "negative"."""
+        categories = [APP_IDS.get(item.product).short, item.version, item.os,
+                      item.locale]
+        categories.append('positive' if item.positive else 'negative')
+        return categories
 
     def item_description(self, item):
+        """A comment's main text."""
         return item.description
+
+    def item_link(self, item):
+        """Permalink per item. Also used as GUID."""
+        # TODO make this a working link. bug 575770.
+        return '/#%d' % item.id
+
+    def item_pubdate(self, item):
+        """Publishing date of a comment."""
+        return item.created
+
+    def item_title(self, item):
+        """A comment's title."""
+        return unicode(item)
 
 
 @cache_page(use_get=True)
