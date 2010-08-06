@@ -1,7 +1,7 @@
 from jingo import register
 import jinja2
 import product_details
-from tower import ugettext as _
+from tower import ugettext as _, ugettext_lazy as _lazy
 
 from feedback import OSES, OS_OTHER
 
@@ -13,7 +13,7 @@ def os_name(os):
 
 
 @register.function
-def locale_name(locale, native=False, default=_('unknown')):
+def locale_name(locale, native=False, default=_lazy('unknown')):
     """Convert a locale code into a human readable locale name."""
     if locale in product_details.languages:
         return product_details.languages[locale][

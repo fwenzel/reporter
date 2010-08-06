@@ -10,7 +10,7 @@
   <dt>{{ _('Locale') }}</dt>
   {% for item in demo.locale %}
   <dd><a href="{{ search_url(defaults=defaults,
-                             locale=(item.locale|default(_('unknown'), true)))
+                             locale=(item.locale|default('unknown', True)))
     }}" title="{{ locale_name(item.locale, native=True, default='') }}">{{
     locale_name(item.locale) }}</a>:
     <b>{{ item.count|numberfmt }}</b></dd>
