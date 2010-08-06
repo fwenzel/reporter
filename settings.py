@@ -25,8 +25,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ROUTERS = ('website_issues.db.DatabaseRouter',
-                    'multidb.MasterSlaveRouter',)
+DATABASE_ROUTERS = ('multidb.MasterSlaveRouter',)
 SLAVE_DATABASES = []
 
 # Caching
@@ -153,7 +152,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 def JINJA_CONFIG():
     import jinja2
     config = {'extensions': ['tower.template.i18n', 'jinja2.ext.loopcontrols',
-                             'jinja2.ext.with_', 'caching.ext.cache'],
+                             'jinja2.ext.with_'],
               'finalize': lambda x: x if x is not None else ''}
     return config
 
@@ -177,7 +176,6 @@ INSTALLED_APPS = [
     'feedback',
     'search',
     'swearwords',
-    'website_issues',
 
     'annoying',
     'cronjobs',
