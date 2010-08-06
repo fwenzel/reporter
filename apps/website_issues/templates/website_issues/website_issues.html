@@ -83,7 +83,7 @@
           </h4>
           <ol class="{% if cluster.id != expanded_cluster_id
                      %}less {% endif %}cluster_comments">
-             {% cache objects %}
+             {% cache comments %}
              {% for comment in expanded_comments %}
              <li>{{ comment.description|as_unicode }}</li>
              {% endfor %}
