@@ -857,17 +857,18 @@ input.placeholder {
     width: 67%;
     float: right;
     padding: 40px;
+    margin-top: 1em;
     padding-top: 30px;
 }
 
 #website_issues #top_menu {
     float: right;
-    margin-top: -2em;
     margin-right: 0.05em;
 }
 
 #website_issues #search_form {
     float: left;
+    margin-top: 1em;
     width: 23%;
 }
 #website_issues h3 {
