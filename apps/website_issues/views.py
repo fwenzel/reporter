@@ -29,12 +29,12 @@ def _fetch_summaries(form):
 
     search_string = search_opts.get('q', '')
     if len(search_string):
-        qs = qs.filter(url__icontains=search_string)
+        qs = qs.filter(url__contains=search_string.lower())
 
     if search_opts["show_one_offs"]:
-        qs = qs.filter(size__exact=1)
+        qs = qs.extra(where=['praise_count + issues_count = 1'])
     else:
-        qs = qs.filter(size__gt=1)
+        qs = qs.extra(where=['praise_count + issues_count > 1'])
 
     per_page = settings.SEARCH_PERPAGE
     if search_opts["show_one_offs"]:

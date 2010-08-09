@@ -23,6 +23,27 @@
 {% block body_id %}website_issues{% endblock %}
 
 {% block content %}
+<div id="search_form">
+  <form method="get" action="{{ url('website_issues') }}">
+    <div id="search-basic" class="clearfix">
+      {{ fieldbox('q') }}
+      {# make hidden input fields for settings to keep on text-search #}
+      {{ fieldbox('sentiment') }}
+      {{ fieldbox('search_type') }}
+      {{ fieldbox('show_one_offs') }}
+      <div>
+      {{ button('sentiment', 'happy', _('Praise'), 'left') }}{{
+        button('sentiment', '', _('Both')) }}{{
+        button('sentiment', 'sad', _('Issues'), 'right') }}
+      </div>
+      <div>
+      {{ button('search_type', 'latest beta', _('Latest Beta'), 'left') }}
+      {{ button('search_type', 'week', _('7 Days'), 'right') }}
+      </div>
+    </div>
+  </form>
+</div>
+
 <div id="top_menu">
 {{ button('show_one_offs', False,
           _('Show sites with clusters'), 'left') }}
@@ -126,27 +147,6 @@
     </nav>
   {% endif %}
 
-</div>
-
-<div id="search_form">
-  <form method="get" action="{{ url('website_issues') }}">
-    <div id="search-basic" class="clearfix">
-      {{ fieldbox('q') }}
-      {# make hidden input fields for settings to keep on text-search #}
-      {{ fieldbox('sentiment') }}
-      {{ fieldbox('search_type') }}
-      {{ fieldbox('show_one_offs') }}
-      <div>
-      {{ button('sentiment', 'happy', _('Praise'), 'left') }}{{
-        button('sentiment', '', _('Both')) }}{{
-        button('sentiment', 'sad', _('Issues'), 'right') }}
-      </div>
-      <div>
-      {{ button('search_type', 'latest beta', _('Latest Beta'), 'left') }}
-      {{ button('search_type', 'week', _('7 Days'), 'right') }}
-      </div>
-    </div>
-  </form>
 </div>
 {% endblock %}
 
