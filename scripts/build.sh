@@ -31,6 +31,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'mysql',
         'NAME': 'input_$1',
+        'USER': '',
         'PASSWORD': '',
         'OPTIONS': {'init_command': 'SET storage_engine=InnoDB'},
         'TEST_NAME': 'test_input_$1',
