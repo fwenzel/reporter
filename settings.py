@@ -71,7 +71,7 @@ USE_L10N = True
 # ar, he: bug 580573
 INPUT_LANGUAGES = ('ca', 'cs', 'da', 'de', 'el', 'en-US', 'es-ES', 'fr', 'gl',
                    'hu', 'it', 'nb-NO', 'nl', 'pl', 'pt-PT', 'ru', 'sk', 'sq',
-                   'vi', 'zh-CN', 'zh-TW')
+                   'uk', 'vi', 'zh-CN', 'zh-TW')
 RTL_LANGUAGES = ('ar', 'he',)  # ('fa', 'fa-IR')
 
 
