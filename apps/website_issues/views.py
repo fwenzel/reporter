@@ -53,7 +53,7 @@ def _fetch_comments(cluster_id):
          .exclude(id__exact=cluster.primary_comment_id)
     return qs
 
-@cache_page
+@cache_page(use_get=True)
 def website_issues(request):
     form = WebsiteIssuesSearchForm(request.GET)
     sites, page = _fetch_summaries(form)

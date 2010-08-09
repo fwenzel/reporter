@@ -3,7 +3,7 @@
 {% macro fieldbox(name, show_errors=True): %}
   {% with field = form[name] %}
     <div class="fieldWrapper wrap_{{ field.name }}">
-      {{ field.label_tag()|safe }} {{ field|safe }}
+      {{ field|safe }}
       {% if show_errors %}{{ field.errors|safe }}{% endif %}
     </div>
   {% endwith %}
@@ -23,7 +23,6 @@
 {% block body_id %}website_issues{% endblock %}
 
 {% block content %}
-<h2>{{ _('Input Dashboard – Sites') }}</h2>
 <div id="top_menu">
 {{ button('show_one_offs', False,
           _('Show sites with clusters'), 'left') }}
@@ -83,26 +82,22 @@
           </h4>
           <ol class="{% if cluster.id != expanded_cluster_id
                      %}less {% endif %}cluster_comments">
-             {% cache expanded_comments %}
-             {% for comment in expanded_comments %}
-             <li>{{ comment.description|as_unicode }}</li>
-             {% endfor %}
-             {% endcache %}
+             {% include 'website_issues/comments.html' %}
           </ol>
         </li>
       {% endfor %}
-        <div class="quick_sentiments">
-          <a title="Show positive comments"
-             href="{{ sites_url(form, 'site-%i' % site.id,
-                                sentiment='happy') }}">
-             {{ _('{count} praises')|f(count=site.praise_count) }}</a>
-          |
-          <a title="Show negative comments"
-             href="{{ sites_url(form, 'site-%i' % site.id,
-                                sentiment='sad') }}">
-             {{ _('{count} issues')|f(count=site.issues_count) }}</a>
-        </div>
       </ul>
+      <div class="quick_sentiments">
+        <a title="Show positive comments"
+           href="{{ sites_url(form, 'site-%i' % site.id,
+                              sentiment='happy') }}">
+           {{ _('{count} praises')|f(count=site.praise_count) }}</a>
+        |
+        <a title="Show negative comments"
+           href="{{ sites_url(form, 'site-%i' % site.id,
+                              sentiment='sad') }}">
+           {{ _('{count} issues')|f(count=site.issues_count) }}</a>
+      </div>
     </li>
   {% endfor %}
   </ul>
@@ -149,6 +144,7 @@
       {{ button('search_type', 'week', _('7 Days'), 'right') }}
       </div>
     </div>
+  </form>
 </div>
 {% endblock %}
 
