@@ -12,6 +12,7 @@ pyquery
 mock
 coverage
 pylint
+nose
 
 # L10n.
 translate-toolkit==1.6.0
