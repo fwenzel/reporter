@@ -7,7 +7,7 @@ from django.conf import settings
 
 from tower import ugettext as _
 
-from feedback.utils import crc32, manual_order
+from input.utils import crc32, manual_order
 from feedback.models import Opinion
 
 from . import sphinxapi as sphinx
