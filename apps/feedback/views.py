@@ -109,3 +109,8 @@ def cluster(request, platform, version, feeling, frequency):
                           frequency=frequency, version=version)
     return jingo.render(request, 'feedback/cluster.html',
                         {'clusters': t.clusters.all()[:30]})
+
+@cache_page
+def opinion_detail(request, id):
+    o = get_object_or_404(Opinion, pk=id)
+    return jingo.render(request, 'feedback/opinion.html', {'opinion': o})
