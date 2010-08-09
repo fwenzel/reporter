@@ -1,12 +1,13 @@
 from calendar import timegm
 from datetime import timedelta
+import re
 import socket
 
 from django.conf import settings
 
 from tower import ugettext as _
 
-from reporter.utils import crc32, manual_order
+from input.utils import crc32, manual_order
 from feedback.models import Opinion
 
 from . import sphinxapi as sphinx
@@ -56,6 +57,13 @@ class Client():
             end_date = kwargs['date_end'] + timedelta(days=1)
             end = int(timegm(end_date.timetuple()))
             sc.SetFilterRange('created', start, end)
+
+        url_re = re.compile(r'\burl:\*\B')
+
+        if url_re.search(term):
+            parts = url_re.split(term)
+            sc.SetFilter('has_url', (1,))
+            term = ''.join(parts)
 
         try:
             result = sc.Query(term, 'opinions')
