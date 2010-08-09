@@ -36,6 +36,8 @@ DATABASES = {
         'TEST_COLLATION': 'utf8_general_ci',
     }
 }
+
+INSTALLED_APPS += ('django_nose',)
 SETTINGS
 
 echo "Starting tests..."
