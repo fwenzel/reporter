@@ -27,10 +27,15 @@ from settings import *
 ROOT_URLCONF = 'workspace.urls'
 LOG_LEVEL = logging.ERROR
 # Database name has to be set because of sphinx
-DATABASES['default']['NAME'] = 'input_$1'
-DATABASES['default']['TEST_NAME'] = 'test_input_$1'
-DATABASES['default']['TEST_CHARSET'] = 'utf8'
-DATABASES['default']['TEST_COLLATION'] = 'utf8_general_ci'
+DATABASES = {
+    'default': {
+        'ENGINE': 'mysql',
+        'NAME': 'input_$1',
+        'TEST_NAME': 'test_input_$1',
+        'TEST_CHARSET': 'utf8',
+        'TEST_COLLATION': 'utf8_general_ci',
+    }
+}
 SETTINGS
 
 echo "Starting tests..."
