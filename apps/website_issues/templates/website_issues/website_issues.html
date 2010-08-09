@@ -43,7 +43,7 @@
     <li>
       <h3><a title="visit this site"
              id="site-{{ site.id }}" href="{{ site.url|as_unicode }}">
-          <span class="protocol">{{ site.url|protocol|as_unicode }} </span>{{
+          <span class="protocol">{{ site.url|protocol|as_unicode }}</span>{{
             site.url|without_protocol|as_unicode }}</a></h3>
       <h3 class="site_count">({{ _('{0} comments')|f(site.size) }})</h3>
       <ul class="clusters">
@@ -76,7 +76,7 @@
                               'Show all comments from this cluster') }}"
                   class="{% if cluster.id == expanded_cluster_id %}less {%
                          endif %}show_similar">
-               ({{ _('{count} similar')|f(count = cluster.size) }})
+               ({{ _('{count} similar')|f(count=cluster.size-1) }})
             </a>
             {% endif %}
           </h4>
@@ -90,12 +90,14 @@
       <div class="quick_sentiments">
         <a title="Show positive comments"
            href="{{ sites_url(form, 'site-%i' % site.id,
-                              sentiment='happy') }}">
+                              sentiment='happy',
+                              q=site.url|search_name|as_unicode) }}">
            {{ _('{count} praises')|f(count=site.praise_count) }}</a>
         |
         <a title="Show negative comments"
            href="{{ sites_url(form, 'site-%i' % site.id,
-                              sentiment='sad') }}">
+                              sentiment='sad',
+                              q=site.url|search_name|as_unicode) }}">
            {{ _('{count} issues')|f(count=site.issues_count) }}</a>
       </div>
     </li>

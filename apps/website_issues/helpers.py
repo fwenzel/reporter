@@ -45,5 +45,11 @@ def protocol(url):
 
 
 @register.filter
+def search_name(url):
+    qualified_host = without_protocol(url)
+    return '.'.join(qualified_host.split('.')[:2])
+
+
+@register.filter
 def as_unicode(str_or_unicode):
     return smart_unicode(str_or_unicode)

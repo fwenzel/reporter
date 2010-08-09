@@ -888,6 +888,7 @@ input.placeholder {
     font-size: 50%;
 }
 #website_issues .protocol {
+    padding-right: 3px;
     font-size: 40%;
     font-style: italic;
 }
