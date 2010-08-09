@@ -41,7 +41,7 @@
   <ul id="cluster-sites">
   {% for site in sites %}
     <li>
-      <h3><a title="visit this site"
+      <h3><a title="visit this site" target="_blank"
              id="site-{{ site.id }}" href="{{ site.url|as_unicode }}">
           <span class="protocol">{{ site.url|protocol|as_unicode }}</span>{{
             site.url|without_protocol|as_unicode }}</a></h3>
