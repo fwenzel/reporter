@@ -40,7 +40,7 @@ SETTINGS
 
 echo "Starting tests..."
 export FORCE_DB=1
-coverage run manage.py test --noinput --logging-clear-handlers --with-xunit
+coverage run manage.py test --noinput --with-xunit
 coverage xml $(find apps lib -name '*.py')
 
 # echo "Building documentation..."
