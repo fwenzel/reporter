@@ -6,7 +6,7 @@
 
 {% block content %}
 <p>
-  {% trans url='http://www.mozilla.com/en-US/m/beta' %}
+  {% trans url=('http://www.mozilla.com/%s/m/beta' % LANG) %}
   Oh! So, you want to offer us feedback. You'll need the latest Beta! Head
   over to our beta page and <a href="{{ url }}">download it!</a>
   {% endtrans %}

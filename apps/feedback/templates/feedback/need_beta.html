@@ -11,7 +11,7 @@
   {% endtrans %}
 </p>
 <p>
-  {% trans url='http://www.mozilla.com/en-US/firefox/all-beta.html' %}
+  {% trans url=('http://www.mozilla.com/%s/firefox/all-beta.html' % LANG) %}
   To do that, simply go to our download page and install/update to the
   <a href="{{ url }}">latest Firefox Beta!</a>
   {% endtrans %}
