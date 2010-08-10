@@ -11,4 +11,5 @@ urlpatterns = patterns('feedback.views',
     url(r'^cluster/(?P<feeling>[^/]+)/(?P<platform>[^/]+)/(?P<version>[^/]+)/'
         '(?P<frequency>[^/]+)$',
         'cluster', name='cluster'),
+    url(r'^opinion/(?P<id>\d+)$', 'opinion_detail', name='opinion.detail'),
 )

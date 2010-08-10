@@ -119,6 +119,9 @@ class VersionCompareTest(TestCase):
 
 
 class ViewTests(TestCase):
+
+    fixtures = ['feedback/opinions']
+
     def test_enforce_user_agent(self):
         """Make sure unknown user agents are forwarded to download page."""
         old_enforce_setting = settings.ENFORCE_USER_AGENT
@@ -150,3 +153,12 @@ class ViewTests(TestCase):
         self.assertEquals(r.status_code, 200)
 
         settings.ENFORCE_USER_AGENT = old_enforce_setting
+
+    def test_give_feedback(self):
+        r = self.client.post(reverse('feedback.sad'))
+        eq_(r.content, 'User-Agent request header must be set.')
+
+    def test_opinion_detail(self):
+        r = self.client.get(reverse('opinion.detail', args=(29,)))
+        eq_(r.status_code, 200)
+

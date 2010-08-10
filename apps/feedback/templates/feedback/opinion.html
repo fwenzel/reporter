@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block page_title %}{{ _('Opinion') }}{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% with opinions = (opinion, ) %}
+  {% include 'dashboard/messages.html' %}
+  {% endwith %}
+</div>
+{% endblock %}
+

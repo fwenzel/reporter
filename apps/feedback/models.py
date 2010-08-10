@@ -113,6 +113,9 @@ class Opinion(ModelBase):
                 this_term = Term.objects.create(term=term)
             self.terms.add(this_term)
 
+    def get_url_path(self):
+        return reverse('opinion.detail', args=(self.id,))
+
 
 class TermManager(models.Manager):
     def get_query_set(self):
