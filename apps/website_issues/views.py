@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 import jingo
 
 from input.decorators import cache_page
-from product_details import firefox_versions as versions
+from feedback import LATEST_BETAS, FIREFOX
 
 from .forms import WebsiteIssuesSearchForm
 from .models import Comment, Cluster, SiteSummary
@@ -18,7 +18,7 @@ def _fetch_summaries(form):
     qs = SiteSummary.objects.all()
 
     version = "<week>" if search_opts["search_type"] == "week" \
-                       else versions["LATEST_FIREFOX_DEVEL_VERSION"]
+                       else LATEST_BETAS[FIREFOX]
     qs = qs.filter(version__exact=version)
 
     # selected_sentiment = None means "both"

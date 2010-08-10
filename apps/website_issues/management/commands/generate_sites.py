@@ -8,8 +8,8 @@ from django.db import transaction
 
 from textcluster.cluster import Corpus
 
+from feedback import LATEST_BETAS, FIREFOX
 from feedback.models import Opinion
-from product_details import firefox_versions as versions
 
 from website_issues.models import Comment, Cluster, SiteSummary
 from website_issues.management.utils import normalize_url
@@ -103,7 +103,7 @@ class Command(BaseCommand):
     def collect_groups(self, err):
         now = datetime.now()
         seven_days_ago = now - timedelta(days=7)
-        latest_version = versions["LATEST_FIREFOX_DEVEL_VERSION"]
+        latest_version = LATEST_BETAS[FIREFOX]
         err("Collecting groups...\n")
         def add(opinion, **kwargs):
             return SiteGroup.get(frozendict(kwargs)).add(opinion.pk)
