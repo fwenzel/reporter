@@ -23,6 +23,25 @@ class HelperTests(test_utils.TestCase):
 
 
 class MiddlewareTests(test_utils.TestCase):
+    def test_locale_fallback(self):
+        """
+        Any specific flavor of a language (xx-YY) should return its generic
+        site (xx) if it exists.
+        """
+        patterns = (
+            ('en-us,en;q=0.7,de;q=0.8', 'en-US'),
+            ('fr-FR,de-DE;q=0.5', 'fr'),
+            ('zh, en-us;q=0.8, en;q=0.6', 'en-US'), # TODO should match forward?
+            ('xx-YY,es-ES;q=0.7,de-DE;q=0.5', 'es'),
+            ('German', 'en-US'), # invalid
+        )
+
+        for pattern in patterns:
+            res = self.client.get('/', HTTP_ACCEPT_LANGUAGE=pattern[0])
+            eq_(res.status_code, 301)
+            self.assertTrue(res['Location'].rstrip('/').endswith(pattern[1]))
+
+
     def test_mobilesite_nohost(self):
         """Make sure we serve the desktop site if there's no HTTP_HOST set."""
         # This won't contain HTTP_HOST. Must not fail.

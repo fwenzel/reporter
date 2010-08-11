@@ -61,7 +61,7 @@ class UtilTests(TestCase):
                 self.assert_(parsed is None)
 
     def test_detect_language(self):
-        """Check Accept-Language matching."""
+        """Check Accept-Language matching for feedback submission."""
         patterns = (
             ('en-us,en;q=0.7,de;q=0.8', 'en-US'),
             ('fr-FR,de-DE;q=0.5', 'fr'),
