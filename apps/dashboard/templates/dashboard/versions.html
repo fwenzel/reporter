@@ -1,0 +1,14 @@
+<div class="filter collapsible collapsed">
+  <h3>{{ _('Version') }}</h3>
+
+  {% include "includes/filter_box_toggle.html" %}
+
+  <div>
+    <select id="version" name="version">
+      {# TODO use defaults if specified #}
+      {% for val, name in versions %}
+        <option value="{{ val }}">{{ name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>

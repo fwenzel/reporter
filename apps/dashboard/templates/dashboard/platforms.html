@@ -1,0 +1,15 @@
+<div class="filter collapsible">
+  <h3>{{ _('Platform') }}</h3>
+  {% include "includes/filter_box_toggle.html" %}
+  <ul class="bars" data-total="{{ total }}">
+
+    {% for item in platforms %}
+    <li>
+      <input id="os_{{ item.os }}" name="os" type="checkbox" />
+      <label for="os_{{ item.os }}" class="bar" data-value="{{ item.count }}">
+        <strong>{{ item.name }}</strong>
+      </label>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

@@ -50,7 +50,7 @@ LOCALE_CHOICES = [
 
 class ReporterSearchForm(forms.Form):
     q = forms.CharField(required=False, label='', widget=SearchInput(
-        attrs={'placeholder': _lazy('Search Terms')}))
+        attrs={'placeholder': _lazy('Search by keyword')}))
     product = forms.ChoiceField(choices=PROD_CHOICES, label=_lazy('Product:'),
                                 initial=FIREFOX.short)
     version = forms.ChoiceField(required=False, label=_lazy('Version:'),

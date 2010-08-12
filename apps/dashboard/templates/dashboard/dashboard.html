@@ -1,40 +1,86 @@
-{% extends "search_base.html" %}
+{% extends "base.html" %}
 
 {% block body_id %}dashboard{% endblock %}
 
 {% block content %}
-<div id="search_box" class="clearfix">
-  {% include "search/search_form.html" %}
+<div class="col left">
+  <div id="big-count" class="count block">
+    <h3>{# L10n: Title text for a complete message count. #}
+      {{ _('Messages') }}</h3>
+    <p>{{ opinion_count|numberfmt }}</p>
+  </div>
+
+  <form id="filters" class="filters segments block" method="get" action="{{ url('search') }}">
+
+    <input type="hidden" name="product" value="{{ request.default_app.short }}" />
+
+    {{ when_block() }}
+
+    {{ sentiment_block(sentiments) }}
+
+    {#
+    <div class="filter collapsible collapsed">
+      <h3>{{ _('URL Provided?') }}</h3>
+      <a class="toggle" href="#" title="{{ _('Show/Hide Options') }}"><span>{{ _('Toggle') }}</span></a>
+      <ul class="bars" data-total="10000">
+        <li>
+
+          <input id="f21" name="f21" type="checkbox" />
+          <label for="f21" class="bar" data-value="2000">
+            {# L10n: Refers to messages that *have* a URL provided }
+            <strong>{{ _('Provided') }}</strong>
+          </label>
+        </li>
+
+        <li>
+          <input id="f21" name="f21" type="checkbox" />
+          <label for="f21" class="bar" data-value="8000">
+            {# L10n: Refers to messages that *do not* have a URL provided }
+            <strong>{{ _('Not Provided') }}</strong>
+          </label>
+        </li>
+      </ul>
+    </div>
+    #}
+
+    {{ versions_block(versions) }}
+
+    {{ platforms_block(demo.os, opinion_count) }}
+
+    {{ locales_block(demo.locale, opinion_count) }}
+
+  </form>
+</div><!--
+
+--><div class="col middle wide">
+  <div id="messages" class="block">
+    <h2>{{ _('Latest Feedback') }}</h2>
+
+    <form id="kw-search" method="get" action="{{ url('search') }}">
+      <input type="hidden" name="product" value="{{ request.default_app.short }}" />
+      {{ search_form.q|safe }}
+    </form>
+
+    {{ message_list(opinions) }}
+
+    <div class="pager">
+      <a class="next" href="{{ search_url() }}">{{ _('&laquo; Older Messages')|safe }}</a>
+      <span class="prev inactive">{{ _('Newer Messages &raquo;')|safe }}</span>
+    </div>
+  </div>
+</div><!--
+
+--><div class="col right">
+
+  <div id="trends" class="trends segments block">
+
+    {{ themes_block(terms) }}
+
+    {# TODO fetch and show sites
+    {{ sites_block(sites) }}
+    #}
+
+  </div>
 </div>
 
-<noscript>
-  <div class="container">
-    <h2>{{ _('Please enable JavaScript to view this page.') }}</h2>
-  </div>
-</noscript>
-
-<div id="overview">
-  <div id="sentiment" class="container clearfix">
-    <div id="period">{{ period.period|safe }}</div>
-    <h2>{{ _('Overview') }}</h2>
-    <div class="ajaxy"></div>
-  </div>
-  <div id="trends" class="container">
-    <h2>{{ _('Trends') }}</h2>
-    <div class="ajaxy terms"></div>
-  </div>
-  <div id="demo" class="container">
-    <h2>{{ _('Demographics') }}</h2>
-    <div class="ajaxy"></div>
-  </div>
-</div>
-
-<div id="messages" class="container">
-  <a href="{{ search_url() }}" class="more">
-    {# L10n: Link on the dashboard to show more messages. #}
-    {{ _('Show more') }}
-  </a>
-  <h2>{{ _('Last {count} Messages')|f(count=messages_count) }}</h2>
-  <div class="ajaxy"></div>
-</div>
 {% endblock %}

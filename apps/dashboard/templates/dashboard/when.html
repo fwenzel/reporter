@@ -1,0 +1,24 @@
+<div id="when" class="choice">
+  <h3>{# L10n: Title for a time-based search filter #}{{ _('When') }}</h3>
+  <div>
+    <ul>
+      <!--
+      --><li><a class="selected" href="{{ search_url(date_start=date_ago(days=1)) }}" title="{{ _('Last day') }}">{# L10n: short for 1 day #}{{ _('1d') }}</a></li><!--
+      --><li><a class="" href="{{ search_url(date_start=date_ago(days=7)) }}" title="{{ _('Last 7 days') }}">{# L10n: short for 7 days #}{{ _('7d') }}</a></li><!--
+      --><li><a class="" href="{{ search_url() }}" title="{{ _('All time') }}">&infin;</a></li><!--
+      --><li><a id="show-custom-date" class="etc" href="#" title="{# L10n: Tooltip for custom date range button #}{{ _('Custom') }}"><span>&raquo;</span></a></li>
+    </ul>
+
+    {# TODO date picker #}
+    <div id="custom-date" class="hidden">
+      {{ search_form.date_start|safe }}
+      &ndash;
+      {{ search_form.date_end|safe }}
+      {# L10n: Button text for setting a custom date range. #}
+      <button>{{ _('Set', 'date_range_set') }}</button>
+
+      {{ search_form.date_start.errors|safe }}
+      {{ search_form.date_end.errors|safe }}
+    </div>
+  </div>
+</div>

@@ -21,6 +21,7 @@ from .urlresolvers import reverse
 
 # Yanking filters from Django.
 register.filter(defaultfilters.iriencode)
+register.filter(defaultfilters.timesince)
 
 
 def _get_format():
@@ -60,6 +61,13 @@ def babel_datetime(t, format='medium'):
 def url(viewname, *args, **kwargs):
     """Helper for Django's ``reverse`` in templates."""
     return reverse(viewname, args=args, kwargs=kwargs)
+
+
+@register.filter
+def extract_domain(url_):
+    """Extract only the domain from a URL."""
+    parsed = urlparse.urlparse(url_)
+    return parsed.netloc
 
 
 @register.filter

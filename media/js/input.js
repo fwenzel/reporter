@@ -110,6 +110,9 @@
 			}
 		});
 
+        $('.message .options > a').click(function(e) {
+            e.preventDefault();
+        });
 		$('.bars').bars();
 	});
 

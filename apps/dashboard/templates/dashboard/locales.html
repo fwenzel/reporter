@@ -1,0 +1,16 @@
+<div class="filter collapsible">
+  <h3>{{ _('Locale') }}</h3>
+  {% include "includes/filter_box_toggle.html" %}
+  <ul class="bars" data-total="{{ total }}">
+    {% for item in locales %}
+    <li>
+      <input id="loc_{{ item.locale }}" name="locale" type="checkbox"
+             title="{{ locale_name(item.locale, native=True, default='') }}"
+             value="{{ item.locale|default('unknown', True) }}" />
+      <label for="loc_{{ item.locale }}" class="bar" data-value="{{ item.count }}">
+        <strong>{{ locale_name(item.locale) }}</strong>
+      </label>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

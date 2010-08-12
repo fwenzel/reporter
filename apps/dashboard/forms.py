@@ -5,6 +5,7 @@ from django import forms
 from tower import ugettext_lazy as _
 
 
+# TODO deprecated. Remove this once unused in views.py
 DASHBOARD_PERIODS = (
     ('1d', _(u'1 day', 'dashboard_period')),
     ('1w', _(u'1 week', 'dashboard_period')),

@@ -1,0 +1,15 @@
+<div class="trend collapsible">
+  {# L10n: Refers to sites that were reported in feedback. #}
+  <h3>{{ _('While Visiting') }}</h3>
+  {% include "includes/filter_box_toggle.html %}
+  <ul class="bars">
+    {% for site in sites %}
+    <li>
+      <a href="search.html" class="bar" data-value="4500">
+        <strong>lorem.com</strong>
+
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
