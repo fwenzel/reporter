@@ -2,13 +2,11 @@
 <html lang="{{ LANG }}" dir="{{ DIR }}">
   <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-    <title>{% block page_title %}{{ _('Welcome!') }}{% endblock %} :: Firefox Input</title>
+    <title>{% block page_title %}{{ _('Welcome!') }}{% endblock %} &mdash; Firefox Input</title>
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="{{ MEDIA_URL }}css/reset-min.css" type="text/css" rel="stylesheet">
-    <link href="{{ MEDIA_URL }}css/input.css" type="text/css" rel="stylesheet">
-    <link href="{{ MEDIA_URL }}css/input-local.css" type="text/css" rel="stylesheet">
+    <link href="{{ MEDIA_URL }}css/reporter.css" type="text/css" rel="stylesheet">
     <!--[if IE]><link href="{{ MEDIA_URL }}css/ie.css" rel="stylesheet" type="text/css"><![endif]-->
     <link rel="shortcut icon" type="image/png" href="{{ MEDIA_URL }}img/favicon.png"/>
     {% block feeds %}{% endblock %}
@@ -22,21 +20,35 @@
     </ul>
     </nav>
 
-    <div id="header"><div class="funnel">
-      <h1><a href="{{ url('dashboard') }}">
-        <strong>Firefox Input</strong> {{ _('Dashboard') }}
-      </a></h1>
+    <div id="wrapper">
+      {% block global_header %}
+      <header>
+        <div class="stripe-shadow"><div></div></div>
+        <div class="logobox clearfix">
+          <div class="buttons gradient clearfix">
+            <a class="logo" href="{{ url('dashboard') }}">
+              <img src="{{ MEDIA_URL }}img/fx-white.png" alt="Firefox" class="fxlogo"/>
+              <h1>{{ _('Input Dashboard') }}</h1>
+            </a>
+            <nav>
+              <ul>
+              {% include "includes/nav_buttons.html" %}
+              </ul>
+            </nav>
+          </div>
+          <h2>{% block title_text %}{% endblock %}</h2>
+        </div>
+        <div class="stripe"></div>
+      </header>
+      {% endblock %}
 
-      <ul>
-        <li><a class="selected" href="{{ url('dashboard') }}"><span>{{ _('Feedback') }}</span></a></li>
-        <li><a class="" href="{{ url('clusters') }}"><span>{# L10n: Formerly: Clusters #}{{ _('Themes') }}</span></a></li>
-        <li><a class="" href="{{ url('website_issues') }}"><span>{{ _('Sites') }}</span></a></li>
-      </ul>
-    </div></div>
-
-    <div id="body"><div class="funnel">
-      {% block content %}{% endblock %}
-    </div></div>
+      <div id="doc" class="clearfix">
+        <section id="main-content">
+          {% block content %}
+          {% endblock %}
+        </section>
+      </div><!-- end #doc -->
+    </div><!-- end #wrapper -->
 
     <!-- start #footer -->
     <footer id="footer">
@@ -64,7 +76,7 @@
 
     <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.min.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}js/init.js"></script>
-    <script type="text/javascript" src="{{ MEDIA_URL }}js/input.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/reporter.js"></script>
     {% block js %}{% endblock %}
   </body>
 </html>
