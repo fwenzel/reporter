@@ -488,7 +488,7 @@ table.data-table th {
 /* {{{ Footer */
 
 #footer {
-    background:url("../img/footer-bg.png") repeat-x scroll center top #FFFFFF;
+    background:url("../img/footer-bg-old.png") repeat-x scroll center top #FFFFFF;
     clear:both;
     color:#898378;
     font-family:verdana;
