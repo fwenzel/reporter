@@ -1,21 +1,37 @@
-<div class="filter collapsible">
-  <h3>{{ _('Type of Feedback') }}</h3>
-  {% include "includes/filter_box_toggle.html" %}
-  <ul class="bars" data-total="{{ sent.total }}">
-    <li>
-      <input id="praise_bar" name="sentiment" value="happy" type="checkbox" />
-      <label for="praise_bar" class="bar" data-value="{{ sent.happy }}">
-        {# L10n: Formerly called "happy" #}
-        <strong>{{ _('Praise') }}</strong>
-      </label>
-    </li>
+{% macro bar(name, desc, cnt, total, link=None): %}
+  {% with perc = cnt / total * 100 if total > 0 else 0 %}
+    <div class="response {{ name }}">
+      <div class="lbl">
+        {% if link %}
+          <a href="{{ link }}">{{ desc }}</a>
+        {% else %}
+          {{ name }}
+        {% endif %}
+      </div>
+      <div class="barwrapper">
+        <div class="bar" style="width: {{ perc }}%">
+          {% if perc > 5 %}{{ cnt|numberfmt }}{% endif %}&nbsp;
+        </div>
+      {% if perc <= 5 %}<div class="out-cnt">{{ cnt|numberfmt }}</div>{% endif %}
+      </div>
 
-    <li>
-      <input id="issue_bar" name="sentiment" value="sad" type="checkbox" />
-      <label for="issue_bar" class="bar" data-value="{{ sent.sad }}">
-        {# L10n: Formerly called "sad" #}
-        <strong>{{ _('Issues') }}</strong>
-      </label>
-    </li>
-  </ul>
-</div>
+      <div class="perc">{{ perc|int }}%</div>
+    </div>
+  {% endwith %}
+{% endmacro %}
+
+{% with defaults = form.data if form else None %}
+ {% if sent.total > 0 %}
+    {{ bar('happy', _('Praise'), sent.happy, sent.total,
+           search_url(defaults=defaults, sentiment='happy')) }}
+    {{ bar('sad', _('Issues'), sent.sad, sent.total,
+           search_url(defaults=defaults, sentiment='sad')) }}
+  {% endif %}
+  <p>
+    {# L10n: Total refers to a message count. #}
+    {% trans url=search_url(defaults=defaults),
+             count=sent.total|numberfmt %}
+      <a href="{{ url }}">Total</a>: {{ count }}
+    {% endtrans %}
+  </p>
+ {% endwith %}

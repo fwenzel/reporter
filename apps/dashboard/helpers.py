@@ -35,9 +35,9 @@ def platforms_block(context, platforms, total, defaults=None):
     return new_context(**locals())
 
 
-@register.inclusion_tag('dashboard/sentiments.html')
+@register.inclusion_tag('dashboard/overview.html')
 @jinja2.contextfunction
-def sentiment_block(context, sent, defaults=None):
+def overview_block(context, sent, defaults=None):
     return new_context(**locals())
 
 
