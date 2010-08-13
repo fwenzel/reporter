@@ -687,6 +687,22 @@ header, footer, article, section { display: block; }
 		font-weight: bold;
 		}
 
+#uncommon-sites {
+	}
+	#uncommon-sites li {
+		}
+	#uncommon-sites a {
+		display: block;
+		color: #326DA1;
+		font-size: 12px;
+		line-height: 18px;
+		}
+	#uncommon-sites .more a {
+		color: #808080;
+		font-size: 11px;
+		margin-top: 6px;
+		}
+
 
 #footer {
 	background: url(../img/footer-bg.png) repeat-x left top;
