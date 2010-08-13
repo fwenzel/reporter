@@ -1,3 +1,5 @@
+import datetime
+
 from django.conf import settings
 from django.contrib.syndication.views import Feed
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
@@ -101,9 +103,26 @@ def index(request):
         'form': form,
         'versions': VERSION_CHOICES[request.default_app],
     }
-    pp = settings.SEARCH_PERPAGE
+
+    # Determine date period chosen
+    if not getattr(form, 'cleaned_data', None):
+        period = None
+    else:
+        if (form.cleaned_data.get('date_end') == datetime.date.today() and
+            form.cleaned_data.get('date_start')):
+            _ago = lambda x: datetime.date.today() - datetime.timedelta(days=x)
+            period = {_ago(1): '1d',
+                      _ago(7): '7d',
+                      _ago(30): '30d'}.get(
+                          form.cleaned_data.get('date_start'), 'custom')
+        elif not form.cleaned_data.get('date_start'):
+            period = 'infin'
+        else:
+            period = 'custom'
+    data['period'] = period
 
     if opinions:
+        pp = settings.SEARCH_PERPAGE
         pager = Paginator(opinions, pp)
         data['opinion_count'] = pager.count
         # If page request (e.g., 9999) is out of range, deliver last page of

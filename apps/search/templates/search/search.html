@@ -21,17 +21,17 @@
 
     <input type="hidden" name="product" value="{{ request.default_app.short }}" />
 
-    {{ when_block(form=form) }}
+    {{ when_block(form=form, selected=period, defaults=defaults) }}
 
-    {{ overview_block(sent) }}
+    {{ overview_block(sent, defaults=defaults) }}
 
     {# TODO URL provided box #}
 
-    {{ versions_block(versions) }}
+    {{ versions_block(versions, defaults=defaults) }}
 
-    {{ platforms_block(demo.os, opinion_count) }}
+    {{ platforms_block(demo.os, opinion_count, defaults=defaults) }}
 
-    {{ locales_block(demo.locale, opinion_count) }}
+    {{ locales_block(demo.locale, opinion_count, defaults=defaults) }}
 
   </form>
 </div><!--
@@ -57,7 +57,7 @@
     </div>
     {% endif %}
 
-    {{ message_list(opinions) }}
+    {{ message_list(opinions, defaults=defaults) }}
 
     {% if page and page.has_other_pages() %}
     <div class="pager">

@@ -15,8 +15,8 @@
             <time title="{{ opinion.created|isotime }}">{{ _('{0} ago')|f(opinion.created|timesince) }}</time>
           </a>
         </li>
-        <li><a href="{{ search_url(os=opinion.os) }}">{{ os_name(opinion.os) }}</a></li>
-        <li><a href="{{ search_url(locale=opinion.locale) }}">{{ locale_name(opinion.locale) }}</li>
+        <li><a href="{{ search_url(os=opinion.os, defaults=defaults) }}">{{ os_name(opinion.os) }}</a></li>
+        <li><a href="{{ search_url(locale=opinion.locale, defaults=defaults) }}">{{ locale_name(opinion.locale) }}</li>
         {% if opinion.url %}
           {# TODO redirect via outgoing? #}
           <li><a href="{{ opinion.url }}" rel="nofollow">{{ opinion.url|extract_domain }}</a></li>

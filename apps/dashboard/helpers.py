@@ -63,7 +63,7 @@ def versions_block(context, versions, defaults=None):
 
 @register.inclusion_tag('dashboard/when.html')
 @jinja2.contextfunction
-def when_block(context, form, defaults=None):
+def when_block(context, form, defaults=None, selected=None):
     return new_context(**locals())
 
 

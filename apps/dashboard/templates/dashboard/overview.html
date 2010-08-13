@@ -2,20 +2,28 @@
   <h3>{{ _('Type of Feedback') }}</h3>
   {% include "includes/filter_box_toggle.html" %}
   <ul class="bars" data-total="{{ sent.total }}">
+    {% if not defaults['sentiment'] == 'sad' %}
+    {% with sel = (defaults['sentiment'] == 'happy') %}
     <li>
-      <input id="praise_bar" name="sentiment" value="happy" type="checkbox" />
-      <label for="praise_bar" class="bar" data-value="{{ sent.happy }}">
+    <input id="praise_bar" name="sentiment" value="happy" type="checkbox" {{ 'checked' if sel else '' }} />
+      <label for="praise_bar" class="bar {{ 'selected' if sel else '' }}" data-value="{{ sent.happy }}">
         {# L10n: Formerly called "happy" #}
         <strong>{{ _('Praise') }}</strong>
       </label>
     </li>
+    {% endwith %}
+    {% endif %}
 
+    {% if not defaults['sentiment'] == 'happy' %}
+    {% with sel = (defaults['sentiment'] == 'sad') %}
     <li>
-      <input id="issue_bar" name="sentiment" value="sad" type="checkbox" />
-      <label for="issue_bar" class="bar" data-value="{{ sent.sad }}">
+      <input id="issue_bar" name="sentiment" value="sad" type="checkbox" {{ 'checked' if sel else '' }} />
+      <label for="issue_bar" class="bar {{ 'selected' if sel else '' }}" data-value="{{ sent.sad }}">
         {# L10n: Formerly called "sad" #}
         <strong>{{ _('Issues') }}</strong>
       </label>
     </li>
+    {% endwith %}
+    {% endif %}
   </ul>
 </div>

@@ -11,7 +11,7 @@
 
     <input type="hidden" name="product" value="{{ request.default_app.short }}" />
 
-    {{ when_block(form=search_form) }}
+    {{ when_block(form=search_form, selected='1d') }}
 
     {{ overview_block(sentiments) }}
 

@@ -2,15 +2,22 @@
   <h3>{# L10n: Title for a time-based search filter #}{{ _('When') }}</h3>
   <div>
     <ul>
-      <!--
-      --><li><a class="selected" href="{{ search_url(date_start=date_ago(days=1)) }}" title="{{ _('Last day') }}">{# L10n: short for 1 day #}{{ _('1d') }}</a></li><!--
-      --><li><a class="" href="{{ search_url(date_start=date_ago(days=7)) }}" title="{{ _('Last 7 days') }}">{# L10n: short for 7 days #}{{ _('7d') }}</a></li><!--
-      --><li><a class="" href="{{ search_url() }}" title="{{ _('All time') }}">&infin;</a></li><!--
-      --><li><a id="show-custom-date" class="etc" href="#" title="{# L10n: Tooltip for custom date range button #}{{ _('Custom') }}"><span>&raquo;</span></a></li>
+      <li><a class="{{ 'selected' if selected == '1d' else ''}}"
+             href="{{ search_url(date_start=date_ago(days=1), defaults=defaults) }}"
+             title="{{ _('Last day') }}">{# L10n: short for 1 day #}{{ _('1d') }}</a></li>
+      <li><a class="{{ 'selected' if selected  == '7d' else ''}}"
+              href="{{ search_url(date_start=date_ago(days=7), defaults=defaults) }}"
+              title="{{ _('Last 7 days') }}">{# L10n: short for 7 days #}{{ _('7d') }}</a></li>
+      <li><a class="{{ 'selected' if selected == '30d' else ''}}"
+             href="{{ search_url(date_start=date_ago(days=30), defaults=defaults) }}"
+             title="{{ _('Last 30 days') }}">{# L10n: short for 30 days #}{{ _('30d') }}</a></li>
+      <li><a id="show-custom-date"
+             class="etc {{ 'selected' if selected == 'custom' else ''}}"
+             href="#"
+             title="{# L10n: Tooltip for custom date range button #}{{ _('Custom') }}"><span>&raquo;</span></a></li>
     </ul>
 
-    {# TODO date picker #}
-    <div id="custom-date" class="hidden">
+    <div id="custom-date" class="{{ 'hidden' if selected != 'custom' else ''}}">
       {{ form.date_start|safe }}
       &ndash;
       {{ form.date_end|safe }}
