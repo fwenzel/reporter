@@ -4,17 +4,14 @@
 
 {% block content %}
 <div class="col left">
-  <div id="big-count" class="count block">
-    <h3>{# L10n: Title text for a complete message count. #}
-      {{ _('Messages') }}</h3>
-    <p>{{ opinion_count|numberfmt }}</p>
-  </div>
+
+  {{ big_count_block(opinion_count) }}
 
   <form id="filters" class="filters segments block" method="get" action="{{ url('search') }}">
 
     <input type="hidden" name="product" value="{{ request.default_app.short }}" />
 
-    {{ when_block() }}
+    {{ when_block(form=search_form) }}
 
     {{ sentiment_block(sentiments) }}
 

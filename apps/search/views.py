@@ -12,7 +12,7 @@ from input.decorators import cache_page
 from input.urlresolvers import reverse
 
 from .client import Client, SearchError
-from .forms import ReporterSearchForm
+from .forms import ReporterSearchForm, VERSION_CHOICES
 
 
 def _get_results(request):
@@ -97,12 +97,17 @@ def index(request):
 
     page = form.data.get('page', 1)
 
-    data = {'form': form}
+    data = {
+        'form': form,
+        'versions': VERSION_CHOICES[request.default_app],
+    }
     pp = settings.SEARCH_PERPAGE
 
     if opinions:
         pager = Paginator(opinions, pp)
-        # If page request (9999) is out of range, deliver last page of results.
+        data['opinion_count'] = pager.count
+        # If page request (e.g., 9999) is out of range, deliver last page of
+        # results.
         try:
             data['page'] = pager.page(page)
         except (EmptyPage, InvalidPage):
@@ -112,9 +117,18 @@ def index(request):
         data['sent'] = stats.sentiment(qs=opinions)
         data['demo'] = stats.demographics(qs=opinions)
 
+        # terms deactivated, cf. bug 582606
         #frequent_terms = Term.objects.frequent(
         #    opinions=(o.id for o in opinions))[:settings.TRENDS_COUNT]
         #data['terms'] = stats.frequent_terms(qs=frequent_terms)
+    else:
+        data.update({
+            'opinions': None,
+            'sent': None,
+            'demo': None,
+        })
+
+    data['defaults'] = form.data
 
     template = 'search/%ssearch.html' % (
         'mobile/' if request.mobile_site else '')

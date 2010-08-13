@@ -11,6 +11,11 @@ def new_context(context, **kw):
     return c
 
 
+@register.inclusion_tag('dashboard/opinion_count.html')
+def big_count_block(count):
+    return locals()
+
+
 @register.inclusion_tag('dashboard/locales.html')
 @jinja2.contextfunction
 def locales_block(context, locales, total, defaults=None):
@@ -58,7 +63,7 @@ def versions_block(context, versions, defaults=None):
 
 @register.inclusion_tag('dashboard/when.html')
 @jinja2.contextfunction
-def when_block(context, defaults=None):
+def when_block(context, form, defaults=None):
     return new_context(**locals())
 
 

@@ -11,14 +11,14 @@
 
     {# TODO date picker #}
     <div id="custom-date" class="hidden">
-      {{ search_form.date_start|safe }}
+      {{ form.date_start|safe }}
       &ndash;
-      {{ search_form.date_end|safe }}
+      {{ form.date_end|safe }}
       {# L10n: Button text for setting a custom date range. #}
       <button>{{ _('Set', 'date_range_set') }}</button>
 
-      {{ search_form.date_start.errors|safe }}
-      {{ search_form.date_end.errors|safe }}
+      {{ form.date_start.errors|safe }}
+      {{ form.date_end.errors|safe }}
     </div>
   </div>
 </div>
