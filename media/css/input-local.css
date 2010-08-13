@@ -3,6 +3,14 @@
     top: -10000px;
 }
 
+.choice li {
+    margin-right: -3px;
+}
+
+.block.prose p {
+    margin: 1em 0;
+}
+
 /* {{{ Clearfix */
 .clearfix:after {
     content: ".";
