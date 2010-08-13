@@ -165,5 +165,6 @@ class FeedTest(SphinxTestCase):
         doc = pq(r.content.replace('xmlns', 'xmfail'))
         s = Site.objects.all()[0]
         url_base = 'http://%s/' % s.domain
-        eq_(doc('entry link').attr['href'], '%s%s' % (url_base, '#29'))
+        eq_(doc('entry link').attr['href'],
+            '%s%s' % (url_base, 'en-US/opinion/29'))
 

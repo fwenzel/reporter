@@ -33,6 +33,7 @@ def _get_results(request):
 
 
 class SearchFeed(Feed):
+    # TODO(davedash): Gracefully degrade for unavailable search.
     feed_type = Atom1Feed
 
     author_name = _lazy('Firefox Input')
@@ -57,7 +58,7 @@ class SearchFeed(Feed):
 
     def items(self, obj):
         """List of comments."""
-        return obj['opinions']
+        return obj['opinions'][:settings.SEARCH_PERPAGE]
 
     def item_categories(self, item):
         """Categorize comments. Style: "product:firefox" etc."""
@@ -76,7 +77,7 @@ class SearchFeed(Feed):
     def item_link(self, item):
         """Permalink per item. Also used as GUID."""
         # TODO make this a working link. bug 575770.
-        return '/#%d' % item.id
+        return item.get_url_path()
 
     def item_pubdate(self, item):
         """Publishing date of a comment."""
