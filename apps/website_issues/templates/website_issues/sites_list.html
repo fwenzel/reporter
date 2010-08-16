@@ -1,0 +1,65 @@
+{% macro fieldbox(name, show_errors=True): %}
+  {% with field = form[name] %}
+    <div class="fieldWrapper wrap_{{ field.name }}">
+      {{ field|safe }}
+      {% if show_errors %}{{ field.errors|safe }}{% endif %}
+    </div>
+  {% endwith %}
+{% endmacro %}
+
+
+{% if not form.cleaned_data or not form.cleaned_data.show_one_offs %}
+<h2>{{ _('Sites') }}</h2>
+{% else %}
+<h2>{{ _('Sites with only one message') }}</h2>
+{% endif %}
+
+<form id="kw-search" method="get" action="{{ url('website_issues') }}">
+  {{ fieldbox('q') }}
+  {# make hidden input fields for settings to keep on text-search #}
+  {{ fieldbox('sentiment') }}
+  {{ fieldbox('search_type') }}
+  {{ fieldbox('show_one_offs') }}
+</form>
+
+{% if sites|length == 0 %}
+<div id="none-found">
+  <h3>{{ _('No results found!') }}</h3>
+  <p><a href="{{ url('website_issues') }}">{{ _('reset my search') }}</a></p>
+</div>
+{% endif %}
+
+<ul class="sites">
+  {% for site in sites %}
+    {% with this_site_url=sites_url(form, 'site-%i' % site.id, site=site.id) %}
+    <li class="site">
+      <p class="name"><a href="{{ this_site_url }}">{{ site.url|without_protocol|as_unicode }}</a></p>
+      <ul class="meta">
+        <li><a href="{{ this_site_url }}">{{ _('{count} messages')|f(count=site.size|numberfmt) }}</a></li>
+        {% with praise_perc=(site.praise_count/site.size*100)|int %}
+        <li><a href="{{ sites_url(
+          form, 'site-%i' % site.id, sentiment='happy', q=site.url|search_name|as_unicode) }}">{{
+          _('{percentage}% praise')|f(percentage=praise_perc) }}</a></li>
+        <li><a href="{{ sites_url(
+          form, 'site-%i' % site.id, sentiment='happy', q=site.url|search_name|as_unicode) }}">{{
+          _('{percentage}% issues')|f(percentage=100-praise_perc) }}</a></li>
+        {% endwith %}
+      </ul>
+      <ul class="samples">
+        {% for cluster in site.all_clusters[:3] %}
+          <li>
+            {# TODO link to theme page #}
+            {{ cluster.primary_description|as_unicode }}
+            {% if cluster.size > 1 %}
+            {# L10n: "similar" refers to "similar messages". #}
+            <span>{{ _('{count} similar')|f(count=(cluster.size-1|numberfmt)) }}</span>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </li>
+    {% endwith %}
+  {% endfor %}
+</ul>
+
+{% include "website_issues/paginate_sites.html" %}

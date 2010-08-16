@@ -52,18 +52,16 @@ def _fetch_summaries(form, count=None, one_offs=False):
         page = pager.page(pager.num_pages)
     return page.object_list[:], page
 
-def _fetch_comments(cluster_id):
-    cluster = Cluster.objects.get(pk=cluster_id)
-    qs = Comment.objects \
-         .filter(cluster__id__exact=cluster_id) \
-         .exclude(id__exact=cluster.primary_comment_id)
-    return qs
 
 @cache_page(use_get=True)
 def website_issues(request):
     form = WebsiteIssuesSearchForm(request.GET)
     sites = page = one_offs = None
     if form.is_valid():
+        if form.cleaned_data['site']:
+            # Display single site
+            return _site_themes(request, form)
+
         sites, page = _fetch_summaries(form)
         # Grab one-off domains for sidebar.
         if not (form.cleaned_data['show_one_offs'] or
@@ -71,24 +69,37 @@ def website_issues(request):
             one_offs, _ = _fetch_summaries(form, count=settings.TRENDS_COUNT,
                                            one_offs=True)
 
-    expanded_comments = []
-    expanded_site_id = form.cleaned_data["site"]
-    expanded_cluster_id = form.cleaned_data["cluster"]
-    if expanded_cluster_id is not None:
-        expanded_comments = _fetch_comments(expanded_cluster_id)
+    data = {"form": form,
+            "page": page,
+            "sites": sites,
+            "one_offs": one_offs,}
+    return jingo.render(request, 'website_issues/website_issues.html', data)
 
-    response = {"form": form,
-                "page": page,
-                "sites": sites,
-                "one_offs": one_offs,
-                "expanded_cluster_id": expanded_cluster_id,
-                "expanded_site_id": expanded_site_id,
-                "expanded_comments": expanded_comments}
-    return jingo.render(request,
-                        'website_issues/website_issues.html',
-                        response)
+
+def _site_themes(request, form):
+    """Display the clusters for a single site only."""
+    sites, _ = _fetch_summaries(form)
+    if not sites:
+        raise http.Http404
+    site = sites[0]
+
+    # Fetch a pagefull of clusters
+    clusters = site.all_clusters
+    pager = Paginator(clusters, settings.SEARCH_PERPAGE)
+    try:
+        page = pager.page(form.cleaned_data['page'])
+    except (EmptyPage, InvalidPage):
+        page = pager.page(pager.num_pages)
+
+    data = {"form": form,
+            "page": page,
+            "site_id": form.cleaned_data['site'],
+            "site": site,}
+    return jingo.render(request, 'website_issues/website_issues.html', data)
+
 
 @cache_page
 def cluster(request, cluster_id):
-    response = {"expanded_comments": _fetch_comments(cluster_id)}
+    cluster = Cluster.objects.get(cluster_id)
+    response = {"expanded_comments": cluster.secondary_comments}
     return jingo.render(request, 'website_issues/comments.html', response)

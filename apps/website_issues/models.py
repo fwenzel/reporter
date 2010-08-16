@@ -27,12 +27,20 @@ class Cluster(ModelBase):
     class Meta:
         ordering = ['-size']
 
+    @property
+    def secondary_comments(self):
+        qs = self.comments.filter(
+            cluster=self).exclude(
+            pk=self.primary_comment_id)
+        return qs
+
 
 class QuerySetManager(caching.base.CachingManager):
     """Manager that allows to use a subclass of QuerySet."""
     def __init__(self, qs_class=models.query.QuerySet):
         self.queryset_class = qs_class
         super(QuerySetManager, self).__init__()
+
     def get_query_set(self):
         return self.queryset_class(self.model)
 

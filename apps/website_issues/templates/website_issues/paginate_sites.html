@@ -1,0 +1,19 @@
+{% if page and page.has_other_pages() %}
+<div class="pager">
+  {% with link_txt = _('&laquo; Next Page')|safe %}
+    {% if page.has_next() %}
+    <a class="next" href="{{ sites_url(form, page=page.next_page_number()) }}">{{ link_txt }}</a>
+    {% else %}
+    <span class="next inactive">{{ link_txt }}</span>
+    {% endif %}
+  {% endwith %}
+
+  {% with link_txt = _('Previous Page &raquo;')|safe %}
+    {% if page.has_previous() %}
+    <a class="prev" href="{{ sites_url(form, page=page.previous_page_number()) }}">{{ link_txt }}</a>
+    {% else %}
+    <span class="prev inactive">{{ link_txt }}</span>
+    {% endif %}
+  {% endwith %}
+</div>
+{% endif %}
