@@ -52,7 +52,7 @@
             {{ cluster.primary_description|as_unicode }}
             {% if cluster.size > 1 %}
             {# L10n: "similar" refers to "similar messages". #}
-            <span>{{ _('{count} similar')|f(count=(cluster.size-1|numberfmt)) }}</span>
+            <span>{{ _('{count} similar')|f(count=(cluster.size-1)|numberfmt) }}</span>
             {% endif %}
           </li>
         {% endfor %}
