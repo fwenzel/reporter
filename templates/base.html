@@ -28,11 +28,14 @@
         <strong>Firefox Input</strong> {{ _('Dashboard') }}
       </a></h1>
 
+      {% macro header_links(sel='dashboard') %}
       <ul>
-        <li><a class="selected" href="{{ url('dashboard') }}"><span>{{ _('Feedback') }}</span></a></li>
-        <li><a class="" href="{{ url('clusters') }}"><span>{# L10n: Formerly: Clusters #}{{ _('Themes') }}</span></a></li>
-        <li><a class="" href="{{ url('website_issues') }}"><span>{{ _('Sites') }}</span></a></li>
+        <li><a class="{{ 'selected' if sel=='dashboard' else '' }}" href="{{ url('dashboard') }}"><span>{{ _('Feedback') }}</span></a></li>
+        <li><a class="{{ 'selected' if sel=='clusters' else '' }}" href="{{ url('clusters') }}"><span>{# L10n: Formerly: Clusters #}{{ _('Themes') }}</span></a></li>
+        <li><a class="{{ 'selected' if sel=='website_issues' else '' }}" href="{{ url('website_issues') }}"><span>{{ _('Sites') }}</span></a></li>
       </ul>
+      {% endmacro %}
+      {% block header_links %}{{ header_links() }}{% endblock %}
     </div></div>
 
     <div id="body"><div class="funnel">
