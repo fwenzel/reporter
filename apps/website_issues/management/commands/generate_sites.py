@@ -91,6 +91,7 @@ class Command(BaseCommand):
         sorted_sites = SiteGroup.sorted(err)
 
         err("Generating clusters...\n")
+        i = 0
         with DatabaseStorage(err) as storage:
             for i, group in enumerate(sorted_sites):
                 self.generate_clusters_for(err, storage, group)
@@ -113,6 +114,7 @@ class Command(BaseCommand):
                            | Q(version__exact=latest_version)
                        )
                    ).only("url", "version", "created", "positive")
+        i = 0
         for i, opinion in enumerate(queryset):
             site_url = normalize_url(opinion.url)
             if opinion.version == latest_version:
