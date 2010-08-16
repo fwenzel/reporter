@@ -4,21 +4,25 @@
 {% block body_id %}clusters{% endblock %}
 
 {% block content %}
-<div class="container">
-{% if clusters %}
-<ul>
-  {% for cluster in clusters[:20] %}
-  <li>
-  <a href="{{ cluster.get_url_path() }}">
-    {{ cluster.feeling }},
-    {{ cluster.version }},
-    {{ cluster.platform }}
-  </a> ({{ cluster.frequency }})
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>{{ _('No clusters of opinions found.') }}</p>
-{% endif %}
+<div class="col wide">
+    <div class="block">
+    {% if clusters %}
+      <ul>
+        {% for cluster in clusters[:20] %}
+          <li>
+            <a href="{{ cluster.get_url_path() }}">
+              {{ cluster.feeling }},
+              {{ cluster.version }},
+              {{ cluster.platform }}
+            </a> ({{ cluster.frequency }})
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <ul class="messages"><li id="message-warning">
+        {{ _('No clusters of opinions found.') }}
+      </li></ul>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

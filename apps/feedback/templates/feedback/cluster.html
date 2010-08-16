@@ -4,24 +4,28 @@
 {% block body_id %}cluster{% endblock %}
 
 {% block content %}
-{% if clusters %}
-<ul>
+  <h2>{{ _('{0} opinions for Firefox {1} {2}')|f('happy', '4', 'win') }}</h2>
   {% for cluster in clusters %}
-  <li>
-  <h3>
-    {{ cluster.num_opinions }} opinions similar to
-    <q>{{ cluster.pivot.description }}</q>
-  </h3>
-  {# TODO davedash: make the number configurable. #}
-  {# L10n: This is referring to the first few clusters. #}
-  <p>{{ _('Showing the first {count}')|f(count=5) }}:</p>
-    {% with opinions = cluster.opinions.all()[:5] %}
-    {% include 'dashboard/messages.html' %}
-    {% endwith %}
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>{{ _('No clusters of opinions found.') }}</p>
+    <div class="middle"><div id="messages" class="block">
+      <h3>
+        {{ _('{0} opinions similar to <q>{1}</q>')
+           |f(cluster.num_opinions, cluster.pivot.description)
+           |safe }}
+      </h3>
+      {% if cluster.num_opinions > 5 %}
+      <p>{{ _('Showing the first {count}')|f(count=5) }}:</p>
+      {% endif %}
+
+      {{ message_list(cluster.opinions.all()[:5]) }}
+  </div></div>
+    {% endfor %}
+
+{% if not clusters %}
+  <div class="middle"><div id="messages" class="block">
+      <ul class="messages"><li id="message-warning">
+        {{ _('No clusters of opinions found.') }}
+      </li></ul>
+  </div></div>
 {% endif %}
+
 {% endblock %}

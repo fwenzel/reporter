@@ -21,6 +21,16 @@ html {
     }
 
 
+h2 {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 18px;
+    letter-spacing: 3px;
+    text-shadow: 0 1px 1px #000;
+    margin-bottom: 15px;
+    color: white;
+    }
+
 .funnel {
     max-width: 1410px;
     padding: 0 20px;
@@ -72,12 +82,19 @@ header, footer, article, section { display: block; }
     .block h2 {
         font-size: 18px;
         letter-spacing: 3px;
+        text-shadow: none;
+        color: #3d3f40;
+
         }
-    .block h3 {
+   .block h3 {
         font-size: 11px;
         color: #797d80;
         letter-spacing: 2px;
         }
+        .block h3 q {
+            letter-spacing: 0px;
+            font-style: italic;
+            }
 
 
 .segments {
