@@ -11,11 +11,13 @@ from .forms import WebsiteIssuesSearchForm
 from .models import Comment, Cluster, SiteSummary
 
 
-def _fetch_summaries(form):
-    if not form.is_valid(): return []
+def _fetch_summaries(form, count=None, one_offs=False):
     search_opts = form.cleaned_data
 
     qs = SiteSummary.objects.all()
+
+    if search_opts['site']:
+        qs = qs.filter(pk=search_opts['site'])
 
     version = "<week>" if search_opts["search_type"] == "week" \
                        else LATEST_BETAS[FIREFOX]
@@ -31,14 +33,18 @@ def _fetch_summaries(form):
     if len(search_string):
         qs = qs.filter(url__contains=search_string.lower())
 
-    if search_opts["show_one_offs"]:
-        qs = qs.extra(where=['praise_count + issues_count = 1'])
-    else:
-        qs = qs.extra(where=['praise_count + issues_count > 1'])
+    if not search_opts['site']:
+        if one_offs or search_opts["show_one_offs"]:
+            qs = qs.extra(where=['praise_count + issues_count = 1'])
+        else:
+            qs = qs.extra(where=['praise_count + issues_count > 1'])
 
-    per_page = settings.SEARCH_PERPAGE
-    if search_opts["show_one_offs"]:
-        per_page *= 5
+    if count:
+        per_page = count
+    else:
+        per_page = settings.SEARCH_PERPAGE
+        if search_opts["show_one_offs"]:
+            per_page *= 5
     pager = Paginator(qs, per_page)
     try:
         page = pager.page(search_opts["page"])
@@ -56,7 +62,14 @@ def _fetch_comments(cluster_id):
 @cache_page(use_get=True)
 def website_issues(request):
     form = WebsiteIssuesSearchForm(request.GET)
-    sites, page = _fetch_summaries(form)
+    sites = page = one_offs = None
+    if form.is_valid():
+        sites, page = _fetch_summaries(form)
+        # Grab one-off domains for sidebar.
+        if not (form.cleaned_data['show_one_offs'] or
+                form.cleaned_data['site']):
+            one_offs, _ = _fetch_summaries(form, count=settings.TRENDS_COUNT,
+                                           one_offs=True)
 
     expanded_comments = []
     expanded_site_id = form.cleaned_data["site"]
@@ -67,6 +80,7 @@ def website_issues(request):
     response = {"form": form,
                 "page": page,
                 "sites": sites,
+                "one_offs": one_offs,
                 "expanded_cluster_id": expanded_cluster_id,
                 "expanded_site_id": expanded_site_id,
                 "expanded_comments": expanded_comments}

@@ -31,7 +31,7 @@ class WebsiteIssuesSearchForm(forms.Form):
         required=False,
         label='',
         widget=SearchInput(
-            attrs={'placeholder': _lazy('Filter by Site',
+            attrs={'placeholder': _lazy('Search for domain',
                                         'website_issues_search')}
         ),
     )
