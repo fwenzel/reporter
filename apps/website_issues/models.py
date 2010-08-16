@@ -22,7 +22,9 @@ class Cluster(ModelBase):
     size = models.PositiveIntegerField()
     primary_description = models.TextField()
     primary_comment = models.ForeignKey("Comment",
+                                        null=True,
                                         related_name="defined_cluster")
+    positive = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-size']
