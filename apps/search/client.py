@@ -1,5 +1,6 @@
 from calendar import timegm
 from datetime import timedelta
+import os
 import re
 import socket
 
@@ -24,7 +25,12 @@ class Client():
 
     def __init__(self):
         self.sphinx = sphinx.SphinxClient()
-        self.sphinx.SetServer(settings.SPHINX_HOST, settings.SPHINX_PORT)
+
+        if os.environ.get('DJANGO_ENVIRONMENT') == 'test':
+            self.sphinx.SetServer(settings.SPHINX_HOST,
+                                  settings.TEST_SPHINX_PORT)
+        else:
+            self.sphinx.SetServer(settings.SPHINX_HOST, settings.SPHINX_PORT)
 
     def query(self, term, **kwargs):
         """Submits formatted query, retrieves ids, returns Opinions."""

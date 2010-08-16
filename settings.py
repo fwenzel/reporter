@@ -172,7 +172,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'reporter.urls'
 
 INSTALLED_APPS = [
-    'input', # comes first so it always takes precedence.
+    'input',  # comes first so it always takes precedence.
     'dashboard',
     'feedback',
     'search',
@@ -213,11 +213,18 @@ TRENDS_COUNT = 10
 # Sphinx Search Index
 SPHINX_HOST = '127.0.0.1'
 SPHINX_PORT = 3314
+SPHINXQL_PORT = 3309
 SPHINX_SEARCHD = 'searchd'
 SPHINX_INDEXER = 'indexer'
 SPHINX_CATALOG_PATH = path('tmp/data/sphinx')
 SPHINX_LOG_PATH = path('tmp/log/searchd')
 SPHINX_CONFIG_PATH = path('configs/sphinx/sphinx.conf')
+
+TEST_SPHINX_PORT = 3414
+TEST_SPHINXQL_PORT = 3409
+TEST_SPHINX_CATALOG_PATH = path('tmp/test/data/sphinx')
+TEST_SPHINX_LOG_PATH = path('tmp/test/log/searchd')
+
 SEARCH_PERPAGE = 20  # results per page
 
 TEST_RUNNER = 'test_utils.runner.RadicalTestSuiteRunner'

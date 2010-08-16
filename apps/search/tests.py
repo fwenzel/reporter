@@ -40,14 +40,13 @@ class SphinxTestCase(test_utils.TransactionTestCase):
 
             os.environ['DJANGO_ENVIRONMENT'] = 'test'
 
-            # XXX: Path names need to be more clear.
-            if os.path.exists(settings.SPHINX_CATALOG_PATH):
-                shutil.rmtree(settings.SPHINX_CATALOG_PATH)
-            if os.path.exists(settings.SPHINX_LOG_PATH):
-                shutil.rmtree(settings.SPHINX_LOG_PATH)
+            if os.path.exists(settings.TEST_SPHINX_CATALOG_PATH):
+                shutil.rmtree(settings.TEST_SPHINX_CATALOG_PATH)
+            if os.path.exists(settings.TEST_SPHINX_LOG_PATH):
+                shutil.rmtree(settings.TEST_SPHINX_LOG_PATH)
 
-            os.makedirs(settings.SPHINX_LOG_PATH)
-            os.makedirs(settings.SPHINX_CATALOG_PATH)
+            os.makedirs(settings.TEST_SPHINX_LOG_PATH)
+            os.makedirs(settings.TEST_SPHINX_CATALOG_PATH)
 
             reindex()
             start_sphinx()
@@ -167,4 +166,3 @@ class FeedTest(SphinxTestCase):
         url_base = 'http://%s/' % s.domain
         eq_(doc('entry link').attr['href'],
             '%s%s' % (url_base, 'en-US/opinion/29'))
-
