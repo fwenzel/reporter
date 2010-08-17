@@ -1,15 +1,15 @@
+{% if sites %}
 <div class="trend collapsible">
   {# L10n: Refers to sites that were reported in feedback. #}
   <h3>{{ _('While Visiting') }}</h3>
-  {% include "includes/filter_box_toggle.html %}
+  {% include "includes/filter_box_toggle.html" %}
   <ul class="bars">
     {% for site in sites %}
-    <li>
-      <a href="search.html" class="bar" data-value="4500">
-        <strong>lorem.com</strong>
-
-      </a>
-    </li>
+    <li><a href="{{ url('website_issues')|urlparams(q=site.url) }}"
+           class="bar" data-value="{{ site.size }}">
+      <strong>{{ site.url|without_protocol }}</strong>
+    </a></li>
     {% endfor %}
   </ul>
 </div>
+{% endif %}

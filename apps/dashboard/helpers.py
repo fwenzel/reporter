@@ -43,7 +43,7 @@ def overview_block(context, sent, defaults=None):
 
 @register.inclusion_tag('dashboard/sites.html')
 @jinja2.contextfunction
-def themes_block(context, sites, defaults=None):
+def sites_block(context, sites, defaults=None):
     """Sidebar block for frequently mentioned sites."""
     return new_context(**locals())
 

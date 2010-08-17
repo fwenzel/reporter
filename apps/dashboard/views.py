@@ -11,6 +11,7 @@ from feedback.models import Opinion, Term
 from feedback.version_compare import simplify_version
 from input.decorators import cache_page
 from search.forms import ReporterSearchForm, VERSION_CHOICES
+from website_issues.models import SiteSummary
 
 from .forms import PeriodForm, PERIOD_DELTAS
 
@@ -37,6 +38,10 @@ def dashboard(request):
     # opinions queryset for demographics
     latest_opinions = Opinion.objects.browse(**term_params)
 
+    # Sites clusters
+    sites = SiteSummary.objects.filter(version__exact='<day>').filter(
+        positive__exact=None)[:settings.TRENDS_COUNT]
+
     # search form to generate various form elements.
     search_form = ReporterSearchForm()
 
@@ -45,6 +50,7 @@ def dashboard(request):
             'sentiments': stats.sentiment(qs=latest_opinions),
             'terms': stats.frequent_terms(qs=frequent_terms),
             'demo': stats.demographics(qs=latest_opinions),
+            'sites': sites,
             'versions': VERSION_CHOICES[request.default_app],
             'search_form': search_form}
     return jingo.render(request, 'dashboard/dashboard.html', data)

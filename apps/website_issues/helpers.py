@@ -1,4 +1,5 @@
 import urllib
+import urlparse
 
 from django.core.urlresolvers import reverse
 from django.utils.encoding import smart_unicode
@@ -43,14 +44,17 @@ def sites_url(context, form, fragment_id=None, **kwargs):
 
 
 @register.filter
-def without_protocol(url):
-    if url.find("://") == -1: return url
-    return url[ url.find("://")+3 : ]
+def without_protocol(url_):
+    """Extract the domain from a URL."""
+    parsed = urlparse.urlparse(url_)
+    return parsed.netloc
 
 
 @register.filter
-def protocol(url):
-    return url[ : url.find("://")+3 ]
+def protocol(url_):
+    """Extract the protocol from a URL."""
+    parsed = urlparse.urlparse(url_)
+    return parsed.scheme
 
 
 @register.filter

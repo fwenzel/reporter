@@ -64,13 +64,6 @@ def url(viewname, *args, **kwargs):
 
 
 @register.filter
-def extract_domain(url_):
-    """Extract only the domain from a URL."""
-    parsed = urlparse.urlparse(url_)
-    return parsed.netloc
-
-
-@register.filter
 def urlparams(url_, hash=None, **query):
     """
     Add a fragment and/or query paramaters to a URL.
