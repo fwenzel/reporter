@@ -26,8 +26,7 @@ def sites_url(context, form, fragment_id=None, **kwargs):
         if name == 'page' or parameters[name] == DEFAULTS[name]:
             del parameters[name]
     for name, value in kwargs.iteritems():
-        if not value == DEFAULTS[name]:
-            parameters[name] = value
+        parameters[name] = value
 
     # If this is a single-site page, convert the site ID to search criteria.
     if form.cleaned_data['site'] and context['site']:
