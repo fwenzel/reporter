@@ -14,7 +14,7 @@
   <p class="primary"><a href="#">
     <span>{{ cluster.primary_description|as_unicode }}</span>
     {% if cluster.size > 1 %}
-    <span class="more">{{ _('{count} similar messages')|f(count=(cluster.size-1|numberfmt)) }}</span>
+    <span class="more">{{ _('{count} similar messages')|f(count=(cluster.size-1)|numberfmt) }}</span>
     {% endif %}
   </a></p>
   <ul class="samples">
