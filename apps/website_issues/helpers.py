@@ -31,7 +31,7 @@ def sites_url(context, form, fragment_id=None, **kwargs):
     # If this is a single-site page, convert the site ID to search criteria.
     if form.cleaned_data['site'] and context['site']:
         del parameters['site']
-        if 'q' not in kwargs:
+        if 'q' not in kwargs and 'page' not in kwargs:
             parameters['q'] = context['site'].url
 
     parts = [reverse("website_issues")]

@@ -31,9 +31,7 @@ class Cluster(ModelBase):
 
     @property
     def secondary_comments(self):
-        qs = self.comments.filter(
-            cluster=self).exclude(
-            pk=self.primary_comment_id)
+        qs = self.comments.exclude(pk=self.primary_comment_id)
         return qs
 
 

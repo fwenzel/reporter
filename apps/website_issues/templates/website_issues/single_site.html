@@ -5,10 +5,11 @@
 <ul class="themes">
   {% for cluster in page.object_list %}
   <li class="theme">
-  {# TODO smilies?
-  <p class="type praise" title="_('Praise')"><span>_('Praise')</span></p>
-  <p class="type issue" title="_('Issue')"><span>_('Issue')</span></p>
-  #}
+  {% if cluster.positive %}
+    <p class="type praise" title="_('Praise')"><span>_('Praise')</span></p>
+  {% else %}
+    <p class="type issue" title="_('Issue')"><span>_('Issue')</span></p>
+  {% endif %}
 
   <p class="primary"><a href="#">
     <span>{{ cluster.primary_description|as_unicode }}</span>
