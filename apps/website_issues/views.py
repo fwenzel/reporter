@@ -57,7 +57,9 @@ def _fetch_summaries(form, count=None, one_offs=False):
 def website_issues(request):
     form = WebsiteIssuesSearchForm(request.GET)
     sites = page = one_offs = None
-    if form.is_valid():
+    if not form.is_valid():
+        raise http.Http404
+    else:
         if form.cleaned_data['site']:
             # Display single site
             return _site_themes(request, form)
