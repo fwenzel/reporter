@@ -33,10 +33,14 @@ def fix_windows():
 def cluster():
     # Get all the happy/sad issues in the last week.
     week_ago = datetime.datetime.today() - datetime.timedelta(7)
+    three_days_ago = datetime.datetime.today() - datetime.timedelta(3)
     base_qs = Opinion.objects.filter(locale='en-US', created__gte=week_ago)
 
     log.debug('Beginning clustering')
     cluster_by_feeling(base_qs)
+    log.debug('Removing old clusters')
+    ClusterType.objects.filter(modified__lte=three_days_ago).delete()
+
 
 
 def cluster_by_feeling(base_qs):
@@ -89,6 +93,8 @@ def cluster_by_platform(qs, feeling, version):
                     version=version,
                     platform=platform.short,
                     frequency='weekly')
+            cluster_type.created = datetime.datetime.now()
+            cluster_type.save()
 
             # Remove the old cluster_groups
             Cluster.objects.filter(type=cluster_type).delete()
