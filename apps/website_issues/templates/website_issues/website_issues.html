@@ -1,11 +1,8 @@
 {% extends "base.html" %}
 
 {% macro button(name, value='', label='', title='', classes='') %}
-  {% if form.cleaned_data[name] == value %}
-  <a class="selected {{ classes }}"
-  {% else %}
-  <a class="{{ classes }}"
-  {% endif %}
+  {% set sel = (form.cleaned_data[name] == value) %}
+  <a class="{{ 'selected' if sel else ''}} {{ classes }}"
      href="{{ sites_url(form,**{name: value}) }}">{{ label }}</a>
 {% endmacro %}
 
