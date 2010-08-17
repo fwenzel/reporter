@@ -31,17 +31,14 @@
 
 <ul class="sites">
   {% for site in sites %}
-    {% with this_site_url=sites_url(form, 'site-%i' % site.id, site=site.id) %}
     <li class="site">
-      <p class="name"><a href="{{ this_site_url }}">{{ site.url|without_protocol|as_unicode }}</a></p>
+      <p class="name"><a href="{{ sites_url(form, site=site.id) }}">{{ site.url|without_protocol|as_unicode }}</a></p>
       <ul class="meta">
-        <li><a href="{{ this_site_url }}">{{ _('{count} messages')|f(count=site.size|numberfmt) }}</a></li>
+        <li><a href="{{ sites_url(form, site=site.id)}}">{{ _('{count} messages')|f(count=site.size|numberfmt) }}</a></li>
         {% with praise_perc=(site.praise_count/site.size*100)|int %}
-        <li><a href="{{ sites_url(
-          form, 'site-%i' % site.id, sentiment='happy', q=site.url|search_name|as_unicode) }}">{{
+        <li><a href="{{ sites_url(form, sentiment='happy', q=site.url) }}">{{
           _('{percentage}% praise')|f(percentage=praise_perc) }}</a></li>
-        <li><a href="{{ sites_url(
-          form, 'site-%i' % site.id, sentiment='happy', q=site.url|search_name|as_unicode) }}">{{
+        <li><a href="{{ sites_url(form, sentiment='sad', q=site.url) }}">{{
           _('{percentage}% issues')|f(percentage=100-praise_perc) }}</a></li>
         {% endwith %}
       </ul>
@@ -58,7 +55,6 @@
         {% endfor %}
       </ul>
     </li>
-    {% endwith %}
   {% endfor %}
 </ul>
 

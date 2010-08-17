@@ -3,13 +3,15 @@ import urllib
 from django.core.urlresolvers import reverse
 from django.utils.encoding import smart_unicode
 
+import jinja2
 from jingo import register
 
 from .forms import DEFAULTS
 
 
 @register.function
-def sites_url(form, fragment_id=None, **kwargs):
+@jinja2.contextfunction
+def sites_url(context, form, fragment_id=None, **kwargs):
     """Return the current form values as URL parameters.
 
     Values are taken from the given form and can be overriden using kwargs.
@@ -23,7 +25,14 @@ def sites_url(form, fragment_id=None, **kwargs):
         if name == 'page' or parameters[name] == DEFAULTS[name]:
             del parameters[name]
     for name, value in kwargs.iteritems():
-        parameters[name] = value
+        if not value == DEFAULTS[name]:
+            parameters[name] = value
+
+    # If this is a single-site page, convert the site ID to search criteria.
+    if form.cleaned_data['site'] and context['site']:
+        del parameters['site']
+        if 'q' not in kwargs:
+            parameters['q'] = context['site'].url
 
     parts = [reverse("website_issues")]
     if len(parameters):
@@ -42,12 +51,6 @@ def without_protocol(url):
 @register.filter
 def protocol(url):
     return url[ : url.find("://")+3 ]
-
-
-@register.filter
-def search_name(url):
-    qualified_host = without_protocol(url)
-    return '.'.join(qualified_host.split('.')[:2])
 
 
 @register.filter
