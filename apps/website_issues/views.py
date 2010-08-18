@@ -76,15 +76,15 @@ def website_issues(request):
 
 
 @cache_page(use_get=True)
-def single_site(request, url_):
+def single_site(request, protocol, url_):
     """Display the clusters for a single site only."""
     form = WebsiteIssuesSearchForm(request.GET)
     if not form.is_valid():
         raise http.Http404
 
-    sites, _ = _fetch_summaries(form, url=url_)
+    sites, _ = _fetch_summaries(form, url='%s://%s' % (protocol, url_))
     if not sites:
-        raise Exception(url_)
+        raise http.Http404
     site = sites[0]
 
     # Fetch a pageful of clusters

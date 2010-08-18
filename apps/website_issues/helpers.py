@@ -31,7 +31,8 @@ def sites_url(context, form, url=None, **kwargs):
     if url or context.get('site'):
         # single site URL
         _baseurl = url or context['site'].url
-        parts = [reverse('single_site', args=[_baseurl])]
+        _parsed = urlparse.urlparse(_baseurl)
+        parts = [reverse('single_site', args=[_parsed.scheme, _parsed.netloc])]
         if 'q' in parameters:
             del parameters['q']
     else:
