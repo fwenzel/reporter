@@ -34,7 +34,7 @@ def _fetch_summaries(form, url=None, count=None, one_offs=False):
         if len(search_string):
             qs = qs.filter(url__contains=search_string.lower())
 
-    if not search_opts['site']:
+    if not url:
         if one_offs or search_opts["show_one_offs"]:
             qs = qs.extra(where=['praise_count + issues_count = 1'])
         else:
@@ -84,10 +84,10 @@ def single_site(request, url_):
 
     sites, _ = _fetch_summaries(form, url=url_)
     if not sites:
-        raise http.Http404
+        raise Exception(url_)
     site = sites[0]
 
-    # Fetch a pagefull of clusters
+    # Fetch a pageful of clusters
     clusters = site.all_clusters
     pager = Paginator(clusters, settings.SEARCH_PERPAGE)
     try:
