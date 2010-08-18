@@ -11,16 +11,13 @@ from .forms import WebsiteIssuesSearchForm
 from .models import Comment, Cluster, SiteSummary
 
 
-def _fetch_summaries(form, count=None, one_offs=False):
+def _fetch_summaries(form, url=None, count=None, one_offs=False):
     search_opts = form.cleaned_data
 
     qs = SiteSummary.objects.all()
 
-    if search_opts['site']:
-        qs = qs.filter(pk=search_opts['site'])
-
-    version = "<week>" if search_opts["search_type"] == "week" \
-                       else LATEST_BETAS[FIREFOX]
+    version = ("<week>" if search_opts["search_type"] == "week" else
+               LATEST_BETAS[FIREFOX])
     qs = qs.filter(version__exact=version)
 
     # selected_sentiment = None means "both"
@@ -29,9 +26,13 @@ def _fetch_summaries(form, count=None, one_offs=False):
     elif search_opts["sentiment"] == "sad": selected_sentiment = 0
     qs = qs.filter(positive__exact=selected_sentiment)
 
-    search_string = search_opts.get('q', '')
-    if len(search_string):
-        qs = qs.filter(url__contains=search_string.lower())
+    # If URL was specified, match it exactly, else fuzzy-search.
+    if url:
+        qs = qs.filter(url=url.lower())
+    else:
+        search_string = search_opts.get('q', '')
+        if len(search_string):
+            qs = qs.filter(url__contains=search_string.lower())
 
     if not search_opts['site']:
         if one_offs or search_opts["show_one_offs"]:
@@ -60,10 +61,6 @@ def website_issues(request):
     if not form.is_valid():
         raise http.Http404
     else:
-        if form.cleaned_data['site']:
-            # Display single site
-            return _site_themes(request, form)
-
         sites, page = _fetch_summaries(form)
         # Grab one-off domains for sidebar.
         if not (form.cleaned_data['show_one_offs'] or
@@ -78,9 +75,14 @@ def website_issues(request):
     return jingo.render(request, 'website_issues/website_issues.html', data)
 
 
-def _site_themes(request, form):
+@cache_page(use_get=True)
+def single_site(request, url_):
     """Display the clusters for a single site only."""
-    sites, _ = _fetch_summaries(form)
+    form = WebsiteIssuesSearchForm(request.GET)
+    if not form.is_valid():
+        raise http.Http404
+
+    sites, _ = _fetch_summaries(form, url=url_)
     if not sites:
         raise http.Http404
     site = sites[0]
@@ -95,13 +97,5 @@ def _site_themes(request, form):
 
     data = {"form": form,
             "page": page,
-            "site_id": form.cleaned_data['site'],
             "site": site,}
     return jingo.render(request, 'website_issues/website_issues.html', data)
-
-
-@cache_page
-def cluster(request, cluster_id):
-    cluster = Cluster.objects.get(cluster_id)
-    response = {"expanded_comments": cluster.secondary_comments}
-    return jingo.render(request, 'website_issues/comments.html', response)

@@ -1,18 +1,18 @@
 import urllib
 import urlparse
 
-from django.core.urlresolvers import reverse
 from django.utils.encoding import smart_unicode
 
 import jinja2
 from jingo import register
 
+from input.urlresolvers import reverse
 from .forms import DEFAULTS
 
 
 @register.function
 @jinja2.contextfunction
-def sites_url(context, form, fragment_id=None, **kwargs):
+def sites_url(context, form, url=None, **kwargs):
     """Return the current form values as URL parameters.
 
     Values are taken from the given form and can be overriden using kwargs.
@@ -28,17 +28,19 @@ def sites_url(context, form, fragment_id=None, **kwargs):
     for name, value in kwargs.iteritems():
         parameters[name] = value
 
-    # If this is a single-site page, convert the site ID to search criteria.
-    if form.cleaned_data['site'] and context['site']:
-        del parameters['site']
-        if 'q' not in kwargs and 'page' not in kwargs:
-            parameters['q'] = context['site'].url
+    if url or context.get('site'):
+        # single site URL
+        _baseurl = url or context['site'].url
+        parts = [reverse('single_site', args=[_baseurl])]
+        if 'q' in parameters:
+            del parameters['q']
+    else:
+        # regular sites search URL
+        parts = [reverse("website_issues")]
 
-    parts = [reverse("website_issues")]
     if len(parameters):
         parts.extend(["?", urllib.urlencode(parameters)])
-    if fragment_id is not None:
-        parts.extend(["#", fragment_id])
+
     return ''.join(parts)
 
 
