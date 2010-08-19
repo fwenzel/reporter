@@ -953,3 +953,8 @@ header, footer, article, section { display: block; }
     float: right;
 }
 
+/** RTL fix for jQuery UI datepicker */
+[dir="rtl"] .ui-helper-hidden-accessible {
+    left: auto;
+    right: -99999999px;
+}
