@@ -42,9 +42,16 @@ h2 {
             width: 21.27%; /* = 200 / 940 */
             margin-left: 2.12%; /* = 20 / 940 */
             }
+        [dir="rtl"] .col {
+            margin-left: 0;
+            margin-right: 2.12%;
+        }
         .col:first-child {
             margin-left: 0;
             }
+        [dir="rtl"] .col:first-child {
+            margin-right: 0;
+        }
         .col.wide {
             width: 53.19%; /* = 500 / 940 */
             }
@@ -120,6 +127,10 @@ header, footer, article, section { display: block; }
             background: #dbdee0 url(../img/up-white.png) no-repeat center center;
             -moz-border-radius: 6px;
             }
+        [dir="rtl"] .segments > div > .toggle {
+            right: auto;
+            left: 0;
+        }
         .segments > div > .toggle:hover {
             background-color: #b6bcc0;
             }
@@ -187,6 +198,10 @@ header, footer, article, section { display: block; }
                 background: #EEF6FA;
                 background: #ddedf5;
                 }
+            [dir="rtl"] .bar .bg {
+                left: auto;
+                right: 0;
+            }
             .bar:hover .bg {
                 background: #ddedf5;
                 }
@@ -205,6 +220,10 @@ header, footer, article, section { display: block; }
                 display: none;
                 position: absolute;
                 right: 4px;
+                }
+            [dir="rtl"] .bar .count {
+                right: auto;
+                left: 4px;
                 }
             .bar:hover .count {
                 display: inline;
@@ -232,6 +251,10 @@ header, footer, article, section { display: block; }
         .filter ul {
             margin-left: 18px;
             }
+        [dir="rtl"] .filter ul {
+            margin-left: 0;
+            margin-right: 18px;
+            }
             .filter li {
                 position: relative;
                 }
@@ -239,6 +262,10 @@ header, footer, article, section { display: block; }
                     position: absolute;
                     left: -18px;
                     top: 4px;
+                    }
+                [dir="rtl"] .filter li input {
+                    left: 0;
+                    right: -18px;
                     }
 
 
@@ -259,6 +286,10 @@ header, footer, article, section { display: block; }
             width: 24px;
             height: 24px;
             background: transparent no-repeat center center;
+            }
+        [dir="rtl"] .message .type {
+            left: auto;
+            right: 0;
             }
         .message .type.praise {
             background-image: url(../img/msg-praise.png);
@@ -307,6 +338,10 @@ header, footer, article, section { display: block; }
             right: 0;
             top: 15px;
             }
+        [dir="rtl"] .message .options {
+            right: auto;
+            left: 0;
+            }
             .message .options > a {
                 position: absolute;
                 right: 0;
@@ -315,6 +350,10 @@ header, footer, article, section { display: block; }
                 height: 16px;
                 background: #edeeef url("../img/down-white.png") no-repeat scroll center center;
                 -moz-border-radius: 3px;
+                }
+            [dir="rtl"] .message .options > a {
+                right: auto;
+                left: 0;
                 }
 /*
             .message:hover .options > a {
@@ -349,6 +388,13 @@ header, footer, article, section { display: block; }
                 -moz-border-radius: 4px;
                 -moz-border-radius-topright: 0;
                 -moz-box-shadow: 0 1px 1px rgba(0,0,0, .25);
+                }
+            [dir="rtl"] .message .options ul {
+                right: auto;
+                left: 0;
+                text-align: left;
+                -moz-border-radius-topright: 4px;
+                -moz-border-radius-topleft: 0;
                 }
             .message .options:hover ul {
                 display: block;
@@ -471,6 +517,10 @@ header, footer, article, section { display: block; }
             margin-top: 8px;
             margin-left: 12px;
             }
+        [dir="rtl"] .site .samples {
+            margin-left: 0;
+            margin-right: 12px;
+            }
             .site .samples li {
                 display: list-item;
                 list-style: disc outside;
@@ -517,6 +567,10 @@ header, footer, article, section { display: block; }
                 padding: 0 .5em;
                 -moz-border-radius: 3px;
                 }
+            [dir="rtl"] .choice li a {
+                margin-left: 0;
+                margin-right: .5em;
+                }
             .choice li:first-child a {
                 margin-left: 0;
                 }
@@ -529,6 +583,9 @@ header, footer, article, section { display: block; }
                 }
             .choice li a.etc {
                 float: right;
+                }
+            [dir="rtl"] .choice li a.etc {
+                float: left;
                 }
                 .choice li a.etc > span {
                     -moz-transform: rotate(90deg);
@@ -547,8 +604,14 @@ header, footer, article, section { display: block; }
     }
     .pager .next {
         }
+    [dir="rtl"] .pager .next {
+        float: left;
+        }
     .pager .prev {
         float: right;
+        }
+    [dir="rtl"] .pager .prev {
+        float: none;
         }
     .pager .inactive {
         color: #c0c0c0;
@@ -592,6 +655,10 @@ header, footer, article, section { display: block; }
         margin-left: .5em;
         color: #c8e0f6;
         vertical-align: middle;
+        }
+    [dir="rtl"] #header ul {
+        margin-left: 0;
+        margin-right: .5em;
         }
         #header li {
             display: inline;
@@ -644,6 +711,10 @@ header, footer, article, section { display: block; }
     top: 15px;
     width: 33.3%;
     }
+[dir="rtl"] #kw-search {
+    right: auto;
+    left: 15px;
+    }
     #kw-search input {
         width: 100%;
         height: 21px;
@@ -695,6 +766,11 @@ header, footer, article, section { display: block; }
         background: #fcfadc url(../img/alert.png) no-repeat 5px center;
         color: #40403b;
         padding-left: 26px;
+        }
+    [dir="rtl"] #message-warning {
+        background-position: 99.3% center;
+        padding-left: 0;
+        padding-right: 26px;
         }
 
 
