@@ -239,7 +239,7 @@ header, footer, article, section { display: block; }
                 content: '(';
                 }
             .bar .perc:after {
-                content: ')';
+                content: ')\200E'; /* bi-di: LRM */
                 }
             .bar .count {
                 display: none;
