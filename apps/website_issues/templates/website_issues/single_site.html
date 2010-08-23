@@ -15,7 +15,7 @@
     <span>{{ cluster.primary_description|as_unicode }}</span>
     {% if cluster.size > 1 %}
     <span class="more">
-      {% trans num=cluser.size-1, count=(cluster.size-1)|numberfmt %}
+      {% trans num=cluster.size-1, count=(cluster.size-1)|numberfmt %}
         {{ count }} similar message
       {% pluralize %}
         {{ count }} similar messages
