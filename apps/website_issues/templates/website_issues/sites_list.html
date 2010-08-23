@@ -32,7 +32,7 @@
 <ul class="sites">
   {% for site in sites %}
     <li class="site">
-      <p class="name"><a href="{{ sites_url(form, url=site.url) }}">{{ site.url|without_protocol|as_unicode }}</a></p>
+      <p class="name"><a href="{{ sites_url(form, url=site.url) }}">{{ site.domain }}</a></p>
       <ul class="meta">
         <li><a href="{{ sites_url(form, url=site.url)}}">{{ _('{count} messages')|f(count=site.size|numberfmt) }}</a></li>
         {% if site.positive is none %}

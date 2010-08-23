@@ -1,4 +1,4 @@
-<h2>{{ site.url|without_protocol }}</h2>
+<h2>{{ site.domain }}</h2>
 
 <a class="exit" href="{{ url('website_issues') }}">{{ _('Back to all sites &raquo;')|safe }}</a>
 
@@ -11,7 +11,7 @@
     <p class="type issue" title="_('Issue')"><span>_('Issue')</span></p>
   {% endif %}
 
-  <p class="primary"><a href="#">
+  <p class="primary"><a href="{{ cluster.get_absolute_url() }}">
     <span>{{ cluster.primary_description|as_unicode }}</span>
     {% if cluster.size > 1 %}
     <span class="more">{{ _('{count} similar messages')|f(count=(cluster.size-1)|numberfmt) }}</span>

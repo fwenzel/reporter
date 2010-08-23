@@ -35,7 +35,9 @@
   {% endfor %}
   </ul>
 {% else %}
+  {% if show_notfound %}
   <ul class="messages">
     <li id="message-warning">{{ _('No search results found.') }}</li>
   </ul>
+  {% endif %}
 {% endif %}

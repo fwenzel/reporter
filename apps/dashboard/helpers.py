@@ -24,7 +24,7 @@ def locales_block(context, locales, total, defaults=None):
 
 @register.inclusion_tag('dashboard/message_list.html')
 @jinja2.contextfunction
-def message_list(context, opinions, defaults=None):
+def message_list(context, opinions, defaults=None, show_notfound=True):
     """A list of messages."""
     return new_context(**locals())
 

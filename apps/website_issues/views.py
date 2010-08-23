@@ -1,11 +1,13 @@
 from django.conf import settings
 from django import http
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.shortcuts import get_object_or_404
 
 import jingo
 
 from input.decorators import cache_page
 from feedback import LATEST_BETAS, FIREFOX
+from feedback.models import Opinion
 
 from .forms import WebsiteIssuesSearchForm
 from .models import Comment, Cluster, SiteSummary
@@ -99,3 +101,32 @@ def single_site(request, protocol, url_):
             "page": page,
             "site": site,}
     return jingo.render(request, 'website_issues/website_issues.html', data)
+
+
+@cache_page(use_get=True)
+def site_theme(request, theme_id):
+    """Display all comments in a per-site cluster."""
+    cluster = get_object_or_404(Cluster, pk=theme_id)
+    comments = cluster.secondary_comments
+
+    # Paginate comments
+    try:
+        page_no = int(request.GET.get('page', '1'))
+    except ValueError:
+        page_no = 1
+    pager = Paginator(comments, settings.SEARCH_PERPAGE)
+    try:
+        page = pager.page(page_no)
+    except (EmptyPage, InvalidPage):
+        page = pager.page(pager.num_pages)
+
+    # Fetch full opinion list for this page
+    opinions = Opinion.objects.filter(
+        pk__in=(c.opinion_id for c in page.object_list))
+
+    data = {"cluster": cluster,
+            "page": page,
+            "opinion_count": pager.count + 1,
+            "opinions": opinions,
+            "site": cluster.site_summary,}
+    return jingo.render(request, 'website_issues/theme.html', data)

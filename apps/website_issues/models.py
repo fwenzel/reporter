@@ -1,8 +1,12 @@
+import urlparse
+
 from django.db import models
 
 import caching.base
 
 from feedback.models import ModelBase
+from input.urlresolvers import reverse
+from input.utils import cached_property
 
 
 class Comment(ModelBase):
@@ -29,10 +33,13 @@ class Cluster(ModelBase):
     class Meta:
         ordering = ['-size']
 
-    @property
+    @cached_property
     def secondary_comments(self):
         qs = self.comments.exclude(pk=self.primary_comment_id)
         return qs
+
+    def get_absolute_url(self):
+        return reverse('site_theme', args=[self.pk])
 
 
 class QuerySetManager(caching.base.CachingManager):
@@ -98,3 +105,18 @@ class SiteSummary(ModelBase):
 
     class Meta:
         ordering = ['-size', 'url']
+
+    @cached_property
+    def parsed_url(self):
+        return urlparse.urlparse(self.url)
+
+    @cached_property
+    def protocol(self):
+        return self.parsed_url.scheme
+
+    @cached_property
+    def domain(self):
+        return self.parsed_url.netloc
+
+    def get_absolute_url(self):
+        return reverse('single_site', args=[self.protocol, self.domain])

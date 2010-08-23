@@ -7,7 +7,7 @@
 {% endmacro %}
 
 {% block page_title -%}
-{% if site %}{{ site.url|without_protocol }} :: {% endif %}{{ _('Sites') }}
+{% if site %}{{ site.domain }} :: {% endif %}{{ _('Sites') }}
 {%- endblock %}
 {% block body_id %}website_issues{% endblock %}
 {% block header_links %}{{ header_links('website_issues') }}{% endblock %}
@@ -73,8 +73,7 @@
       <h3>{{ _('Uncommon Sites') }}</h3>
       <ul>
         {% for site in one_offs %}
-        <li><a href="{{ sites_url(form, site=site.id) }}">
-          {{ site.url|without_protocol|as_unicode }}</a></li>
+        <li><a href="{{ sites_url(form, site=site.id) }}">{{ site.domain }}</a></li>
         {% endfor %}
         <li class="more">{{ button('show_one_offs', True, label=_('More sites...')) }}</li>
       </ul>
