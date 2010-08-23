@@ -71,3 +71,9 @@ def when_block(context, form, defaults=None, selected=None):
 def date_ago(**kwargs):
     """Returns the date for the given timedelta from now."""
     return datetime.date.today() - datetime.timedelta(**kwargs)
+
+
+@register.inclusion_tag('includes/filter_box_toggle.html')
+@jinja2.contextfunction
+def filter_box_toggle(context, label=''):
+    return new_context(**locals())

@@ -11,8 +11,8 @@
 {% endmacro %}
 
 <div class="filter collapsible">
-  <h3>{{ _('Locale') }}</h3>
-  {% include "includes/filter_box_toggle.html" %}
+  {{ filter_box_toggle(_('Locale')) }}
+
   <ul class="bars" data-total="{{ total }}">
     {% if defaults['locale'] %}
       {{ locale_item(defaults['locale'], selected=True) }}

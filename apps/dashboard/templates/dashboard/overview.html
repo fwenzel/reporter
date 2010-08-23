@@ -1,6 +1,6 @@
 <div class="filter collapsible">
-  <h3>{{ _('Type of Feedback') }}</h3>
-  {% include "includes/filter_box_toggle.html" %}
+  {{ filter_box_toggle(_('Type of Feedback')) }}
+
   <ul class="bars" data-total="{{ sent.total }}">
     {% if not defaults['sentiment'] == 'sad' %}
     {% with sel = (defaults['sentiment'] == 'happy') %}

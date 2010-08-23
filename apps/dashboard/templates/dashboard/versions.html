@@ -1,8 +1,6 @@
 {% with ver = defaults['version'] %}
 <div class="filter collapsible {{ 'collapsed' if not ver else '' }}">
-  <h3>{{ _('Version') }}</h3>
-
-  {% include "includes/filter_box_toggle.html" %}
+  {{ filter_box_toggle(_('Version')) }}
 
   <div>
     <select id="version" name="version">

@@ -1,7 +1,7 @@
 <div class="trend collapsible">
   {# L10n: Refers to terms often mentioned in feedback. #}
-  <h3>{{ _('Often Mentioned') }}</h3>
-  {% include "includes/filter_box_toggle.html" %}
+  {{ filter_box_toggle(_('Often Mentioned')) }}
+
   <ul class="bars">
     {% for item in themes %}
     <li>
