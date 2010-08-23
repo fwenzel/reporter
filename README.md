@@ -71,6 +71,10 @@ To initialize the database, run:
 
     ./manage.py syncdb
 
+To update your schemas from an earlier version:
+
+    schematic migrations
+
 To initialize the search index, run:
 
     ./manage.py update_index
@@ -90,6 +94,10 @@ cron task. To initialize it, run:
 To generate site data yourself without getting it pushed from metrics, run
 
     ./manage.py generate_sites
+
+And for schema updates:
+
+    schematic migrations/sites
 
 ### Cron jobs
 There are two jobs you may want to run periodically:
