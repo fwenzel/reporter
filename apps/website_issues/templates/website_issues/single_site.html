@@ -14,7 +14,13 @@
   <p class="primary"><a href="{{ cluster.get_absolute_url() }}">
     <span>{{ cluster.primary_description|as_unicode }}</span>
     {% if cluster.size > 1 %}
-    <span class="more">{{ _('{count} similar messages')|f(count=(cluster.size-1)|numberfmt) }}</span>
+    <span class="more">
+      {% trans num=cluser.size-1, count=(cluster.size-1)|numberfmt %}
+        {{ count }} similar message
+      {% pluralize %}
+        {{ count }} similar messages
+      {% endtrans %}
+    </span>
     {% endif %}
   </a></p>
   <ul class="samples">

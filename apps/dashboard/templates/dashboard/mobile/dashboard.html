@@ -34,7 +34,13 @@
     {# L10n: Link on the dashboard to show more messages. #}
     {{ _('Show more') }}
   </a>
-  <h2>{{ _('Last {count} Messages')|f(count=messages_count) }}</h2>
+  <h2>
+    {% trans num=messages_count, count=messages_count|numberfmt %}
+      Most Recent Message
+    {% pluralize %}
+      Last {{ count }} Messages
+    {% endtrans %}
+  </h2>
   <div class="ajaxy"></div>
 </div>
 

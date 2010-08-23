@@ -34,7 +34,13 @@
     <li class="site">
       <p class="name"><a href="{{ sites_url(form, url=site.url) }}">{{ site.domain }}</a></p>
       <ul class="meta">
-        <li><a href="{{ sites_url(form, url=site.url)}}">{{ _('{count} messages')|f(count=site.size|numberfmt) }}</a></li>
+        <li><a href="{{ sites_url(form, url=site.url)}}">
+          {% trans num=site.size, count=site.size|numberfmt %}
+            {{ count }} message
+          {% pluralize %}
+            {{ count }} messages
+          {% endtrans %}
+        </a></li>
         {% if site.positive is none %}
           {% with praise_perc=(site.praise_count/site.size*100)|int %}
           <li><a href="{{ sites_url(form, sentiment='happy', url=site.url) }}">{{
@@ -53,7 +59,11 @@
             {# L10n: "similar" refers to "similar messages". #}
             <span>
               <a href="{{ cluster.get_absolute_url() }}">
-                {{ _('{count} similar')|f(count=(cluster.size-1)|numberfmt) }}
+                {% trans num=cluster.size-1, count=(cluster.size-1)|numberfmt %}
+                  {{ count }} similar
+                {% pluralize %}
+                  {{ count }} similar
+                {% endtrans %}
               </a>
             </span>
             {% endif %}
