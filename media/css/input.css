@@ -443,6 +443,10 @@ header, footer, article, section { display: block; }
             height: 24px;
             background: transparent no-repeat center center;
             }
+        [dir="rtl"] .theme .type {
+            left: auto;
+            right: 0;
+            }
         .theme .type.praise {
             background-image: url(../img/msg-praise.png);
             }
@@ -460,6 +464,10 @@ header, footer, article, section { display: block; }
             margin-left: 36px;
             font-size: 14px;
             line-height: 17px;
+            }
+        [dir="rtl"] .theme .primary {
+            margin-left: 0;
+            margin-right: 36px;
             }
             .theme .primary a {
                 color: #326DA1;
@@ -481,6 +489,10 @@ header, footer, article, section { display: block; }
         .theme .samples {
             margin-left: 48px;
             margin-top: 8px;
+            }
+        [dir="rtl"] .theme .samples {
+            margin-left: 0;
+            margin-right: 48px;
             }
             .theme .samples li {
                 display: list-item;
@@ -774,6 +786,12 @@ header, footer, article, section { display: block; }
         font-size: 11px;
         line-height: 21px;
         }
+    [dir="rtl"] #messages .exit,
+    [dir="rtl"] #themes .exit,
+    [dir="rtl"] #sites .exit {
+        right: auto;
+        left: 15px;
+    }
     #message-warning,
     #theme-callout,
     #title-callout {
