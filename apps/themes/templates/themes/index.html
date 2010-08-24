@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Themes') }}{% endblock %}
+{% block body_id %}themes{% endblock %}
+
+{% block content %}
+<div class="col left">
+  <form id="filters" class="filters segments block" method="get" action="{{ url('themes') }}">
+    <div class="choice">
+      <h3>{{ _('Type of Feedback') }}</h3>
+      <div>
+        {{ filter_list(sentiments) }}
+      </div>
+    </div>
+    <div class="choice">
+      <h3>{{ _('Platform') }}</h3>
+      <div>
+        {{ filter_list(platforms) }}
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="col middle wide">
+  <div id="messages" class="block">
+    <h2>{{ _('Common Themes') }}</h2>
+    {{ theme_list(themes) }}
+  </div>
+</div>
+{% endblock %}
+

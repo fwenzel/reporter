@@ -1,0 +1,10 @@
+{% if filters %}
+<ul>
+  {% for filter in filters %}
+  <li>
+  <a {% if filter.selected %}class="selected" {% endif %}
+     href="{{ filter.url }}" title="{{ filter.title }}">{{ filter.text }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}

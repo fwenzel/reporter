@@ -2,7 +2,7 @@
 <html lang="{{ LANG }}" dir="{{ DIR }}">
   <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-    <title>{% block page_title %}{{ _('Welcome!') }}{% endblock %} :: Firefox Input</title>
+    <title>{% block page_title %}{{ _('Welcome') }}{% endblock %} :: Firefox Input</title>
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -27,14 +27,16 @@
         <strong>Firefox Input</strong> {{ _('Dashboard') }}
       </a></h1>
 
-      {% macro header_links(sel='dashboard') %}
       <ul>
-        <li><a class="{{ 'selected' if sel=='dashboard' else '' }}" href="{{ url('dashboard') }}"><span>{{ _('Feedback') }}</span></a></li>
-        <li><a class="{{ 'selected' if sel=='clusters' else '' }}" href="{{ url('clusters') }}"><span>{# L10n: Formerly: Clusters #}{{ _('Themes') }}</span></a></li>
-        <li><a class="{{ 'selected' if sel=='website_issues' else '' }}" href="{{ url('website_issues') }}"><span>{{ _('Sites') }}</span></a></li>
+        <li><a class="dashboard" href="{{ url('dashboard') }}"><span>{{ _('Feedback') }}</span></a></li>
+        <li>
+          <a class="themes" href="{{ url('themes') }}">
+            <span>{# L10n: Formerly: Clusters #}{{ _('Themes') }}</span>
+          </a>
+        </li>
+
+        <li><a class="issues" href="{{ url('website_issues') }}"><span>{{ _('Sites') }}</span></a></li>
       </ul>
-      {% endmacro %}
-      {% block header_links %}{{ header_links() }}{% endblock %}
     </div></div>
 
     <div id="body"><div class="funnel">
