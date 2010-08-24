@@ -35,7 +35,7 @@ class Cluster(ModelBase):
 
     @cached_property
     def secondary_comments(self):
-        qs = self.comments.exclude(pk=self.primary_comment_id)
+        qs = self.comments.exclude(pk=self.primary_comment.pk)
         return qs
 
     def get_absolute_url(self):
