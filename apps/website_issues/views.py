@@ -1,7 +1,7 @@
 from django.conf import settings
 from django import http
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 
 import jingo
 
@@ -84,13 +84,16 @@ def single_site(request, protocol, url_):
     if not form.is_valid():
         raise http.Http404
 
-    sites, _ = _fetch_summaries(form, url='%s://%s' % (protocol, url_))
-    if not sites:
-        raise http.Http404
-    site = sites[0]
+    full_url = '%s://%s' % (protocol, url_)
+    sites, _ = _fetch_summaries(form, url=full_url)
+    if sites:
+        site = sites[0]
+        clusters = site.all_clusters
+    else:
+        site = get_list_or_404(SiteSummary, url=full_url)[0]
+        clusters = []
 
     # Fetch a pageful of clusters
-    clusters = site.all_clusters
     pager = Paginator(clusters, settings.SEARCH_PERPAGE)
     try:
         page = pager.page(form.cleaned_data['page'])
