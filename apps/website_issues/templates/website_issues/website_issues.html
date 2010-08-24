@@ -73,7 +73,7 @@
       <h3>{{ _('Uncommon Sites') }}</h3>
       <ul>
         {% for site in one_offs %}
-        <li><a href="{{ sites_url(form, site=site.id) }}">{{ site.domain }}</a></li>
+        <li><a href="{{ sites_url(form, url=site.url) }}">{{ site.domain }}</a></li>
         {% endfor %}
         <li class="more">{{ button('show_one_offs', True, label=_('More sites...')) }}</li>
       </ul>

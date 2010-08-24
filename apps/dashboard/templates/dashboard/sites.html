@@ -5,7 +5,7 @@
 
   <ul class="bars">
     {% for site in sites %}
-    <li><a href="{{ url('website_issues')|urlparams(q=site.url) }}"
+    <li><a href="{{ site.get_absolute_url() }}"
            class="bar" data-value="{{ site.size }}">
       <strong>{{ site.url|without_protocol }}</strong>
     </a></li>
