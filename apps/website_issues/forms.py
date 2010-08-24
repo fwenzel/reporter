@@ -70,7 +70,7 @@ class WebsiteIssuesSearchForm(forms.Form):
         if cleaned.get('show_one_offs') not in (True, False):
             cleaned['show_one_offs'] = DEFAULTS["show_one_offs"]
 
-        if cleaned['page'] is not None:
+        if cleaned.get('page') is not None:
             cleaned['page'] = max(1, int(cleaned['page']))
         else:
             cleaned['page'] = DEFAULTS["page"]
