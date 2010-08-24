@@ -7,18 +7,10 @@ from django.db.models.query import QuerySet
 
 import caching.base
 
+from input.models import ModelBase
 from input.urlresolvers import reverse
 from . import APP_IDS, OSES, query
 from .utils import ua_parse, extract_terms, smart_truncate
-
-
-class ModelBase(caching.base.CachingMixin, models.Model):
-    """Common base model for all models: Implements caching."""
-
-    objects = caching.base.CachingManager()
-
-    class Meta:
-        abstract = True
 
 
 class OpinionManager(caching.base.CachingManager):
