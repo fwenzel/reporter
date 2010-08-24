@@ -1,7 +1,7 @@
-import urllib
 import urlparse
 
 from django.utils.encoding import smart_unicode
+from django.utils.http import urlencode
 
 import jinja2
 from jingo import register
@@ -40,7 +40,7 @@ def sites_url(context, form, url=None, **kwargs):
         parts = [reverse("website_issues")]
 
     if len(parameters):
-        parts.extend(["?", urllib.urlencode(parameters)])
+        parts.extend(["?", urlencode(parameters)])
 
     return ''.join(parts)
 

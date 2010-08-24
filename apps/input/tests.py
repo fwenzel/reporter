@@ -21,6 +21,10 @@ class HelperTests(test_utils.TestCase):
         self.assertEqual(
             res, u'/xx?russian=%D0%B1%D1%8B%D1%81%D1%82%D1%80%D0%BE')
 
+        # Polish string (bug 582506)
+        res = urlparams(u'/xx?y=obsłudze')
+        self.assertEqual(res, u'/xx?y=obs%C5%82udze')
+
 
 class MiddlewareTests(test_utils.TestCase):
     def test_locale_fallback(self):

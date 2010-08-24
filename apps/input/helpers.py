@@ -1,12 +1,12 @@
 import cgi
 import datetime
-import urllib
 import urlparse
 
 from django.conf import settings
 from django.template import defaultfilters
 from django.utils import translation
 from django.utils.encoding import smart_str
+from django.utils.http import urlencode
 
 from babel import Locale
 from babel.dates import format_datetime
@@ -79,16 +79,8 @@ def urlparams(url_, hash=None, **query):
     query_dict = dict(urlparse.parse_qsl(smart_str(q))) if q else {}
     query_dict.update((k, v) for k, v in query.items())
 
-    query_string = _urlencode([(k, v) for k, v in query_dict.items()
+    query_string = urlencode([(k, v) for k, v in query_dict.items()
                                if v is not None])
     new = urlparse.ParseResult(url.scheme, url.netloc, url.path, url.params,
                                query_string, fragment)
     return new.geturl()
-
-
-def _urlencode(items):
-    """A Unicode-safe URLencoder."""
-    try:
-        return urllib.urlencode(items)
-    except UnicodeEncodeError:
-        return urllib.urlencode([(k, smart_str(v)) for k, v in items])
