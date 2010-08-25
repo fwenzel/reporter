@@ -27,19 +27,19 @@
     {# Pagination #}
     {% if page and page.has_other_pages() %}
     <div class="pager">
-      {% with link_txt = _('&laquo; Previous Page')|safe %}
+      {% with link_txt = _('&laquo; Previous Page;')|safe %}
         {% if page.has_previous() %}
-        <a class="next" href="?page={{ page.previous_page_number() }}">{{ link_txt }}</a>
+        <a class="prev" href="?page={{ page.previous_page_number() }}">{{ link_txt }}</a>
         {% else %}
-        <span class="next inactive">{{ link_txt }}</span>
+        <span class="prev inactive">{{ link_txt }}</span>
         {% endif %}
       {% endwith %}
 
       {% with link_txt = _('Next Page &raquo;')|safe %}
         {% if page.has_next() %}
-        <a class="prev" href="?page={{ page.next_page_number() }}">{{ link_txt }}</a>
+        <a class="next" href="?page={{ page.next_page_number() }}">{{ link_txt }}</a>
         {% else %}
-        <span class="prev inactive">{{ link_txt }}</span>
+        <span class="next inactive">{{ link_txt }}</span>
         {% endif %}
       {% endwith %}
     </div>

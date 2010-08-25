@@ -61,23 +61,23 @@
 
     {% if page and page.has_other_pages() %}
     <div class="pager">
-      {% with link_txt = _('&laquo; Older Messages')|safe %}
-        {% if page.has_next() %}
-        <a href="{{ search_url(
-          default =form.data, extra={'page': page.next_page_number()})
-          }}" class="next">{{ link_txt }}</a>
-        {% else %}
-        <span class="next inactive">{{ link_txt }}</span>
-        {% endif %}
-      {% endwith %}
-
-      {% with link_txt = _('Newer Messages &raquo;')|safe %}
+      {% with link_txt = _('&laquo; Newer Messages')|safe %}
         {% if page.has_previous() %}
         <a href="{{ search_url(
           defaults=form.data, extra={'page': page.previous_page_number()})
           }}" class="prev">{{ link_txt }}</a>
         {% else %}
         <span class="prev inactive">{{ link_txt }}</span>
+        {% endif %}
+      {% endwith %}
+
+      {% with link_txt = _('Older Messages &raquo;')|safe %}
+        {% if page.has_next() %}
+        <a href="{{ search_url(
+          default =form.data, extra={'page': page.next_page_number()})
+          }}" class="next">{{ link_txt }}</a>
+        {% else %}
+        <span class="next inactive">{{ link_txt }}</span>
         {% endif %}
       {% endwith %}
     </div>

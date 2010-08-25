@@ -642,15 +642,16 @@ header, footer, article, section { display: block; }
 
 .pager {
     border-top: 1px dotted #b6bcc0;
-    padding-top: 15px;
+    padding: 15px 0 10px 0;
     }
     .pager .next {
+        float: right;
         }
     [dir="rtl"] .pager .next {
         float: left;
         }
     .pager .prev {
-        float: right;
+        float: left;
         }
     [dir="rtl"] .pager .prev {
         float: none;
