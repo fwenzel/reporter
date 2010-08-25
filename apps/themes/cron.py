@@ -23,14 +23,15 @@ log = logging.getLogger('reporter')
 def cluster():
     # Get all the happy/sad issues in the last week.
     week_ago = datetime.datetime.today() - datetime.timedelta(7)
-    now = datetime.datetime.now()
+    nowish = datetime.datetime.now() - datetime.timedelta(hours=1)
+
     base_qs = Opinion.objects.filter(locale='en-US', created__gte=week_ago,
                                      version=LATEST_BETAS[FIREFOX])
 
     log.debug('Beginning clustering')
     cluster_by_feeling(base_qs)
     log.debug('Removing old clusters')
-    Theme.objects.filter(created__lt=now).delete()
+    Theme.objects.filter(created__lt=nowish).delete()
 
 
 def cluster_by_feeling(base_qs):
