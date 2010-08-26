@@ -234,5 +234,4 @@ TEST_RUNNER = 'test_utils.runner.RadicalTestSuiteRunner'
 import logging
 logging.basicConfig()
 
-
-CLUSTER_SIM_THRESHOLD = 8
+CLUSTER_SIM_THRESHOLD = 2
