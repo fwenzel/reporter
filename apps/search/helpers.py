@@ -4,6 +4,8 @@ from urllib import urlencode
 from jingo import register
 import jinja2
 
+from product_details import firefox_versions
+
 from feedback.version_compare import simplify_version
 from input.urlresolvers import reverse
 from .forms import ReporterSearchForm
@@ -26,6 +28,7 @@ def search_url(context, defaults=None, extra=None, feed=False, **kwargs):
     fallbacks = {}
     if not 'products' in defaults and not 'products' in kwargs:
         fallbacks['product'] = context['request'].default_app.short
+        fallbacks['version'] = firefox_versions['LATEST_FIREFOX_RELEASED_DEVEL_VERSION'] 
 
     # get field data from keyword args or defaults
     for field in ReporterSearchForm.base_fields:

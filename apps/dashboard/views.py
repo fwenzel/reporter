@@ -6,13 +6,14 @@ from django.db.models import Count
 
 import jingo
 
+from product_details import firefox_versions
+
 from feedback import stats, FIREFOX, MOBILE, LATEST_BETAS
 from feedback.models import Opinion, Term
 from feedback.version_compare import simplify_version
 from input.decorators import cache_page
 from search.forms import ReporterSearchForm, VERSION_CHOICES
 from website_issues.models import SiteSummary
-
 from .forms import PeriodForm, PERIOD_DELTAS
 
 
@@ -24,7 +25,7 @@ def dashboard(request):
 
     # Default app and version
     app_id = request.default_app.id
-    version = simplify_version(LATEST_BETAS[request.default_app])
+    version = firefox_versions['LATEST_FIREFOX_RELEASED_DEVEL_VERSION']
 
     # Frequent terms
     term_params = {
@@ -51,6 +52,7 @@ def dashboard(request):
             'terms': stats.frequent_terms(qs=frequent_terms),
             'demo': stats.demographics(qs=latest_opinions),
             'sites': sites,
+            'version': version,
             'versions': VERSION_CHOICES[request.default_app],
             'search_form': search_form}
     return jingo.render(request, 'dashboard/dashboard.html', data)
