@@ -1,5 +1,5 @@
 {% if opinions %}
-  <ul class="messages">
+  <ul class="messages segmented">
   {% for opinion in opinions %}
     <li class="message">
       {% if opinion.positive %}
@@ -16,12 +16,14 @@
           </a>
         </li>
         <li><a href="{{ search_url(os=opinion.os, defaults=defaults) }}">{{ os_name(opinion.os) }}</a></li>
-        <li><a href="{{ search_url(locale=opinion.locale, defaults=defaults) }}">{{ locale_name(opinion.locale) }}</li>
+        <li><a href="{{ search_url(locale=opinion.locale, defaults=defaults) }}">{{ locale_name(opinion.locale) }}</a></li>
         {% if opinion.url %}
           {# TODO redirect via outgoing? #}
           <li><a href="{{ opinion.url }}" rel="nofollow">{{ opinion.url|without_protocol }}</a></li>
         {% endif %}
       </ul>
+
+      {% if not request.mobile_site %}
       <div class="options">
         <a href="#"><span>{{ _('More Options') }}</span></a>
         <ul>
@@ -31,6 +33,7 @@
           <li><a href="{{ 'http://translate.google.com/'|urlparams(sl='auto', q=opinion.description) }}">{{ _('Translate Message') }}</a></li>
         </ul>
       </div>
+      {% endif %}
     </li>
   {% endfor %}
   </ul>

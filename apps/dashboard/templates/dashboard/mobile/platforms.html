@@ -1,0 +1,19 @@
+{% macro os_item(os, count=0, selected=False) %}
+{{ mobile_bar(name='os', id='os_'+os, value=os, selected=selected,
+              count=count, total=opinion_count, label=os_name(os)) }}
+{% endmacro %}
+
+<div class="block collapsible">
+  <h2><a class="toggle" href="#">{{ _('Platform') }}</a></h2>
+
+  <ul class="collapsee filters bars">
+
+    {% if defaults['os'] %}
+      {{ os_item(defaults['os'], selected=True) }}
+    {% else %}
+      {% for item in platforms %}
+        {{ os_item(item.os, item.count) }}
+      {% endfor %}
+    {% endif %}
+  </ul>
+</div>

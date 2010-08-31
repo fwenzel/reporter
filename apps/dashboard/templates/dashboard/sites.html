@@ -1,4 +1,3 @@
-{% if settings.DATABASES.get('website_issues') and sites %}
 <div class="trend collapsible">
   {# L10n: Refers to sites that were reported in feedback. #}
   {{ filter_box_toggle(_('While Visiting')) }}
@@ -12,4 +11,3 @@
     {% endfor %}
   </ul>
 </div>
-{% endif %}

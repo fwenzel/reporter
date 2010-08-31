@@ -43,29 +43,7 @@
       {% block content %}{% endblock %}
     </div></div>
 
-    <!-- start #footer -->
-    <footer id="footer">
-      <div id="footer-contents" class="funnel">
-        <div id="copyright">
-          {% include 'includes/lang_switcher.html' %}
-          <p id="footer-links">
-            <a href="http://www.mozilla.com/en-US/privacy-policy.html">{{ _('Privacy Policy') }}</a> &nbsp;|&nbsp;
-            <a href="http://www.mozilla.com/en-US/about/legal.html">{{ _('Legal Notices') }}</a> &nbsp;|&nbsp;
-            <a href="http://www.mozilla.com/en-US/legal/fraud-report/index.html">{{ _('Report Trademark Abuse') }}</a>
-          </p>
-          <p>
-            {% trans legal_url='http://www.mozilla.com/en-US/about/legal.html#site',
-                     license_url='http://creativecommons.org/licenses/by-sa/3.0/' %}
-              Except where otherwise <a href="{{ legal_url }}">noted</a>,
-              content on this site is licensed under the <br/>
-              <a href="{{ license_url }}">Creative Commons Attribution Share-Alike License v3.0</a>
-              or any later version.
-            {% endtrans %}
-          </p>
-        </div>
-      </div>
-    </footer>
-    <!-- end #footer -->
+    {% include "includes/footer.html" %}
 
     <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.min.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-ui.min.js"></script>
