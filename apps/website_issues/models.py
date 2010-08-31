@@ -4,7 +4,7 @@ from django.db import models
 
 import caching.base
 
-from feedback.models import ModelBase
+from input.models import ModelBase
 from input.urlresolvers import reverse
 from input.utils import cached_property
 

@@ -21,12 +21,12 @@ urlpatterns = patterns('',
     ('', include('website_issues.urls')),
     (r'^dashboard/', include('dashboard.urls')),
     (r'^search/', include('search.urls')),
+    (r'^themes/', include('themes.urls')),
     (r'^admin/', include(admin.site.urls)),
 
     (r'^robots\.txt$', jingo.render, {'template': 'robots.txt',
                                       'mimetype': 'text/plain'}),
 )
-
 
 if settings.DEBUG:
     # Remove leading and trailing slashes so the regex matches.

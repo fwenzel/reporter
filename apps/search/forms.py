@@ -2,7 +2,6 @@ from datetime import date, timedelta
 
 from django.conf import settings
 from django import forms
-from django.utils.functional import lazy
 
 import product_details
 from tower import ugettext_lazy as _lazy
@@ -17,14 +16,15 @@ PROD_CHOICES = (
     (FIREFOX.short, FIREFOX.pretty),
     (MOBILE.short, MOBILE.pretty),
 )
+
 # TODO need this for Mobile as well
 VERSION_CHOICES = {
     FIREFOX: [('', _lazy('-- all --', 'version_choice'))] + uniquifier(
         [(simplify_version(v[0]), v[0]) for v in
          sorted(product_details.firefox_history_development_releases.items(),
                 key=lambda x: x[1], reverse=True) if
-         version_int(v[0]) >= version_int(FIREFOX.hide_below)
-        ], key=lambda x: x[0]),
+         version_int(v[0]) >= version_int(FIREFOX.hide_below)],
+         key=lambda x: x[0]),
     MOBILE: [
         ('', _lazy('-- all --', 'version_choice')),
         (simplify_version(LATEST_BETAS[MOBILE]), LATEST_BETAS[MOBILE]),

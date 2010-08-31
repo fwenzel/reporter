@@ -145,6 +145,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.csrf',
 
     'input.context_processors.i18n',
+    'input.context_processors.input',
     'input.context_processors.mobile',
     'search.context_processors.product_versions',
 )
@@ -177,6 +178,7 @@ INSTALLED_APPS = [
     'feedback',
     'search',
     'swearwords',
+    'themes',
     'website_issues',
 
     'annoying',
@@ -231,3 +233,5 @@ TEST_RUNNER = 'test_utils.runner.RadicalTestSuiteRunner'
 
 import logging
 logging.basicConfig()
+
+CLUSTER_SIM_THRESHOLD = 2

@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django import http
 from django.shortcuts import get_object_or_404
@@ -10,7 +9,7 @@ from tower import ugettext as _
 from input.decorators import cache_page
 from input.urlresolvers import reverse
 from .forms import HappyForm, SadForm
-from .models import Opinion, ClusterType
+from .models import Opinion
 from .utils import detect_language
 from .validators import validate_ua
 
@@ -94,21 +93,6 @@ def thanks(request):
         'mobile/' if request.mobile_site else '')
     return jingo.render(request, template)
 
-
-@cache_page
-def clusters(request):
-    """List the various clusters of data we have."""
-    return jingo.render(request, 'feedback/clusters.html',
-                        {'clusters': ClusterType.objects.all()})
-
-
-@cache_page
-def cluster(request, platform, version, feeling, frequency):
-    """Opinions clustered by text similarity."""
-    t = get_object_or_404(ClusterType, platform=platform, feeling=feeling,
-                          frequency=frequency, version=version)
-    return jingo.render(request, 'feedback/cluster.html',
-                        {'clusters': t.clusters.all()[:30]})
 
 @cache_page
 def opinion_detail(request, id):

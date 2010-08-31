@@ -35,6 +35,7 @@ html {
 }
 
 h2 {
+    margin-bottom: 7px;
     font-weight: bold;
     text-transform: uppercase;
     font-size: 18px;
@@ -429,7 +430,10 @@ header, footer, article, section { display: block; }
                     padding: .25em .5em;
                     color: inherit;
                     }
-
+.theme-items li {
+    list-style: disc;
+    margin-left: 50px;
+}
 
 .themes {
     }
@@ -706,7 +710,8 @@ header, footer, article, section { display: block; }
         #header li {
             display: inline;
             }
-            #header li a {
+            #header li a
+            {
                 margin-left: .25em;
                 padding: .33em .66em;
                 -moz-border-radius: .25em;
@@ -716,12 +721,15 @@ header, footer, article, section { display: block; }
             #header li a:hover {
                 background: #2a5b86;
                 }
-            #header li a.selected {
+            #dashboard li a.dashboard,
+            #themes li a.themes,
+            #website_issues li a.issues {
                 background: #326da1;
                 color: #fff;
                 text-shadow: 0 1px 0 rgba(0,0,0, .5);
                 -moz-box-shadow: inset 0 1px 0 rgba(0,0,0, .5);
                 }
+
                 #header li a > span {
                     vertical-align: middle;
                     }
