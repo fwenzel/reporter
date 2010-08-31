@@ -81,7 +81,6 @@ class ReporterSearchForm(forms.Form):
                 pass
         if (picked == MOBILE.short or not self.is_bound and
             settings.SITE_ID == settings.MOBILE_SITE_ID):
-            print picked
             # We default to Firefox. Only change if this is the mobile site.
             self.fields['product'].initial = MOBILE.short
             self.fields['version'].choices = VERSION_CHOICES[MOBILE]

@@ -19,7 +19,6 @@ urlpatterns = patterns('',
 
     ('', include('feedback.urls')),
     ('', include('website_issues.urls')),
-    (r'^dashboard/', include('dashboard.urls')),
     (r'^search/', include('search.urls')),
     (r'^themes/', include('themes.urls')),
     (r'^admin/', include(admin.site.urls)),

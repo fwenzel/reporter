@@ -1,0 +1,20 @@
+{% macro locale_item(locale, count=0, selected=False) %}
+  {{ mobile_bar(name='locale', id='loc_'+locale,
+                value=locale|default('unknown', True),
+                selected=selected, count=count, total=opinion_count,
+                label=locale_name(locale)) }}
+{% endmacro %}
+
+<div class="block collapsible">
+  <h2><a class="toggle" href="#">{{ _('Locale') }}</a></h2>
+
+  <ul class="collapsee filters bars">
+    {% if defaults['locale'] %}
+      {{ locale_item(defaults['locale'], selected=True) }}
+    {% else %}
+      {% for item in locales %}
+      {{ locale_item(item.locale, item.count) }}
+      {% endfor %}
+    {% endif %}
+  </ul>
+</div>

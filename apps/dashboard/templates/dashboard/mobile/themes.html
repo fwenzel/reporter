@@ -1,0 +1,17 @@
+<div class="block collapsible">
+  <h2><a class="toggle" href="#">{{ _('Often Mentioned') }}</a></h2>
+
+  <ul class="collapsee trends bars">
+    {% for item in themes %}
+      {% if not total %}{% set total = item.count|float %}{% endif %}
+      {% set perc = (item.count / total * 100.0)|int if total else 0 %}
+      <li class="trend">
+        <a href="{{ search_url(defaults=defaults, q=item.term) }}" class="bar">
+          <span class="bg" style="width: {{ perc }}%;"></span>
+          <label>{{ item.term }}</label>
+          <span class="perc">{{ item.count|numberfmt }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
