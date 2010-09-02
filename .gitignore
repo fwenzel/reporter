@@ -6,3 +6,4 @@ pip-log.txt
 lib/whoosh_index
 vendor
 tmp
+docs/_gh-pages
