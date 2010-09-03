@@ -22,6 +22,7 @@ from themes.helpers import new_context
 # Yanking filters from Django.
 register.filter(defaultfilters.iriencode)
 register.filter(defaultfilters.timesince)
+register.filter(defaultfilters.slugify)
 
 
 def _get_format():
