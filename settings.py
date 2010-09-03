@@ -185,6 +185,7 @@ INSTALLED_APPS = [
     'cronjobs',
     'product_details',
     'tower',
+    'djcelery',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -235,3 +236,8 @@ import logging
 logging.basicConfig()
 
 CLUSTER_SIM_THRESHOLD = 2
+
+# Celery
+
+import djcelery
+djcelery.setup_loader()
