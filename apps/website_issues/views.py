@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 import jingo
 
 from input.decorators import cache_page
-from feedback import LATEST_BETAS, FIREFOX
+from feedback import LATEST_BETAS, FIREFOX, MOBILE, OSES
 from feedback.models import Opinion
 
 from .forms import WebsiteIssuesSearchForm
@@ -18,15 +18,19 @@ def _fetch_summaries(form, url=None, count=None, one_offs=False):
 
     qs = SiteSummary.objects.all()
 
-    version = ("<week>" if search_opts["search_type"] == "week" else
-               LATEST_BETAS[FIREFOX])
-    qs = qs.filter(version__exact=version)
+    versions = (("<week>",) if search_opts["search_type"] == "week" else
+                (LATEST_BETAS[FIREFOX], LATEST_BETAS[MOBILE]))
+    qs = qs.filter(version__in=versions)
 
     # selected_sentiment = None means "both"
     selected_sentiment = None
     if search_opts["sentiment"] == "happy": selected_sentiment = 1
     elif search_opts["sentiment"] == "sad": selected_sentiment = 0
     qs = qs.filter(positive__exact=selected_sentiment)
+
+    os = None
+    if search_opts["os"] != '': os = search_opts["os"]
+    qs = qs.filter(os__exact=os)
 
     # If URL was specified, match it exactly, else fuzzy-search.
     if url:
@@ -69,8 +73,8 @@ def website_issues(request):
                 form.cleaned_data['site']):
             one_offs, _ = _fetch_summaries(form, count=settings.TRENDS_COUNT,
                                            one_offs=True)
-
     data = {"form": form,
+            "oses": OSES.values(),
             "page": page,
             "sites": sites,
             "one_offs": one_offs,}
@@ -101,6 +105,7 @@ def single_site(request, protocol, url_):
         page = pager.page(pager.num_pages)
 
     data = {"form": form,
+            "oses": OSES.values(),
             "page": page,
             "site": site,}
     return jingo.render(request, 'website_issues/website_issues.html', data)
