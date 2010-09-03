@@ -17,7 +17,7 @@ import pytz
 
 import utils
 from .urlresolvers import reverse
-
+from themes.helpers import new_context
 
 # Yanking filters from Django.
 register.filter(defaultfilters.iriencode)
@@ -84,3 +84,18 @@ def urlparams(url_, hash=None, **query):
     new = urlparse.ParseResult(url.scheme, url.netloc, url.path, url.params,
                                query_string, fragment)
     return new.geturl()
+
+
+@register.inclusion_tag('input/pager.html')
+@jinja2.contextfunction
+def pager(context):
+    """Fuckyeahpagination!"""
+    page = context['page']
+    url = context['request'].META['PATH_INFO']
+    if page.has_previous():
+        prev_url = urlparams(url, page=page.previous_page_number())
+
+    if page.has_next():
+        next_url = urlparams(url, page=page.next_page_number())
+
+    return new_context(**locals())

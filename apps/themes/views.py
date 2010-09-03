@@ -1,5 +1,8 @@
 from collections import namedtuple
 
+from django.conf import settings
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
+
 import jingo
 from tower import ugettext as _
 
@@ -68,5 +71,18 @@ def index(request):
     if platform:
         qs = qs.filter(platform=platform)
 
-    args = dict(themes=qs, sentiments=sentiments, platforms=platforms)
+    args = dict(sentiments=sentiments, platforms=platforms)
+    page = request.GET.get('page', 1)
+
+    if qs:
+        pp = settings.SEARCH_PERPAGE
+        pager = Paginator(qs, pp)
+
+        try:
+            args['page'] = pager.page(page)
+        except (EmptyPage, InvalidPage):
+            args['page'] = pager.page(pager.num_pages)
+
+        args['themes'] = args['page'].object_list
+
     return jingo.render(request, 'themes/index.html', args)
