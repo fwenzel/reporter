@@ -1,0 +1,42 @@
+{% templatetag openblock %} extends "admin/base.html" {% templatetag closeblock %}
+{% templatetag openblock %} block title {% templatetag closeblock %}
+  {{ title }}
+  {% templatetag openvariable %} super() {% templatetag closevariable %}
+{% templatetag openblock %} endblock {% templatetag closeblock %}
+{% templatetag openblock %} block extrahead {% templatetag closeblock %}
+  {% templatetag openvariable %} super() {% templatetag closevariable %}
+  <link rel="stylesheet" href="{{ MEDIA_URL}}css/zamboni/admin-django.css">
+  {% block extrastyle %}{% endblock %}
+  {% block extrahead %}{% endblock %}
+{% templatetag openblock %} endblock {% templatetag closeblock %}
+
+{% templatetag openblock %} block bodyclass -{% templatetag closeblock %}
+  {% block bodyclass %}{% endblock %}
+{% templatetag openblock %}- endblock {% templatetag closeblock %}
+
+{% templatetag openblock %} block content {% templatetag closeblock %}
+    {% block pretitle %}{% endblock %}
+
+    <div class="col left">
+      <div class="block">
+        {% templatetag openvariable %} super() {% templatetag closevariable %}
+      </div>
+    </div>
+
+
+    <div class="col middle wide"><div class="block">
+      {% block content_title %}
+        {% if title %}<h2>{{ title }}</h2>{% endif %}
+      {% endblock %}
+      {% block content %}
+        {% block object-tools %}{% endblock %}
+        {{ content }}
+      {% endblock %}
+    </div></div>
+
+    <div class="col right"><div class="block">
+      {% block sidebar %}{% endblock %}
+    </div></div>
+
+{% templatetag openblock %} endblock {% templatetag closeblock %}
+
