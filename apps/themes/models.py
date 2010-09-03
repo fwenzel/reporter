@@ -12,6 +12,10 @@ class Theme(ModelBase):
     platform = models.CharField(max_length=255, db_index=True)
     created = models.DateTimeField(auto_now_add=True, db_index=True)
 
+    def __unicode__(self):
+        return '%d related opinions to "%s"' % (self.num_opinions,
+                                                self.pivot.description)
+
     class Meta:
         db_table = 'theme'
         ordering = ('-num_opinions', )
