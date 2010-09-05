@@ -74,7 +74,7 @@
       {% with link_txt = _('Older Messages &raquo;')|safe %}
         {% if page.has_next() %}
         <a href="{{ search_url(
-          default =form.data, extra={'page': page.next_page_number()})
+          defaults=form.data, extra={'page': page.next_page_number()})
           }}" class="next">{{ link_txt }}</a>
         {% else %}
         <span class="next inactive">{{ link_txt }}</span>
