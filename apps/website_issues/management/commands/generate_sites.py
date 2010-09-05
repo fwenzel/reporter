@@ -10,7 +10,7 @@ from django.db import transaction
 
 from textcluster.cluster import Corpus
 
-from feedback import LATEST_BETAS, FIREFOX
+from feedback import LATEST_BETAS, FIREFOX, MOBILE
 from feedback.models import Opinion
 
 from website_issues.models import Comment, Cluster, SiteSummary
@@ -120,31 +120,35 @@ class Command(BaseCommand):
         now = datetime.now()
         seven_days_ago = now - timedelta(days=7)
         one_day_ago = now - timedelta(days=1)
-        latest_version = LATEST_BETAS[FIREFOX]
+        latest_versions = (LATEST_BETAS[FIREFOX], LATEST_BETAS[MOBILE])
         err("Collecting groups...\n")
         def add(opinion, **kwargs):
+            """Add this opinion to it's summary group."""
             return SiteGroup.get(frozendict(kwargs)).add(opinion.pk)
+
+        def add_variants(opinion, **keypart):
+            """Add variants for "positive" and "os" set/ignored."""
+            add(opinion, os=opinion.os, positive=opinion.positive, **keypart)
+            add(opinion, os=opinion.os, positive=None,             **keypart)
+            add(opinion, os=None,       positive=opinion.positive, **keypart)
+            add(opinion, os=None,       positive=None,             **keypart)
+
         queryset = Opinion.objects.filter(
                        ~Q(url__exact="") & (
                            Q(created__range=(seven_days_ago, now))
-                           | Q(version__exact=latest_version)
+                           | Q(version__in=latest_versions)
                        )
-                   ).only("url", "version", "created", "positive")
+                   ).only("url", "version", "created", "positive", "os")
+
         i = 0
         for i, opinion in enumerate(queryset):
             site_url = normalize_url(opinion.url)
-            if opinion.version == latest_version:
-                keypart = dict(version=opinion.version, url=site_url)
-                add(opinion, positive=opinion.positive, **keypart)
-                add(opinion, positive=None, **keypart)
+            if opinion.version in latest_versions:
+                add_variants(opinion, version=opinion.version, url=site_url)
             if opinion.created > seven_days_ago:
-                keypart = dict(version="<week>", url=site_url)
-                add(opinion, positive=opinion.positive, **keypart)
-                add(opinion, positive=None, **keypart)
+                add_variants(opinion, version="<week>", url=site_url)
                 if opinion.created > one_day_ago:
-                    keypart = dict(version="<day>", url=site_url)
-                    add(opinion, positive=opinion.positive, **keypart)
-                    add(opinion, positive=None, **keypart)
+                    add_variants(opinion, version="<day>", url=site_url)
 
             if i % 1000 == 0: err("    ... %i comments\n" % i)
         err("%i site summaries for %i comments.\n" % (len(SiteGroup.all), i))

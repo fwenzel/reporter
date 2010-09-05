@@ -35,6 +35,18 @@
       </div>
     </div>
 
+    <div class="choice">
+      <h3>{{ _('Platforms') }}</h3>
+      <div>
+        <ul>
+          <li>{{ button('os', '', label=_('All', 'sites_search_all_platforms'), title=_('All platforms')) }}</li>
+          {% for os in oses %}
+          <li>{{ button('os', os.short, label=os.short, title=os.pretty) }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
 {# TODO add minimum feedback count choice
     <div class="choice">
       <h3>Min Related</h3>

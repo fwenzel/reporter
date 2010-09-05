@@ -35,6 +35,7 @@ def dashboard(request):
 
     # opinions queryset for demographics
     latest_opinions = Opinion.objects.browse(**term_params)
+    latest_beta = Opinion.objects.filter(version=version, product=app.id)
 
     # Sites clusters
     sites = SiteSummary.objects.filter(version__exact='<day>').filter(
@@ -44,7 +45,7 @@ def dashboard(request):
     search_form = ReporterSearchForm()
 
     data = {'opinions': latest_opinions.order_by('-created')[:settings.MESSAGES_COUNT],
-            'opinion_count': latest_opinions.count(),
+            'opinion_count': latest_beta.count(),
             'sentiments': stats.sentiment(qs=latest_opinions),
             'terms': stats.frequent_terms(qs=frequent_terms),
             'demo': stats.demographics(qs=latest_opinions),
