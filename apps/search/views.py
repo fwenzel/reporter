@@ -16,7 +16,6 @@ from input.urlresolvers import reverse
 from .client import Client, SearchError
 from .forms import ReporterSearchForm, VERSION_CHOICES
 
-
 def _get_results(request):
     form = ReporterSearchForm(request.GET)
 
@@ -143,6 +142,7 @@ def index(request):
         #data['terms'] = stats.frequent_terms(qs=frequent_terms)
     else:
         data.update({
+            'opinion_count': pager.count,
             'opinions': None,
             'sent': None,
             'demo': None,
