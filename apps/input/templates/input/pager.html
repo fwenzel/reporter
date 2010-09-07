@@ -1,0 +1,20 @@
+{% if page and page.has_other_pages() %}
+<div class="pager">
+  {% with link_txt = _('&laquo; Newer Messages')|safe %}
+    {% if prev_url %}
+    <a href="{{ prev_url }}" class="prev">{{ link_txt }}</a>
+    {% else %}
+    <span class="prev inactive">{{ link_txt }}</span>
+    {% endif %}
+  {% endwith %}
+
+  {% with link_txt = _('Older Messages &raquo;')|safe %}
+    {% if next_url %}
+    <a href="{{ next_url }}" class="next">{{ link_txt }}</a>
+    {% else %}
+    <span class="next inactive">{{ link_txt }}</span>
+    {% endif %}
+  {% endwith %}
+</div>
+{% endif %}
+
