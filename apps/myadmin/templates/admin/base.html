@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block page_title %}Admin{% endblock %}
+
+{% block content %}
+{# Goes in the right column #}
+<ul>
+  <li><a href="{{ url('myadmin.recluster') }}">Recluster Themes</a></li>
+</ul>
+
+{% endblock %}
