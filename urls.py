@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     ('', include('website_issues.urls')),
     (r'^search/', include('search.urls')),
     (r'^themes/', include('themes.urls')),
-    (r'^admin/', include(admin.site.urls)),
+    (r'^admin/', include('myadmin.urls')),
 
     (r'^robots\.txt$', jingo.render, {'template': 'robots.txt',
                                       'mimetype': 'text/plain'}),

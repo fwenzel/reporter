@@ -27,3 +27,7 @@ topia.termextract==1.1.0
 
 # Text Clustering
 -e git://github.com/davedash/textcluster#egg=textcluster
+
+# Celery
+celery==2.0.3
+django-celery
