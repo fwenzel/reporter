@@ -90,12 +90,13 @@ def urlparams(url_, hash=None, **query):
 @jinja2.contextfunction
 def pager(context):
     """Fuckyeahpagination!"""
-    page = context['page']
-    url = context['request'].META['PATH_INFO']
-    if page.has_previous():
-        prev_url = urlparams(url, page=page.previous_page_number())
+    page = context.get('page')
+    if page:
+        url = context['request'].META['PATH_INFO']
+        if page.has_previous():
+            prev_url = urlparams(url, page=page.previous_page_number())
 
-    if page.has_next():
-        next_url = urlparams(url, page=page.next_page_number())
+        if page.has_next():
+            next_url = urlparams(url, page=page.next_page_number())
 
     return new_context(**locals())
