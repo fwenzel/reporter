@@ -142,10 +142,10 @@ def index(request):
         #data['terms'] = stats.frequent_terms(qs=frequent_terms)
     else:
         data.update({
-            'opinion_count': pager.count,
+            'opinion_count': 0,
             'opinions': None,
-            'sent': None,
-            'demo': None,
+            'sent': stats.sentiment(None),
+            'demo': stats.demographics(None),
         })
 
     data['defaults'] = form.data
