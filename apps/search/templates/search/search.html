@@ -19,6 +19,7 @@
 
   <form id="filters" class="filters segments block" method="get" action="{{ url('search') }}">
 
+    <input type="hidden" name="q" value="{{ defaults['q'] }}" />
     <input type="hidden" name="product" value="{{ request.default_app.short }}" />
 
     {{ when_block(form=form, selected=period, defaults=defaults) }}
