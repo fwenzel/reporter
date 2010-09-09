@@ -5,7 +5,7 @@ from django.test import TestCase
 from input.urlresolvers import reverse
 
 from nose.tools import eq_
-from product_details import firefox_versions
+from product_details import product_details
 
 from . import FIREFOX, MOBILE
 from .utils import detect_language, ua_parse, smart_truncate
@@ -143,8 +143,8 @@ class ViewTests(TestCase):
         self.assertTrue(r['Location'].endswith(reverse('feedback.need_beta')))
 
         # latest beta: no redirect
-        r = self.client.get(reverse('feedback.sad'), HTTP_USER_AGENT=(
-            FX_UA % firefox_versions['LATEST_FIREFOX_DEVEL_VERSION']))
+        r = self.client.get(reverse('feedback.sad'), HTTP_USER_AGENT=(FX_UA % (
+            product_details.firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'])))
         self.assertEquals(r.status_code, 200)
 
         # version newer than current: no redirect

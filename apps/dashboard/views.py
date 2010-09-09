@@ -6,8 +6,6 @@ from django.db.models import Count
 
 import jingo
 
-from product_details import firefox_versions
-
 from feedback import stats, LATEST_BETAS
 from feedback.models import Opinion, Term
 from feedback.version_compare import simplify_version

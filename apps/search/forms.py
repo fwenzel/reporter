@@ -3,7 +3,7 @@ from datetime import date, timedelta
 from django.conf import settings
 from django import forms
 
-import product_details
+from product_details import product_details
 from tower import ugettext_lazy as _lazy
 
 from feedback import APPS, FIREFOX, MOBILE, OS_USAGE, LATEST_BETAS

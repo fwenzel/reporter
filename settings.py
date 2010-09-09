@@ -78,7 +78,7 @@ RTL_LANGUAGES = ('ar', 'he',)  # ('fa', 'fa-IR')
 # Override Django's built-in with our native names
 class LazyLangs(dict):
     def __new__(self):
-        import product_details
+        from product_details import product_details
         return dict([(lang.lower(), product_details.languages[lang]['native'])
                      for lang in INPUT_LANGUAGES])
 LANGUAGES = lazy(LazyLangs, dict)()

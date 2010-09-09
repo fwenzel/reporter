@@ -5,7 +5,7 @@ from django.utils.encoding import force_unicode
 
 from tower import ugettext_lazy as _lazy
 
-import product_details
+from product_details import product_details
 from input.fields import SearchInput
 from feedback import OSES
 from search.forms import SENTIMENT_CHOICES, SENTIMENTS, OS_CHOICES
