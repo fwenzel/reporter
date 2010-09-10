@@ -3,7 +3,6 @@ settings_local.py
 *.sw[po]
 pip-log.txt
 .DS_Store
-lib/product_details_json/*.json
 vendor
 tmp
 docs/_gh-pages
