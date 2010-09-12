@@ -6,7 +6,6 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 
 from annoying.decorators import autostrip
-from product_details import firefox_versions, mobile_details
 from tower import ugettext as _, ugettext_lazy as _lazy
 
 from . import FIREFOX, MOBILE, LATEST_BETAS

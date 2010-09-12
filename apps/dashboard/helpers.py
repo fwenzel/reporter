@@ -73,9 +73,9 @@ def sites_block(context, sites, defaults=None):
         return None
 
     if not context['request'].mobile_site:
-        tpl = 'dashboard/themes.html'
+        tpl = 'dashboard/sites.html'
     else:
-        tpl = 'dashboard/mobile/themes.html'
+        tpl = 'dashboard/mobile/sites.html'
     return render_template(tpl, new_context(**locals()))
 
 

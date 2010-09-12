@@ -4,7 +4,7 @@ from django.conf import settings
 from django.utils.translation import to_locale
 from django.utils.translation.trans_real import parse_accept_lang_header
 
-import product_details
+from product_details import product_details
 from topia.termextract import extract
 
 from . import BROWSERS, OS_OTHER, OS_PATTERNS

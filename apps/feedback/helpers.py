@@ -1,6 +1,6 @@
 from jingo import register
 import jinja2
-import product_details
+from product_details import product_details
 from tower import ugettext as _, ugettext_lazy as _lazy
 
 from feedback import OSES, OS_OTHER

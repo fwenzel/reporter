@@ -1,4 +1,4 @@
-import product_details
+from product_details import product_details
 from tower import ugettext_lazy as _
 
 
