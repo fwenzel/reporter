@@ -17,6 +17,11 @@ from . import sphinxapi as sphinx
 SPHINX_HARD_LIMIT = 1000  # A hard limit that sphinx imposes.
 
 
+def sanitize_query(term):
+    term = term.strip('^$ ').replace('^$', '')
+    return term
+
+
 class SearchError(Exception):
     pass
 
@@ -72,7 +77,7 @@ class Client():
             term = ''.join(parts)
 
         try:
-            result = sc.Query(term, 'opinions')
+            result = sc.Query(sanitize_query(term), 'opinions')
         except socket.timeout:
             raise SearchError(_("Query has timed out."))
         except Exception, e:
