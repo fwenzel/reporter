@@ -5,46 +5,52 @@
 {% block content %}
 <div class="col left">
 
-  {{ big_count_block(opinion_count) }}
+  <form id="filters" class="filters segments block" method="get" action="{{ url('search') }}">
+
+    <div class="choice">
+      <h3>{{ _('Product') }}</h3>
+      <div>
+        {{ products_block(products, defaults=dashboard_defaults) }} 
+        {{ versions_block(versions, defaults=dashboard_defaults) }}
+      </div>
+    </div>
+
+    {{ when_block(form=search_form, selected=dashboard_defaults.num_days) }}
+
+  </form>
 
   <form id="filters" class="filters segments block" method="get" action="{{ url('search') }}">
 
-    <input type="hidden" name="product" value="{{ request.default_app.short }}" />
+      {{ overview_block(sentiments) }}
 
-    {{ when_block(form=search_form, selected='1d') }}
+      {#
+      <div class="filter collapsible collapsed">
+        <h3>{{ _('URL Provided?') }}</h3>
+        <a class="toggle" href="#" title="{{ _('Show/Hide Options') }}"><span>{{ _('Toggle') }}</span></a>
+        <ul class="bars" data-total="10000">
+          <li>
 
-    {{ overview_block(sentiments) }}
+            <input id="f21" name="f21" type="checkbox" />
+            <label for="f21" class="bar" data-value="2000">
+              {# L10n: Refers to messages that *have* a URL provided }
+              <strong>{{ _('Provided') }}</strong>
+            </label>
+          </li>
 
-    {#
-    <div class="filter collapsible collapsed">
-      <h3>{{ _('URL Provided?') }}</h3>
-      <a class="toggle" href="#" title="{{ _('Show/Hide Options') }}"><span>{{ _('Toggle') }}</span></a>
-      <ul class="bars" data-total="10000">
-        <li>
+          <li>
+            <input id="f21" name="f21" type="checkbox" />
+            <label for="f21" class="bar" data-value="8000">
+              {# L10n: Refers to messages that *do not* have a URL provided }
+              <strong>{{ _('Not Provided') }}</strong>
+            </label>
+          </li>
+        </ul>
+      </div>
+      #}
 
-          <input id="f21" name="f21" type="checkbox" />
-          <label for="f21" class="bar" data-value="2000">
-            {# L10n: Refers to messages that *have* a URL provided }
-            <strong>{{ _('Provided') }}</strong>
-          </label>
-        </li>
+      {{ platforms_block(demo.os, opinion_count) }}
 
-        <li>
-          <input id="f21" name="f21" type="checkbox" />
-          <label for="f21" class="bar" data-value="8000">
-            {# L10n: Refers to messages that *do not* have a URL provided }
-            <strong>{{ _('Not Provided') }}</strong>
-          </label>
-        </li>
-      </ul>
-    </div>
-    #}
-
-    {{ versions_block(versions) }}
-
-    {{ platforms_block(demo.os, opinion_count) }}
-
-    {{ locales_block(demo.locale, opinion_count) }}
+      {{ locales_block(demo.locale, opinion_count) }}
 
   </form>
 </div><!--
@@ -68,6 +74,8 @@
 </div><!--
 
 --><div class="col right">
+
+  {{ big_count_block(opinion_count) }}
 
   <div id="trends" class="trends segments block">
 

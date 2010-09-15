@@ -90,6 +90,12 @@ def themes_block(context, themes, defaults=None):
     return render_template(tpl, new_context(**locals()))
 
 
+@register.inclusion_tag('dashboard/products.html')
+@jinja2.contextfunction
+def products_block(context, versions, defaults=None):
+    return new_context(**locals())
+
+
 @register.inclusion_tag('dashboard/versions.html')
 @jinja2.contextfunction
 def versions_block(context, versions, defaults=None):

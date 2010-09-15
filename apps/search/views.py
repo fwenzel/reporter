@@ -14,7 +14,7 @@ from input.decorators import cache_page
 from input.urlresolvers import reverse
 
 from .client import Client, SearchError
-from .forms import ReporterSearchForm, VERSION_CHOICES
+from .forms import ReporterSearchForm, PROD_CHOICES, VERSION_CHOICES
 
 def _get_results(request):
     form = ReporterSearchForm(request.GET)
@@ -101,6 +101,7 @@ def index(request):
 
     data = {
         'form': form,
+        'products': PROD_CHOICES,
         'versions': VERSION_CHOICES[request.default_app],
     }
 

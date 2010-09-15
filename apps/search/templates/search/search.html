@@ -13,22 +13,27 @@
 {% block content %}
 <div class="col left">
 
-  {% if opinions %}
-  {{ big_count_block(opinion_count) }}
-  {% endif %}
-
   <form id="filters" class="filters segments block" method="get" action="{{ url('search') }}">
-
     <input type="hidden" name="q" value="{{ defaults['q'] }}" />
-    <input type="hidden" name="product" value="{{ request.default_app.short }}" />
+
+    <div class="choice">
+      <h3>{{ _('Product') }}</h3>
+      <div>
+        {{ products_block(products, defaults=defaults) }}
+        {{ versions_block(versions, defaults=defaults) }}
+      </div>
+    </div>
 
     {{ when_block(form=form, selected=period, defaults=defaults) }}
+
+  </form>
+
+  <form id="filters" class="filters segments block" method="get" action="{{ url('search') }}">
+    <input type="hidden" name="q" value="{{ defaults['q'] }}" />
 
     {{ overview_block(sent, defaults=defaults) }}
 
     {# TODO URL provided box #}
-
-    {{ versions_block(versions, defaults=defaults) }}
 
     {{ platforms_block(demo.os, opinion_count, defaults=defaults) }}
 
@@ -89,6 +94,10 @@
 --><div class="col right">
 
   <div id="trends" class="trends segments block">
+
+    {% if opinions %}
+    {{ big_count_block(opinion_count) }}
+    {% endif %}
 
     {# TODO terms, bug 582606
     {{ themes_block(terms) }}#}
