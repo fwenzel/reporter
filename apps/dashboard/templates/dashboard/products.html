@@ -1,0 +1,10 @@
+{% with prod = defaults['product'] %}
+<span class="selectbox">
+  <span class="text">{{ prod }}</span>
+  <select id="s11" name="product">
+    {% for val, name in products %}
+      <option value="{{ val }}" {{ 'selected' if prod == val else '' }}>{{ name }}</option>
+    {% endfor %}
+  </select>
+</span>
+{% endwith %}
