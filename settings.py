@@ -70,8 +70,8 @@ USE_L10N = True
 # Accepted locales
 # ar, he: bug 580573
 INPUT_LANGUAGES = ('ar', 'bg', 'ca', 'cs', 'da', 'de', 'el', 'en-US', 'es',
-                   'fr', 'gl', 'he', 'hu', 'id', 'it', 'ko', 'nb-NO', 'nl',
-                   'pl', 'pt-PT', 'ru', 'sk', 'sq', 'uk', 'vi', 'zh-CN',
+                   'fr', 'fy', 'gl', 'he', 'hu', 'id', 'it', 'ko', 'nb-NO',
+                   'nl', 'pl', 'pt-PT', 'ru', 'sk', 'sq', 'uk', 'vi', 'zh-CN',
                    'zh-TW')
 RTL_LANGUAGES = ('ar', 'he',)  # ('fa', 'fa-IR')
 
