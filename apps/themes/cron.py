@@ -20,6 +20,25 @@ log = logging.getLogger('reporter')
 
 
 @cronjobs.register
+def cluster_panorama():
+    for word in ('panorama', 'tab candy',):
+        print word
+        print '=' * len(word)
+
+        qs = Opinion.objects.filter(locale='en-US', version='4.0b5',
+                positive=False, description__icontains=word)
+        result = cluster_queryset(qs)
+
+        for group in result:
+            if len(group.similars) < 2:
+                continue
+            print '* ' + group.primary.description
+
+            for s in group.similars:
+                print '  * ' + s['object'].description
+
+
+@cronjobs.register
 def cluster():
     # Get all the happy/sad issues in the last week.
     week_ago = datetime.datetime.today() - datetime.timedelta(7)
@@ -45,22 +64,8 @@ def cluster_by_platform(qs, feeling):
     # We need to create corpii for each platform and manually inspect each
     # opinion and put it in the right platform bucket.
     for platform in OS_USAGE:
-        c = Corpus(similarity=SIM_THRESHOLD, stopwords=STOPWORDS)
-        seen = {}
 
-        for op in qs.filter(os=platform.short):
-
-            if op.description in seen:
-                continue
-
-            # filter short descriptions
-            if len(op.description) < 15:
-                continue
-
-            seen[op.description] = 1
-            c.add(op, str=op.description, key=op.id)
-
-        result = c.cluster()
+        result = cluster_queryset(qs.filter(os=platform.short))
 
         if result:
             dimensions = {
@@ -81,3 +86,21 @@ def cluster_by_platform(qs, feeling):
                 for s in group.similars:
                     Item(theme=topic, opinion=s['object'],
                                 score=s['similarity']).save()
+
+def cluster_queryset(qs):
+    seen = {}
+    c = Corpus(similarity=SIM_THRESHOLD, stopwords=STOPWORDS)
+
+    for op in qs:
+
+        if op.description in seen:
+            continue
+
+        # filter short descriptions
+        if len(op.description) < 15:
+            continue
+
+        seen[op.description] = 1
+        c.add(op, str=op.description, key=op.id)
+
+    return c.cluster()
