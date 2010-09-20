@@ -8,7 +8,7 @@ from django.utils import translation
 from django.utils.encoding import smart_str
 from django.utils.http import urlencode
 
-from babel import Locale
+from babel import Locale, UnknownLocaleError
 from babel.dates import format_datetime
 from babel.support import Format
 from jingo import register
@@ -27,7 +27,11 @@ register.filter(defaultfilters.slugify)
 
 def _get_format():
     lang = translation.get_language()
-    locale = Locale(translation.to_locale(lang))
+    try:
+        locale = Locale(translation.to_locale(lang))
+    except UnknownLocaleError:
+        locale = Locale(translation.to_locale(settings.BABEL_FALLBACK.get(
+            lang, 'en-US')))
     return Format(locale)
 
 
