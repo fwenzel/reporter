@@ -30,7 +30,9 @@
           {# TODO copy user agent functionality #}
           <!--<li><a href="#">{{ _('Copy User Agent') }}</a></li>-->
           {# L10n: Link to Google Translator #}
-          <li><a href="{{ 'http://translate.google.com/'|urlparams(sl='auto', q=opinion.description) }}">{{ _('Translate Message') }}</a></li>
+          <li><a href="{{ 'http://translate.google.com/'|urlparams(
+            sl='auto', q=opinion.description) }}" target="_blank">{{
+            _('Translate Message') }}</a></li>
         </ul>
       </div>
       {% endif %}
