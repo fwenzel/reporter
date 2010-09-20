@@ -1,4 +1,5 @@
 import urllib
+import re
 
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -11,6 +12,9 @@ import tower
 from feedback import FIREFOX, MOBILE
 from . import urlresolvers
 from .helpers import urlparams
+
+
+MOBILE_DEVICE_PATTERN = re.compile('^Mozilla.*(Fennec|Android|Maemo|iPhone|iP[ao]d)')
 
 
 class LocaleURLMiddleware(object):
@@ -60,8 +64,9 @@ class MobileSiteMiddleware(object):
     """
     Change the settings.SITE_ID to match the request.META['HTTP_HOST'].
     Used to detect our Mobile site from the URL.
-
     Borrowed from http://code.djangoproject.com/ticket/4438
+
+    Also forwards known mobile devices to the mobile site.
     """
 
     def process_request(self, request):
@@ -75,6 +80,17 @@ class MobileSiteMiddleware(object):
             settings.SITE_ID = settings.DESKTOP_SITE_ID
         else:
             settings.SITE_ID = site.id
+
+        # Detect UA and forward appropriately if this is a known mobile device.
+        if (settings.SITE_ID == settings.DESKTOP_SITE_ID and
+            request.path == '/' and
+            MOBILE_DEVICE_PATTERN.search(
+                request.META.get('HTTP_USER_AGENT', None))):
+            mobile_site = Site.objects.get(id=settings.MOBILE_SITE_ID)
+            response = HttpResponsePermanentRedirect('%s://%s' % (
+                'https' if request.is_secure() else 'http', mobile_site.domain))
+            response['Vary'] = 'User-Agent'
+            return response
 
         # Keep mobile site status in request object
         request.mobile_site = (settings.SITE_ID == settings.MOBILE_SITE_ID)
