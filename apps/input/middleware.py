@@ -14,7 +14,9 @@ from . import urlresolvers
 from .helpers import urlparams
 
 
-MOBILE_DEVICE_PATTERN = re.compile('^Mozilla.*(Fennec|Android|Maemo|iPhone|iP[ao]d)')
+# Known mobile device patterns. Excludes iPad because it's big enough to show
+# the desktop dashboard.
+MOBILE_DEVICE_PATTERN = re.compile('^Mozilla.*(Fennec|Android|Maemo|iPhone|iPod)')
 
 
 class LocaleURLMiddleware(object):
