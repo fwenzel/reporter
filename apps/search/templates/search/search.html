@@ -88,20 +88,19 @@
 
 --><div class="col right">
 
+  {% if opinions %}
+  {{ big_count_block(opinion_count) }}
+  {% endif %}
+
+  {# TODO terms and sites
   <div id="trends" class="trends segments block">
 
-    {% if opinions %}
-    {{ big_count_block(opinion_count) }}
-    {% endif %}
+    {{ themes_block(terms) }}
 
-    {# TODO terms, bug 582606
-    {{ themes_block(terms) }}#}
-
-    {# TODO fetch and show sites
     {{ sites_block(sites) }}
-    #}
 
   </div>
+  #}
 </div>
 
 {% endblock %}
