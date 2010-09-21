@@ -78,6 +78,11 @@
         return this;
 
         function doSubmit(e) {
+            selected_product = $("#product").attr('data-selected')
+            if (selected_product && selected_product != $("#product").val()) {
+                $("#version").val('');
+            }
+
             $(e.currentTarget).closest('form').submit();
             return false;
         }
