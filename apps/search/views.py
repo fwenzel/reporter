@@ -8,7 +8,7 @@ from django.utils.feedgenerator import Atom1Feed
 import jingo
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from feedback import APP_IDS, FIREFOX, MOBILE, stats, LATEST_BETAS, stats
+from feedback import APPS, FIREFOX, MOBILE, stats, LATEST_BETAS, stats
 from feedback.models import Term
 from feedback.version_compare import simplify_version
 from input.decorators import cache_page
@@ -25,6 +25,7 @@ def _get_results(request):
         search_opts = form.cleaned_data
         product = form.cleaned_data['product']
         version = form.cleaned_data['version']
+        search_opts['product'] = APPS[product].id
 
         c = Client()
         opinions = c.query(query, **search_opts)
