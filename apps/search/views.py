@@ -8,8 +8,9 @@ from django.utils.feedgenerator import Atom1Feed
 import jingo
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from feedback import APP_IDS, stats
+from feedback import APP_IDS, FIREFOX, MOBILE, stats, LATEST_BETAS, stats
 from feedback.models import Term
+from feedback.version_compare import simplify_version
 from input.decorators import cache_page
 from input.urlresolvers import reverse
 
@@ -22,6 +23,8 @@ def _get_results(request):
     if form.is_valid():
         query = form.cleaned_data.get('q', '')
         search_opts = form.cleaned_data
+        product = form.cleaned_data['product']
+        version = form.cleaned_data['version']
 
         c = Client()
         opinions = c.query(query, **search_opts)
@@ -29,8 +32,10 @@ def _get_results(request):
     else:
         query = ''
         opinions = []
+        product = request.default_app
+        version = simplify_version(LATEST_BETAS[product])
 
-    return (opinions, form)
+    return (opinions, form, product, version)
 
 
 class SearchFeed(Feed):
@@ -92,17 +97,24 @@ class SearchFeed(Feed):
 @cache_page(use_get=True)
 def index(request):
     try:
-        (opinions, form) = _get_results(request)
+        (opinions, form, product, version) = _get_results(request)
     except SearchError, e:
         return jingo.render(request, 'search/unavailable.html',
                             {'search_error': e}, status=500)
 
     page = form.data.get('page', 1)
 
+    if product == 'mobile':
+        product = MOBILE
+    else:
+        product = FIREFOX
+
     data = {
         'form': form,
+        'product': product.short,
         'products': PROD_CHOICES,
-        'versions': VERSION_CHOICES[request.default_app],
+        'version': version,
+        'versions': VERSION_CHOICES[product]
     }
 
     # Determine date period chosen

@@ -92,13 +92,13 @@ def themes_block(context, themes, defaults=None):
 
 @register.inclusion_tag('dashboard/products.html')
 @jinja2.contextfunction
-def products_block(context, versions, defaults=None):
+def products_block(context, products, product):
     return new_context(**locals())
 
 
 @register.inclusion_tag('dashboard/versions.html')
 @jinja2.contextfunction
-def versions_block(context, versions, defaults=None):
+def versions_block(context, versions, version):
     return new_context(**locals())
 
 

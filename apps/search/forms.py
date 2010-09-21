@@ -25,10 +25,10 @@ VERSION_CHOICES = {
                 key=lambda x: x[1], reverse=True) if
          version_int(v[0]) >= version_int(FIREFOX.hide_below)],
          key=lambda x: x[0]),
-    MOBILE: [
-        ('', _lazy('-- all --', 'version_choice')),
-        (simplify_version(LATEST_BETAS[MOBILE]), LATEST_BETAS[MOBILE]),
-    ],
+    MOBILE: [('', _lazy('-- all --', 'version_choice'))] + uniquifier(
+        [(simplify_version(v[0]), v[0]) for v in 
+         sorted(product_details.mobile_history_development_releases.items(),
+                key=lambda x: x[1], reverse=True)]),
 }
 
 SENTIMENT_CHOICES = [
@@ -104,8 +104,3 @@ class ReporterSearchForm(forms.Form):
             cleaned['page'] = 1
 
         return cleaned
-
-    def clean_product(self):
-        """Map product short names to id."""
-        data = self.cleaned_data['product']
-        return APPS[data].id

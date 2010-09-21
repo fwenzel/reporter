@@ -1,11 +1,8 @@
-{% with ver = defaults['version'] %}
 <span class="selectbox">
-  <span class="text">{{ ver }}</span>
-  <select id="s12" name="version">
-    {# TODO use defaults if specified #}
+  <span class="text">{{ version }}</span>
+  <select id="version" name="version">
     {% for val, name in versions %}
-      <option value="{{ val }}" {{ 'selected' if ver == val else '' }}>{{ name }}</option>
+      <option value="{{ val }}" {{ 'selected' if version == val else '' }}>{{ name }}</option>
     {% endfor %}
   </select>
 </span>
-{% endwith %}
