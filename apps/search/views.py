@@ -8,7 +8,7 @@ from django.utils.feedgenerator import Atom1Feed
 import jingo
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from feedback import APPS, FIREFOX, MOBILE, stats, LATEST_BETAS, stats
+from feedback import APPS, APP_IDS, FIREFOX, MOBILE, stats, LATEST_BETAS, stats
 from feedback.models import Term
 from feedback.version_compare import simplify_version
 from input.decorators import cache_page
