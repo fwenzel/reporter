@@ -1,5 +1,11 @@
 <span class="selectbox">
-  <span class="text">{{ version }}</span>
+  <span class="text">
+    {% for val, name in versions %}
+      {% if val == version: %}
+        {{ name }}
+      {% endif %} 
+    {% endfor %}
+  </span>
   <select id="version" name="version">
     {% for val, name in versions %}
       <option value="{{ val }}" {{ 'selected' if version == val else '' }}>{{ name }}</option>
