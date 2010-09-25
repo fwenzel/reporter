@@ -43,6 +43,12 @@ class UtilTests(TestCase):
             ('Mozilla/5.0 (X11; U; FreeBSD; en-US; rv:1.9.2a1pre) '
              'Gecko/20090626 Fennec/1.0b2',
              MOBILE, '1.0b2', 'other'),
+            ('Mozilla/5.0 (Maemo; Linux armv71; rv:2.0b6pre) Gecko/'
+             '20100924 Namoroka/4.0b7pre Fennec/2.0b1pre',
+             MOBILE, '2.0b1pre', 'maemo'),
+            ('Mozilla/5.0 (Android; Linux armv71; rv:2.0b6pre) Gecko/'
+             '20100924 Namoroka/4.0b7pre Fennec/2.0b1pre',
+             MOBILE, '2.0b1pre', 'android'),
 
             # invalid
             ('A completely bogus Firefox user agent string.', None),
