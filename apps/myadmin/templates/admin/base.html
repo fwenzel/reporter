@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block page_title %}Admin{% endblock %}
+{% block extra_headers %}
+<link href="{{ MEDIA_URL }}css/admin.css" type="text/css" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
 {# Goes in the right column #}
