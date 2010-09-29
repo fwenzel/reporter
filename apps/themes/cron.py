@@ -53,13 +53,15 @@ def cluster():
 
 def cluster_by_product(qs):
     for app in APP_USAGE:
-        qs = qs.filter(platform=app.id, version=LATEST_BETAS[app])
+        log.debug('Clustering %s(%s)' %
+                  (unicode(app.pretty), LATEST_BETAS[app]))
+        qs = qs.filter(product=app.id, version=LATEST_BETAS[app])
         cluster_by_feeling(qs, app)
 
 
-def cluster_by_feeling(base_qs):
-    happy = base_qs.filter(positive=True)
-    sad = base_qs.filter(positive=False)
+def cluster_by_feeling(qs, app):
+    happy = qs.filter(positive=True)
+    sad = qs.filter(positive=False)
     cluster_by_platform(happy, app, 'happy')
     cluster_by_platform(sad, app, 'sad')
 
@@ -91,6 +93,7 @@ def cluster_by_platform(qs, app, feeling):
                 for s in group.similars:
                     Item(theme=topic, opinion=s['object'],
                                 score=s['similarity']).save()
+
 
 def cluster_queryset(qs):
     seen = {}
