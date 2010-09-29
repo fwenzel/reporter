@@ -7,7 +7,7 @@ from django.conf import settings
 import cronjobs
 from textcluster import Corpus, search
 
-from feedback import OS_USAGE, FIREFOX, LATEST_BETAS
+from feedback import APP_USAGE, OS_USAGE, LATEST_BETAS
 from feedback.models import Opinion
 from themes.models import Theme, Item
 
@@ -44,23 +44,27 @@ def cluster():
     week_ago = datetime.datetime.today() - datetime.timedelta(7)
     nowish = datetime.datetime.now() - datetime.timedelta(hours=1)
 
-    base_qs = Opinion.objects.filter(locale='en-US', created__gte=week_ago,
-                                     version=LATEST_BETAS[FIREFOX])
-
+    base_qs = Opinion.objects.filter(locale='en-US', created__gte=week_ago)
     log.debug('Beginning clustering')
-    cluster_by_feeling(base_qs)
+    cluster_by_product(base_qs)
     log.debug('Removing old clusters')
     Theme.objects.filter(created__lt=nowish).delete()
+
+
+def cluster_by_product(qs):
+    for app in APP_USAGE:
+        qs = qs.filter(platform=app.id, version=LATEST_BETAS[app])
+        cluster_by_feeling(qs, app)
 
 
 def cluster_by_feeling(base_qs):
     happy = base_qs.filter(positive=True)
     sad = base_qs.filter(positive=False)
-    cluster_by_platform(happy, 'happy')
-    cluster_by_platform(sad, 'sad')
+    cluster_by_platform(happy, app, 'happy')
+    cluster_by_platform(sad, app, 'sad')
 
 
-def cluster_by_platform(qs, feeling):
+def cluster_by_platform(qs, app, feeling):
     # We need to create corpii for each platform and manually inspect each
     # opinion and put it in the right platform bucket.
     for platform in OS_USAGE:
@@ -69,6 +73,7 @@ def cluster_by_platform(qs, feeling):
 
         if result:
             dimensions = {
+                    'product': app.id,
                     'feeling': feeling,
                     'platform': platform.short,
                     }
