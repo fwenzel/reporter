@@ -87,7 +87,7 @@ class MobileSiteMiddleware(object):
         if (settings.SITE_ID == settings.DESKTOP_SITE_ID and
             request.path == '/' and
             MOBILE_DEVICE_PATTERN.search(
-                request.META.get('HTTP_USER_AGENT', None))):
+                request.META.get('HTTP_USER_AGENT', ''))):
             mobile_site = Site.objects.get(id=settings.MOBILE_SITE_ID)
             response = HttpResponsePermanentRedirect('%s://%s' % (
                 'https' if request.is_secure() else 'http', mobile_site.domain))
