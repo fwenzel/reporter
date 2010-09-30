@@ -4,7 +4,14 @@
 
 {% block content %}
 <div class="col left">
-  <form id="filters" class="filters segments block" method="get" action="{{ url('themes') }}">
+  <form id="filters" class="filters segments block" method="get"
+        action="{{ url('themes') }}">
+    <div class="choice">
+      <h3>{{ _('Product') }}</h3>
+      <div>
+        {{ filter_list(products) }}
+      </div>
+    </div>
     <div class="choice">
       <h3>{{ _('Type of Feedback') }}</h3>
       <div>
