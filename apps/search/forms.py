@@ -26,7 +26,7 @@ VERSION_CHOICES = {
          version_int(v[0]) >= version_int(FIREFOX.hide_below)],
          key=lambda x: x[0]),
     MOBILE: [('', _lazy('-- all --', 'version_choice'))] + uniquifier(
-        [(simplify_version(v[0]), v[0]) for v in 
+        [(simplify_version(v[0]), v[0]) for v in
          sorted(product_details.mobile_history_development_releases.items(),
                 key=lambda x: x[1], reverse=True)]),
 }
@@ -99,6 +99,9 @@ class ReporterSearchForm(forms.Form):
             cleaned['date_end'] = date.today()
         if not cleaned.get('date_start'):
             cleaned['date_start'] = (cleaned['date_end'] - timedelta(days=30))
+        if cleaned['date_start'] > cleaned['date_end']:
+            # Flip start and end if necessary.
+            (cleaned['date_start'], cleaned['date_end']) = (cleaned['date_end'], cleaned['date_start'])
 
         if not cleaned.get('page'):
             cleaned['page'] = 1

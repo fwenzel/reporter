@@ -142,6 +142,11 @@ class SearchViewTest(SphinxTestCase):
         doc = pq(r.content)
         eq_(len(doc('link[type="application/atom+xml"]')), 1)
 
+    def test_flipped_date_filter(self):
+        """No error if start > end."""
+        r = search_request(date_start='2010-09-01', date_end='2010-06-01')
+        eq_(r.status_code, 200)
+
 
 class FeedTest(SphinxTestCase):
     def test_invalid_form(self):
