@@ -1,8 +1,9 @@
 <span class="selectbox">
   <span class="text">{{ product }}</span>
-  <select id="product" name="product" data-selected="{{ product }}">
+  <select id="product" name="product" data-selected="{{ product }}" data-versions="{{ version_choices }}">
     {% for val, name in products %}
-      <option value="{{ val }}" {{ 'selected' if product == val else '' }}>{{ name }}</option>
+      <option value="{{ val }}" {{ 'selected' if product == val else ''
+      }} data-latest="{{ latest_betas[val] }}">{{ name }}</option>
     {% endfor %}
   </select>
 </span>
