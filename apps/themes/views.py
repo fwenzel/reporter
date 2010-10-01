@@ -1,6 +1,7 @@
 from collections import namedtuple
 
 from django.conf import settings
+from django import http
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 import jingo
@@ -74,7 +75,10 @@ def index(request):
     qs = Theme.objects.all()
     product = request.GET.get('a', FIREFOX.short)
     products = _get_products(request, product)
-    qs = qs.filter(product=APPS[product].id)
+    try:
+        qs = qs.filter(product=APPS[product].id)
+    except KeyError:
+        raise http.Http404
 
     sentiment = request.GET.get('s')
     sentiments = _get_sentiments(request, sentiment)
