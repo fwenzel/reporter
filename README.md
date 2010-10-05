@@ -5,7 +5,7 @@ Firefox Input is a [Django][Django]-based web application to gather user
 feedback from the [Mozilla][Mozilla] Firefox beta testing program.
 
 For project goals, specifications, etc., check out the
-[Reporter Wiki Page][wikimo].
+[Input Wiki Page][wikimo].
 
 [Mozilla]: http://www.mozilla.org
 [Django]: http://www.djangoproject.com/
