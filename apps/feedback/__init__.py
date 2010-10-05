@@ -1,4 +1,4 @@
-import product_details
+from product_details import product_details
 from tower import ugettext_lazy as _
 
 
@@ -33,7 +33,7 @@ BROWSERS = (
 )
 
 LATEST_BETAS = {
-    FIREFOX: product_details.firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'],
+    FIREFOX: product_details.firefox_versions['LATEST_FIREFOX_RELEASED_DEVEL_VERSION'],
     MOBILE: product_details.mobile_details['beta_version'],
 }
 

@@ -4,7 +4,7 @@ from django.conf import settings
 from django.utils.translation import to_locale
 from django.utils.translation.trans_real import parse_accept_lang_header
 
-import product_details
+from product_details import product_details
 from topia.termextract import extract
 
 from . import BROWSERS, OS_OTHER, OS_PATTERNS
@@ -96,4 +96,4 @@ def smart_truncate(content, length=100, suffix='...'):
     if len(content) <= length:
         return content
     else:
-        return ' '.join(content[:length+1].split(' ')[0:-1]) + suffix
+        return content[:length].rsplit(' ', 1)[0] + suffix

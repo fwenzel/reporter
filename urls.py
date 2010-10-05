@@ -18,14 +18,14 @@ urlpatterns = patterns('',
     url(r'^$', 'dashboard.views.dashboard', name='dashboard'),
 
     ('', include('feedback.urls')),
-    (r'^dashboard/', include('dashboard.urls')),
+    ('', include('website_issues.urls')),
     (r'^search/', include('search.urls')),
-    (r'^admin/', include(admin.site.urls)),
+    (r'^themes/', include('themes.urls')),
+    (r'^admin/', include('myadmin.urls')),
 
     (r'^robots\.txt$', jingo.render, {'template': 'robots.txt',
                                       'mimetype': 'text/plain'}),
 )
-
 
 if settings.DEBUG:
     # Remove leading and trailing slashes so the regex matches.

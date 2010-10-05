@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.html import strip_tags
 
-import product_details
+from product_details import product_details
 from tower import ugettext as _
 
 import swearwords

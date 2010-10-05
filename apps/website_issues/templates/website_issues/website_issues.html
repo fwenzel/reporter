@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% macro button(name, value='', label='', title='', classes='') %}
+  {% set sel = (form.cleaned_data[name] == value) %}
+  <a class="{{ 'selected' if sel else ''}} {{ classes }}"
+     href="{{ sites_url(form,**{name: value}) }}">{{ label }}</a>
+{% endmacro %}
+
+{% block page_title -%}
+{% if site %}{{ site.domain }} :: {% endif %}{{ _('Sites') }}
+{%- endblock %}
+{% block body_id %}website_issues{% endblock %}
+
+{% block content %}
+<div class="col left">
+  <form method="get" action="{{ url('website_issues') }}" id="filters" class="filters segments block">
+    <div class="choice">
+      <h3>{{ _('When') }}</h3>
+      <div>
+        <ul>
+          <li>{{ button('search_type', 'week', _('7d'), title=_('Last 7 days')) }}</li>
+          <li>{{ button('search_type', 'latest beta', label=_('Beta'), title=_('Latest Beta')) }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="choice">
+      <h3>{{ _('Type of Feedback') }}</h3>
+      <div>
+        <ul>
+          <li>{{ button('sentiment', '', label=_('All', 'sites_search_all_feedback'), title=_('All feedback')) }}</li>
+          <li>{{ button('sentiment', 'happy', label=_('Praise'), title=_('Praise only')) }}</li>
+          <li>{{ button('sentiment', 'sad', label=_('Issues'), title=_('Issues only')) }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="choice">
+      <h3>{{ _('Platforms') }}</h3>
+      <div>
+        <ul>
+          <li>{{ button('os', '', label=_('All', 'sites_search_all_platforms'), title=_('All platforms')) }}</li>
+          {% for os in oses %}
+          <li>{{ button('os', os.short, label=os.short, title=os.pretty) }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+{# TODO add minimum feedback count choice
+    <div class="choice">
+      <h3>Min Related</h3>
+
+      <div>
+        <ul>
+          <!--
+          --><li><a class="selected" href="search.html" title="No minimum">Any</a></li><!--
+          --><li><a class="" href="search.html" title="25+ messages">25</a></li><!--
+          --><li><a class="" href="search.html" title="50+ messages">50</a></li><!--
+          --><li><a class="" href="search.html" title="100+ messages">100</a></li><!--
+          --><li><a class="" href="search.html" title="250+ messages">250</a></li>
+        </ul>
+      </div>
+    </div>
+#}
+
+  </form>
+</div><!--
+
+--><div class="col middle wide">
+  <div id="themes" class="block">
+    {% if not site %}
+      {% include "website_issues/sites_list.html" %}
+    {% else %}
+      {% include "website_issues/single_site.html" %}
+    {% endif %}
+  </div>
+</div><!--
+
+--><div class="col right">
+  {% if one_offs %}
+  <div id="uncommon-sites" class="segments block">
+    <div>
+      <h3>{{ _('Uncommon Sites') }}</h3>
+      <ul>
+        {% for site in one_offs %}
+        <li><a href="{{ sites_url(form, url=site.url) }}">{{ site.domain }}</a></li>
+        {% endfor %}
+        <li class="more">{{ button('show_one_offs', True, label=_('More sites...')) }}</li>
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

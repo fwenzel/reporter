@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block page_title %}{{ _('Opinion') }}{% endblock %}
+
+{% block content %}
+<div class="col middle wide">
+  <div id="messages" class="block">
+  {{ message_list((opinion,)) }}
+  </div>
+</div>
+{% endblock %}

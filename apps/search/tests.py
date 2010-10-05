@@ -40,14 +40,13 @@ class SphinxTestCase(test_utils.TransactionTestCase):
 
             os.environ['DJANGO_ENVIRONMENT'] = 'test'
 
-            # XXX: Path names need to be more clear.
-            if os.path.exists(settings.SPHINX_CATALOG_PATH):
-                shutil.rmtree(settings.SPHINX_CATALOG_PATH)
-            if os.path.exists(settings.SPHINX_LOG_PATH):
-                shutil.rmtree(settings.SPHINX_LOG_PATH)
+            if os.path.exists(settings.TEST_SPHINX_CATALOG_PATH):
+                shutil.rmtree(settings.TEST_SPHINX_CATALOG_PATH)
+            if os.path.exists(settings.TEST_SPHINX_LOG_PATH):
+                shutil.rmtree(settings.TEST_SPHINX_LOG_PATH)
 
-            os.makedirs(settings.SPHINX_LOG_PATH)
-            os.makedirs(settings.SPHINX_CATALOG_PATH)
+            os.makedirs(settings.TEST_SPHINX_LOG_PATH)
+            os.makedirs(settings.TEST_SPHINX_CATALOG_PATH)
 
             reindex()
             start_sphinx()
@@ -68,6 +67,9 @@ class SearchTest(SphinxTestCase):
 
     def test_query(self):
         eq_(num_results(), 28)
+
+    def test_url_search(self):
+        eq_(num_results('url:*'), 7)
 
     def test_default_ordering(self):
         """Any query should return results in rev-chron order."""
@@ -152,12 +154,15 @@ class FeedTest(SphinxTestCase):
         r = self.client.get(reverse('search.feed'),
                             {'product': 'firefox', 'q': 'lol'})
         doc = pq(r.content.replace('xmlns', 'xmlnamespace'))
-        eq_(doc('title').text(), "Search for 'lol'")
+        eq_(doc('title').text(), "Firefox Input: 'lol'")
 
     def test_query(self):
-        r = self.client.get(reverse('search.feed'), {'product': 'firefox'})
+        r = self.client.get(reverse('search.feed'),
+                            dict(product='firefox',
+                                 date_start='01/01/2000',
+                                 date_end='01/01/2011'))
         doc = pq(r.content.replace('xmlns', 'xmfail'))
         s = Site.objects.all()[0]
         url_base = 'http://%s/' % s.domain
-        eq_(doc('entry link').attr['href'], '%s%s' % (url_base, '#29'))
-
+        eq_(doc('entry link').attr['href'],
+            '%s%s' % (url_base, 'en-US/opinion/29'))

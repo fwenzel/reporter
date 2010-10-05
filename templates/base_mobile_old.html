@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="{{ LANG }}" dir="{{ DIR }}">
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>{% block page_title %}{{ _('Welcome!') }}{% endblock %} &mdash; Firefox Input</title>
+    <meta name="viewport" content="width=600">
+    <link href="{{ MEDIA_URL }}css/reporter.css" type="text/css" rel="stylesheet">
+    <link href="{{ MEDIA_URL }}css/mobile.css" type="text/css" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ MEDIA_URL }}img/favicon.png"/>
+    {% block feeds %}{% endblock %}
+    {% block extra_headers %}{% endblock %}
+  </head>
+  <body id="{% block body_id %}{% endblock %}" class="mobile">
+    <nav id="nav-access">
+    <ul>
+      <li><a href="#main-content">{{ _('Proceed to main content') }}</a></li>
+      <li><a href="#footer">{{ _('Proceed to footer') }}</a></li>
+    </ul>
+    </nav>
+
+    <div id="wrapper">
+      {% block global_header %}
+      <header>
+        <h1>
+          <a href="{{ url('dashboard') }}">
+            <img src="{{ MEDIA_URL }}img/fx-white.png" alt="Firefox" class="fxlogo"/>
+            {{ _('Input Dashboard') }}
+          </a>
+        </h1>
+        <br/>
+        <nav>
+          <ul class="gradient">
+          {% include "includes/nav_buttons.html" %}
+          </ul>
+        </nav>
+      </header>
+      {% endblock %}
+
+      <div id="doc" class="clearfix">
+        <section id="main-content">
+          {% block content %}
+          {% endblock %}
+        </section>
+      </div><!-- end #doc -->
+    </div><!-- end #wrapper -->
+
+    <!-- start #footer -->
+    <footer id="footer">
+      <div id="footer-contents">
+        <div id="copyright">
+          {% include 'includes/lang_switcher.html' %}
+          <p id="footer-links">
+            <a href="http://www.mozilla.com/en-US/privacy-policy.html">{{ _('Privacy Policy') }}</a> &nbsp;|&nbsp;
+            <a href="http://www.mozilla.com/en-US/about/legal.html">{{ _('Legal Notices') }}</a> &nbsp;|&nbsp;
+            <a href="http://www.mozilla.com/en-US/legal/fraud-report/index.html">{{ _('Report Trademark Abuse') }}</a>
+          </p>
+          <p>
+            {% trans legal_url='http://www.mozilla.com/en-US/about/legal.html#site',
+                     license_url='http://creativecommons.org/licenses/by-sa/3.0/' %}
+              Except where otherwise <a href="{{ legal_url }}">noted</a>,
+              content on this site is licensed under the <br/>
+              <a href="{{ license_url }}">Creative Commons Attribution Share-Alike License v3.0</a>
+              or any later version.
+            {% endtrans %}
+          </p>
+        </div>
+      </div>
+    </footer>
+    <!-- end #footer -->
+
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/init.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/reporter.js"></script>
+    {% block js %}{% endblock %}
+
+    {% include "includes/webtrends_mobile.html" %}
+  </body>
+</html>

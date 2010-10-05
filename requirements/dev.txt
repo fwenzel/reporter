@@ -7,9 +7,15 @@
 # Testing.
 nose==0.11.1
 -e git://github.com/jbalogh/django-nose.git#egg=django_nose
--e git://github.com/jbalogh/test-utils.git#egg=test-utils
+-e git://github.com/jbalogh/test-utils.git#egg=test_utils
 pyquery
 mock
+coverage
+pylint
+
 
 # L10n.
 translate-toolkit==1.6.0
+
+# Documentation
+sphinx

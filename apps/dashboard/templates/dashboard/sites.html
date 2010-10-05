@@ -1,0 +1,13 @@
+<div class="trend collapsible">
+  {# L10n: Refers to sites that were reported in feedback. #}
+  {{ filter_box_toggle(_('While Visiting')) }}
+
+  <ul class="bars">
+    {% for site in sites %}
+    <li><a href="{{ site.get_absolute_url() }}"
+           class="bar" data-value="{{ site.size }}">
+      <strong>{{ site.url|without_protocol }}</strong>
+    </a></li>
+    {% endfor %}
+  </ul>
+</div>

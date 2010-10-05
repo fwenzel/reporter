@@ -29,7 +29,7 @@ def cache_page(cache_timeout=None, use_get=False, **kwargs):
     def wrap(f):
         @wraps(f)
         @cache_page_with_prefix(cache_timeout, key_prefix)
-        def cached_view(request, *args, **kwargs): #f, cache_timeout=cache_timeout, key_prefix=key_prefix, **kwargs):
+        def cached_view(request, *args, **kwargs):
             return f(request, *args, **kwargs)
         return cached_view
     return wrap

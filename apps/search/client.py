@@ -1,18 +1,25 @@
 from calendar import timegm
 from datetime import timedelta
+import os
+import re
 import socket
 
 from django.conf import settings
 
 from tower import ugettext as _
 
-from reporter.utils import crc32, manual_order
+from input.utils import crc32, manual_order
 from feedback.models import Opinion
 
 from . import sphinxapi as sphinx
 
 
 SPHINX_HARD_LIMIT = 1000  # A hard limit that sphinx imposes.
+
+
+def sanitize_query(term):
+    term = term.strip('^$ ').replace('^$', '')
+    return term
 
 
 class SearchError(Exception):
@@ -23,7 +30,12 @@ class Client():
 
     def __init__(self):
         self.sphinx = sphinx.SphinxClient()
-        self.sphinx.SetServer(settings.SPHINX_HOST, settings.SPHINX_PORT)
+
+        if os.environ.get('DJANGO_ENVIRONMENT') == 'test':
+            self.sphinx.SetServer(settings.SPHINX_HOST,
+                                  settings.TEST_SPHINX_PORT)
+        else:
+            self.sphinx.SetServer(settings.SPHINX_HOST, settings.SPHINX_PORT)
 
     def query(self, term, **kwargs):
         """Submits formatted query, retrieves ids, returns Opinions."""
@@ -57,8 +69,15 @@ class Client():
             end = int(timegm(end_date.timetuple()))
             sc.SetFilterRange('created', start, end)
 
+        url_re = re.compile(r'\burl:\*\B')
+
+        if url_re.search(term):
+            parts = url_re.split(term)
+            sc.SetFilter('has_url', (1,))
+            term = ''.join(parts)
+
         try:
-            result = sc.Query(term, 'opinions')
+            result = sc.Query(sanitize_query(term), 'opinions')
         except socket.timeout:
             raise SearchError(_("Query has timed out."))
         except Exception, e:

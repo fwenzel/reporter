@@ -25,7 +25,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ROUTERS = ('multidb.MasterSlaveRouter',)
+DATABASE_ROUTERS = ('website_issues.db.DatabaseRouter',
+                    'multidb.MasterSlaveRouter',)
 SLAVE_DATABASES = []
 
 # Caching
@@ -67,17 +68,19 @@ USE_I18N = True
 USE_L10N = True
 
 # Accepted locales
-# ar, he: bug 580573
-INPUT_LANGUAGES = ('ca', 'cs', 'da', 'de', 'el', 'en-US', 'es-ES', 'fr', 'gl',
-                   'hu', 'it', 'nb-NO', 'nl', 'pl', 'pt-PT', 'ru', 'sk', 'sq',
-                   'vi', 'zh-CN', 'zh-TW')
+INPUT_LANGUAGES = ('ar', 'bg', 'ca', 'cs', 'da', 'de', 'el', 'en-US', 'es',
+                   'fr', 'fy-NL', 'gl', 'he', 'hu', 'id', 'it', 'ko', 'nb-NO',
+                   'nl', 'pl', 'pt-PT', 'ru', 'sk', 'sq', 'uk', 'vi', 'zh-CN',
+                   'zh-TW')
 RTL_LANGUAGES = ('ar', 'he',)  # ('fa', 'fa-IR')
+# Fallbacks for locales that are not recognized by Babel. Bug 596981.
+BABEL_FALLBACK = {'fy-nl': 'nl'}
 
 
 # Override Django's built-in with our native names
 class LazyLangs(dict):
     def __new__(self):
-        import product_details
+        from product_details import product_details
         return dict([(lang.lower(), product_details.languages[lang]['native'])
                      for lang in INPUT_LANGUAGES])
 LANGUAGES = lazy(LazyLangs, dict)()
@@ -144,6 +147,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.csrf',
 
     'input.context_processors.i18n',
+    'input.context_processors.input',
     'input.context_processors.mobile',
     'search.context_processors.product_versions',
 )
@@ -152,7 +156,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 def JINJA_CONFIG():
     import jinja2
     config = {'extensions': ['tower.template.i18n', 'jinja2.ext.loopcontrols',
-                             'jinja2.ext.with_'],
+                             'jinja2.ext.with_', 'caching.ext.cache'],
               'finalize': lambda x: x if x is not None else ''}
     return config
 
@@ -171,16 +175,20 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'reporter.urls'
 
 INSTALLED_APPS = [
-    'input', # comes first so it always takes precedence.
+    'input',  # comes first so it always takes precedence.
     'dashboard',
     'feedback',
+    'myadmin',
     'search',
     'swearwords',
+    'themes',
+    'website_issues',
 
     'annoying',
     'cronjobs',
     'product_details',
     'tower',
+    'djcelery',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -211,14 +219,28 @@ TRENDS_COUNT = 10
 # Sphinx Search Index
 SPHINX_HOST = '127.0.0.1'
 SPHINX_PORT = 3314
+SPHINXQL_PORT = 3309
 SPHINX_SEARCHD = 'searchd'
 SPHINX_INDEXER = 'indexer'
 SPHINX_CATALOG_PATH = path('tmp/data/sphinx')
 SPHINX_LOG_PATH = path('tmp/log/searchd')
 SPHINX_CONFIG_PATH = path('configs/sphinx/sphinx.conf')
+
+TEST_SPHINX_PORT = 3414
+TEST_SPHINXQL_PORT = 3409
+TEST_SPHINX_CATALOG_PATH = path('tmp/test/data/sphinx')
+TEST_SPHINX_LOG_PATH = path('tmp/test/log/searchd')
+
 SEARCH_PERPAGE = 20  # results per page
 
 TEST_RUNNER = 'test_utils.runner.RadicalTestSuiteRunner'
 
 import logging
 logging.basicConfig()
+
+CLUSTER_SIM_THRESHOLD = 2
+
+# Celery
+
+import djcelery
+djcelery.setup_loader()

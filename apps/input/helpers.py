@@ -1,14 +1,14 @@
 import cgi
 import datetime
-import urllib
 import urlparse
 
 from django.conf import settings
 from django.template import defaultfilters
 from django.utils import translation
 from django.utils.encoding import smart_str
+from django.utils.http import urlencode
 
-from babel import Locale
+from babel import Locale, UnknownLocaleError
 from babel.dates import format_datetime
 from babel.support import Format
 from jingo import register
@@ -17,15 +17,21 @@ import pytz
 
 import utils
 from .urlresolvers import reverse
-
+from themes.helpers import new_context
 
 # Yanking filters from Django.
 register.filter(defaultfilters.iriencode)
+register.filter(defaultfilters.timesince)
+register.filter(defaultfilters.slugify)
 
 
 def _get_format():
     lang = translation.get_language()
-    locale = Locale(translation.to_locale(lang))
+    try:
+        locale = Locale(translation.to_locale(lang))
+    except UnknownLocaleError:
+        locale = Locale(translation.to_locale(settings.BABEL_FALLBACK.get(
+            lang, 'en-US')))
     return Format(locale)
 
 
@@ -78,16 +84,24 @@ def urlparams(url_, hash=None, **query):
     query_dict = dict(urlparse.parse_qsl(smart_str(q))) if q else {}
     query_dict.update((k, v) for k, v in query.items())
 
-    query_string = _urlencode([(k, v) for k, v in query_dict.items()
+    query_string = urlencode([(k, v) for k, v in query_dict.items()
                                if v is not None])
     new = urlparse.ParseResult(url.scheme, url.netloc, url.path, url.params,
                                query_string, fragment)
     return new.geturl()
 
 
-def _urlencode(items):
-    """A Unicode-safe URLencoder."""
-    try:
-        return urllib.urlencode(items)
-    except UnicodeEncodeError:
-        return urllib.urlencode([(k, smart_str(v)) for k, v in items])
+@register.inclusion_tag('input/pager.html')
+@jinja2.contextfunction
+def pager(context):
+    """Fuckyeahpagination!"""
+    page = context.get('page')
+    if page:
+        url = context['request'].META['PATH_INFO']
+        if page.has_previous():
+            prev_url = urlparams(url, page=page.previous_page_number())
+
+        if page.has_next():
+            next_url = urlparams(url, page=page.next_page_number())
+
+    return new_context(**locals())

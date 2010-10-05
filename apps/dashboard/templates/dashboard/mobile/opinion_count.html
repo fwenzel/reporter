@@ -1,0 +1,7 @@
+<li>
+  {% trans num=count, cnt=count|numberfmt %}
+  <strong>{{ cnt }}</strong> message
+  {% pluralize %}
+  <strong>{{ cnt }}</strong> messages
+  {% endtrans %}
+</li>

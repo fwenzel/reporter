@@ -1,0 +1,15 @@
+<div class="trend collapsible">
+  {# L10n: Refers to terms often mentioned in feedback. #}
+  {{ filter_box_toggle(_('Often Mentioned')) }}
+
+  <ul class="bars">
+    {% for item in themes %}
+    <li>
+        <a href="{{ search_url(defaults=defaults, q=item.term) }}"
+           class="bar" data-value="{{ item.count }}">
+        <strong>{{ item.term }}</strong>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

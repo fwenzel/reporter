@@ -1,0 +1,23 @@
+{% macro os_item(os, count=0, selected=False) %}
+<li>
+  <input id="os_{{ os }}" name="os" value="{{ os }}" type="checkbox" {{ 'checked' if selected else '' }} />
+  <label for="os_{{ os }}" class="bar {{ 'selected' if selected else '' }}" data-value="{{ count }}">
+    <strong>{{ os_name(os) }}</strong>
+  </label>
+</li>
+{% endmacro %}
+
+<div class="filter collapsible">
+  {{ filter_box_toggle(_('Platform')) }}
+
+  <ul class="bars" data-total="{{ total }}">
+
+    {% if defaults['os'] %}
+      {{ os_item(defaults['os'], selected=True) }}
+    {% else %}
+      {% for item in platforms %}
+        {{ os_item(item.os, item.count) }}
+      {% endfor %}
+    {% endif %}
+  </ul>
+</div>

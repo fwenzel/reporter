@@ -1,0 +1,36 @@
+<h2>{{ site.domain }}</h2>
+
+<a class="exit" href="{{ url('website_issues') }}">{{ _('Back to all sites &raquo;')|safe }}</a>
+
+<ul class="themes">
+  {% for cluster in page.object_list %}
+  <li class="theme">
+  {% if cluster.positive %}
+    <p class="type praise" title="{{ _('Praise') }}"><span>{{ _('Praise') }}</span></p>
+  {% else %}
+    <p class="type issue" title="{{ _('Issue') }}"><span>{{ _('Issue') }}</span></p>
+  {% endif %}
+
+  <p class="primary"><a href="{{ cluster.get_absolute_url() }}">
+    <span>{{ cluster.primary_description|as_unicode }}</span>
+    {% if cluster.size > 1 %}
+    <span class="more">
+      {% trans num=cluster.size-1, count=(cluster.size-1)|numberfmt %}
+        {{ count }} similar message
+      {% pluralize %}
+        {{ count }} similar messages
+      {% endtrans %}
+    </span>
+    {% endif %}
+  </a></p>
+  <ul class="samples">
+    {% for comment in cluster.secondary_comments[:4] %}
+    <li>{{ comment.description|as_unicode }}</li>
+    {% endfor %}
+  </ul>
+
+  </li>
+  {% endfor %}
+</ul>
+
+{% include "website_issues/paginate_sites.html" %}

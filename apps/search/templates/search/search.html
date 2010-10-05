@@ -1,110 +1,103 @@
-{% extends "search_base.html" %}
+{% extends "base.html" %}
 
 {% block body_id %}search{% endblock %}
 
 {% block page_title %}{{ _('Search Results') }}{% endblock %}
 
-{% block title_text %}{{ _('Search Results') }}{% endblock %}
-
 {% block feeds %}
-{# TODO(davedash): Localize title #}
 <link href="{{ search_url(defaults=form.data, feed=True) }}"
-type="application/atom+xml" rel="alternate"
-title="ATOM Feed for {{form.data.get('query', 'Latest Results') }}" />
+      type="application/atom+xml" rel="alternate"
+      title="{{ _('ATOM feed for this search') }}" />
 {% endblock %}
 
 {% block content %}
-{% if page and page.paginator.count == 1000 %}
-<aside class="warning clearfix">
-  {% trans %}
-  Due to software constraints, we can only show the last 1000 messages for
-  this search query.
-  {% endtrans %}
-</aside>
-{% endif %}
+<div class="col left">
 
-<div id="search_box" class="clearfix">
-  <div id="search_options">
-    {% if opinions %}
-      {% if query %}
-        {% trans %}
-        Description: <span class="opt">"{{ query }}"</span>;
-        {% endtrans %}
-      {% endif %}
-      {% trans start_date=form.cleaned_data.date_start|babel_date,
-               end_date=form.cleaned_data.date_end|babel_date %}
-        Dates: <span class="opt">{{ start_date }} &ndash; {{ end_date }}</span>
+  {% if opinions %}
+  {{ big_count_block(opinion_count) }}
+  {% endif %}
+
+  <form id="filters" class="filters segments block" method="get" action="{{ url('search') }}">
+
+    <input type="hidden" name="q" value="{{ defaults['q'] }}" />
+    <input type="hidden" name="product" value="{{ request.default_app.short }}" />
+
+    {{ when_block(form=form, selected=period, defaults=defaults) }}
+
+    {{ overview_block(sent, defaults=defaults) }}
+
+    {# TODO URL provided box #}
+
+    {{ versions_block(versions, defaults=defaults) }}
+
+    {{ platforms_block(demo.os, opinion_count, defaults=defaults) }}
+
+    {{ locales_block(demo.locale, opinion_count, defaults=defaults) }}
+
+  </form>
+</div><!--
+
+--><div class="col middle wide">
+  <div id="messages" class="block">
+    <h2>{{ _('Search Results') }}</h2>
+
+    <form id="kw-search" method="get" action="{{ url('search') }}">
+      {% for key, val in defaults.items() %}
+        {% if key == 'q' %}{% continue %}{% endif %}
+        <input type="hidden" name="{{ key }}" value="{{ val }}" />
+      {% endfor %}
+      {{ form.q|safe }}
+    </form>
+
+    {% if page and page.paginator.count == 1000 %}
+    <div id="message-warning">
+      {% trans %}
+      Due to software constraints, we can only show the last 1000 messages for
+      this search query.
       {% endtrans %}
-      <br/>
-      {% trans locale=form.data.locale|default(_("all"), true) %}
-        Locale: <span class="opt">{{ locale }}</span>;
-      {% endtrans %}
-      {% trans os=form.data.os|default(_("all"), true) %}
-        OS: <span class="opt">{{ os }}</span>
-      {% endtrans %}
+    </div>
     {% endif %}
-  </div>
 
-  {% with search_form=form %}{% include "search/search_form.html" %}{% endwith %}
-</div>
+    {{ message_list(opinions, defaults=defaults) }}
 
-<div id="results" class="container">
-  <ul>
-    {% if opinions %}
-      {% include "dashboard/messages.html" %}
-    {% else %}
-      <li>{{ _('No search results found.') }}</li>
-    {% endif %}
-  </ul>
-
-  {% if page and page.has_other_pages() %}
-    <nav class="pagination">
-      <span class="step-links">
+    {% if page and page.has_other_pages() %}
+    <div class="pager">
+      {% with link_txt = _('&laquo; Newer Messages')|safe %}
         {% if page.has_previous() %}
         <a href="{{ search_url(
           defaults=form.data, extra={'page': page.previous_page_number()})
-          }}" class="prev">{{ _('&laquo; previous')|safe }}</a>
+          }}" class="prev">{{ link_txt }}</a>
+        {% else %}
+        <span class="prev inactive">{{ link_txt }}</span>
         {% endif %}
+      {% endwith %}
 
+      {% with link_txt = _('Older Messages &raquo;')|safe %}
         {% if page.has_next() %}
         <a href="{{ search_url(
           defaults=form.data, extra={'page': page.next_page_number()})
-          }}" class="next">{{ _('next &raquo;')|safe }}</a>
+          }}" class="next">{{ link_txt }}</a>
+        {% else %}
+        <span class="next inactive">{{ link_txt }}</span>
         {% endif %}
-
-        <span class="current">
-          {% trans pagenum=page.number, total=page.paginator.num_pages %}
-            page {{ pagenum }} of {{ total }}
-          {% endtrans %}
-        </span>
-      </span>
-    </nav>
-  {% endif %}
-</div>
-{% if opinions %}
-<div id="overview">
-  <div id="sentiment" class="container clearfix">
-    <h2>{{ _('Overview') }}</h2>
-    <div>
-      {% include "dashboard/sentiments.html" %}
+      {% endwith %}
     </div>
+    {% endif %}
   </div>
+</div><!--
 
-  {#
-  <div id="trends" class="container clearfix">
-    <h2>{{ _('Trends') }}</h2>
-    <div class="terms">
-      {% include "dashboard/trends.html" %}
-    </div>
-  </div>
-  #}
+--><div class="col right">
 
-  <div id="demo" class="container clearfix">
-    <h2>{{ _('Demographics') }}</h2>
-    <div>
-      {% include "dashboard/demographics.html" %}
-    </div>
+  <div id="trends" class="trends segments block">
+
+    {# TODO terms, bug 582606
+    {{ themes_block(terms) }}#}
+
+    {# TODO fetch and show sites
+    {{ sites_block(sites) }}
+    #}
+
   </div>
 </div>
-{% endif %}
+
 {% endblock %}

@@ -1,41 +1,60 @@
-{% extends "search_base_mobile.html" %}
+{% extends "base_mobile.html" %}
 
-{% block body_id %}dashboard{% endblock %}
+{% block header %}
+<ul>
+  <!--
+  --><li><a class="selected" href="#feed">{# Title for the list of messages. #}{{ _('Feed') }}</a></li><!--
+  --><li><a class="" href="#stats">{{ _('Statistics') }}</a></li><!--
+  --><li><a class="" href="#trends">{{ _('Trends') }}</a></li><!--
+  -->
+</ul>
+{% endblock %}
 
 {% block content %}
-<div id="search_box" class="clearfix">
-  {% include "search/search_form.html" %}
+<div id="feed-count" class="block">
+  <ul class="segmented">
+    {{ big_count_block(opinion_count) }}
+    {{ when_block(form=search_form, selected='1d') }}
+  </ul>
 </div>
 
-<noscript>
-  <div class="container">
-    <h2>{{ _('Please enable JavaScript to view this page.') }}</h2>
+<div id="feed">
+  <div id="search" class="block">
+    <form id="kw-search" method="get" action="{{ url('search') }}">
+      <input type="hidden" name="product" value="{{ request.default_app.short }}" />
+      {{ search_form.q|safe }}
+    </form>
   </div>
-</noscript>
 
-<div id="overview" class="container">
-  <div id="sentiment" class="clearfix">
-    <div id="period">{{ period.period|safe }}</div>
-    <h2><a href="#">{{ _('Overview') }}</a></h2>
-    <div class="ajaxy accordion clearfix"></div>
+  <div class="block">
+    {{ message_list(opinions) }}
   </div>
-  <div id="trends">
-    <h2><a href="#">{{ _('Trends') }}</a></h2>
-    <div class="ajaxy accordion terms hidden"></div>
-  </div>
-  <div id="demo">
-    <h2><a href="#">{{ _('Demographics') }}</a></h2>
-    <div class="ajaxy accordion hidden"></div>
+
+  <div class="pager">
+    <!--
+    --><span class="prev"><del>{{ _('&laquo; Newer Feedback')|safe }}</del></span><!--
+    --><span class="next"><a href="{{ search_url() }}">{{ _('Older Feedback &raquo;')|safe }}</a></span><!--
+    -->
   </div>
 </div>
 
-<div id="messages" class="container">
-  <a href="{{ search_url() }}" class="more">
-    {# L10n: Link on the dashboard to show more messages. #}
-    {{ _('Show more') }}
-  </a>
-  <h2>{{ _('Last {count} Messages')|f(count=messages_count) }}</h2>
-  <div class="ajaxy"></div>
+<div id="stats">
+  <form id="filters" method="get" action="{{ url('search') }}">
+    <input type="hidden" name="product" value="{{ request.default_app.short }}" />
+
+    {{ overview_block(sentiments) }}
+
+    {# TODO "URL provided?" filter #}
+
+    {{ platforms_block(demo.os, opinion_count) }}
+
+    {{ locales_block(demo.locale, opinion_count) }}
+  </form>
 </div>
 
+<div id="trends">
+  {{ themes_block(terms) }}
+
+  {{ sites_block(sites) }}
+</div>
 {% endblock %}

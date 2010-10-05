@@ -2,9 +2,8 @@ from datetime import date, timedelta
 
 from django.conf import settings
 from django import forms
-from django.utils.functional import lazy
 
-import product_details
+from product_details import product_details
 from tower import ugettext_lazy as _lazy
 
 from feedback import APPS, FIREFOX, MOBILE, OS_USAGE, LATEST_BETAS
@@ -17,14 +16,15 @@ PROD_CHOICES = (
     (FIREFOX.short, FIREFOX.pretty),
     (MOBILE.short, MOBILE.pretty),
 )
+
 # TODO need this for Mobile as well
 VERSION_CHOICES = {
     FIREFOX: [('', _lazy('-- all --', 'version_choice'))] + uniquifier(
         [(simplify_version(v[0]), v[0]) for v in
          sorted(product_details.firefox_history_development_releases.items(),
                 key=lambda x: x[1], reverse=True) if
-         version_int(v[0]) >= version_int(FIREFOX.hide_below)
-        ], key=lambda x: x[0]),
+         version_int(v[0]) >= version_int(FIREFOX.hide_below)],
+         key=lambda x: x[0]),
     MOBILE: [
         ('', _lazy('-- all --', 'version_choice')),
         (simplify_version(LATEST_BETAS[MOBILE]), LATEST_BETAS[MOBILE]),
@@ -50,7 +50,7 @@ LOCALE_CHOICES = [
 
 class ReporterSearchForm(forms.Form):
     q = forms.CharField(required=False, label='', widget=SearchInput(
-        attrs={'placeholder': _lazy('Search Terms')}))
+        attrs={'placeholder': _lazy('Search by keyword')}))
     product = forms.ChoiceField(choices=PROD_CHOICES, label=_lazy('Product:'),
                                 initial=FIREFOX.short)
     version = forms.ChoiceField(required=False, label=_lazy('Version:'),
@@ -81,7 +81,6 @@ class ReporterSearchForm(forms.Form):
                 pass
         if (picked == MOBILE.short or not self.is_bound and
             settings.SITE_ID == settings.MOBILE_SITE_ID):
-            print picked
             # We default to Firefox. Only change if this is the mobile site.
             self.fields['product'].initial = MOBILE.short
             self.fields['version'].choices = VERSION_CHOICES[MOBILE]

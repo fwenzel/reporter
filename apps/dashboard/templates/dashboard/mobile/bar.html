@@ -1,0 +1,12 @@
+<li class="filter bar">
+  <span class="bg" style="width: {{ percentage }}%;"></span>
+  <input type="checkbox" id="{{ id }}" name="{{ name }}" value="{{ value }}"
+         {{ 'checked' if selected else '' }} />
+  <label for="{{ id }}">
+    {{ label }}
+    {% if not selected %}
+      <span class="perc">{{ percentage }}%</span>
+    {% endif %}
+  </label>
+  <span class="count">{{ count|numberfmt }}</span>
+</li>

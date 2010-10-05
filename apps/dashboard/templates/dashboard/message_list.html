@@ -1,0 +1,48 @@
+{% if opinions %}
+  <ul class="messages segmented">
+  {% for opinion in opinions %}
+    <li class="message">
+      {% if opinion.positive %}
+        <p class="type praise" title="{{ _('Praise') }}"><span>{{ _('Praise') }}</span></p>
+      {% else %}
+        <p class="type issue" title="{{ _('Issue') }}"><span>{{ _('Issue') }}</span></p>
+      {% endif %}
+      <p class="body">{{ opinion.description }}</p>
+      <ul class="meta">
+        <li>
+          <a href="{{ opinion.get_url_path() }}">
+            {# L10n: {0} is a time delta, e.g.: 2 weeks #}
+            <time title="{{ opinion.created|isotime }}">{{ _('{0} ago')|f(opinion.created|timesince) }}</time>
+          </a>
+        </li>
+        <li><a href="{{ search_url(os=opinion.os, defaults=defaults) }}">{{ os_name(opinion.os) }}</a></li>
+        <li><a href="{{ search_url(locale=opinion.locale, defaults=defaults) }}">{{ locale_name(opinion.locale) }}</a></li>
+        {% if opinion.url %}
+          {# TODO redirect via outgoing? #}
+          <li><a href="{{ opinion.url }}" rel="nofollow">{{ opinion.url|without_protocol }}</a></li>
+        {% endif %}
+      </ul>
+
+      {% if not request.mobile_site %}
+      <div class="options">
+        <a href="#"><span>{{ _('More Options') }}</span></a>
+        <ul>
+          {# TODO copy user agent functionality #}
+          <!--<li><a href="#">{{ _('Copy User Agent') }}</a></li>-->
+          {# L10n: Link to Google Translator #}
+          <li><a href="{{ 'http://translate.google.com/'|urlparams(
+            sl='auto', q=opinion.description) }}" target="_blank">{{
+            _('Translate Message') }}</a></li>
+        </ul>
+      </div>
+      {% endif %}
+    </li>
+  {% endfor %}
+  </ul>
+{% else %}
+  {% if show_notfound %}
+  <ul class="messages">
+    <li id="message-warning">{{ _('No search results found.') }}</li>
+  </ul>
+  {% endif %}
+{% endif %}

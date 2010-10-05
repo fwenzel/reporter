@@ -43,6 +43,7 @@ def frequent_terms(count=10, qs=None):
         max_weight = frequent_terms[0].cnt
         terms = [
             {'term': ft.term,
+             'count': ft.cnt,
              'weight': int(float(ft.cnt) / max_weight * 5)} for
             ft in frequent_terms ]
     return terms

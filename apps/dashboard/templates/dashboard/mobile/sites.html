@@ -1,0 +1,18 @@
+<div class="block collapsible">
+  <h2><a class="toggle" href="#">{{ _('While Visiting') }}</a></h2>
+
+  <ul class="collapsee trends bars">
+    {% for site in sites %}
+      {% if not total %}{% set total = site.size|float %}{% endif %}
+      {% set perc = (site.size / total * 100.0)|int if total else 0 %}
+      <li class="trend">
+        <a href="{{ search_url(defaults=defaults, q='url:'+site.url|without_protocol) }}"
+           class="bar">
+          <span class="bg" style="width: {{ perc }}%;"></span>
+          <label>{{ site.url|without_protocol }}</label>
+          <span class="perc">{{ site.size|numberfmt }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>

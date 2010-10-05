@@ -4,10 +4,11 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from input.urlresolvers import reverse
 
-from product_details import firefox_versions
+from nose.tools import eq_
+from product_details import product_details
 
 from . import FIREFOX, MOBILE
-from .utils import detect_language, ua_parse
+from .utils import detect_language, ua_parse, smart_truncate
 from .validators import validate_no_urls
 from .version_compare import simplify_version
 
@@ -60,7 +61,7 @@ class UtilTests(TestCase):
                 self.assert_(parsed is None)
 
     def test_detect_language(self):
-        """Check Accept-Language matching."""
+        """Check Accept-Language matching for feedback submission."""
         patterns = (
             ('en-us,en;q=0.7,de;q=0.8', 'en-US'),
             ('fr-FR,de-DE;q=0.5', 'fr'),
@@ -72,6 +73,16 @@ class UtilTests(TestCase):
             req = http.HttpRequest()
             req.META['HTTP_ACCEPT_LANGUAGE'] = pattern[0]
             self.assertEquals(detect_language(req), pattern[1])
+
+    def test_smart_truncate(self):
+        """Test text truncation on word boundaries."""
+        patterns = (
+            ('text, teeext', 10, 'text,...'),
+            ('somethingreallylongwithnospaces', 10, 'somethingr...'),
+            ('short enough', 12, 'short enough'),
+        )
+        for pattern in patterns:
+            eq_(smart_truncate(pattern[0], length=pattern[1]), pattern[2])
 
 
 class ValidatorTests(TestCase):
@@ -108,6 +119,9 @@ class VersionCompareTest(TestCase):
 
 
 class ViewTests(TestCase):
+
+    fixtures = ['feedback/opinions']
+
     def test_enforce_user_agent(self):
         """Make sure unknown user agents are forwarded to download page."""
         old_enforce_setting = settings.ENFORCE_USER_AGENT
@@ -129,8 +143,8 @@ class ViewTests(TestCase):
         self.assertTrue(r['Location'].endswith(reverse('feedback.need_beta')))
 
         # latest beta: no redirect
-        r = self.client.get(reverse('feedback.sad'), HTTP_USER_AGENT=(
-            FX_UA % firefox_versions['LATEST_FIREFOX_DEVEL_VERSION']))
+        r = self.client.get(reverse('feedback.sad'), HTTP_USER_AGENT=(FX_UA % (
+            product_details.firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'])))
         self.assertEquals(r.status_code, 200)
 
         # version newer than current: no redirect
@@ -139,3 +153,12 @@ class ViewTests(TestCase):
         self.assertEquals(r.status_code, 200)
 
         settings.ENFORCE_USER_AGENT = old_enforce_setting
+
+    def test_give_feedback(self):
+        r = self.client.post(reverse('feedback.sad'))
+        eq_(r.content, 'User-Agent request header must be set.')
+
+    def test_opinion_detail(self):
+        r = self.client.get(reverse('opinion.detail', args=(29,)))
+        eq_(r.status_code, 200)
+

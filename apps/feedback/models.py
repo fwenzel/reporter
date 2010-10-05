@@ -3,22 +3,13 @@ from datetime import timedelta
 from django.conf import settings
 from django.db import models
 from django.db.models import Count
-from django.db.models.query import QuerySet
 
 import caching.base
 
+from input.models import ModelBase
 from input.urlresolvers import reverse
 from . import APP_IDS, OSES, query
 from .utils import ua_parse, extract_terms, smart_truncate
-
-
-class ModelBase(caching.base.CachingMixin, models.Model):
-    """Common base model for all models: Implements caching."""
-
-    objects = caching.base.CachingManager()
-
-    class Meta:
-        abstract = True
 
 
 class OpinionManager(caching.base.CachingManager):
@@ -107,11 +98,12 @@ class Opinion(ModelBase):
         terms = [t for t in extract_terms(self.description) if
                  len(t) >= settings.MIN_TERM_LENGTH]
         for term in terms:
-            try:
-                this_term = Term.objects.get(term=term)
-            except Term.DoesNotExist:
-                this_term = Term.objects.create(term=term)
+            this_term, created = Term.objects.get_or_create(term=term)
+            this_term.save()
             self.terms.add(this_term)
+
+    def get_url_path(self):
+        return reverse('opinion.detail', args=(self.id,))
 
 
 class TermManager(models.Manager):
@@ -140,7 +132,7 @@ class TermManager(models.Manager):
             # Allow filtering by any opinion field in kwargs
             for field in (f.name for f in Opinion._meta.fields):
                 if kwargs.get(field):
-                    params['used_in__'+field] = kwargs[field]
+                    params['used_in__' + field] = kwargs[field]
 
             if params:
                 terms = terms.filter(**params)
@@ -161,41 +153,3 @@ class Term(ModelBase):
 
     class Meta:
         ordering = ('term',)
-
-
-class ClusterType(ModelBase):
-    """A single type of cluster.  E.g. weekly_happy, weekly_sad."""
-    feeling = models.CharField(max_length=20)  # happy or sad
-    platform = models.CharField(max_length=255)
-    version = models.CharField(max_length=255)
-    frequency = models.CharField(max_length=255)
-    created = models.DateTimeField(auto_now_add=True)
-
-    def get_url_path(self):
-        args = [self.feeling, self.platform, self.version, self.frequency]
-        return reverse('cluster', args=args)
-
-    class Meta:
-        unique_together = (("feeling", "platform", "version", "frequency"),)
-
-
-class Cluster(ModelBase):
-    type = models.ForeignKey(ClusterType, db_index=True,
-                             related_name='clusters')
-    pivot = models.ForeignKey(Opinion, related_name='clusters')
-    opinions = models.ManyToManyField(Opinion, through='ClusterItem')
-    num_opinions = models.IntegerField(default=0, db_index=True)
-    created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ('-num_opinions', )
-
-
-class ClusterItem(ModelBase):
-    cluster = models.ForeignKey(Cluster)
-    opinion = models.ForeignKey(Opinion)
-    score = models.FloatField()
-    created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ('-score', )
