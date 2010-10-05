@@ -9,6 +9,7 @@ class Theme(ModelBase):
     opinions = models.ManyToManyField(Opinion, through='Item')
     num_opinions = models.IntegerField(default=0, db_index=True)
     feeling = models.CharField(max_length=20, db_index=True)  # happy or sad
+    product = models.PositiveSmallIntegerField()
     platform = models.CharField(max_length=255, db_index=True)
     created = models.DateTimeField(auto_now_add=True, db_index=True)
 

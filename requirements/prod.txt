@@ -3,7 +3,7 @@ Django==1.2.1
 django-annoying==0.7.4
 -e git://github.com/fwenzel/django-mozilla-product-details#egg=django-mozilla-product-details
 -e git://github.com/jsocol/django-cronjobs#egg=django-cronjobs
-
+-e git://github.com/jsocol/commonware.git#egg=commonware
 
 # DB stuff
 -e git://github.com/jbalogh/schematic.git#egg=schematic
@@ -31,3 +31,6 @@ topia.termextract==1.1.0
 # Celery
 celery==2.0.3
 django-celery
+
+# jbalogh's nuggets
+-e git://github.com/mozilla/nuggets.git#egg=nuggets

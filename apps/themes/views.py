@@ -1,12 +1,13 @@
 from collections import namedtuple
 
 from django.conf import settings
+from django import http
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 import jingo
 from tower import ugettext as _
 
-from feedback import OSES
+from feedback import APPS, OSES, FIREFOX, APP_USAGE
 from input.decorators import cache_page
 from input.helpers import urlparams
 from themes.models import Theme
@@ -55,11 +56,29 @@ def _get_platforms(request, platform):
     return platforms
 
 
+def _get_products(request, product):
+    products = []
+    url = request.get_full_path()
+
+    for app in APP_USAGE:
+        f = Filter(urlparams(url, a=app.short), app.pretty, app.pretty,
+                   (product == app.short))
+        products.append(f)
+
+    return products
+
+
 @cache_page(use_get=True)
 def index(request):
     """List the various clusters of data we have."""
 
     qs = Theme.objects.all()
+    product = request.GET.get('a', FIREFOX.short)
+    products = _get_products(request, product)
+    try:
+        qs = qs.filter(product=APPS[product].id)
+    except KeyError:
+        raise http.Http404
 
     sentiment = request.GET.get('s')
     sentiments = _get_sentiments(request, sentiment)
@@ -71,7 +90,7 @@ def index(request):
     if platform:
         qs = qs.filter(platform=platform)
 
-    args = dict(sentiments=sentiments, platforms=platforms)
+    args = dict(sentiments=sentiments, platforms=platforms, products=products)
     page = request.GET.get('page', 1)
 
     if qs:

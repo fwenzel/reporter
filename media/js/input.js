@@ -78,8 +78,26 @@
         return this;
 
         function doSubmit(e) {
+            e.preventDefault();
+
+            var selected_product = $("#product").attr('data-selected')
+            if (selected_product && selected_product != $("#product").val()) {
+                var product = $('#product').val(),
+                    versions = JSON.parse($('#product').attr('data-versions'))[product],
+                    latest = $('#product option:selected').attr('data-latest');
+                $('#product').attr('data-selected', product);
+                // Fix versions list.
+                $('#version option').remove();
+                for (v in versions) {
+                    $('#version').append(
+                        $('<option>')
+                            .val(versions[v][0])
+                            .text(versions[v][1]))
+                }
+                $("#version").val(latest);
+            }
+
             $(e.currentTarget).closest('form').submit();
-            return false;
         }
     };
 

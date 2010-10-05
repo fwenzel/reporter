@@ -53,3 +53,8 @@ class TestViews(test_utils.TestCase):
         eq_(r.status_code, 200)
         r = self.client.get(reverse('themes') + '?p=mac')
         eq_(r.status_code, 200)
+
+    def test_invalid_filters(self):
+        """Handle invalid params gracefully."""
+        r = self.client.get(reverse('themes') + '?a=somethinginvalid')
+        eq_(r.status_code, 404)

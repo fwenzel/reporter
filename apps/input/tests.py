@@ -65,3 +65,8 @@ class MiddlewareTests(test_utils.TestCase):
         # pass here does not matter.
         self.client.get('/', HTTP_HOST='m.example.com')
         eq_(settings.SITE_ID, settings.MOBILE_SITE_ID)
+
+    def test_x_frame_options(self):
+        """Ensure X-Frame-Options middleware works as expected."""
+        r = self.client.get('/')
+        eq_(r['x-frame-options'], 'DENY')

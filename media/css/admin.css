@@ -1,0 +1,21 @@
+.module th {
+    width: 50%;
+}
+
+.module td {
+    width: 20%;
+}
+
+
+caption {
+    margin-bottom: 7px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 11px;
+    color: #797d80;
+    letter-spacing: 2px;
+}
+
+.module {
+    margin-bottom: 1em;
+}

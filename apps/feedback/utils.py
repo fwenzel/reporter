@@ -19,7 +19,7 @@ def ua_parse(ua):
     returns {
         browser: .FIREFOX or .MOBILE,
         version: '3.6b4' or similar,
-        os: one of ('mac', 'win', 'linux', 'other'),
+        os: one of ('mac', 'win', 'android', 'maemo', 'linux', 'other'),
         locale: locale code matching locale_details, else None
         }
     or None if detection failed.

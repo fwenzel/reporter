@@ -1,9 +1,14 @@
 import datetime
+import json
 
 from django.conf import settings
 
 from jingo import register
 import jinja2
+
+from feedback import LATEST_BETAS
+from feedback.version_compare import simplify_version
+from search.forms import VERSION_CHOICES
 
 
 def new_context(context, **kw):
@@ -90,9 +95,23 @@ def themes_block(context, themes, defaults=None):
     return render_template(tpl, new_context(**locals()))
 
 
+@register.inclusion_tag('dashboard/products.html')
+@jinja2.contextfunction
+def products_block(context, products, product):
+    latest_betas = dict((a.short, simplify_version(LATEST_BETAS[a])) for a in
+                        LATEST_BETAS)
+    version_choices = {}
+    for app in VERSION_CHOICES:
+        version_choices = json.dumps(
+            dict((app.short,
+                  [map(unicode, v) for v in VERSION_CHOICES[app]]) for app in
+                 VERSION_CHOICES))
+    return new_context(**locals())
+
+
 @register.inclusion_tag('dashboard/versions.html')
 @jinja2.contextfunction
-def versions_block(context, versions, defaults=None):
+def versions_block(context, versions, version):
     return new_context(**locals())
 
 

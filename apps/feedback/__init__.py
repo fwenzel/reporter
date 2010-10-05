@@ -58,6 +58,16 @@ class OSX:
     short = 'mac'
     ua_pattern = 'Mac'
 
+class MAEMO:
+    pretty = _('Maemo')
+    short = 'maemo'
+    ua_pattern = 'Maemo'
+
+class ANDROID:
+    pretty = _('Android')
+    short = 'android'
+    ua_pattern = 'Android'
+
 class LINUX:
     pretty = _(u'Linux')
     short = 'linux'
@@ -68,6 +78,6 @@ class OS_OTHER:
     short = 'other'
     ua_pattern = None
 
-OS_USAGE = _oses = (WINDOWS_XP, WINDOWS_VISTA, WINDOWS_7, OSX, LINUX)
+OS_USAGE = _oses = (WINDOWS_XP, WINDOWS_VISTA, WINDOWS_7, OSX, MAEMO, ANDROID, LINUX)
 OS_PATTERNS = [ (o.ua_pattern, o.short) for o in OS_USAGE ]
 OSES = dict((os.short, os) for os in _oses)

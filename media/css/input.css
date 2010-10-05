@@ -70,7 +70,7 @@ h2 {
             margin-right: 0;
         }
         .col.wide {
-            width: 53.19%; /* = 500 / 940 */
+            width: 52.53%; /* = 500 / 940 */
             }
 
 
@@ -590,52 +590,43 @@ header, footer, article, section { display: block; }
 
 
 .choices {
-    }
-    .choice {
-        }
-    .choice ul {
-        }
-        .choice li {
-            display: inline;
-            margin-right: -3px;
-            }
-        [dir="rtl"] .choice li {
-            margin-right: 0;
-            margin-left: -3px;
-            }
-            .choice li a {
-                display: inline-block;
-                margin-left: .5em;
-                background: #f0f0f0;
-                color: inherit;
-                text-decoration: none;
-                line-height: 18px;
-                padding: 0 .5em;
-                -moz-border-radius: 3px;
-                }
-            [dir="rtl"] .choice li a {
-                margin-left: 0;
-                margin-right: .5em;
-                }
-            .choice li:first-child a {
-                margin-left: 0;
-                }
-            .choice li a:hover {
-                background: #c1dcec;
-                }
-            .choice li a.selected {
-                background: #4497c7;
-                color: #fff;
-                }
-            .choice li a.etc {
-                float: right;
-                }
-            [dir="rtl"] .choice li a.etc {
-                float: left;
-                }
-                .choice li a.etc > span {
-                    -moz-transform: rotate(90deg);
-                    }
+	}
+	.choice {
+		}
+	.choice select {
+		padding: 2px 0;
+		}
+	.choice ul {
+		}
+		.choice li {
+			display: inline;
+			}
+			.choice li a {
+				display: inline-block;
+				margin-left: .5em;
+				background: #f0f0f0;
+				color: inherit;
+				text-decoration: none;
+				line-height: 18px;
+				padding: 0 .5em;
+				-moz-border-radius: 3px;
+				}
+			.choice li:first-child a {
+				margin-left: 0;
+				}
+			.choice li a:hover {
+				background: #c1dcec;
+				}
+			.choice li a.selected {
+				background: #4497c7;
+				color: #fff;
+				}
+			.choice li a.etc {
+				float: right;
+				}
+				.choice li a.etc > span {
+					-moz-transform: rotate(90deg);
+					}
 
 
 .trends {
@@ -662,6 +653,44 @@ header, footer, article, section { display: block; }
         }
     .pager .inactive {
         color: #c0c0c0;
+        }
+
+
+.selectbox {
+    position: relative;
+    display: inline-block;
+    margin-left: .5em;
+    background: #f0f0f0;
+    color: inherit;
+    text-decoration: none;
+    line-height: 18px;
+    padding: 0 .5em;
+    -moz-border-radius: 3px;
+    }
+.selectbox:first-child {
+    margin-left: 0;
+    }
+.selectbox:hover {
+    cursor: pointer;
+    }
+.selectbox:hover,
+.selectbox.focused {
+    background: #C1DCEC;
+    }
+    .selectbox span {
+        }
+    .selectbox span:after {
+        margin-left: .5em;
+        content: '\25be';
+    }
+    .selectbox select {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        opacity: 0;
+        cursor: pointer;
         }
 
 
