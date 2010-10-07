@@ -42,41 +42,49 @@ class WINDOWS_XP:
     pretty = _(u'Windows XP')
     short = 'winxp'
     ua_pattern = 'Windows NT 5.1'
+    apps = set((FIREFOX,))
 
 class WINDOWS_7:
     pretty = _(u'Windows 7')
     short = 'win7'
     ua_pattern = 'Windows NT 6.1'
+    apps = set((FIREFOX,))
 
 class WINDOWS_VISTA:
     pretty = _(u'Windows Vista')
     short = 'vista'
     ua_pattern = 'Windows NT 6.0'
+    apps = set((FIREFOX,))
 
 class OSX:
     pretty = _(u'Mac OS X')
     short = 'mac'
     ua_pattern = 'Mac'
+    apps = set((FIREFOX,))
 
 class MAEMO:
     pretty = _('Maemo')
     short = 'maemo'
     ua_pattern = 'Maemo'
+    apps = set((MOBILE,))
 
 class ANDROID:
     pretty = _('Android')
     short = 'android'
     ua_pattern = 'Android'
+    apps = set((MOBILE,))
 
 class LINUX:
     pretty = _(u'Linux')
     short = 'linux'
     ua_pattern = 'Linux'
+    apps = set((FIREFOX,))
 
 class OS_OTHER:
     pretty = _(u'Other')
     short = 'other'
     ua_pattern = None
+    apps = set((FIREFOX, MOBILE))
 
 OS_USAGE = _oses = (WINDOWS_XP, WINDOWS_VISTA, WINDOWS_7, OSX, MAEMO, ANDROID, LINUX)
 OS_PATTERNS = [ (o.ua_pattern, o.short) for o in OS_USAGE ]

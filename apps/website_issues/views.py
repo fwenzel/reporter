@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 import jingo
 
 from input.decorators import cache_page
-from feedback import LATEST_BETAS, FIREFOX, MOBILE, OSES
+from feedback import LATEST_BETAS, FIREFOX, MOBILE, OSES, APPS
 from feedback.models import Opinion
 
 from .forms import WebsiteIssuesSearchForm
@@ -28,9 +28,16 @@ def _fetch_summaries(form, url=None, count=None, one_offs=False):
     elif search_opts["sentiment"] == "sad": selected_sentiment = 0
     qs = qs.filter(positive__exact=selected_sentiment)
 
+    # Search for a specific os, for all oses matching the prod, or everything
     os = None
     if search_opts["os"] != '': os = search_opts["os"]
-    qs = qs.filter(os__exact=os)
+    if os is None and search_opts["prod"]:
+        prod = APPS[search_opts["prod"]]
+        app_oses=[os.short for os in OSES.values() if prod in os.apps]
+        qs = qs.filter(os__in=app_oses)
+    else:
+        qs = qs.filter(os__exact=os)
+
 
     # If URL was specified, match it exactly, else fuzzy-search.
     if url:
@@ -60,6 +67,15 @@ def _fetch_summaries(form, url=None, count=None, one_offs=False):
     return page.object_list[:], page
 
 
+def _common_data(form):
+    oses = OSES.values()
+    prod_name = form.cleaned_data["prod"]
+    if prod_name:
+        prod = APPS[prod_name]
+        oses = [os for os in oses if prod in os.apps]
+    return {"form": form, "oses": oses, "prods": APPS.values()}
+
+
 @cache_page(use_get=True)
 def website_issues(request):
     form = WebsiteIssuesSearchForm(request.GET)
@@ -73,11 +89,8 @@ def website_issues(request):
                 form.cleaned_data['site']):
             one_offs, _ = _fetch_summaries(form, count=settings.TRENDS_COUNT,
                                            one_offs=True)
-    data = {"form": form,
-            "oses": OSES.values(),
-            "page": page,
-            "sites": sites,
-            "one_offs": one_offs,}
+    data = dict(_common_data(form))
+    data.update({"page": page, "sites": sites, "one_offs": one_offs})
     return jingo.render(request, 'website_issues/website_issues.html', data)
 
 
@@ -104,10 +117,8 @@ def single_site(request, protocol, url_):
     except (EmptyPage, InvalidPage):
         page = pager.page(pager.num_pages)
 
-    data = {"form": form,
-            "oses": OSES.values(),
-            "page": page,
-            "site": site,}
+    data = dict(_common_data(form))
+    data.update({"page": page, "site": site})
     return jingo.render(request, 'website_issues/website_issues.html', data)
 
 
