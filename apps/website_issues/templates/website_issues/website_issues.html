@@ -16,6 +16,18 @@
   <form method="get" action="{{ url('website_issues') }}" id="filters" class="filters segments block">
 
     <div class="choice">
+      <h3>{{ _('Product') }}</h3>
+      <div>
+        <ul>
+          <li>{{ button('prod', '', label=_('All', 'sites_search_all_products'), title=_('All products')) }}</li>
+          {% for prod in prods %}
+          <li>{{ button('prod', prod.short, label=prod.short, title=prod.pretty) }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="choice">
       <h3>{{ _('When') }}</h3>
       <div>
         <ul>
@@ -32,18 +44,6 @@
           <li>{{ button('sentiment', '', label=_('All', 'sites_search_all_feedback'), title=_('All feedback')) }}</li>
           <li>{{ button('sentiment', 'happy', label=_('Praise'), title=_('Praise only')) }}</li>
           <li>{{ button('sentiment', 'sad', label=_('Issues'), title=_('Issues only')) }}</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="choice">
-      <h3>{{ _('Product') }}</h3>
-      <div>
-        <ul>
-          <li>{{ button('prod', '', label=_('All', 'sites_search_all_products'), title=_('All products')) }}</li>
-          {% for prod in prods %}
-          <li>{{ button('prod', prod.short, label=prod.short, title=prod.pretty) }}</li>
-          {% endfor %}
         </ul>
       </div>
     </div>
