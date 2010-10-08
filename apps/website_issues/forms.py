@@ -1,89 +1,89 @@
 from datetime import timedelta
 
+from collections import namedtuple
+
 from django import forms
+from django.forms import CharField, ChoiceField, BooleanField, HiddenInput, \
+                         IntegerField
 from django.utils.encoding import force_unicode
 
 from tower import ugettext_lazy as _lazy
 
 from product_details import product_details
 from input.fields import SearchInput
-from feedback import OSES
-from search.forms import SENTIMENT_CHOICES, SENTIMENTS, OS_CHOICES
+from feedback import OSES, APPS
+from search.forms import SENTIMENT_CHOICES, SENTIMENTS, OS_CHOICES, \
+                         PROD_CHOICES
 
 
-SEARCH_TYPES = ('latest beta', 'week')
+SEARCH_TYPES = ("latest beta", "week")
 SEARCH_TYPE_CHOICES = zip(SEARCH_TYPES, SEARCH_TYPES)
 
-DEFAULTS = {
-   "q": "",
-   "sentiment": '',
-   "search_type": "week",
-   "page": 1,
-   "site": None,
-   "os": '',
-   "cluster": None,
-   "show_one_offs": False
+
+FieldDef = namedtuple("FieldDef", "default field keys")
+def field_def(FieldType, default, widget=HiddenInput, choices=None):
+    field_args = {"required": False, "label": "", "widget": widget}
+    keys = None
+    if choices is not None:
+        field_args.update({"choices": choices})
+        keys = set([key for key, value in choices])
+    return FieldDef(default, FieldType(**field_args), keys)
+
+
+FIELD_DEFS = {
+    "q": field_def(
+        CharField, "",
+        widget=SearchInput(
+            attrs={'placeholder': _lazy('Search for domain',
+                                        'website_issues_search')}
+        )
+    ),
+    "sentiment": field_def(ChoiceField, "", choices=SENTIMENT_CHOICES),
+    "search_type": field_def(ChoiceField, "week", choices=SEARCH_TYPE_CHOICES),
+    "prod": field_def(ChoiceField, "", choices=PROD_CHOICES),
+    "os": field_def(ChoiceField, "", choices=OS_CHOICES),
+    "show_one_offs": field_def(BooleanField, False),
+    "page": field_def(IntegerField, 1),
+    "site": field_def(IntegerField, None),
+    "cluster": field_def(IntegerField, None)
 }
 
 
 class WebsiteIssuesSearchForm(forms.Form):
 
     # Fields that are submitted on text search:
-    q = forms.CharField(
-        required=False,
-        label='',
-        widget=SearchInput(
-            attrs={'placeholder': _lazy('Search for domain',
-                                        'website_issues_search')}
-        ),
-    )
-    sentiment = forms.ChoiceField(
-        required=False,
-        choices=SENTIMENT_CHOICES,
-        label='',
-        widget=forms.HiddenInput
-    )
-    os = forms.ChoiceField(
-        required=False,
-        choices=OS_CHOICES,
-        label='',
-        widget=forms.HiddenInput
-    )
-    search_type = forms.ChoiceField(
-        required=False,
-        choices=SEARCH_TYPE_CHOICES,
-        label='',
-        widget=forms.HiddenInput
-    )
-    show_one_offs = forms.BooleanField(
-        label='',
-        required=False,
-        widget=forms.HiddenInput
-    )
+    q = FIELD_DEFS['q'].field
+    sentiment = FIELD_DEFS['sentiment'].field
+    prod = FIELD_DEFS['prod'].field
+    os = FIELD_DEFS['os'].field
+    search_type = FIELD_DEFS['search_type'].field
+    show_one_offs = FIELD_DEFS['show_one_offs'].field
 
     # These fields are reset on search:
-    page = forms.IntegerField(widget=forms.HiddenInput, required=False)
-    site = forms.IntegerField(widget=forms.HiddenInput, required=False)
-    cluster = forms.IntegerField(widget=forms.HiddenInput, required=False)
+    page = FIELD_DEFS['page'].field
+    site = FIELD_DEFS['site'].field
+    cluster = FIELD_DEFS['cluster'].field
 
     def clean(self):
         cleaned = super(WebsiteIssuesSearchForm, self).clean()
 
-        if cleaned.get('sentiment') not in SENTIMENTS:
-            cleaned['sentiment'] = DEFAULTS["sentiment"]
+        for field_name, field_def in FIELD_DEFS.items():
+            if BooleanField == type(field_def.field) \
+                    and cleaned.get(field_name) not in (True, False):
+                cleaned[field_name] = field_def.default
+            if ChoiceField == type(field_def.field) \
+                    and cleaned.get(field_name) not in field_def.keys:
+                cleaned[field_name] = field_def.default
 
-        if cleaned.get('search_type') not in SEARCH_TYPES:
-            cleaned['search_type'] = DEFAULTS["search_type"]
-
-        if cleaned.get('os') not in OSES:
-            cleaned['os'] = DEFAULTS['os']
-
-        if cleaned.get('show_one_offs') not in (True, False):
-            cleaned['show_one_offs'] = DEFAULTS["show_one_offs"]
+        if cleaned.get('prod') and cleaned.get('os'):
+            prod = APPS[cleaned.get('prod')]
+            possible_oses = [os for os in OSES.values() if prod in os.apps]
+            if OSES[cleaned.get('os')] not in possible_oses:
+                cleaned['os'] = FIELD_DEFS['os'].default
 
         if cleaned.get('page') is not None:
             cleaned['page'] = max(1, int(cleaned['page']))
         else:
-            cleaned['page'] = DEFAULTS["page"]
+            cleaned['page'] = FIELD_DEFS['page'].default
 
         return cleaned

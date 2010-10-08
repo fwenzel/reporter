@@ -7,7 +7,7 @@ import jinja2
 from jingo import register
 
 from input.urlresolvers import reverse
-from .forms import DEFAULTS
+from .forms import FIELD_DEFS
 
 
 @register.function
@@ -23,7 +23,7 @@ def sites_url(context, form, url=None, **kwargs):
     parameters = form.cleaned_data.copy()
     # page is reset on every change of search
     for name in form.cleaned_data.keys():
-        if name == 'page' or parameters[name] == DEFAULTS[name]:
+        if name == 'page' or parameters[name] == FIELD_DEFS[name].default:
             del parameters[name]
     for name, value in kwargs.iteritems():
         parameters[name] = value

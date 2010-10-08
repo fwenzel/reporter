@@ -16,6 +16,7 @@
   {% endif %}
   </h2>
   <form method="post" action="" autocomplete="off">
+    {{ csrf() }}
     {{ form.description.errors|safe }}
     <p>{{ form.description|safe }}</p>
 

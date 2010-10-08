@@ -6,6 +6,7 @@
 
   <p>Use with caution.</p>
   <form action="{{ url('myadmin.recluster') }}" method="POST">
+    {{ csrf() }}
     <input type="submit" name="go" value="Recluster">
   </form>
 </div></div>
