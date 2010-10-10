@@ -19,9 +19,9 @@
       <h3>{{ _('Product') }}</h3>
       <div>
         <ul>
-          <li>{{ button('prod', '', label=_('All', 'sites_search_all_products'), title=_('All products')) }}</li>
-          {% for prod in prods %}
-          <li>{{ button('prod', prod.short, label=prod.short, title=prod.pretty) }}</li>
+          {# order is rev because we know fennec has to be first in list #}
+          {% for prod in prods|reverse %}
+          <li>{{ button('prod', prod.short, label=prod.pretty, title=prod.pretty) }}</li>
           {% endfor %}
         </ul>
       </div>
