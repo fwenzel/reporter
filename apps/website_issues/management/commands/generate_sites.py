@@ -10,7 +10,7 @@ from django.db import transaction
 
 from textcluster.cluster import Corpus
 
-from feedback import LATEST_BETAS, FIREFOX, MOBILE
+from feedback import LATEST_BETAS, FIREFOX, MOBILE, APP_IDS
 from feedback.models import Opinion
 
 from website_issues.models import Comment, Cluster, SiteSummary
@@ -130,8 +130,14 @@ class Command(BaseCommand):
             """Add variants for "positive" and "os" set/ignored."""
             add(opinion, os=opinion.os, positive=opinion.positive, **keypart)
             add(opinion, os=opinion.os, positive=None,             **keypart)
+            # These will probably not be read anymore with 1.9 in production.
             add(opinion, os=None,       positive=opinion.positive, **keypart)
             add(opinion, os=None,       positive=None,             **keypart)
+            # These are for 1.9+ and allow siphoning by product.
+            app = '<%s>' % APP_IDS[opinion.product].short
+            add(opinion, os=app,        positive=opinion.positive, **keypart)
+            add(opinion, os=app,        positive=None,             **keypart)
+
 
         queryset = Opinion.objects.filter(
                        ~Q(url__exact="") & (
