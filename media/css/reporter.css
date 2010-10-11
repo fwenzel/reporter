@@ -974,6 +974,9 @@ input.placeholder {
     margin-bottom: 5px;
 }
 
+#website_issues .ssl {
+    color: #808080;
+}
 
 .terms .term {
     margin-right: 1em;
