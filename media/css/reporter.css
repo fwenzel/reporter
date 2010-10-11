@@ -557,15 +557,26 @@ input.placeholder {
     background: url(../img/smilies228.png) no-repeat left top;
     height: 228px;
     width: 228px;
-    position: absolute;
-    top: 80px;
-    left: 0;
 }
 #feedback .smiley.sad {
     background-position: 0 0;
 }
 #feedback .smiley.happy {
     background-position: 0 -278px;
+}
+#feedback .feedback_submit {
+    position: absolute;
+    top: 80px;
+    left: 0;
+}
+#feedback .feedback_index {
+    float: left;
+    margin: 15px 0;
+    padding: 0 50px;
+    position: relative;
+}
+#feedback .feedback_index p {
+    font-size: 1.25em;
 }
 #feedback #feedbackform {
     margin: 6em 0 0 30%;
@@ -598,6 +609,10 @@ input.placeholder {
 #feedback aside span {
     display: block;
     padding-top: 10px;
+}
+#feedback .support {
+    background: transparent url(http://mozcom-cdn.mozilla.net/img/tignish/about/logo/download/logo-only-preview.png) 5px center no-repeat;
+    padding-left: 50px;
 }
 /* }}} */
 /* {{{ Thank you page */

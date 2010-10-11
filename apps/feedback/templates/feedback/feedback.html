@@ -5,7 +5,7 @@
 
 {% block content %}
 
-{{ smiley(positive and "happy" or "sad") }}
+{{ smiley(positive and "happy" or "sad", "feedback_submit") }}
 
 <div id="feedbackform">
   {% if positive %}

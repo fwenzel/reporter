@@ -1,0 +1,25 @@
+{% extends "base_mobile_old.html" %}
+
+{% block page_title %}{{ _('Submit Feedback') }}{% endblock %}
+{% block body_id %}feedback{% endblock %}
+{% block global_header %}{% endblock %}
+
+{% block content %}
+<h1>{{ _('Thanks for helping Mozilla make your experience better!') }}</h1>
+
+<p>{{ _('Please choose the type of feedback that you would like to submit to us:') }}</p>
+
+<div class="feedback_index happy">
+   <a href="happy" title="{{ _('Firefox makes me happy ...') }}"><div
+       class="smiley happy feedback_index">&#9786;</div></a>
+   <p>{{ _('Firefox makes me happy ...') }}</p>
+</div>
+<div class="feedback_index sad">
+   <a href="sad" title="{{ _('Firefox makes me sad ...') }}"><div
+       class="smiley sad feedback_index">&#9786;</div></a>
+   <p>{{ _('Firefox makes me sad ...') }}</p>
+</div>
+
+<p style="clear:both;">If you need help or have a problem with Firefox, please visit our <a href="http://support.mozilla.com">support page</a>.</p>
+
+{% endblock %}

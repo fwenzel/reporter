@@ -70,7 +70,7 @@ body.mobile {
 }
 
 /** Feedback pages */
-.mobile #feedbackform .smiley {
+.mobile#feedback .smiley { 
     background: url(../img/smilies60.png) no-repeat left top;
     display: block;
     margin-right: 1em;
@@ -78,10 +78,10 @@ body.mobile {
     width: 60px;
     position: static;
 }
-.mobile #feedbackform .smiley.sad {
+.mobile#feedback .smiley.sad {
     background-position: 0 0;
 }
-.mobile #feedbackform .smiley.happy {
+.mobile#feedback .smiley.happy {
     background-position: 0 -110px;
 }
 .mobile#feedback #feedbackform {
@@ -100,6 +100,19 @@ body.mobile {
     font-size: 110%;
     margin-top: 1em;
     margin-right: 15px;
+}
+.mobile#feedbackform .feedback_index.smiley { 
+    vertical-align: top;
+}
+.mobile#feedback .feedback_index {
+    float: left;
+    margin: 15px 0;
+    padding: 0 8px !important;
+    position: relative;
+}
+.mobile#feedback .feedback_index p {
+    font-size: 1em;
+    padding-top: 10px;
 }
 
 /** Need Beta */

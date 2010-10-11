@@ -77,6 +77,16 @@ def give_feedback(request, ua, positive):
 
 
 @cache_page
+def feedback(request):
+    """The index page for feedback, which shows links to the happy and sad
+      feedback pages.
+    """
+    template = 'feedback/%sindex.html' % (
+        'mobile/' if request.mobile_site else '')
+    return jingo.render(request, template)
+
+
+@cache_page
 def need_beta(request):
     """Encourage people to download a current beta version."""
 

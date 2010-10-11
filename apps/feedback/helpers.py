@@ -23,7 +23,7 @@ def locale_name(locale, native=False, default=_lazy('unknown')):
 
 
 @register.function
-def smiley(style):
+def smiley(style, page=None):
     """
     Renders a smiley.
 
@@ -38,5 +38,5 @@ def smiley(style):
         character = '&#9785;'
         title = _('Issue')
     return jinja2.Markup(
-        u'<span title="%s" class="smiley %s">%s</span>' % (
-            title, style, character))
+        u'<span title="%s" class="smiley %s %s">%s</span>' % (
+            title, style, page, character))
