@@ -117,10 +117,6 @@ class Command(BaseCommand):
             % self.site_summary_id.next())
 
     def collect_groups(self, err):
-        now = datetime.now()
-        seven_days_ago = now - timedelta(days=7)
-        one_day_ago = now - timedelta(days=1)
-        latest_versions = (LATEST_BETAS[FIREFOX], LATEST_BETAS[MOBILE])
         err("Collecting groups...\n")
         def add(opinion, **kwargs):
             """Add this opinion to it's summary group."""
@@ -139,17 +135,24 @@ class Command(BaseCommand):
             add(opinion, os=app,        positive=None,             **keypart)
 
 
+        now = datetime.now()
+        seven_days_ago = now - timedelta(days=7)
+        one_day_ago = now - timedelta(days=1)
         queryset = Opinion.objects.filter(
                        ~Q(url__exact="") & (
                            Q(created__range=(seven_days_ago, now))
-                           | Q(version__in=latest_versions)
+                           | (Q(product__exact=FIREFOX.id) &
+                              Q(version__exact=LATEST_BETAS[FIREFOX]))
+                           | (Q(product__exact=MOBILE.id) &
+                              Q(version__exact=LATEST_BETAS[MOBILE]))
                        )
-                   ).only("url", "version", "created", "positive", "os")
+                   ).only("url", "version", "created",
+                          "positive", "os", "product")
 
         i = 0
         for i, opinion in enumerate(queryset):
             site_url = normalize_url(opinion.url)
-            if opinion.version in latest_versions:
+            if opinion.version == LATEST_BETAS[APP_IDS[opinion.product]]:
                 add_variants(opinion, version=opinion.version, url=site_url)
             if opinion.created > seven_days_ago:
                 add_variants(opinion, version="<week>", url=site_url)
