@@ -40,7 +40,7 @@ FIELD_DEFS = {
     ),
     "sentiment": field_def(ChoiceField, "", choices=SENTIMENT_CHOICES),
     "search_type": field_def(ChoiceField, "week", choices=SEARCH_TYPE_CHOICES),
-    "prod": field_def(ChoiceField, "", choices=PROD_CHOICES),
+    "prod": field_def(ChoiceField, "firefox", choices=PROD_CHOICES),
     "os": field_def(ChoiceField, "", choices=OS_CHOICES),
     "show_one_offs": field_def(BooleanField, False),
     "page": field_def(IntegerField, 1),

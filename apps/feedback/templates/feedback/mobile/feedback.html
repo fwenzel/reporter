@@ -8,7 +8,7 @@
 
 <div id="feedbackform">
   <h2>
-    {{ smiley(positive and "happy" or "sad") }}
+    {{ smiley(positive and "happy" or "sad", "feedback_index_mobile") }}
     {% if positive %}
       {{ _('Super! Please tell us more!') }}
     {% else %}

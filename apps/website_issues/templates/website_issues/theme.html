@@ -26,7 +26,7 @@
     {# Pagination #}
     {% if page and page.has_other_pages() %}
     <div class="pager">
-      {% with link_txt = _('&laquo; Previous Page;')|safe %}
+      {% with link_txt = _('&laquo; Previous Page')|safe %}
         {% if page.has_previous() %}
         <a class="prev" href="?page={{ page.previous_page_number() }}">{{ link_txt }}</a>
         {% else %}

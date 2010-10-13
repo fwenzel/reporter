@@ -32,9 +32,8 @@ def _fetch_summaries(form, url=None, count=None, one_offs=False):
     os = None
     if search_opts["os"] != '': os = search_opts["os"]
     if os is None and search_opts["prod"]:
-        prod = APPS[search_opts["prod"]]
-        app_oses=[os.short for os in OSES.values() if prod in os.apps]
-        qs = qs.filter(os__in=app_oses)
+        prod = APPS[search_opts["prod"]].short
+        qs = qs.filter(os__exact='<%s>' % prod)
     else:
         qs = qs.filter(os__exact=os)
 
