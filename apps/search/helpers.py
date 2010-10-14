@@ -42,4 +42,4 @@ def search_url(context, defaults=None, extra=None, feed=False, **kwargs):
         data = dict(data)
         data.update(extra)
 
-    return jinja2.Markup(u'%s?%s' % (search, urlencode(data)))
+    return u'%s?%s' % (search, urlencode(data))
