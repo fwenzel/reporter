@@ -16,6 +16,8 @@ from pyquery import PyQuery as pq
 import test_utils
 
 from input.urlresolvers import reverse
+from feedback.models import Opinion
+from search import views
 from search.client import Client, SearchError
 from search.utils import start_sphinx, stop_sphinx, reindex
 
@@ -72,6 +74,10 @@ class SearchTest(SphinxTestCase):
     def test_url_search(self):
         eq_(num_results('url:*'), 7)
 
+    def test_result_set(self):
+        rs = query()
+        assert isinstance(rs[0], Opinion)
+
     def test_default_ordering(self):
         """Any query should return results in rev-chron order."""
         r = query()
@@ -108,7 +114,7 @@ class SearchTest(SphinxTestCase):
         end = datetime.datetime(2010, 5, 27)
         eq_(num_results(date_start=start, date_end=end), 5)
 
-    @patch('search.client.sphinx.SphinxClient.Query')
+    @patch('search.client.sphinx.SphinxClient.RunQueries')
     def test_errors(self, sphinx):
         for error in (socket.timeout(), Exception(),):
             sphinx.side_effect = error
@@ -180,3 +186,8 @@ class FeedTest(SphinxTestCase):
         url_base = 'http://%s/' % s.domain
         eq_(doc('entry link').attr['href'],
             '%s%s' % (url_base, 'en-US/opinion/29'))
+
+
+def test_get_sentiment():
+    r = views.get_sentiment([{'positive': False, 'count': 1}])
+    eq_(r['sentiment'], 'sad')

@@ -6,9 +6,11 @@ import socket
 
 from django.conf import settings
 
+from product_details import product_details
 from tower import ugettext as _
 
 from input.utils import crc32, manual_order
+from feedback import OS_USAGE
 from feedback.models import Opinion
 
 from . import sphinxapi as sphinx
@@ -20,6 +22,42 @@ SPHINX_HARD_LIMIT = 1000  # A hard limit that sphinx imposes.
 def sanitize_query(term):
     term = term.strip('^$ ').replace('^$', '')
     return term
+
+
+def extract_filters(kwargs):
+    """
+    Pulls all the filtering optins out of kwargs and returns dictionaries of
+    filters, range filters and meta filters.
+    """
+    filters = {}
+    ranges = {}
+    metas = {}
+
+    if isinstance(kwargs.get('product'), int):
+        metas['product'] = kwargs['product']
+
+    if kwargs.get('version'):
+        filters['version'] = crc32(kwargs['version'])
+
+    if isinstance(kwargs.get('positive'), int):
+        metas['positive'] = kwargs['positive']
+
+    if kwargs.get('os'):
+        metas['os'] = crc32(kwargs['os'])
+
+    if kwargs.get('locale'):
+        if kwargs['locale'] == 'unknown':
+            filters['locale'] = crc32('')
+        else:
+            filters['locale'] = crc32(kwargs['locale'])
+
+    if kwargs.get('date_end') and kwargs.get('date_start'):
+        start = int(timegm(kwargs['date_start'].timetuple()))
+        end_date = kwargs['date_end'] + timedelta(days=1)
+        end = int(timegm(end_date.timetuple()))
+        ranges['created'] = (start, end)
+
+    return (filters, ranges, metas)
 
 
 class SearchError(Exception):
@@ -34,40 +72,80 @@ class Client():
         if os.environ.get('DJANGO_ENVIRONMENT') == 'test':
             self.sphinx.SetServer(settings.SPHINX_HOST,
                                   settings.TEST_SPHINX_PORT)
-        else:
+        else:  # pragma: nocover
             self.sphinx.SetServer(settings.SPHINX_HOST, settings.SPHINX_PORT)
 
-    def query(self, term, **kwargs):
+        self.meta = {}
+        self.queries = {}
+        self.query_index = 0
+        self.meta_filters = {}
+
+    def add_meta_query(self, field, term):
+        """Adds a 'meta' query to the client, this is an aggregate of some
+        field that we can use to populate filters.
+
+        This also adds meta filters that do not match the current query.
+
+        E.g. if we can add back category filters to see what tags exist in
+        that data set.
+        """
+
+        # We only need to select a single field for aggregate queries.
+        self.sphinx.SetSelect('%s, SUM(1) as count' % field)
+        self.sphinx.SetLimits(0, SPHINX_HARD_LIMIT)
+
+        self.sphinx.SetGroupBy(field, sphinx.SPH_GROUPBY_ATTR, '@count DESC')
+
+        # We are adding back all the other meta filters.  This way we can find
+        # out all of the possible values of this particular field after we
+        # filter down the search.
+        filters = self.apply_meta_filters(exclude=field)
+        self.sphinx.AddQuery(term, 'opinions')
+
+        # We roll back our client and store a pointer to this filter.
+        self.remove_filters(len(filters))
+        self.queries[field] = self.query_index
+        self.query_index += 1
+        self.sphinx.ResetGroupBy()
+
+    def apply_meta_filters(self, exclude=None):
+        """Apply any meta filters, excluding the filter listed in `exclude`."""
+
+        filters = [f for field, f in self.meta_filters.iteritems()
+                   if field != exclude]
+        self.sphinx._filters.extend(filters)
+        return filters
+
+    def remove_filters(self, num):
+        """Remove the `num` last filters from the sphinx query."""
+        if num:
+            self.sphinx._filters = self.sphinx._filters[:-num]
+
+    def add_filter(self, field, values, meta=False):
+
+        if not isinstance(values, (tuple, list)):
+            values = (values,)
+
+        self.sphinx.SetFilter(field, values)
+
+        if meta:
+            self.meta_filters[field] = self.sphinx._filters.pop()
+
+    def query(self, term, limit=20, offset=0, **kwargs):
         """Submits formatted query, retrieves ids, returns Opinions."""
         sc = self.sphinx
-        sc.SetLimits(0, SPHINX_HARD_LIMIT)
 
-        # Always sort in reverse chronological order.
-        sc.SetSortMode(sphinx.SPH_SORT_ATTR_DESC, 'created')
+        # Extract and apply various filters.
+        (includes, ranges, metas) = extract_filters(kwargs)
 
-        if isinstance(kwargs.get('product'), int):
-            sc.SetFilter('product', (kwargs['product'],))
+        for filter, value in includes.iteritems():
+            self.add_filter(filter, value)
 
-        if kwargs.get('version'):
-            sc.SetFilter('version', (crc32(kwargs['version']),))
+        for filter, value in ranges.iteritems():
+            sc.SetFilterRange(filter, *value)
 
-        if isinstance(kwargs.get('positive'), int):
-            sc.SetFilter('positive', (kwargs['positive'], ))
-
-        if kwargs.get('os'):
-            sc.SetFilter('os', (crc32(kwargs['os']),))
-
-        if kwargs.get('locale'):
-            if kwargs['locale'] == 'unknown':
-                sc.SetFilter('locale', (crc32(''),))
-            else:
-                sc.SetFilter('locale', (crc32(kwargs['locale']),))
-
-        if kwargs.get('date_end') and kwargs.get('date_start'):
-            start = int(timegm(kwargs['date_start'].timetuple()))
-            end_date = kwargs['date_end'] + timedelta(days=1)
-            end = int(timegm(end_date.timetuple()))
-            sc.SetFilterRange('created', start, end)
+        for filter, value in metas.iteritems():
+            self.add_filter(filter, value, meta=True)
 
         url_re = re.compile(r'\burl:\*\B')
 
@@ -76,8 +154,21 @@ class Client():
             sc.SetFilter('has_url', (1,))
             term = ''.join(parts)
 
+        if 'meta' in kwargs:
+            for meta in kwargs['meta']:
+                self.add_meta_query(meta, term)
+
+        sc.SetLimits(0, limit)
+        self.apply_meta_filters()
+
+        # Always sort in reverse chronological order.
+        sc.SetSortMode(sphinx.SPH_SORT_ATTR_DESC, 'created')
+        sc.AddQuery(sanitize_query(term), 'opinions')
+        self.queries['primary'] = self.query_index
+        self.query_index += 1
+
         try:
-            result = sc.Query(sanitize_query(term), 'opinions')
+            results = sc.RunQueries()
         except socket.timeout:
             raise SearchError(_("Query has timed out."))
         except Exception, e:
@@ -87,6 +178,70 @@ class Client():
         if sc.GetLastError():
             raise SearchError(sc.GetLastError())
 
+        # Handle any meta data we have.
+        if 'meta' in kwargs:
+            if 'positive' in kwargs['meta']:
+                self.meta['positive'] = self._positive_meta(results, **kwargs)
+            if 'locale' in kwargs['meta']:
+                self.meta['locale'] = self._locale_meta(results, **kwargs)
+            if 'os' in kwargs['meta']:
+                self.meta['os'] = self._os_meta(results, **kwargs)
+
+        result = results[self.queries['primary']]
+        self.total_found = result.get('total_found', 0) if result else 0
+
+        if result and result['total']:
+            return self.get_result_set(term, result, offset, limit)
+        else:
+            return []
+
+    def _positive_meta(self, results, **kwargs):
+        result = results[self.queries['positive']]
+        return [(f['attrs']) for f in result['matches']]
+
+    def _os_meta(self, results, **kwargs):
+        result = results[self.queries['os']]
+        t = dict(((crc32(f.short), f.short) for f in OS_USAGE))
+        return [dict(count=f['attrs']['count'], os=t.get(f['attrs']['os']))
+                for f in result['matches']]
+
+    def _locale_meta(self, results, **kwargs):
+        result = results[self.queries['locale']]
+        t = dict(((crc32(f), f) for f in product_details.languages))
+
+        return [dict(count=f['attrs']['count'],
+                     locale=t.get(f['attrs']['locale']))
+                for f in result['matches']]
+
+    def get_result_set(self, term, result, offset, limit):
+        # Return results as a ResultSet of opinions
         opinion_ids = [m['id'] for m in result['matches']]
         opinions = manual_order(Opinion.objects.all(), opinion_ids)
-        return opinions
+        return ResultSet(opinions, self.total_found, offset)
+
+
+class ResultSet(object):
+    """
+    ResultSet wraps around a query set and provides meta data used for
+    pagination.
+    """
+    def __init__(self, queryset, total, offset):
+        self.queryset = queryset
+        self.total = total
+        self.offset = offset
+
+    def __len__(self):
+        return self.total
+
+    def __iter__(self):
+        return iter(self.queryset)
+
+    def __getitem__(self, k):
+        """`queryset` doesn't contain all `total` items, just the items for the
+        current page, so we need to adjust `k`"""
+        if isinstance(k, slice) and k.start >= self.offset:
+            k = slice(k.start - self.offset, k.stop - self.offset)
+        elif isinstance(k, int):
+            k -= self.offset
+
+        return self.queryset.__getitem__(k)

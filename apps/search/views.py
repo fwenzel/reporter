@@ -8,8 +8,7 @@ from django.utils.feedgenerator import Atom1Feed
 import jingo
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from feedback import APPS, APP_IDS, FIREFOX, MOBILE, stats, LATEST_BETAS, stats
-from feedback.models import Term
+from feedback import APPS, APP_IDS, FIREFOX, MOBILE, stats, LATEST_BETAS
 from feedback.version_compare import simplify_version
 from input.decorators import cache_page
 from input.urlresolvers import reverse
@@ -17,7 +16,8 @@ from input.urlresolvers import reverse
 from .client import Client, SearchError
 from .forms import ReporterSearchForm, PROD_CHOICES, VERSION_CHOICES
 
-def _get_results(request):
+
+def _get_results(request, meta=[]):
     form = ReporterSearchForm(request.GET)
 
     if form.is_valid():
@@ -26,17 +26,35 @@ def _get_results(request):
         product = form.cleaned_data['product']
         version = form.cleaned_data['version']
         search_opts['product'] = APPS[product].id
-
+        search_opts['meta'] = meta
         c = Client()
         opinions = c.query(query, **search_opts)
-
+        metas = c.meta
     else:
         query = ''
         opinions = []
         product = request.default_app
         version = simplify_version(LATEST_BETAS[product])
+        metas = {}
 
-    return (opinions, form, product, version)
+    return (opinions, form, product, version, metas)
+
+
+def get_sentiment(data):
+    r = dict(happy=0, sad=0, sentiment='happy')
+
+    for el in data:
+        if el['positive']:
+            r['happy'] = el['count']
+        else:
+            r['sad'] = el['count']
+
+    r['total'] = r['sad'] + r['happy']
+
+    if r['sad'] > r['happy']:
+        r['sentiment'] = 'sad'
+
+    return r
 
 
 class SearchFeed(Feed):
@@ -98,7 +116,9 @@ class SearchFeed(Feed):
 @cache_page(use_get=True)
 def index(request):
     try:
-        (opinions, form, product, version) = _get_results(request)
+        metas = ('positive', 'locale', 'os',)
+        (results, form, product, version, metas) = _get_results(
+                request, meta=metas)
     except SearchError, e:
         return jingo.render(request, 'search/unavailable.html',
                             {'search_error': e}, status=500)
@@ -115,7 +135,7 @@ def index(request):
         'product': product.short,
         'products': PROD_CHOICES,
         'version': version,
-        'versions': VERSION_CHOICES[product]
+        'versions': VERSION_CHOICES[product],
     }
 
     # Determine date period chosen
@@ -135,9 +155,9 @@ def index(request):
             period = 'custom'
     data['period'] = period
 
-    if opinions:
+    if results:
         pp = settings.SEARCH_PERPAGE
-        pager = Paginator(opinions, pp)
+        pager = Paginator(results, pp)
         data['opinion_count'] = pager.count
         # If page request (e.g., 9999) is out of range, deliver last page of
         # results.
@@ -147,13 +167,9 @@ def index(request):
             data['page'] = pager.page(pager.num_pages)
 
         data['opinions'] = data['page'].object_list
-        data['sent'] = stats.sentiment(qs=opinions)
-        data['demo'] = stats.demographics(qs=opinions)
+        data['sent'] = get_sentiment(metas.get('positive'))
+        data['demo'] = dict(locale=metas.get('locale'), os=metas.get('os'))
 
-        # terms deactivated, cf. bug 582606
-        #frequent_terms = Term.objects.frequent(
-        #    opinions=(o.id for o in opinions))[:settings.TRENDS_COUNT]
-        #data['terms'] = stats.frequent_terms(qs=frequent_terms)
     else:
         data.update({
             'opinion_count': 0,

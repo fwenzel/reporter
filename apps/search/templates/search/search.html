@@ -49,15 +49,6 @@
       {{ form.q|safe }}
     </form>
 
-    {% if page and page.paginator.count == 1000 %}
-    <div id="message-warning">
-      {% trans %}
-      Due to software constraints, we can only show the last 1000 messages for
-      this search query.
-      {% endtrans %}
-    </div>
-    {% endif %}
-
     {{ message_list(opinions, defaults=defaults) }}
 
     {% if page and page.has_other_pages() %}

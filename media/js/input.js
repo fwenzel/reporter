@@ -52,14 +52,15 @@
             bars = bars.map(function() {
                 var elem = $(this);
                 var val = parseInt( elem.attr('data-value') ) || 0;
+                var pretty = elem.attr('data-value-pretty') || val;
                 max = Math.max(max, val);
-                return { elem: elem, val: val };
+                return { elem: elem, val: val, pretty: pretty };
             });
 
             bars.each(function() {
                 var p = 100 * this.val / max;
                 var meta = ' <span class="bg" style="width: ' + p + '%"></span>' +
-                           '<span class="count">' + this.val + '</span>';
+                           '<span class="count">' + this.pretty + '</span>';
 
                 if (total) {
                     var perc = (100 * this.val / total).toFixed();
