@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django import http
 from django.shortcuts import get_object_or_404
+from django.views.decorators.cache import never_cache
 from django.views.decorators.vary import vary_on_headers
 
 import jingo
@@ -38,9 +39,8 @@ def enforce_user_agent(f):
     return wrapped
 
 
-@vary_on_headers('User-Agent')
 @enforce_user_agent
-@cache_page
+@never_cache
 def give_feedback(request, ua, positive):
     """Feedback page (positive or negative)."""
 
