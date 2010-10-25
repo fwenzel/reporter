@@ -8,7 +8,7 @@ from django.utils.feedgenerator import Atom1Feed
 import jingo
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from feedback import APPS, APP_IDS, FIREFOX, MOBILE, stats, LATEST_BETAS
+from feedback import APPS, APP_IDS, FIREFOX, MOBILE, LATEST_BETAS
 from feedback.version_compare import simplify_version
 from input.decorators import cache_page
 from input.urlresolvers import reverse
@@ -39,7 +39,7 @@ def _get_results(request, meta=[]):
     return (opinions, form, product, version, metas)
 
 
-def get_sentiment(data):
+def get_sentiment(data=[]):
     r = dict(happy=0, sad=0, sentiment='happy')
 
     for el in data:
@@ -166,15 +166,15 @@ def index(request):
             data['page'] = pager.page(pager.num_pages)
 
         data['opinions'] = data['page'].object_list
-        data['sent'] = get_sentiment(metas.get('positive'))
+        data['sent'] = get_sentiment(metas.get('positive', []))
         data['demo'] = dict(locale=metas.get('locale'), os=metas.get('os'))
 
     else:
         data.update({
             'opinion_count': 0,
             'opinions': None,
-            'sent': stats.sentiment(None),
-            'demo': stats.demographics(None),
+            'sent': get_sentiment(),
+            'demo': {},
         })
 
     data['defaults'] = form.data

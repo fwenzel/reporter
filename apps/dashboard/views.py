@@ -1,8 +1,6 @@
 import datetime
-from functools import wraps
 
 from django.conf import settings
-from django.db.models import Count
 
 import jingo
 
@@ -10,7 +8,9 @@ from feedback import stats, LATEST_BETAS
 from feedback.models import Opinion, Term
 from feedback.version_compare import simplify_version
 from input.decorators import cache_page
+from search.client import Client
 from search.forms import ReporterSearchForm, PROD_CHOICES, VERSION_CHOICES
+from search.views import get_sentiment
 from website_issues.models import SiteSummary
 
 
@@ -30,7 +30,8 @@ def dashboard(request):
 
     # Frequent terms
     term_params = {
-        'date_start': datetime.datetime.now() - datetime.timedelta(days=num_days),
+        'date_start': (datetime.datetime.now() -
+                       datetime.timedelta(days=num_days)),
         'product': app.id,
         'version': version,
     }
@@ -48,13 +49,27 @@ def dashboard(request):
     # search form to generate various form elements.
     search_form = ReporterSearchForm()
 
-    data = {'opinions': latest_opinions.order_by('-created')[:settings.MESSAGES_COUNT],
-            'opinion_count': latest_beta.count(),
+    search_opts = {}
+    search_opts['date_end'] = datetime.date.today()
+    search_opts['date_start'] = (search_opts['date_end'] -
+                                 datetime.timedelta(days=30))
+
+    try:
+        c = Client()
+        c.query('', meta=('positive', 'locale', 'os',), **search_opts)
+        metas = c.meta
+        total = c.total_found
+    except:
+        metas = {}
+        total = latest_beta.count()
+
+    data = {'opinions': latest_opinions.all()[:settings.MESSAGES_COUNT],
+            'opinion_count': total,
             'product': app.short,
             'products': PROD_CHOICES,
-            'sentiments': stats.sentiment(qs=latest_opinions),
+            'sentiments': get_sentiment(metas.get('positive', [])),
             'terms': stats.frequent_terms(qs=frequent_terms),
-            'demo': stats.demographics(qs=latest_opinions),
+            'demo': dict(locale=metas.get('locale'), os=metas.get('os')),
             'sites': sites,
             'version': version,
             'versions': VERSION_CHOICES[app],
@@ -62,7 +77,7 @@ def dashboard(request):
             'search_form': search_form}
 
     if not request.mobile_site:
-        template= 'dashboard/dashboard.html'
+        template = 'dashboard/dashboard.html'
     else:
         template = 'dashboard/mobile/dashboard.html'
     return jingo.render(request, template, data)

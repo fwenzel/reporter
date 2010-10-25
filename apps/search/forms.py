@@ -6,7 +6,7 @@ from django import forms
 from product_details import product_details
 from tower import ugettext_lazy as _lazy
 
-from feedback import APPS, FIREFOX, MOBILE, OS_USAGE, LATEST_BETAS
+from feedback import FIREFOX, MOBILE, OS_USAGE
 from feedback.version_compare import simplify_version, version_int
 from input.fields import DateInput, SearchInput
 from input.utils import uniquifier
@@ -101,7 +101,8 @@ class ReporterSearchForm(forms.Form):
             cleaned['date_start'] = (cleaned['date_end'] - timedelta(days=30))
         if cleaned['date_start'] > cleaned['date_end']:
             # Flip start and end if necessary.
-            (cleaned['date_start'], cleaned['date_end']) = (cleaned['date_end'], cleaned['date_start'])
+            (cleaned['date_start'], cleaned['date_end']) = (
+                    cleaned['date_end'], cleaned['date_start'])
 
         if not cleaned.get('page'):
             cleaned['page'] = 1

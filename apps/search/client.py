@@ -26,7 +26,7 @@ def sanitize_query(term):
 
 def extract_filters(kwargs):
     """
-    Pulls all the filtering optins out of kwargs and returns dictionaries of
+    Pulls all the filtering options out of kwargs and returns dictionaries of
     filters, range filters and meta filters.
     """
     filters = {}
@@ -237,8 +237,13 @@ class ResultSet(object):
         return iter(self.queryset)
 
     def __getitem__(self, k):
-        """`queryset` doesn't contain all `total` items, just the items for the
-        current page, so we need to adjust `k`"""
+        """
+        ``__getitem__`` gets the elements specified by doing ``rs[k]`` where
+        ``k`` is a slice (e.g. ``1:2``) or an integer.
+
+        ``queryset`` doesn't contain all ``total`` items, just the items for
+        the current page, so we need to adjust ``k``
+        """
         if isinstance(k, slice) and k.start >= self.offset:
             k = slice(k.start - self.offset, k.stop - self.offset)
         elif isinstance(k, int):
