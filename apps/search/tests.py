@@ -9,13 +9,14 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 from django.test.client import Client as TestClient
 
-from mock import patch
+from mock import patch, Mock
 from nose import SkipTest
 from nose.tools import eq_
 from pyquery import PyQuery as pq
 import test_utils
 
 from input.urlresolvers import reverse
+from feedback import FIREFOX
 from feedback.models import Opinion
 from search import views
 from search.client import Client, SearchError
@@ -191,3 +192,13 @@ class FeedTest(SphinxTestCase):
 def test_get_sentiment():
     r = views.get_sentiment([{'positive': False, 'count': 1}])
     eq_(r['sentiment'], 'sad')
+
+
+@patch('search.forms.ReporterSearchForm.is_valid')
+def test_get_results(is_valid):
+    is_valid.return_value = False
+    request = Mock()
+    request.GET = {}
+    request.default_app = FIREFOX
+    r = views._get_results(request)
+    eq_(r[2], request.default_app)

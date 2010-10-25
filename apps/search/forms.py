@@ -52,7 +52,7 @@ class ReporterSearchForm(forms.Form):
     q = forms.CharField(required=False, label='', widget=SearchInput(
         attrs={'placeholder': _lazy('Search by keyword')}))
     product = forms.ChoiceField(choices=PROD_CHOICES, label=_lazy('Product:'),
-                                initial=FIREFOX.short)
+                                initial=FIREFOX.short, required=False)
     version = forms.ChoiceField(required=False, label=_lazy('Version:'),
                                 choices=VERSION_CHOICES[FIREFOX])
     sentiment = forms.ChoiceField(required=False, label=_lazy('Sentiment:'),

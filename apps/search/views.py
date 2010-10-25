@@ -19,11 +19,10 @@ from .forms import ReporterSearchForm, PROD_CHOICES, VERSION_CHOICES
 
 def _get_results(request, meta=[]):
     form = ReporterSearchForm(request.GET)
-
     if form.is_valid():
         query = form.cleaned_data.get('q', '')
         search_opts = form.cleaned_data
-        product = form.cleaned_data['product']
+        product = form.cleaned_data['product'] or FIREFOX.short
         version = form.cleaned_data['version']
         search_opts['product'] = APPS[product].id
         search_opts['meta'] = meta
