@@ -21,11 +21,11 @@ def dashboard(request):
     # Defaults
     app = request.default_app
     version = simplify_version(LATEST_BETAS[app])
-    num_days = 1 
+    num_days = 1
     dashboard_defaults = {
         'product': app.short,
         'version': version,
-        'num_days': "%s%s" % (num_days, 'd'), 
+        'num_days': "%s%s" % (num_days, 'd'),
     }
 
     # Frequent terms
@@ -43,7 +43,7 @@ def dashboard(request):
 
     # Sites clusters
     sites = SiteSummary.objects.filter(version__exact='<day>').filter(
-        positive__exact=None)[:settings.TRENDS_COUNT]
+        positive__exact=None).filter(os__exact=None)[:settings.TRENDS_COUNT]
 
     # search form to generate various form elements.
     search_form = ReporterSearchForm()

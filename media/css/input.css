@@ -820,6 +820,7 @@ header, footer, article, section { display: block; }
         padding-bottom: 15px;
         border-bottom: 1px dotted #b6bcc0;
         margin-bottom: 0;
+        padding-right: 38%;
         }
     #messages .exit,
     #themes .exit,

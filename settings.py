@@ -145,7 +145,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.request',
 
-    'csrf_context.csrf',
+    'django.core.context_processors.csrf',
     'input.context_processors.i18n',
     'input.context_processors.input',
     'input.context_processors.mobile',
