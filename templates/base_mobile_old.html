@@ -4,8 +4,11 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <title>{% block page_title %}{{ _('Welcome!') }}{% endblock %} &mdash; Firefox Input</title>
     <meta name="viewport" content="width=600">
-    <link href="{{ MEDIA_URL }}css/reporter.css" type="text/css" rel="stylesheet">
-    <link href="{{ MEDIA_URL }}css/mobile.css" type="text/css" rel="stylesheet">
+
+    {% block site_css %}
+    {{ css('mobile_old') }}
+    {% endblock %}
+
     <link rel="shortcut icon" href="{{ MEDIA_URL }}img/favicon.png"/>
     {% block feeds %}{% endblock %}
     {% block extra_headers %}{% endblock %}
@@ -68,9 +71,9 @@
     </footer>
     <!-- end #footer -->
 
-    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ MEDIA_URL }}js/init.js"></script>
-    <script type="text/javascript" src="{{ MEDIA_URL }}js/reporter.js"></script>
+    {% block site_js %}
+    {{ js('common_old') }}
+    {% endblock %}
     {% block js %}{% endblock %}
 
     {% include "includes/webtrends_mobile.html" %}

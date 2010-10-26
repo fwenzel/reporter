@@ -6,3 +6,8 @@ pip-log.txt
 vendor
 tmp
 docs/_gh-pages
+build.py
+*-min.css
+*-all.css
+*-min.js
+*-all.js

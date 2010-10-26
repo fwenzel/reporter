@@ -150,8 +150,53 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'input.context_processors.input',
     'input.context_processors.mobile',
     'search.context_processors.product_versions',
+    'jingo_minify.helpers.build_ids',
 )
 
+# Bundles is a dictionary of two dictionaries, css and js, which list css files
+# and js files that can be bundled together by the jingo-minify app.
+MINIFY_BUNDLES = {
+    'css': {
+        'common': (
+            'css/reset-min.css',
+            'css/jq-ui-smoothness/jquery-ui.css',
+            'css/input.css',
+        ),
+        'common_mobile': (
+            'css/reset-min.css',
+            'css/input-mobile.css',
+        ),
+
+        # old styles for submission pages
+        'common_old': (
+            'css/reporter.css',
+        ),
+        'mobile_old': (
+            'css/reporter.css',
+            'css/mobile.css',
+        ),
+    },
+    'js': {
+        'common': (
+            'js/jquery.min.js',
+            'js/jquery-ui.min.js',
+            'js/init.js',
+            'js/input.js',
+        ),
+        'common_mobile': (
+            'js/jquery.min.js',
+            'js/input-mobile.js',
+        ),
+
+        # old scripts for submission pages (desktop and mobile)
+        'common_old': (
+            'js/jquery.min.js',
+            'js/init.js',
+            'js/reporter.js',
+        ),
+    },
+}
+JAVA_BIN = '/usr/bin/java'
 
 def JINJA_CONFIG():
     import jinja2
@@ -187,6 +232,7 @@ INSTALLED_APPS = [
 
     'annoying',
     'cronjobs',
+    'jingo_minify',
     'product_details',
     'tower',
     'djcelery',

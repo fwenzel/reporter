@@ -11,6 +11,8 @@ django-annoying==0.7.4
 
 # Templates
 -e git://github.com/jbalogh/jingo.git#egg=jingo
+-e git://github.com/jsocol/jingo-minify.git#egg=jingo-minify
+GitPython==0.1.7
 
 # Caching.
 python-memcached==1.45
