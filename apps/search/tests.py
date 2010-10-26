@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import shutil
 import time
@@ -160,6 +161,14 @@ class FeedTest(SphinxTestCase):
                             {'product': 'firefox', 'q': 'lol'})
         doc = pq(r.content.replace('xmlns', 'xmlnamespace'))
         eq_(doc('title').text(), "Firefox Input: 'lol'")
+
+    def test_unicode_title(self):
+        """Unicode in search queries must not fail. Bug 606001."""
+        r = self.client.get(reverse('search.feed'),
+                            {'product': 'firefox', 'q': u'é'})
+        doc = pq(r.content.replace('xmlns', 'xmlnamespace'))
+        eq_(doc('title').text(), u"Firefox Input: 'é'")
+
 
     def test_query(self):
         r = self.client.get(reverse('search.feed'),

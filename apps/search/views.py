@@ -60,7 +60,7 @@ class SearchFeed(Feed):
         query = request.GET.get('q')
 
         # L10n: This is the title to the Search ATOM feed.
-        return (_("Firefox Input: '{query}'").format(query=query) if query else
+        return (_(u"Firefox Input: '{query}'").format(query=query) if query else
                 _('Firefox Input'))
 
     def items(self, obj):
