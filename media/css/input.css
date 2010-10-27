@@ -847,6 +847,16 @@ header, footer, article, section { display: block; }
         }
 
 
+/* Time-based feedback chart. */
+#feedback-chart {
+    height: 250px;
+    padding: 0;
+}
+#feedback-chart p {
+    padding: 2em 0;
+    text-align: center;
+}
+
 #messages {
     }
     #message-warning {

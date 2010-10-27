@@ -1,8 +1,13 @@
 import datetime
+from functools import wraps
+import json
+import random
+import time
 
 from django.conf import settings
 
 import jingo
+from tower import ugettext as _
 
 from feedback import stats, LATEST_BETAS
 from feedback.models import Opinion, Term
@@ -46,6 +51,25 @@ def dashboard(request):
     sites = SiteSummary.objects.filter(version__exact='<day>').filter(
         positive__exact=None).filter(os__exact=None)[:settings.TRENDS_COUNT]
 
+    # Historical feedback data for chart.
+    # TODO L10n
+    # TODO use real data here, un-import random.
+    rnd_data = lambda: [random.randint(0, 1000) for i in xrange(24)]
+    chart_data = {
+        'categories': ['%dh' % ((int(time.strftime('%H')) + i) % 24) for i in
+                       xrange(24)],
+        # TODO use real data here, un-import random.
+        'series': [{'name': _('Positive'),
+                    'data': rnd_data(),
+                   },
+                   {'name': _('Negative'),
+                    'data': rnd_data(),
+                   },
+                   {'name': _('Ideas'),
+                    'data': rnd_data(),
+                   }],
+    }
+
     # search form to generate various form elements.
     search_form = ReporterSearchForm()
 
@@ -74,7 +98,9 @@ def dashboard(request):
             'version': version,
             'versions': VERSION_CHOICES[app],
             'dashboard_defaults': dashboard_defaults,
-            'search_form': search_form}
+            'search_form': search_form,
+            'chart_data_json': json.dumps(chart_data),
+           }
 
     if not request.mobile_site:
         template = 'dashboard/dashboard.html'

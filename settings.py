@@ -182,6 +182,10 @@ MINIFY_BUNDLES = {
             'js/jquery-ui.min.js',
             'js/init.js',
             'js/input.js',
+
+            # Time-based charts
+            'js/highcharts.js',
+            'js/dashboard.js',
         ),
         'common_mobile': (
             'js/jquery.min.js',
