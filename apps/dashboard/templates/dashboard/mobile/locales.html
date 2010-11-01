@@ -4,7 +4,7 @@
                 selected=selected, count=count, total=opinion_count,
                 label=locale_name(locale)) }}
 {% endmacro %}
-
+{% if locales %}
 <div class="block collapsible">
   <h2><a class="toggle" href="#">{{ _('Locale') }}</a></h2>
 
@@ -18,3 +18,4 @@
     {% endif %}
   </ul>
 </div>
+{% endif %}

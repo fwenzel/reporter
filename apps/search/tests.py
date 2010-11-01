@@ -5,7 +5,6 @@ import time
 import datetime
 import socket
 
-from django.conf import settings
 from django.contrib.sites.models import Site
 from django.test.client import Client as TestClient
 
@@ -30,12 +29,15 @@ class SphinxTestCase(test_utils.TransactionTestCase):
     when testing any feature that requires sphinx.
     """
 
-    fixtures = ['feedback/opinions']
+    fixtures = ('feedback/opinions',)
     sphinx = True
     sphinx_is_running = False
 
     def setUp(self):
         super(SphinxTestCase, self).setUp()
+
+        from django.conf import settings
+        settings.SITE_ID = 1
 
         if not SphinxTestCase.sphinx_is_running:
             if (not settings.SPHINX_SEARCHD or

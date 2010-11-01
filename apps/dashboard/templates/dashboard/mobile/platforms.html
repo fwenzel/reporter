@@ -3,6 +3,7 @@
               count=count, total=opinion_count, label=os_name(os)) }}
 {% endmacro %}
 
+{% if platforms %}
 <div class="block collapsible">
   <h2><a class="toggle" href="#">{{ _('Platform') }}</a></h2>
 
@@ -17,3 +18,4 @@
     {% endif %}
   </ul>
 </div>
+{% endif %}

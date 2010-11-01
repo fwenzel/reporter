@@ -8,6 +8,14 @@
         }
     },
     {
+        "pk": 2,
+        "model": "sites.site",
+        "fields": {
+            "domain": "example.com",
+            "name": "example.com"
+        }
+    },
+    {
         "pk": 29,
         "model": "feedback.opinion",
         "fields": {

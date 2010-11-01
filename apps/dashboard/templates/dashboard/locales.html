@@ -10,6 +10,7 @@
 </li>
 {% endmacro %}
 
+{% if locales %}
 <div class="filter collapsible">
   {{ filter_box_toggle(_('Locale')) }}
 
@@ -23,3 +24,4 @@
     {% endif %}
   </ul>
 </div>
+{% endif %}
