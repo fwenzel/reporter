@@ -4,15 +4,36 @@ import urlparse
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
 
 from annoying.decorators import autostrip
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from . import FIREFOX, MOBILE, LATEST_BETAS
+from . import FIREFOX, MOBILE, LATEST_BETAS, fields
 from .models import Opinion
 from .validators import (validate_swearwords, validate_no_html,
-                         validate_no_email, validate_no_urls)
+                         validate_no_email, validate_no_urls,
+                         ExtendedURLValidator)
 from .version_compare import version_int
+
+
+class ExtendedURLField(forms.URLField):
+    """(Forms) URL field allowing about: and chrome: URLs."""
+    def __init__(self, *args, **kwargs):
+        super(ExtendedURLField, self).__init__(*args, **kwargs)
+
+        # Remove old URL validator, add ours instead.
+        self.validators = filter(lambda x: not isinstance(x, URLValidator),
+                                 self.validators)
+        self.validators.append(ExtendedURLValidator())
+
+    def to_python(self, value):
+        """Do not convert about and chorme URLs to fake http addresses."""
+        if value and not (value.startswith('about:') or
+                          value.startswith('chrome://')):
+            return super(ExtendedURLField, self).to_python(value)
+        else:
+            return value
 
 
 class FeedbackForm(forms.Form):
@@ -28,7 +49,7 @@ class FeedbackForm(forms.Form):
     # NB: The ID 'id_url' is hard-coded in the Testpilot extension to
     # accommodate pre-filling the field client-side.
     # Do not change unless you know what you are doing.
-    url = forms.URLField(required=False, widget=forms.TextInput(
+    url = ExtendedURLField(required=False, widget=forms.TextInput(
         attrs={'placeholder': 'http://', 'id': 'id_url'}))
 
     def clean(self):
@@ -46,9 +67,13 @@ class FeedbackForm(forms.Form):
     def clean_url(self):
         """Sanitize URL input, remove PWs, etc."""
         url = self.cleaned_data['url']
-        parsed = urlparse.urlparse(url)
 
-        # Note: http/https is already enforced by URL field type.
+        # Do not mess with about: URLs (bug 600094).
+        if self.cleaned_data['url'].startswith('about:'):
+            return self.cleaned_data['url']
+
+        # Note: http/https/chrome is already enforced by URL field type.
+        parsed = urlparse.urlparse(url)
 
         # Rebuild URL to drop query strings, passwords, and the like.
         new_url = (parsed.scheme, parsed.hostname, parsed.path, None, None,

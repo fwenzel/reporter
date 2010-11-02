@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django import http
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -9,7 +11,7 @@ from product_details import product_details
 
 from . import FIREFOX, MOBILE
 from .utils import detect_language, ua_parse, smart_truncate
-from .validators import validate_no_urls
+from .validators import validate_no_urls, ExtendedURLValidator
 from .version_compare import simplify_version
 
 
@@ -92,7 +94,7 @@ class UtilTests(TestCase):
 
 
 class ValidatorTests(TestCase):
-    def test_url(self):
+    def test_url_in_text(self):
         """Find URLs in text."""
         patterns = (
             ('This contains no URLs.', False),
@@ -108,6 +110,18 @@ class ValidatorTests(TestCase):
                                   pattern[0])
             else:
                 validate_no_urls(pattern[0]) # Will fail if exception raised.
+
+    def test_chrome_url(self):
+        """Make sure URL validator allows chrome and about URLs."""
+        v = ExtendedURLValidator()
+
+        # These will fail if validation error is raised.
+        v('about:blank')
+        v('chrome://mozapps/content/downloads/downloads.xul')
+
+        # These should fail.
+        self.assertRaises(ValidationError, v, 'about:')
+        self.assertRaises(ValidationError, v, 'chrome:bogus')
 
 
 class VersionCompareTest(TestCase):
@@ -127,6 +141,8 @@ class VersionCompareTest(TestCase):
 class ViewTests(TestCase):
 
     fixtures = ['feedback/opinions']
+    FX_UA = ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
+             'de; rv:1.9.2.3) Gecko/20100401 Firefox/%s')
 
     def test_enforce_user_agent(self):
         """Make sure unknown user agents are forwarded to download page."""
@@ -141,21 +157,20 @@ class ViewTests(TestCase):
         self.assertEquals(r.status_code, 302)
 
         # old version: redirect
-        FX_UA = ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
-                 'de; rv:1.9.2.3) Gecko/20100401 Firefox/%s')
         r = self.client.get(reverse('feedback.sad'),
-                            HTTP_USER_AGENT=FX_UA % '3.5')
+                            HTTP_USER_AGENT=self.FX_UA % '3.5')
         self.assertEquals(r.status_code, 302)
         self.assertTrue(r['Location'].endswith(reverse('feedback.need_beta')))
 
         # latest beta: no redirect
-        r = self.client.get(reverse('feedback.sad'), HTTP_USER_AGENT=(FX_UA % (
-            product_details.firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'])))
+        r = self.client.get(
+            reverse('feedback.sad'), HTTP_USER_AGENT=(self.FX_UA % (
+                product_details.firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'])))
         self.assertEquals(r.status_code, 200)
 
         # version newer than current: no redirect
         r = self.client.get(reverse('feedback.sad'),
-                            HTTP_USER_AGENT=(FX_UA % '20.0'))
+                            HTTP_USER_AGENT=(self.FX_UA % '20.0'))
         self.assertEquals(r.status_code, 200)
 
         settings.ENFORCE_USER_AGENT = old_enforce_setting
@@ -168,3 +183,32 @@ class ViewTests(TestCase):
         r = self.client.get(reverse('opinion.detail', args=(29,)))
         eq_(r.status_code, 200)
 
+    def test_url_submission(self):
+        def submit_url(url, valid=True):
+            """Submit feedback with a given URL, check if it's accepted."""
+            r = self.client.post(
+                reverse('feedback.sad'), {
+                    # Need to vary text so we don't cause duplicates warnings.
+                    'description': 'Hello %d' % datetime.now().microsecond,
+                    'add_url': 'on',
+                    'positive': 'True',
+                    'url': url
+                }, HTTP_USER_AGENT=(self.FX_UA % '20.0'), follow=True)
+            # Neither valid nor invalid URLs cause anything but a 200 response.
+            eq_(r.status_code, 200)
+            if valid:
+                assert r.content.find('Thanks') >= 0
+                assert r.content.find('Enter a valid URL') == -1
+            else:
+                assert r.content.find('Thanks') == -1
+                assert r.content.find('Enter a valid URL') >= 0
+
+        # Valid URL types
+        submit_url('http://example.com')
+        submit_url('https://example.com')
+        submit_url('about:me')
+        submit_url('chrome://mozapps/content/extensions/extensions.xul')
+
+        # Invalid URL types
+        submit_url('gopher://something', valid=False)
+        submit_url('zomg', valid=False)

@@ -3,6 +3,7 @@ import string
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core import validators
 from django.utils.html import strip_tags
 
 from product_details import product_details
@@ -71,3 +72,16 @@ def validate_no_urls(str):
         raise ValidationError(
             _('Your feedback seems to contain a URL. Please remove this and '
               'similar personal data from the text, then try again. Thanks!'))
+
+
+class ExtendedURLValidator(validators.URLValidator):
+    """URL validator that allows about: and chrome: URLs."""
+    regex = re.compile(
+        r'^about:[a-z]+$|'  # about:something URLs
+        r'^chrome://[a-z][/?\.\S]+$|'  # chrome://... URLs
+        r'^https?://' # http:// or https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?|' # domain...
+        r'localhost|' # localhost...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
+        r'(?::\d+)?' # optional port
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
