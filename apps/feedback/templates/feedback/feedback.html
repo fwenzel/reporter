@@ -26,7 +26,9 @@
   <form method="post" action="" autocomplete="off">
     {{ csrf() }}
     {{ form.description.errors|safe }}
-    <p>{{ form.description|safe }}</p>
+
+    <p>{{ form.description|safe }} <span id="count" data-max="{{
+      MAX_FEEDBACK_LENGTH }}">{{ MAX_FEEDBACK_LENGTH }}</span></p>
 
       {{ form.url.errors|safe }}
       <p>

@@ -10,7 +10,24 @@ $(document).ready(function() {
         }
     }).change();
 
-    $('#id_description').focus();
+    $('#id_description')
+        .focus(function() {
+            // Need to trigger keydown on focus, because placeholder confuses
+            // NobleCount.
+            $(this).trigger('keydown');
+        })
+        .NobleCount('#count', {
+            max_chars: $('#count').attr('data-max'),
+            on_update: function(t_obj, char_area, c_settings, char_rem) {
+                if (char_rem < 20)
+                    char_area.addClass('verylow').removeClass('low');
+                else if (char_rem <= 40)
+                    char_area.addClass('low').removeClass('verylow');
+                else
+                    char_area.removeClass('low').removeClass('verylow');
+            }
+        })
+        .focus();
 });
 
 /* Dashboard */

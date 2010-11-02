@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django import http
 from django.shortcuts import get_object_or_404
@@ -70,7 +71,11 @@ def give_feedback(request, ua, positive):
         url = request.GET.get('url', '')
         form = Formtype(initial={'url': url, 'add_url': False})
 
-    data = {'form': form, 'positive': positive}
+    data = {
+        'form': form,
+        'positive': positive,
+        'MAX_FEEDBACK_LENGTH': settings.MAX_FEEDBACK_LENGTH,
+    }
     template = ('feedback/mobile/feedback.html' if request.mobile_site else
                 'feedback/feedback.html')
     return jingo.render(request, template, data)

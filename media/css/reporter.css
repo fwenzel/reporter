@@ -588,6 +588,17 @@ input.placeholder {
 #feedback #id_url {
     width: 90%;
 }
+#feedback #count {
+    color: #008000;
+    font-weight: bold;
+    margin-left: .5em;
+}
+#feedback #count.low {
+    color: #ff8c00;
+}
+#feedback #count.verylow {
+    color: #ff0000;
+}
 #feedback button {
     float: right;
     font-size: 90%;
