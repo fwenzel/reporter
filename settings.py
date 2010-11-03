@@ -191,7 +191,7 @@ MINIFY_BUNDLES = {
         # old scripts for submission pages (desktop and mobile)
         'common_old': (
             'js/jquery.min.js',
-            'js/jquery.Noblecount.js',
+            'js/jquery.NobleCount.js',
             'js/init.js',
             'js/reporter.js',
         ),
