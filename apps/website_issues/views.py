@@ -8,8 +8,9 @@ import jingo
 from input.decorators import cache_page
 from feedback import LATEST_BETAS, FIREFOX, MOBILE, OSES, APPS
 from feedback.models import Opinion
+from search.forms import PROD_CHOICES
 
-from .forms import WebsiteIssuesSearchForm
+from .forms import WebsiteIssuesSearchForm, VERSION_CHOICES
 from .models import Comment, Cluster, SiteSummary
 
 
@@ -17,10 +18,8 @@ def _fetch_summaries(form, url=None, count=None, one_offs=False):
     search_opts = form.cleaned_data
 
     qs = SiteSummary.objects.all()
-
-    versions = (("<week>",) if search_opts["search_type"] == "week" else
-                (LATEST_BETAS[FIREFOX], LATEST_BETAS[MOBILE]))
-    qs = qs.filter(version__in=versions)
+    qs = qs.filter(version__exact="<week>" if search_opts["version"] == "week"
+                   else search_opts["version"])
 
     # selected_sentiment = None means "both"
     selected_sentiment = None
@@ -31,9 +30,9 @@ def _fetch_summaries(form, url=None, count=None, one_offs=False):
     # Search for a specific os, for all oses matching the prod, or everything
     os = None
     if search_opts["os"] != '': os = search_opts["os"]
-    if os is None and search_opts["prod"]:
-        prod = APPS[search_opts["prod"]].short
-        qs = qs.filter(os__exact='<%s>' % prod)
+    if os is None and search_opts["product"]:
+        product = APPS[search_opts["product"]].short
+        qs = qs.filter(os__exact='<%s>' % product)
     else:
         qs = qs.filter(os__exact=os)
 
@@ -68,11 +67,17 @@ def _fetch_summaries(form, url=None, count=None, one_offs=False):
 
 def _common_data(form):
     oses = OSES.values()
-    prod_name = form.cleaned_data["prod"]
-    if prod_name:
-        prod = APPS[prod_name]
-        oses = [os for os in oses if prod in os.apps]
-    return {"form": form, "oses": oses, "prods": APPS.values()}
+    product_name = form.cleaned_data["product"]
+    if product_name:
+        product = APPS[product_name]
+        oses = [os for os in oses if product in os.apps]
+    return {"form": form,
+            "oses": oses,
+            "latest_betas": LATEST_BETAS,
+            "products": PROD_CHOICES,
+            "product": form.cleaned_data["product"],
+            "versions": VERSION_CHOICES[product],
+            "version": form.cleaned_data["version"]}
 
 
 @cache_page(use_get=True)

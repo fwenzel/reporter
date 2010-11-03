@@ -141,10 +141,8 @@ class Command(BaseCommand):
         queryset = Opinion.objects.filter(
                        ~Q(url__exact="") & (
                            Q(created__range=(seven_days_ago, now))
-                           | (Q(product__exact=FIREFOX.id) &
-                              Q(version__exact=LATEST_BETAS[FIREFOX]))
-                           | (Q(product__exact=MOBILE.id) &
-                              Q(version__exact=LATEST_BETAS[MOBILE]))
+                           | Q(product__exact=FIREFOX.id)
+                           | Q(product__exact=MOBILE.id)
                        )
                    ).only("url", "version", "created",
                           "positive", "os", "product")
@@ -152,8 +150,7 @@ class Command(BaseCommand):
         i = 0
         for i, opinion in enumerate(queryset):
             site_url = normalize_url(opinion.url)
-            if opinion.version == LATEST_BETAS[APP_IDS[opinion.product]]:
-                add_variants(opinion, version=opinion.version, url=site_url)
+            add_variants(opinion, version=opinion.version, url=site_url)
             if opinion.created > seven_days_ago:
                 add_variants(opinion, version="<week>", url=site_url)
                 if opinion.created > one_day_ago:

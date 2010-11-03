@@ -105,7 +105,16 @@ class SiteSummary(ModelBase):
     all_clusters = property(_get_clusters, _set_clusters)
 
     class Meta:
-        ordering = ['-size', 'url']
+        # This ordering is already established when the table is created:
+        # ordering = ['-size', 'url']
+        #
+        # Specifying it manually will slow down the vast majority of queries
+        # considerably (sorting everything instead of doing a head-scan over
+        # the table, which is bad as our indices' cardinality is low), because
+        # InnoDB only recognizes PKs/UNIQUE columns for pre-ordering.
+        #
+        # This comment exists so that the ordering is not added in the future.
+        pass
 
     @cached_property
     def parsed_url(self):
