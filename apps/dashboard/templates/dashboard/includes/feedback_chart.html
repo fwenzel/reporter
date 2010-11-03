@@ -1,4 +1,9 @@
-<div id="feedback-chart" class="block" data-title="{{ _('Feedback history') }}"
+{% if chart_data_json and chart_data_json != 'null' %}
+<div id="feedback-chart" class="block"
+  data-tooltip="{{ _('{num} opinions on {day}') }}"
+  data-timeformat="{{ _('%e %B %Y') }}"
+  data-timeformat-short="{{ _('%e %b') }}"
   data-chart-config="{{ chart_data_json }}">
   <p>{{ _('Loading feedback history...') }}</p>
 </div>
+{% endif %}

@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from django.conf import settings
 from django.contrib.syndication.views import Feed
@@ -77,8 +78,8 @@ class SearchFeed(Feed):
         query = request.GET.get('q')
 
         # L10n: This is the title to the Search ATOM feed.
-        return (_(u"Firefox Input: '{query}'").format(query=query) if query else
-                _('Firefox Input'))
+        return (_(u"Firefox Input: '{query}'").format(query=query) if query
+                else _('Firefox Input'))
 
     def items(self, obj):
         """List of comments."""
@@ -115,9 +116,9 @@ class SearchFeed(Feed):
 @cache_page(use_get=True)
 def index(request):
     try:
-        metas = ('positive', 'locale', 'os',)
+        meta = ('positive', 'locale', 'os', 'day_sentiment',)
         (results, form, product, version, metas) = _get_results(
-                request, meta=metas)
+                request, meta=meta)
     except SearchError, e:
         return jingo.render(request, 'search/unavailable.html',
                             {'search_error': e}, status=500)
@@ -137,13 +138,17 @@ def index(request):
         'versions': VERSION_CHOICES[product],
     }
 
+    days = 0
+
     # Determine date period chosen
     if not getattr(form, 'cleaned_data', None):
         period = None
     else:
-        if (form.cleaned_data.get('date_end') == datetime.date.today() and
-            form.cleaned_data.get('date_start')):
-            _ago = lambda x: datetime.date.today() - datetime.timedelta(days=x)
+        end = form.cleaned_data.get('date_end')
+        start = form.cleaned_data.get('date_start')
+        _ago = lambda x: datetime.date.today() - datetime.timedelta(days=x)
+        days = (end - start).days
+        if (end == datetime.date.today() and start):
             period = {_ago(1): '1d',
                       _ago(7): '7d',
                       _ago(30): '30d'}.get(
@@ -168,6 +173,14 @@ def index(request):
         data['opinions'] = data['page'].object_list
         data['sent'] = get_sentiment(metas.get('positive', []))
         data['demo'] = dict(locale=metas.get('locale'), os=metas.get('os'))
+        if days > 10 or period == 'infin':
+            daily = metas.get('day_sentiment', {})
+            chart_data = dict(series=[
+                dict(name=_('Positive'), data=daily['positive']),
+                dict(name=_('Negative'), data=daily['negative']),
+                ],
+                )
+            data['chart_data_json'] = json.dumps(chart_data)
 
     else:
         data.update({

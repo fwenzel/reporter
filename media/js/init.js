@@ -45,3 +45,15 @@ jQuery.fn.placeholder = function() {
         });
     }).blur();
 };
+
+/* Python(ish) string formatting:
+* >>> format('{0}', ['zzz'])
+* "zzz"
+* >>> format('{x}', {x: 1})
+* "1"
+*/
+function format(s, args) {
+    var re = /\{([^}]+)\}/g;
+    return s.replace(re, function(_, match){ return args[match]; });
+}
+

@@ -186,6 +186,9 @@ class Client():
                 self.meta['locale'] = self._locale_meta(results, **kwargs)
             if 'os' in kwargs['meta']:
                 self.meta['os'] = self._os_meta(results, **kwargs)
+            if 'day_sentiment' in kwargs['meta']:
+                self.meta['day_sentiment'] = self._day_sentiment(results,
+                                                                 **kwargs)
 
         result = results[self.queries['primary']]
         self.total_found = result.get('total_found', 0) if result else 0
@@ -194,6 +197,23 @@ class Client():
             return self.get_result_set(term, result, offset, limit)
         else:
             return []
+
+    def _day_sentiment(self, results, **kwargs):
+        result = results[self.queries['day_sentiment']]
+        pos = []
+        neg = []
+        for i in result['matches']:
+            day_sentiment = i['attrs']['day_sentiment']
+            positive = day_sentiment % 10
+            count = i['attrs']['count']
+
+            if positive:
+                # Take the positive out of the timestamp.  c.f. sphinx.conf.
+                pos.append((day_sentiment - positive, count))
+            else:
+                neg.append((day_sentiment, count))
+
+        return dict(positive=pos, negative=neg)
 
     def _positive_meta(self, results, **kwargs):
         result = results[self.queries['positive']]
