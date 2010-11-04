@@ -159,7 +159,7 @@ MINIFY_BUNDLES = {
     'css': {
         'common': (
             'css/reset-min.css',
-            'css/jq-ui-smoothness/jquery-ui.css',
+            'css/jquery-ui.css',
             'css/input.css',
         ),
         'common_mobile': (
