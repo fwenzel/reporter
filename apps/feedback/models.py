@@ -74,14 +74,14 @@ class Opinion(ModelBase):
     def product_name(self):
         try:
             return APP_IDS[self.product].pretty
-        except IndexError:
+        except KeyError:
             return self.product
 
     @property
     def os_name(self):
         try:
             return OSES[self.os].pretty
-        except IndexError:
+        except KeyError:
             return self.os
 
     def save(self, *args, **kwargs):
