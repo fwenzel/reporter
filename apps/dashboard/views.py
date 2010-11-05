@@ -37,7 +37,7 @@ def dashboard(request):
     latest_beta = Opinion.objects.filter(version=version, product=app.id)
 
     # Sites clusters
-    sites = SiteSummary.objects.filter(version__exact='<day>').filter(
+    sites = SiteSummary.objects.filter(version__exact=version).filter(
         positive__exact=None).filter(os__exact=None)[:settings.TRENDS_COUNT]
 
     # search form to generate various form elements.
