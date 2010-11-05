@@ -67,6 +67,9 @@ class FeedbackForm(forms.Form):
     def clean_url(self):
         """Sanitize URL input, remove PWs, etc."""
         url = self.cleaned_data['url']
+        # Empty URLs are fine.
+        if not url:
+            return url
 
         # Do not mess with about: URLs (bug 600094).
         if self.cleaned_data['url'].startswith('about:'):
