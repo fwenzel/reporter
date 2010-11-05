@@ -751,6 +751,7 @@ header, footer, article, section { display: block; }
                 background: #2a5b86;
                 }
             #dashboard li a.dashboard,
+            #search li a.dashboard,
             #themes li a.themes,
             #website_issues li a.issues {
                 background: #326da1;
