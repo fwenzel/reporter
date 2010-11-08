@@ -9,7 +9,7 @@ from django.core.validators import URLValidator
 from annoying.decorators import autostrip
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from . import FIREFOX, MOBILE, LATEST_BETAS, fields
+from . import FIREFOX, MOBILE, LATEST_BETAS, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION, fields
 from .models import Opinion
 from .validators import (validate_swearwords, validate_no_html,
                          validate_no_email, validate_no_urls,
@@ -38,11 +38,6 @@ class ExtendedURLField(forms.URLField):
 
 class FeedbackForm(forms.Form):
     """Feedback form fields shared between feedback types."""
-    description = forms.CharField(widget=forms.TextInput(
-        attrs={'placeholder': _lazy('Enter your feedback here.')}),
-        max_length=settings.MAX_FEEDBACK_LENGTH,
-        validators=[validate_swearwords, validate_no_html,
-                    validate_no_email, validate_no_urls])
 
     add_url = forms.BooleanField(initial=True, required=False)
 
@@ -85,15 +80,37 @@ class FeedbackForm(forms.Form):
 
 
 @autostrip
-class HappyForm(FeedbackForm):
-    """Form for positive feedback."""
-    positive = forms.BooleanField(initial=True,
+class PraiseForm(FeedbackForm):
+    """Form for Praise."""
+    description = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': _lazy('Enter your feedback here.')}),
+        max_length=settings.MAX_FEEDBACK_LENGTH,
+        validators=[validate_swearwords, validate_no_html,
+                    validate_no_email, validate_no_urls])
+    type = forms.CharField(initial=OPINION_PRAISE,
                                   widget=forms.HiddenInput(),
                                   required=True)
 
 @autostrip
-class SadForm(FeedbackForm):
+class IssueForm(FeedbackForm):
     """Form for negative feedback."""
-    positive = forms.BooleanField(initial=False,
+    description = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': _lazy('Enter your feedback here.')}),
+        max_length=settings.MAX_FEEDBACK_LENGTH,
+        validators=[validate_swearwords, validate_no_html,
+                    validate_no_email, validate_no_urls])
+    type = forms.CharField(initial=OPINION_ISSUE,
                                   widget=forms.HiddenInput(),
-                                  required=False)
+                                  required=True)
+
+
+@autostrip
+class SuggestionForm(FeedbackForm):
+    """Form for submitting ideas and suggestions."""
+    description = forms.CharField(widget=forms.Textarea(
+        attrs={'placeholder': _lazy('Enter your feedback here.')}),
+        validators=[validate_swearwords, validate_no_html,
+                    validate_no_email, validate_no_urls])
+    type = forms.CharField(initial=OPINION_SUGGESTION,
+                                  widget=forms.HiddenInput(),
+                                  required=True)

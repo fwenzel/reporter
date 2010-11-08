@@ -9,7 +9,7 @@ from django.utils.feedgenerator import Atom1Feed
 import jingo
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from feedback import APPS, APP_IDS, FIREFOX, MOBILE, LATEST_BETAS
+from feedback import APPS, APP_IDS, FIREFOX, MOBILE, LATEST_BETAS, OPINION_TYPES, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
 from feedback.version_compare import simplify_version
 from input.decorators import cache_page
 from input.urlresolvers import reverse
@@ -22,11 +22,10 @@ def _get_results(request, meta=[]):
     form = ReporterSearchForm(request.GET)
     if form.is_valid():
         query = form.cleaned_data.get('q', '')
-        search_opts = form.cleaned_data
         product = form.cleaned_data['product'] or FIREFOX.short
         version = form.cleaned_data['version']
-        search_opts['product'] = APPS[product].id
-        search_opts['meta'] = meta
+        search_opts = _get_results_opts(form, product, meta)
+
         c = Client()
         opinions = c.query(query, **search_opts)
         metas = c.meta
@@ -40,16 +39,35 @@ def _get_results(request, meta=[]):
     return (opinions, form, product, version, metas)
 
 
+def _get_results_opts(form, product, meta=[]):
+    """Prepare the search options for the Sphinx query"""
+    search_opts = form.cleaned_data
+    search_opts['product'] = APPS[product].id
+    search_opts['meta'] = meta
+
+    sentiment = form.cleaned_data.get('sentiment', '')
+    if sentiment == 'happy':
+        search_opts['type'] = OPINION_PRAISE;
+    elif sentiment == 'sad':
+        search_opts['type'] = OPINION_ISSUE;
+    elif sentiment == 'suggestions':
+        search_opts['type'] = OPINION_SUGGESTION;
+
+    return search_opts
+
+
 def get_sentiment(data=[]):
-    r = dict(happy=0, sad=0, sentiment='happy')
+    r = dict(happy=0, sad=0, suggestions=0, sentiment='happy')
 
     for el in data:
-        if el['positive']:
+        if el['type'] == OPINION_PRAISE:
             r['happy'] = el['count']
-        else:
+        elif el['type'] == OPINION_ISSUE:
             r['sad'] = el['count']
+        elif el['type'] == OPINION_SUGGESTION:
+            r['suggestions'] = el['count']
 
-    r['total'] = r['sad'] + r['happy']
+    r['total'] = r['sad'] + r['happy'] + r['suggestions']
 
     if r['sad'] > r['happy']:
         r['sentiment'] = 'sad'
@@ -87,11 +105,18 @@ class SearchFeed(Feed):
 
     def item_categories(self, item):
         """Categorize comments. Style: "product:firefox" etc."""
+        if item.type == OPINION_PRAISE:
+            sentiment = 'praise'
+        elif item.type == OPINION_ISSUE:
+            sentiment = 'issue'
+        elif item.type == OPINION_SUGGESTION:
+            sentiment = 'suggestion'
+
         categories = {'product': APP_IDS.get(item.product).short,
                       'version': item.version,
                       'os': item.os,
                       'locale': item.locale,
-                      'sentiment': 'positive' if item.positive else 'negative',
+                      'sentiment': sentiment
                      }
         return (':'.join(i) for i in categories.items())
 
@@ -116,12 +141,12 @@ class SearchFeed(Feed):
 @cache_page(use_get=True)
 def index(request):
     try:
-        meta = ('positive', 'locale', 'os', 'day_sentiment',)
+        meta = ('type', 'locale', 'os', 'day_sentiment',)
         (results, form, product, version, metas) = _get_results(
                 request, meta=meta)
     except SearchError, e:
         return jingo.render(request, 'search/unavailable.html',
-                            {'search_error': e}, status=500)
+                           {'search_error': e}, status=500)
 
     page = form.data.get('page', 1)
 
@@ -136,6 +161,9 @@ def index(request):
         'products': PROD_CHOICES,
         'version': version,
         'versions': VERSION_CHOICES[product],
+        'OPINION_PRAISE': OPINION_PRAISE,
+        'OPINION_ISSUE': OPINION_ISSUE,
+        'OPINION_SUGGESTION': OPINION_SUGGESTION,
     }
 
     days = 0
@@ -171,13 +199,14 @@ def index(request):
             data['page'] = pager.page(pager.num_pages)
 
         data['opinions'] = data['page'].object_list
-        data['sent'] = get_sentiment(metas.get('positive', []))
+        data['sent'] = get_sentiment(metas.get('type'))
         data['demo'] = dict(locale=metas.get('locale'), os=metas.get('os'))
         if days > 10 or period == 'infin':
             daily = metas.get('day_sentiment', {})
             chart_data = dict(series=[
-                dict(name=_('Positive'), data=daily['positive']),
-                dict(name=_('Negative'), data=daily['negative']),
+                dict(name=_('Praise'), data=daily['praise']),
+                dict(name=_('Issue'), data=daily['issue']),
+                dict(name=_('Suggestion'), data=daily['suggestion']),
                 ],
                 )
             data['chart_data_json'] = json.dumps(chart_data)

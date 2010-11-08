@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 import jingo
 from tower import ugettext as _
 
-from feedback import APPS, OSES, FIREFOX, APP_USAGE
+from feedback import APPS, OSES, FIREFOX, APP_USAGE, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
 from input.decorators import cache_page
 from input.helpers import urlparams
 from themes.models import Theme
@@ -32,6 +32,12 @@ def _get_sentiments(request, sentiment):
 
     f = Filter(urlparams(url, s='sad'), _('Issues'),  _('Issues only'),
                (sentiment == 'sad'))
+
+    sentiments.append(f)
+
+    f = Filter(urlparams(url, s='suggestions'), _('Suggestions'),
+            _('Suggestions only'),
+               (sentiment == 'suggestions'))
 
     sentiments.append(f)
     return sentiments

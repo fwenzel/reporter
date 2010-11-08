@@ -89,3 +89,13 @@ class OS_OTHER:
 OS_USAGE = _oses = (WINDOWS_XP, WINDOWS_VISTA, WINDOWS_7, OSX, MAEMO, ANDROID, LINUX)
 OS_PATTERNS = [ (o.ua_pattern, o.short) for o in OS_USAGE ]
 OSES = dict((os.short, os) for os in _oses)
+
+# Opinion Types
+OPINION_TYPES = {
+  1: _('Praise'),
+  2: _('Issue'),
+  3: _('Suggestion'),
+}
+OPINION_PRAISE = 1
+OPINION_ISSUE = 2
+OPINION_SUGGESTION = 3

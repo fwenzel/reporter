@@ -323,6 +323,9 @@ header, footer, article, section { display: block; }
         .message .type.issue {
             background-image: url(../img/msg-issue.png);
             }
+        .message .type.suggestion {
+            background-image: url(../img/suggestion-box-idea-small.png);
+            }
             .message .type > span {
                 display: block;
                 width: 0;

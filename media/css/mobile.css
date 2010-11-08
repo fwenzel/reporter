@@ -70,7 +70,7 @@ body.mobile {
 }
 
 /** Feedback pages */
-.mobile#feedback .smiley { 
+.mobile#feedback .smiley {
     background: url(../img/smilies60.png) no-repeat left top;
     display: block;
     margin-right: 1em;
@@ -83,6 +83,17 @@ body.mobile {
 }
 .mobile#feedback .smiley.happy {
     background-position: 0 -110px;
+}
+.mobile#feedback .suggestion {
+    background: url(../img/suggestion-box-idea-small.png) no-repeat left top;
+    display: block;
+    margin-right: 1em;
+    height: 60px;
+    width: 60px;
+    position: static;
+}
+.mobile #suggestionform_mobile #id_description {
+    height: 5em;
 }
 .mobile#feedback #feedbackform {
     margin: 0;
@@ -101,7 +112,7 @@ body.mobile {
     margin-top: 1em;
     margin-right: 15px;
 }
-.mobile#feedbackform .feedback_index.smiley { 
+.mobile#feedbackform .feedback_index.smiley {
     vertical-align: top;
 }
 .mobile#feedback .feedback_index {

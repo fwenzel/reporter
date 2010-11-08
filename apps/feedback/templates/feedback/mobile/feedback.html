@@ -6,29 +6,44 @@
 
 {% block content %}
 
-<div id="feedbackform">
+{% if type == OPINION_SUGGESTION: %}
+  <div id="{{ div_id }}_mobile">
+{% else %}
+  <div id="{{ div_id }}">
+{% endif %}
+
   <h2>
-    {{ smiley(positive and "happy" or "sad", "feedback_index_mobile") }}
-    {% if positive %}
+    {% if type == OPINION_PRAISE: %}
+      {{ smiley("happy", "feedback_index_mobile") }}
+    {% elif type == OPINION_ISSUE: %}
+      {{ smiley("sad", "feedback_index_mobile") }}
+    {% elif type == OPINION_SUGGESTION: %}
+    <span title="{{ _('Suggestion') }}" class="feedback_submit suggestion"></span>
+    {% endif %}
+    {% if type == OPINION_PRAISE: %}
       {{ _('Super! Please tell us more!') }}
-    {% else %}
+    {% elif type == OPINION_ISSUE: %}
       {{ _('Ack! Please tell us what to fix!') }}
-  {% endif %}
+    {% elif type == OPINION_SUGGESTION: %}
+      {{ _('Awesome! Please make your suggestion below:') }}
+    {% endif %}
   </h2>
   <form method="post" action="" autocomplete="off">
     {{ csrf() }}
     {{ form.description.errors|safe }}
     <p>{{ form.description|safe }}</p>
 
-    {{ form.url.errors|safe }}
-    <p>
-      <label>{{ form.add_url|safe }}
-        {% trans %}
-        Add URL of last visited page?
-        {% endtrans %}
-      </label>
-      {{ form.url|safe }}
-    </p>
+    {% if type in (OPINION_PRAISE, OPINION_ISSUE): %}
+      {{ form.url.errors|safe }}
+      <p>
+        <label>{{ form.add_url|safe }}
+          {% trans %}
+          Add URL of last visited page?
+          {% endtrans %}
+        </label>
+        {{ form.url|safe }}
+      </p>
+    {% endif %}
 
     {% for hidden in form.hidden_fields() %}
       {{ hidden|safe }}

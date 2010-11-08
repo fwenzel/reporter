@@ -39,8 +39,8 @@ def extract_filters(kwargs):
     if kwargs.get('version'):
         filters['version'] = crc32(kwargs['version'])
 
-    if isinstance(kwargs.get('positive'), int):
-        metas['positive'] = kwargs['positive']
+    if kwargs.get('type'):
+        metas['type'] = kwargs['type']
 
     if kwargs.get('os'):
         metas['os'] = crc32(kwargs['os'])
@@ -180,8 +180,8 @@ class Client():
 
         # Handle any meta data we have.
         if 'meta' in kwargs:
-            if 'positive' in kwargs['meta']:
-                self.meta['positive'] = self._positive_meta(results, **kwargs)
+            if 'type' in kwargs['meta']:
+                self.meta['type'] = self._type_meta(results, **kwargs)
             if 'locale' in kwargs['meta']:
                 self.meta['locale'] = self._locale_meta(results, **kwargs)
             if 'os' in kwargs['meta']:
@@ -202,21 +202,22 @@ class Client():
         result = results[self.queries['day_sentiment']]
         pos = []
         neg = []
+        sug = []
         for i in result['matches']:
             day_sentiment = i['attrs']['day_sentiment']
-            positive = day_sentiment % 10
+            type = day_sentiment % 10
             count = i['attrs']['count']
 
-            if positive:
-                # Take the positive out of the timestamp.  c.f. sphinx.conf.
-                pos.append((day_sentiment - positive, count))
+            if type:
+                # Take the type out of the timestamp.  c.f. sphinx.conf.
+                pos.append((day_sentiment - type, count))
             else:
                 neg.append((day_sentiment, count))
 
-        return dict(positive=pos, negative=neg)
+        return dict(praise=pos, issue=neg, suggestion=sug)
 
-    def _positive_meta(self, results, **kwargs):
-        result = results[self.queries['positive']]
+    def _type_meta(self, results, **kwargs):
+        result = results[self.queries['type']]
         return [(f['attrs']) for f in result['matches']]
 
     def _os_meta(self, results, **kwargs):

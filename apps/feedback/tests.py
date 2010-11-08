@@ -9,7 +9,7 @@ from input.urlresolvers import reverse
 from nose.tools import eq_
 from product_details import product_details
 
-from . import FIREFOX, MOBILE
+from . import FIREFOX, MOBILE, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
 from .utils import detect_language, ua_parse, smart_truncate
 from .validators import validate_no_urls, ExtendedURLValidator
 from .version_compare import simplify_version
@@ -191,7 +191,7 @@ class ViewTests(TestCase):
                     # Need to vary text so we don't cause duplicates warnings.
                     'description': 'Hello %d' % datetime.now().microsecond,
                     'add_url': 'on',
-                    'positive': 'True',
+                    'type': OPINION_PRAISE,
                     'url': url
                 }, HTTP_USER_AGENT=(self.FX_UA % '20.0'), follow=True)
             # Neither valid nor invalid URLs cause anything but a 200 response.
@@ -218,7 +218,7 @@ class ViewTests(TestCase):
         r = self.client.post(
             reverse('feedback.sad'), {
                 'description': 'Hello!',
-                'positive': 'False',
+                'type': OPINION_ISSUE,
             }, HTTP_USER_AGENT=(self.FX_UA % '20.0'), follow=True)
         # Neither valid nor invalid URLs cause anything but a 200 response.
         eq_(r.status_code, 200)

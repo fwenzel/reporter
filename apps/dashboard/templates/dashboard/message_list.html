@@ -2,10 +2,12 @@
   <ul class="messages segmented">
   {% for opinion in opinions %}
     <li class="message">
-      {% if opinion.positive %}
+      {% if opinion.type == OPINION_PRAISE: %}
         <p class="type praise" title="{{ _('Praise') }}"><span>{{ _('Praise') }}</span></p>
-      {% else %}
+      {% elif opinion.type == OPINION_ISSUE: %}
         <p class="type issue" title="{{ _('Issue') }}"><span>{{ _('Issue') }}</span></p>
+      {% elif opinion.type == OPINION_SUGGESTION: %}
+        <p class="type suggestion" title="{{ _('Suggestion') }}"><span>{{ _('Suggestion') }}</span></p>
       {% endif %}
       <p class="body">{{ opinion.description }}</p>
       <ul class="meta">
