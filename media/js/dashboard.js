@@ -15,7 +15,7 @@ var feedback_chart; // Highcharts wants this to be global.
             chart: {
                 renderTo: chart_id,
                 defaultSeriesType: 'line',
-                margin: [25, 25, 60, 35]
+                margin: [25, 25, 60, 45]
             },
             legend: {
                 y: -10
