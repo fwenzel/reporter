@@ -18,8 +18,7 @@ from search.forms import SENTIMENT_CHOICES, SENTIMENTS, OS_CHOICES, \
 
 VERSION_CHOICES = VERSION_CHOICES.copy()
 for app in APPS.values():
-    VERSION_CHOICES[app] = [('week', _lazy('7d', 'version_choice'))] \
-                           + VERSION_CHOICES[app][1:]
+    VERSION_CHOICES[app] = VERSION_CHOICES[app][1:]
 
 
 FieldDef = namedtuple("FieldDef", "default field keys")
@@ -41,7 +40,7 @@ FIELD_DEFS = {
         )
     ),
     "sentiment": field_def(ChoiceField, "", choices=SENTIMENT_CHOICES),
-    "version": field_def(ChoiceField, "week",
+    "version": field_def(ChoiceField, VERSION_CHOICES[FIREFOX][0][0],
                          choices=VERSION_CHOICES[FIREFOX]),
     "product": field_def(ChoiceField, "firefox", choices=PROD_CHOICES),
     "os": field_def(ChoiceField, "", choices=OS_CHOICES),
