@@ -52,8 +52,8 @@ def dashboard(request):
         metas = c.meta
         daily = c.meta.get('day_sentiment', {})
         chart_data = dict(series=[
-            dict(name=_('Positive'), data=daily['positive']),
-            dict(name=_('Negative'), data=daily['negative']),
+            dict(name=_('Praise'), data=daily['positive']),
+            dict(name=_('Issues'), data=daily['negative']),
             ],
             )
 

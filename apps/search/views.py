@@ -176,8 +176,8 @@ def index(request):
         if days > 10 or period == 'infin':
             daily = metas.get('day_sentiment', {})
             chart_data = dict(series=[
-                dict(name=_('Positive'), data=daily['positive']),
-                dict(name=_('Negative'), data=daily['negative']),
+                dict(name=_('Praise'), data=daily['positive']),
+                dict(name=_('Issues'), data=daily['negative']),
                 ],
                 )
             data['chart_data_json'] = json.dumps(chart_data)
