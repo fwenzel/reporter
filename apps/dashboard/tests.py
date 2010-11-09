@@ -48,3 +48,21 @@ class TestHelpers(test_utils.TestCase):
         # No error, please.
         tpl = render_template('dashboard/mobile/platforms.html', ctx)
         assert tpl.find('id="os_None"') >= 0
+
+    def test_locale_none(self):
+        """Test that locale with no name does not crash locale helper."""
+
+        class TestLocale(object):
+            """Test locale with no name."""
+            locale = None
+            count = 10
+
+        ctx = {
+            'defaults': {'locale': None},
+            'locales': (TestLocale(),),
+            'opinion_count': 20
+        }
+
+        # No error, please.
+        tpl = render_template('dashboard/mobile/locales.html', ctx)
+        assert tpl.find('id="loc_None"') >= 0
