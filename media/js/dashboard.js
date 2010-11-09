@@ -54,4 +54,10 @@ var feedback_chart; // Highcharts wants this to be global.
         });
     });
 
+    // Recreate chart on window resize.
+    $(window).resize(function() {
+        var options = feedback_chart.options;
+        feedback_chart.destroy();
+        feedback_chart = new Highcharts.Chart(options);
+    });
 })(jQuery);
