@@ -14,7 +14,11 @@ var feedback_chart; // Highcharts wants this to be global.
             colors: ['#72B53E', '#BD5653'],
             chart: {
                 renderTo: chart_id,
-                defaultSeriesType: 'line'
+                defaultSeriesType: 'line',
+                margin: [25, 25, 60, 35]
+            },
+            legend: {
+                y: -10
             },
             title: {text: null},
             tooltip: {
