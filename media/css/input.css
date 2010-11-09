@@ -409,7 +409,7 @@ header, footer, article, section { display: block; }
                 border: 0;
                 background: #4497C7;
                 color: #fff;
-                text-align: right;
+                text-align: left;
                 z-index: 1;
                 -moz-border-radius: 4px;
                 -moz-border-radius-topright: 0;
@@ -418,7 +418,7 @@ header, footer, article, section { display: block; }
             [dir="rtl"] .message .options ul {
                 right: auto;
                 left: 0;
-                text-align: left;
+                text-align: right;
                 -moz-border-radius-topright: 4px;
                 -moz-border-radius-topleft: 0;
                 }
@@ -856,6 +856,14 @@ header, footer, article, section { display: block; }
 #feedback-chart p {
     padding: 2em 0;
     text-align: center;
+}
+
+#opinion #sharing {
+    padding-left: 5px;
+}
+[dir="rtl"] #opinion #sharing {
+    padding-left: 0;
+    padding-right: 5px;
 }
 
 #messages {

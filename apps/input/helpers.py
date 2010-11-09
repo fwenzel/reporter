@@ -23,6 +23,7 @@ from themes.helpers import new_context
 register.filter(defaultfilters.iriencode)
 register.filter(defaultfilters.timesince)
 register.filter(defaultfilters.slugify)
+register.filter(defaultfilters.truncatewords)
 
 
 def _get_format():
@@ -61,6 +62,12 @@ def babel_date(t, format='medium'):
 def babel_datetime(t, format='medium'):
     return _get_format().datetime(t, format=format)
 
+
+@register.function
+@jinja2.contextfunction
+def absolute_url(context, relative):
+    """Given a relative URL, build an absolute URL including domain."""
+    return context['request'].build_absolute_uri(relative)
 
 @register.function
 def url(viewname, *args, **kwargs):
@@ -105,3 +112,12 @@ def pager(context):
             next_url = urlparams(url, page=page.next_page_number())
 
     return new_context(**locals())
+
+
+@register.filter
+def truncchar(value, arg):
+    """Rruncate after a certain number of characters."""
+    if len(value) < arg:
+        return value
+    else:
+        return value[:arg] + '...'

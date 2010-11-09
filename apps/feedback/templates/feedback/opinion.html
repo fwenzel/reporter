@@ -1,11 +1,22 @@
 {% extends "base.html" %}
 
-{% block page_title %}{{ _('Opinion') }}{% endblock %}
+{% block page_title %}"{{ opinion.description|truncatewords(15) }}"{% endblock %}
+{% block body_id %}opinion{% endblock %}
 
 {% block content %}
 <div class="col middle wide">
   <div id="messages" class="block">
-  {{ message_list((opinion,)) }}
+  {{ message_list((opinion,), twitter=True) }}
   </div>
 </div>
+
+<div id="sharing">
+  <a href="http://twitter.com/share" class="twitter-share-button" data-count="none"
+    data-url="{{ absolute_url(opinion.get_url_path()) }}"
+     data-text="{{ opinion.description|truncchar(100)}} #fxinput">Tweet</a>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 {% endblock %}

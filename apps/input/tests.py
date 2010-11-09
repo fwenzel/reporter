@@ -1,11 +1,19 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
+from django.http import HttpRequest
 
+import jingo
 from mock import patch
 from nose.tools import eq_
 import test_utils
 
 from .helpers import urlparams
+
+
+def render(s, context={}):
+    """Render a Jinja2 template fragment."""
+    t = jingo.env.from_string(s)
+    return t.render(**context)
 
 
 class HelperTests(test_utils.TestCase):
@@ -24,6 +32,13 @@ class HelperTests(test_utils.TestCase):
         # Polish string (bug 582506)
         res = urlparams(u'/xx?y=obsłudze')
         self.assertEqual(res, u'/xx?y=obs%C5%82udze')
+
+    def test_absolute_url(self):
+        """Build an absolute URL from a relative one."""
+        request = HttpRequest()
+        request.META = {'HTTP_HOST': 'example.com'}
+        r = render('{{ absolute_url("/somewhere") }}', {'request': request})
+        eq_(r, 'http://example.com/somewhere')
 
 
 class MiddlewareTests(test_utils.TestCase):
