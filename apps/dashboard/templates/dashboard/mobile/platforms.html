@@ -1,5 +1,5 @@
 {% macro os_item(os, count=0, selected=False) %}
-{{ mobile_bar(name='os', id='os_'+os, value=os, selected=selected,
+{{ mobile_bar(name='os', id='os_%s' % os, value=os, selected=selected,
               count=count, total=opinion_count, label=os_name(os)) }}
 {% endmacro %}
 
