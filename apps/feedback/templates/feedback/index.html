@@ -21,6 +21,10 @@
    <p>{{ _('Firefox makes me sad because ...') }}</p>
 </div>
 
-<h4><img src="http://mozcom-cdn.mozilla.net/img/tignish/about/logo/download/logo-only-preview.png" align="absmiddle"/>If you need help or have a problem with Firefox, please visit our <a href="http://support.mozilla.com">support page</a>.</h4>
+<h4><img src="{{ MEDIA_URL }}img/firefox-logo-100.png" align="absmiddle" alt="{{ _('Firefox Logo') }}" />
+  {% trans support_url='http://support.mozilla.com' %}
+  If you need help or have a problem with Firefox, please visit our <a href="{{ support_url }}">support page</a>.
+  {% endtrans %}
+</h4>
 
 {% endblock %}
