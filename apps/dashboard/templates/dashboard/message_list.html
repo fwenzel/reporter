@@ -35,8 +35,8 @@
             _('Translate Message') }}</a></li>
           <li><a href="{{ 'http://twitter.com/share'|urlparams(
             url=absolute_url(opinion.get_url_path()),
-            text='%s #fxinput' % opinion.description|truncchar(100)),
-            related='firefox' }}"
+            text='%s #fxinput' % opinion.description|truncchar(100),
+            related='firefox') }}"
             class="twitter" target="_blank">{{ _('Tweet this') }}</a></li>
         </ul>
       </div>
