@@ -33,6 +33,11 @@
           <li><a href="{{ 'http://translate.google.com/'|urlparams(
             sl='auto', q=opinion.description) }}" target="_blank">{{
             _('Translate Message') }}</a></li>
+          <li><a href="{{ 'http://twitter.com/share'|urlparams(
+            url=absolute_url(opinion.get_url_path()),
+            text='%s #fxinput' % opinion.description|truncchar(100)),
+            related='firefox' }}"
+            class="twitter" target="_blank">{{ _('Tweet this') }}</a></li>
         </ul>
       </div>
       {% endif %}
