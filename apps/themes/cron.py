@@ -42,7 +42,7 @@ def cluster_panorama():
 def cluster():
     # Get all the happy/sad issues in the last week.
     week_ago = datetime.datetime.today() - datetime.timedelta(7)
-    nowish = datetime.datetime.now() - datetime.timedelta(hours=1)
+    nowish = datetime.datetime.now() - datetime.timedelta(minutes=30)
 
     base_qs = Opinion.objects.filter(locale='en-US', created__gte=week_ago)
     log.debug('Beginning clustering')
