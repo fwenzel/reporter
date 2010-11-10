@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime, timedelta
+
 from django.conf import settings
 from django.http import HttpRequest
 
@@ -7,7 +9,7 @@ from mock import patch
 from nose.tools import eq_
 import test_utils
 
-from .helpers import urlparams
+from .helpers import babel_date, timesince, urlparams
 
 
 def render(s, context={}):
@@ -39,6 +41,22 @@ class HelperTests(test_utils.TestCase):
         request.META = {'HTTP_HOST': 'example.com'}
         r = render('{{ absolute_url("/somewhere") }}', {'request': request})
         eq_(r, 'http://example.com/somewhere')
+
+    def test_timesince(self):
+        """Test timesince filter for common time deltas."""
+        def ts(delta, expected):
+            """Test timesince string for the given delta."""
+            test_time = datetime.now() - timedelta(**delta)
+            eq_(timesince(test_time), expected)
+
+        ts(dict(seconds=55), 'just now')
+        ts(dict(seconds=61), '1 minute ago')
+        ts(dict(minutes=12), '12 minutes ago')
+        ts(dict(minutes=65), '1 hour ago')
+        ts(dict(hours=23), '23 hours ago')
+        ts(dict(hours=47, minutes=59), '1 day ago')
+        ts(dict(days=7), '7 days ago')
+        ts(dict(days=8), babel_date(datetime.now() - timedelta(days=8)))
 
 
 class MiddlewareTests(test_utils.TestCase):

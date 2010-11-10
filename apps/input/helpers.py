@@ -14,6 +14,7 @@ from babel.support import Format
 from jingo import register
 import jinja2
 import pytz
+from tower import ugettext as _, ungettext as ngettext
 
 import utils
 from .urlresolvers import reverse
@@ -21,7 +22,6 @@ from themes.helpers import new_context
 
 # Yanking filters from Django.
 register.filter(defaultfilters.iriencode)
-register.filter(defaultfilters.timesince)
 register.filter(defaultfilters.slugify)
 register.filter(defaultfilters.truncatewords)
 
@@ -61,6 +61,29 @@ def babel_date(t, format='medium'):
 @register.filter
 def babel_datetime(t, format='medium'):
     return _get_format().datetime(t, format=format)
+
+
+@register.filter
+def timesince(t):
+    """Show relative time deltas. > 7 days, fall back to babel_date."""
+    diff = (datetime.datetime.now() - t)
+    if diff.days > 7:
+        return babel_date(t)
+    elif diff.days > 0:
+        return ngettext('{0} day ago', '{0} days ago',
+                        diff.days).format(diff.days)
+    else:
+        minutes = diff.seconds / 60
+        hours = minutes / 60
+        if hours > 0:
+            return ngettext('{0} hour ago', '{0} hours ago',
+                            hours).format(hours)
+        elif minutes > 0:
+            return ngettext('{0} minute ago', '{0} minutes ago',
+                            minutes).format(minutes)
+        else:
+            # L10n: This means an event that happened only a few seconds ago.
+            return _('just now')
 
 
 @register.function

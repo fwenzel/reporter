@@ -11,8 +11,8 @@
       <ul class="meta">
         <li>
           <a href="{{ opinion.get_url_path() }}">
-            {# L10n: {0} is a time delta, e.g.: 2 weeks #}
-            <time title="{{ opinion.created|isotime }}">{{ _('{0} ago')|f(opinion.created|timesince) }}</time>
+            <time datetime="{{ opinion.created|isotime }}" title="{{ opinion.created|babel_datetime }}">{{
+            opinion.created|timesince }}</time>
           </a>
         </li>
         <li><a href="{{ search_url(os=opinion.os, defaults=defaults) }}">{{ os_name(opinion.os) }}</a></li>
