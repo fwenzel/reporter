@@ -78,7 +78,6 @@ class MiddlewareTests(test_utils.TestCase):
             eq_(res.status_code, 301)
             self.assertTrue(res['Location'].rstrip('/').endswith(pattern[1]))
 
-
     def test_mobilesite_nohost(self):
         """Make sure we serve the desktop site if there's no HTTP_HOST set."""
         # This won't contain HTTP_HOST. Must not fail.

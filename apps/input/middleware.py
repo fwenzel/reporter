@@ -78,8 +78,14 @@ class MobileSiteMiddleware(object):
                           ''.join((settings.CACHE_PREFIX, 'dom:', domain)),
                           settings.CACHE_COUNT_TIMEOUT)
         except (Site.DoesNotExist, KeyError):
-            # Serve Desktop site.
-            settings.SITE_ID = settings.DESKTOP_SITE_ID
+            # If Site ID picked in header, serve that, otherwise default
+            # to Desktop site.
+            site_header = request.META.get('SITE_ID')
+            if site_header in (settings.DESKTOP_SITE_ID,
+                               settings.MOBILE_SITE_ID):
+                settings.SITE_ID = site_header
+            else:
+                settings.SITE_ID = settings.DESKTOP_SITE_ID
         else:
             settings.SITE_ID = site.id
 

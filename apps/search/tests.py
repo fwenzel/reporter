@@ -37,7 +37,7 @@ class SphinxTestCase(test_utils.TransactionTestCase):
         super(SphinxTestCase, self).setUp()
 
         from django.conf import settings
-        settings.SITE_ID = 1
+        settings.SITE_ID = settings.DESKTOP_SITE_ID
 
         if not SphinxTestCase.sphinx_is_running:
             if (not settings.SPHINX_SEARCHD or

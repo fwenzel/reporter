@@ -1,5 +1,7 @@
 from nose.tools import eq_
 
+from django.conf import settings
+
 from jingo import register
 import jinja2
 import test_utils
@@ -21,12 +23,9 @@ class TestDashboard(SphinxTestCase):
 
 
 class TestMobileDashboard(test_utils.TestCase):
-    def setUp(self):
-        from django.conf import settings
-        settings.SITE_ID = 2
-
     def test_dashboard(self):
-        r = self.client.get(reverse('dashboard'), follow=True)
+        r = self.client.get(reverse('dashboard'), follow=True,
+                            SITE_ID=settings.MOBILE_SITE_ID)
         eq_(r.status_code, 200)
 
 

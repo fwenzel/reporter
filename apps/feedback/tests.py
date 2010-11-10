@@ -2,12 +2,14 @@ from datetime import datetime
 
 from django import http
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from input.urlresolvers import reverse
 
 from nose.tools import eq_
 from product_details import product_details
+from pyquery import pyquery
 
 from . import FIREFOX, MOBILE
 from .utils import detect_language, ua_parse, smart_truncate
@@ -223,3 +225,20 @@ class ViewTests(TestCase):
         # Neither valid nor invalid URLs cause anything but a 200 response.
         eq_(r.status_code, 200)
         assert r.content.find('Thanks') >= 0
+
+    def test_submission_autocomplete_off(self):
+        """
+        Ensure both mobile and desktop submission pages have autocomplete off.
+        """
+        def autocomplete_check(site_id):
+            r = self.client.get(reverse('feedback.sad'), HTTP_USER_AGENT=(
+                self.FX_UA % '20.0'), SITE_ID=site_id, follow=True)
+            doc = pyquery.PyQuery(r.content)
+            form = doc('#feedbackform form')
+
+            assert form
+            eq_(form.attr('autocomplete'), 'off')
+            print r
+
+        autocomplete_check(settings.DESKTOP_SITE_ID)
+        autocomplete_check(settings.MOBILE_SITE_ID)
