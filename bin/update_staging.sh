@@ -26,4 +26,7 @@ $PYTHON vendor/src/schematic/schematic migrations/sites
 # Minify assets.
 $PYTHON manage.py compress_assets
 
+# Fix mobile and desktop site domains in database. Bug 608581.
+$PYTHON ./manage.py cron set_domains input.stage.mozilla.com m.input.stage.mozilla.com
+
 popd > /dev/null
