@@ -173,7 +173,7 @@ def index(request):
         data['opinions'] = data['page'].object_list
         data['sent'] = get_sentiment(metas.get('positive', []))
         data['demo'] = dict(locale=metas.get('locale'), os=metas.get('os'))
-        if days > 10 or period == 'infin':
+        if days >= 7 or period == 'infin':
             daily = metas.get('day_sentiment', {})
             chart_data = dict(series=[
                 dict(name=_('Praise'), data=daily['positive']),
