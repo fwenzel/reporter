@@ -228,9 +228,21 @@ class SearchViewTest(SphinxTestCase):
         parameters. Bug 617211.
         """
         r = search_request(page=2)
+        eq_(r.status_code, 200)
         doc = pq(r.content)
         eq_(doc('#kw-search input[name="page"]').length, 0)
         eq_(doc('#filters input[name="page"]').length, 0)
+
+    def test_search_without_date(self):
+        """Ensure searching without date does not restrict by date."""
+        data = {
+            'product': 'firefox',
+        }
+        r = self.client.get(reverse('search'), data, follow=True)
+        eq_(r.status_code, 200)
+        assert not r.context['form'].cleaned_data['date_start']
+        print r.context
+        assert 'date_end' in r.context['form'].cleaned_data
 
 
 class FeedTest(SphinxTestCase):

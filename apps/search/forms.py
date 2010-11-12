@@ -105,13 +105,14 @@ class ReporterSearchForm(forms.Form):
         else:
             cleaned['type'] = 0
 
-        # Sane default dates to avoid fetching huge amounts of data by default
-        if not cleaned.get('date_end'):
+        if cleaned['date_start'] and not cleaned['date_end']:
             cleaned['date_end'] = date.today()
-        if not cleaned.get('date_start'):
+        elif cleaned['date_end'] and not cleaned['date_start']:
             cleaned['date_start'] = (cleaned['date_end'] - timedelta(days=30))
-        if cleaned['date_start'] > cleaned['date_end']:
-            # Flip start and end if necessary.
+
+        # Flip start and end if necessary.
+        if (cleaned['date_start'] and cleaned['date_end'] and
+            cleaned['date_start'] > cleaned['date_end']):
             (cleaned['date_start'], cleaned['date_end']) = (
                     cleaned['date_end'], cleaned['date_start'])
 

@@ -7,3 +7,6 @@
 <li><a class="{{ 'selected' if selected == '30d' else ''}}"
        href="{{ search_url(date_start=date_ago(days=30), defaults=defaults) }}"
        title="{{ _('Last 30 days') }}">{# L10n: short for 30 days #}{{ _('30d') }}</a></li>
+<li><a class="{{ 'selected' if selected == 'infin' else ''}}"
+       href="{{ search_url(defaults=defaults) }}"
+       title="{{ _('No date limit') }}">{# L10n: short for an indefinite date range #}{{ _('&infin;')|safe }}</a></li>

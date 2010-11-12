@@ -176,19 +176,21 @@ def index(request):
     if not getattr(form, 'cleaned_data', None):
         period = None
     else:
-        end = form.cleaned_data.get('date_end')
-        start = form.cleaned_data.get('date_start')
-        _ago = lambda x: datetime.date.today() - datetime.timedelta(days=x)
-        days = (end - start).days
-        if (end == datetime.date.today() and start):
-            period = {_ago(1): '1d',
-                      _ago(7): '7d',
-                      _ago(30): '30d'}.get(
-                          form.cleaned_data.get('date_start'), 'custom')
-        elif not form.cleaned_data.get('date_start'):
+        if not (form.cleaned_data.get('date_start') and
+                form.cleaned_data.get('date_end')):
             period = 'infin'
         else:
-            period = 'custom'
+            end = form.cleaned_data.get('date_end')
+            start = form.cleaned_data.get('date_start')
+            _ago = lambda x: datetime.date.today() - datetime.timedelta(days=x)
+            days = (end - start).days
+            if (end == datetime.date.today() and start):
+                period = {_ago(1): '1d',
+                          _ago(7): '7d',
+                          _ago(30): '30d'}.get(
+                              form.cleaned_data.get('date_start'), 'custom')
+            else:
+                period = 'custom'
     data['period'] = period
 
     if results:
