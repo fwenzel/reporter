@@ -1,9 +1,8 @@
-from nose.tools import eq_
-
 from django.conf import settings
 
 from jingo import register
 import jinja2
+from nose.tools import eq_
 import test_utils
 
 from input.urlresolvers import reverse

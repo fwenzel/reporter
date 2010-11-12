@@ -49,7 +49,7 @@ def sites_url(context, form, url=None, **kwargs):
 def without_protocol(url_):
     """Extract the domain from a URL."""
     parsed = urlparse.urlparse(url_)
-    return parsed.netloc
+    return parsed.netloc or url_
 
 
 @register.filter
