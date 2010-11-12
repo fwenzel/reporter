@@ -6,7 +6,7 @@ from django import forms
 from product_details import product_details
 from tower import ugettext_lazy as _lazy
 
-from feedback import FIREFOX, MOBILE, OS_USAGE
+from feedback import FIREFOX, MOBILE, OS_USAGE, OPINION_TYPES
 from feedback.version_compare import simplify_version, version_int
 from input.fields import DateInput, SearchInput
 from input.utils import uniquifier
@@ -31,12 +31,12 @@ VERSION_CHOICES = {
                 key=lambda x: x[1], reverse=True)]),
 }
 
-SENTIMENT_CHOICES = [
-    ('', _lazy('-- all --', 'sentiment_choice')),
+SENTIMENT_CHOICES = [('', _lazy('-- all --', 'sentiment_choice')),
     ('happy', _lazy('Praise')),
     ('sad', _lazy('Issues')),
+    ('suggestions', _lazy('Suggestions'))
 ]
-SENTIMENTS = ('happy', 'sad')
+SENTIMENTS = ('happy', 'sad', 'suggestions')
 
 
 OS_CHOICES = ([('', _lazy('-- all --', 'os_choice'))] +
@@ -88,11 +88,11 @@ class ReporterSearchForm(forms.Form):
     def clean(self):
         cleaned = super(ReporterSearchForm, self).clean()
 
-        # Set "positive" value according to sentiment choice.
-        if cleaned.get('sentiment') in SENTIMENTS:
-            cleaned['positive'] = (cleaned['sentiment'] == 'happy')
+        # Set "type" value according to sentiment choice.
+        if isinstance(cleaned.get('sentiment'), int):
+            cleaned['type'] = cleaned.get('sentiment')
         else:
-            cleaned['positive'] = None
+            cleaned['type'] = 0
 
         # Sane default dates to avoid fetching huge amounts of data by default
         if not cleaned.get('date_end'):

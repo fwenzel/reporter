@@ -8,9 +8,10 @@ from django.views.decorators.vary import vary_on_headers
 import jingo
 from tower import ugettext as _
 
+from feedback import OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
 from input.decorators import cache_page
 from input.urlresolvers import reverse
-from .forms import HappyForm, SadForm
+from .forms import PraiseForm, IssueForm, SuggestionForm
 from .models import Opinion
 from .utils import detect_language
 from .validators import validate_ua
@@ -42,11 +43,16 @@ def enforce_user_agent(f):
 
 @enforce_user_agent
 @never_cache
-def give_feedback(request, ua, positive):
-    """Feedback page (positive or negative)."""
+def give_feedback(request, ua, type):
+    """Submit feedback page"""
 
-    # Positive or negative feedback form?
-    Formtype = positive and HappyForm or SadForm
+    Formtype = PraiseForm
+    if type == OPINION_PRAISE:
+        Formtype = PraiseForm
+    elif type == OPINION_ISSUE:
+        Formtype = IssueForm
+    elif type == OPINION_SUGGESTION:
+        Formtype = SuggestionForm
 
     if request.method == 'POST':
         form = Formtype(request.POST)
@@ -59,9 +65,11 @@ def give_feedback(request, ua, positive):
 
             # Save to the DB.
             new_opinion = Opinion(
-                positive=positive, url=form.cleaned_data.get('url', ''),
+                type=type,
+                url=form.cleaned_data.get('url', ''),
                 description=form.cleaned_data['description'],
-                user_agent=ua, locale=locale)
+                user_agent=ua,
+                locale=locale)
             new_opinion.save()
 
             return http.HttpResponseRedirect(reverse('feedback.thanks'))
@@ -69,12 +77,23 @@ def give_feedback(request, ua, positive):
     else:
         # URL is fed in by the feedback extension.
         url = request.GET.get('url', '')
-        form = Formtype(initial={'url': url, 'add_url': False})
+        form = Formtype(initial={'url': url, 'add_url': False, 'type': type})
 
+    # Set the div id for css styling
+    div_id = 'feedbackform'
+    if type == OPINION_SUGGESTION:
+        div_id = 'suggestionform'
+
+    url_suggestion = request.GET.get('url', 'suggestion')
     data = {
         'form': form,
-        'positive': positive,
+        'type': type,
+        'div_id': div_id,
         'MAX_FEEDBACK_LENGTH': settings.MAX_FEEDBACK_LENGTH,
+        'OPINION_PRAISE': OPINION_PRAISE,
+        'OPINION_ISSUE': OPINION_ISSUE,
+        'OPINION_SUGGESTION': OPINION_SUGGESTION,
+        'url_suggestion': url_suggestion
     }
     template = ('feedback/mobile/feedback.html' if request.mobile_site else
                 'feedback/feedback.html')

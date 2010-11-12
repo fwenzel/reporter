@@ -5,24 +5,34 @@
 
 {% block content %}
 
-{{ smiley(positive and "happy" or "sad", "feedback_submit") }}
+{% if type == OPINION_PRAISE: %}
+  {{ smiley("happy", "feedback_submit") }}
+{% elif type == OPINION_ISSUE: %}
+  {{ smiley("sad", "feedback_submit") }}
+{% elif type == OPINION_SUGGESTION: %}
+<span title="{{ _('Suggestion') }}" class="feedback_submit suggestion"></span>
+{% endif %}
 
-<div id="feedbackform">
-  {% if positive %}
-    <h2>
-      {% trans %}
-      Super! It's great to hear that you like our pre-released browser.
-      Please explain what you specifically like!
-      {% endtrans %}
-    </h2>
-  {% else %}
-    <h2>
-      {% trans %}
-      We are sorry that you have not had a good experience with our browser.
-      Please tell us why, so we can fix it!
-      {% endtrans %}
-    </h2>
+<div id="{{ div_id }}">
+  <h2>
+  {% if type == OPINION_PRAISE: %}
+    {% trans %}
+    Super! It's great to hear that you like our pre-released browser.
+    Please explain what you specifically like!
+    {% endtrans %}
+  {% elif type == OPINION_ISSUE: %}
+    {% trans %}
+    We are sorry that you have not had a good experience with our browser.
+    Please tell us why, so we can fix it!
+    {% endtrans %}
+  {% elif type == OPINION_SUGGESTION: %}
+    {% trans %}
+    So, you'd like to make a suggestion on how to enhance Firefox? Awesome!
+    Please make your suggestion below:
+    {% endtrans %}
   {% endif %}
+  </h2>
+
   <form method="post" action="" autocomplete="off">
     {{ csrf() }}
     {{ form.description.errors|safe }}
@@ -30,9 +40,10 @@
     <p>{{ form.description|safe }} <span id="count" data-max="{{
       MAX_FEEDBACK_LENGTH }}">{{ MAX_FEEDBACK_LENGTH }}</span></p>
 
+    {% if type in (OPINION_PRAISE, OPINION_ISSUE): %}
       {{ form.url.errors|safe }}
       <p>
-        {% if positive %}
+        {% if type == OPINION_PRAISE: %}
           <label>{{ form.add_url|safe }}
             {% trans %}
             Know of a website that works better in this beta than it did in
@@ -40,7 +51,7 @@
             track!
             {% endtrans %}
           </label>
-        {% else %}
+        {% elif type == OPINION_ISSUE: %}
           <label>{{ form.add_url|safe }}
             {% trans %}
             Had an issue with a specific website? Please add the URL, so we can
@@ -48,9 +59,9 @@
             {% endtrans %}
           </label>
         {% endif %}
-
         {{ form.url|safe }}
       </p>
+    {% endif %}
 
     {% for hidden in form.hidden_fields() %}
       {{ hidden|safe }}
@@ -68,5 +79,15 @@
     <button type="submit">{{ _('Submit Feedback') }}</button>
   </form>
 </div>
+
+{% if type in (OPINION_PRAISE, OPINION_ISSUE): %}
+  <p class="feedback_suggestion">
+    <img src="{{ MEDIA_URL }}img/suggestion-box-idea-large.png" />
+    {% trans %}
+    If you have an idea to offer us instead, please send it to us through our <a
+      href="{{ url_suggestion }}">suggestion box</a>!
+    {% endtrans %}
+  </p>
+{% endif %}
 
 {% endblock %}

@@ -8,7 +8,7 @@ import caching.base
 
 from input.models import ModelBase
 from input.urlresolvers import reverse
-from . import APP_IDS, OSES, query
+from . import APP_IDS, OSES, OPINION_TYPES, OPINION_PRAISE, query
 from .utils import ua_parse, extract_terms, smart_truncate
 
 
@@ -19,11 +19,9 @@ class OpinionManager(caching.base.CachingManager):
         # apply complex filters first
         qs = self.between(date_start=opt('date_start'),
                           date_end=opt('date_end'))
-        if opt('positive'):
-            qs = qs.filter(positive=opt('positive'))
 
         # apply other filters verbatim
-        for field in ('product', 'version', 'locale', 'os'):
+        for field in ('type', 'product', 'version', 'locale', 'os'):
             if opt(field):
                 qs = qs.filter(**{field: opt(field)})
 
@@ -40,7 +38,7 @@ class OpinionManager(caching.base.CachingManager):
 
 class Opinion(ModelBase):
     """A single feedback item."""
-    positive = models.BooleanField(help_text='Positive/happy sentiment?')
+    type = models.PositiveSmallIntegerField(blank=True, default=OPINION_PRAISE)
     url = models.URLField(verify_exists=False, blank=True)
     description = models.TextField()
     terms = models.ManyToManyField('Term', related_name='used_in')
@@ -62,7 +60,7 @@ class Opinion(ModelBase):
 
     def __unicode__(self):
         return '(%s) %s' % (
-            self.positive and '+' or '-',
+            OPINION_TYPES[self.type],
             self.truncated_description)
 
     @property

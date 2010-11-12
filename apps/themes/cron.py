@@ -7,7 +7,7 @@ from django.conf import settings
 import cronjobs
 from textcluster import Corpus, search
 
-from feedback import APP_USAGE, OS_USAGE, LATEST_BETAS
+from feedback import APP_USAGE, OS_USAGE, LATEST_BETAS, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
 from feedback.models import Opinion
 from themes.models import Theme, Item
 
@@ -60,10 +60,12 @@ def cluster_by_product(qs):
 
 
 def cluster_by_feeling(qs, app):
-    happy = qs.filter(positive=True)
-    sad = qs.filter(positive=False)
+    happy = qs.filter(type=OPINION_PRAISE)
+    sad = qs.filter(type=OPINION_ISSUE)
+    suggestions = qs.filter(type=OPINION_SUGGESTION)
     cluster_by_platform(happy, app, 'happy')
     cluster_by_platform(sad, app, 'sad')
+    cluster_by_platform(suggestions, app, 'suggestions')
 
 
 def cluster_by_platform(qs, app, feeling):

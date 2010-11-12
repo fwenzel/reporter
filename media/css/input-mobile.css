@@ -177,7 +177,8 @@ html {
         line-height: 16px;
         }
         .message .praise,
-        .message .issue {
+        .message .issue,
+        .message .suggestion {
             position: absolute;
             left: 0;
             top: 15px;
@@ -186,7 +187,8 @@ html {
             background: transparent no-repeat center center;
             }
             .message .praise span,
-            .message .issue span {
+            .message .issue span,
+            .message .suggestion span{
                 display: block;
                 width: 0;
                 height: 0;
@@ -197,6 +199,9 @@ html {
             }
         .message .issue {
             background-image: url(../img/msg-issue.png);
+            }
+        .message .suggestion {
+            background-image: url(../img/suggestion-box-idea-small.png);
             }
         .message .body,
         .message .meta {

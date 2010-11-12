@@ -5,7 +5,7 @@ from django.conf import settings
 import jingo
 from tower import ugettext as _
 
-from feedback import stats, LATEST_BETAS
+from feedback import stats, LATEST_BETAS, OPINION_TYPES, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
 from feedback.models import Opinion, Term
 from feedback.version_compare import simplify_version
 from input.decorators import cache_page
@@ -45,18 +45,16 @@ def dashboard(request):
 
     try:
         c = Client()
-        meta = ('positive', 'locale', 'os', 'day_sentiment', )
-
         search_opts = dict(product=app.short, version=version)
-        c.query('', meta=meta, **search_opts)
+        c.query('', meta=('type', 'locale', 'os', 'day_sentiment'), **search_opts)
         metas = c.meta
         daily = c.meta.get('day_sentiment', {})
         chart_data = dict(series=[
-            dict(name=_('Praise'), data=daily['positive']),
-            dict(name=_('Issues'), data=daily['negative']),
+            dict(name=_('Praise'), data=daily['praise']),
+            dict(name=_('Issues'), data=daily['issue']),
+            dict(name=_('Suggestion'), data=daily['suggestion']),
             ],
             )
-
         total = c.total_found
     except SearchError:
         metas = {}
@@ -65,9 +63,13 @@ def dashboard(request):
 
     data = {'opinions': latest_opinions.all()[:settings.MESSAGES_COUNT],
             'opinion_count': total,
+            'opinion_types': OPINION_TYPES,
+            'OPINION_PRAISE': OPINION_PRAISE,
+            'OPINION_ISSUE': OPINION_ISSUE,
+            'OPINION_SUGGESTION': OPINION_SUGGESTION,
             'product': app.short,
             'products': PROD_CHOICES,
-            'sentiments': get_sentiment(metas.get('positive', [])),
+            'sentiments': get_sentiment(metas.get('type', [])),
             'terms': stats.frequent_terms(qs=frequent_terms),
             'demo': dict(locale=metas.get('locale'), os=metas.get('os')),
             'sites': sites,

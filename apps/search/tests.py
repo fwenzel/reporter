@@ -15,7 +15,7 @@ from pyquery import PyQuery as pq
 import test_utils
 
 from input.urlresolvers import reverse
-from feedback import FIREFOX
+from feedback import FIREFOX, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
 from feedback.models import Opinion
 from search import views
 from search.client import Client, SearchError
@@ -72,7 +72,7 @@ num_results = lambda x='', **kwargs: len(query(x, **kwargs))
 class SearchTest(SphinxTestCase):
 
     def test_query(self):
-        eq_(num_results(), 28)
+        eq_(num_results(), 31)
 
     def test_url_search(self):
         eq_(num_results('url:*'), 7)
@@ -92,23 +92,24 @@ class SearchTest(SphinxTestCase):
         eq_(dates, sorted(dates, reverse=True), "These aren't revchron.")
 
     def test_product_filter(self):
-        eq_(num_results(product=1), 28)
+        eq_(num_results(product=1), 31)
         eq_(num_results(product=2), 0)
 
     def test_version_filter(self):
         eq_(num_results(version='3.6.3'), 11)
         eq_(num_results(version='3.6.4'), 16)
 
-    def test_positive_filter(self):
-        eq_(num_results(positive=1), 17)
-        eq_(num_results(positive=0), 11)
+    def test_type_filter(self):
+        eq_(num_results(type=OPINION_PRAISE), 17)
+        eq_(num_results(type=OPINION_ISSUE), 11)
+        eq_(num_results(type=OPINION_SUGGESTION), 3)
 
     def test_os_filter(self):
-        eq_(num_results(os='mac'), 28)
+        eq_(num_results(os='mac'), 31)
         eq_(num_results(os='palm'), 0)
 
     def test_locale_filter(self):
-        eq_(num_results(locale='en-US'), 26)
+        eq_(num_results(locale='en-US'), 29)
         eq_(num_results(locale='de'), 1)
         eq_(num_results(locale='unknown'), 1)
 
@@ -144,7 +145,7 @@ class SearchViewTest(SphinxTestCase):
 
     def test_page_2(self):
         r = search_request(page=2)
-        eq_(len(pq(r.content)('.message')), 8)
+        eq_(len(pq(r.content)('.message')), 11)
 
     @patch('search.views._get_results')
     def test_error(self, get_results):
@@ -197,7 +198,7 @@ class FeedTest(SphinxTestCase):
 
 
 def test_get_sentiment():
-    r = views.get_sentiment([{'positive': False, 'count': 1}])
+    r = views.get_sentiment([{'type': OPINION_ISSUE, 'count': 1}])
     eq_(r['sentiment'], 'sad')
 
 

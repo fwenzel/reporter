@@ -564,6 +564,13 @@ input.placeholder {
 #feedback .smiley.happy {
     background-position: 0 -278px;
 }
+#feedback .suggestion {
+    background-position: 0 0;
+    display: block;
+    background: url(../img/suggestion-box-idea-large.png) no-repeat left top;
+    height: 228px;
+    width: 228px;
+}
 #feedback .feedback_submit {
     position: absolute;
     top: 80px;
@@ -578,7 +585,8 @@ input.placeholder {
 #feedback .feedback_index p {
     font-size: 1.25em;
 }
-#feedback #feedbackform {
+#feedback #feedbackform,
+#feedback #suggestionform {
     margin: 6em 0 0 30%;
 }
 #feedback #id_description {
@@ -586,6 +594,7 @@ input.placeholder {
 }
 #feedback #id_description,
 #feedback #id_url {
+    height: 1.4em;
     width: 90%;
 }
 #feedback #count {
@@ -599,6 +608,9 @@ input.placeholder {
 }
 #feedback #count.verylow {
     color: #ff0000;
+}
+#feedback #suggestionform #id_description {
+    height: 5em;
 }
 #feedback button {
     float: right;
@@ -625,6 +637,16 @@ input.placeholder {
 #feedback .support {
     background: transparent url(http://mozcom-cdn.mozilla.net/img/tignish/about/logo/download/logo-only-preview.png) 5px center no-repeat;
     padding-left: 50px;
+}
+p.feedback_suggestion {
+    clear: both;
+    padding: 25px 0 0 60px;
+    text-align: middle;
+}
+p.feedback_suggestion img {
+    height: 64px;
+    width: 64px;
+    vertical-align: middle;
 }
 /* }}} */
 /* {{{ Thank you page */
@@ -864,7 +886,7 @@ input.placeholder {
     border-bottom-right-radius: 5px;
     -moz-border-radius-bottomright: 5px;
     -webkit-border-bottom-right-radius: 5px;
-    border-right: none;    
+    border-right: none;
 }
 
 
@@ -924,8 +946,8 @@ input.placeholder {
     margin-top: -2em;
     font-size: 100%;
 }
-#website_issues h4 { 
-    font-style: italic; 
+#website_issues h4 {
+    font-style: italic;
     font-size: 100%;
 }
 
@@ -949,7 +971,7 @@ input.placeholder {
     margin-left: 10px;
     text-align: left;
 }
-#website_issues .quick_sentiments { 
+#website_issues .quick_sentiments {
     text-align: center;
     margin-top: 2px;
     padding-bottom: 15px;
