@@ -4,7 +4,7 @@ var feedback_chart; // Highcharts wants this to be global.
     $(document).ready(function() {
         var chart_id = 'feedback-chart',
             chart_div = $('#'+chart_id);
-        if (!chart_div) return;
+        if (!chart_div.length) return;
         var chart_data = JSON.parse(chart_div.attr('data-chart-config'));
         var tooltip_fmt = chart_div.attr('data-tooltip');
         var time_fmt = chart_div.attr('data-timeformat');
