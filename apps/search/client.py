@@ -134,7 +134,6 @@ class Client():
     def query(self, term, limit=20, offset=0, **kwargs):
         """Submits formatted query, retrieves ids, returns Opinions."""
         sc = self.sphinx
-
         # Extract and apply various filters.
         (includes, ranges, metas) = extract_filters(kwargs)
 

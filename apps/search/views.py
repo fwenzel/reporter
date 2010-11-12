@@ -27,6 +27,8 @@ def _get_results(request, meta=[]):
         version = form.cleaned_data['version']
         search_opts['product'] = APPS[product].id
         search_opts['meta'] = meta
+        search_opts['offset'] = ((int(request.GET.get('page', 1)) - 1) *
+                                 settings.SEARCH_PERPAGE)
         c = Client()
         opinions = c.query(query, **search_opts)
         metas = c.meta
@@ -160,8 +162,7 @@ def index(request):
     data['period'] = period
 
     if results:
-        pp = settings.SEARCH_PERPAGE
-        pager = Paginator(results, pp)
+        pager = Paginator(results, settings.SEARCH_PERPAGE)
         data['opinion_count'] = pager.count
         # If page request (e.g., 9999) is out of range, deliver last page of
         # results.

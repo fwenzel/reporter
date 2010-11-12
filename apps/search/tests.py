@@ -131,6 +131,7 @@ class SearchTest(SphinxTestCase):
 
 def search_request(product='firefox', **kwargs):
     kwargs['product'] = product
+    kwargs['date_start'] = '2010-01-01'
     return TestClient().get(reverse('search'), kwargs, follow=True)
 
 
@@ -140,6 +141,10 @@ class SearchViewTest(SphinxTestCase):
     def test_pagination_max(self):
         r = search_request(page=700)
         self.failUnlessEqual(r.status_code, 200)
+
+    def test_page_2(self):
+        r = search_request(page=2)
+        eq_(len(pq(r.content)('.message')), 8)
 
     @patch('search.views._get_results')
     def test_error(self, get_results):
