@@ -143,8 +143,13 @@ class SearchViewTest(SphinxTestCase):
         self.failUnlessEqual(r.status_code, 200)
 
     def test_page_2(self):
+        r = search_request()
+        doc = pq(r.content)
+        firstmsg = doc('.message').eq(1).text()
         r = search_request(page=2)
-        eq_(len(pq(r.content)('.message')), 8)
+        doc = pq(r.content)
+        eq_(len(doc('.message')), 8)
+        self.assertNotEqual(firstmsg, doc('.message').eq(1).text())
 
     @patch('search.views._get_results')
     def test_error(self, get_results):
