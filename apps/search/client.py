@@ -157,7 +157,7 @@ class Client():
             for meta in kwargs['meta']:
                 self.add_meta_query(meta, term)
 
-        sc.SetLimits(min(1000/limit, offset), limit)
+        sc.SetLimits(min(SPHINX_HARD_LIMIT/limit, offset), limit)
         self.apply_meta_filters()
 
         # Always sort in reverse chronological order.
