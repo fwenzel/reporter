@@ -61,9 +61,7 @@ def give_feedback(request, ua, positive):
             new_opinion = Opinion(
                 positive=positive, url=form.cleaned_data.get('url', ''),
                 description=form.cleaned_data['description'],
-                user_agent=ua, locale=locale,
-                manufacturer=form.cleaned_data['manufacturer'],
-                device=form.cleaned_data['device'])
+                user_agent=ua, locale=locale)
             new_opinion.save()
 
             return http.HttpResponseRedirect(reverse('feedback.thanks'))

@@ -53,10 +53,6 @@ class Opinion(ModelBase):
     os = models.CharField(max_length=30)
     locale = models.CharField(max_length=30, blank=True)
 
-    # Mobile device information
-    manufacturer = models.CharField(max_length=255, blank=True)
-    device = models.CharField(max_length=255, blank=True)
-
     created = models.DateTimeField(auto_now_add=True)
 
     objects = OpinionManager()

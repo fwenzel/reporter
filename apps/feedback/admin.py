@@ -7,11 +7,9 @@ from .utils import smart_truncate
 class OpinionAdmin(admin.ModelAdmin):
     date_hierarchy = 'created'
     list_display = ('positive', 'truncated_description', 'created',
-                    'product_name', 'version', 'os_name', 'locale',
-                    'manufacturer', 'device')
+                    'product_name', 'version', 'os_name', 'locale')
     list_display_links = ('truncated_description',)
-    list_filter = ('positive', 'version', 'os', 'locale', 'manufacturer',
-                   'device')
+    list_filter = ('positive', 'version', 'os', 'locale')
     ordering = ('-created',)
     search_fields = ['description']
 
@@ -22,9 +20,6 @@ class OpinionAdmin(admin.ModelAdmin):
         ('Build Info', {
             'fields': ('user_agent', 'product_name', 'version', 'os_name',
                        'locale')
-        }),
-        ('Device Info', {
-            'fields': ('manufacturer', 'device')
         }),
         ('Terms', {
             'fields': ('terms',)
