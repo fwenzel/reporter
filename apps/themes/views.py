@@ -95,7 +95,7 @@ def index(request):
 
     if qs:
         pp = settings.SEARCH_PERPAGE
-        pager = Paginator(qs, pp)
+        pager = Paginator(qs.select_related(), pp)
 
         try:
             args['page'] = pager.page(page)
