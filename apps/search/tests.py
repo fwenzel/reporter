@@ -167,6 +167,12 @@ class SearchViewTest(SphinxTestCase):
         r = search_request(date_start='2010-09-01', date_end='2010-06-01')
         eq_(r.status_code, 200)
 
+    def test_carets(self):
+        """Rotten queries should not phase us."""
+        r = search_request(q='^')
+        eq_(r.status_code, 200)
+
+
 
 class FeedTest(SphinxTestCase):
     def test_invalid_form(self):
