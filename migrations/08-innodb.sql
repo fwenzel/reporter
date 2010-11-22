@@ -1,0 +1,2 @@
+ALTER TABLE theme ENGINE=InnoDB;
+ALTER TABLE theme_item ENGINE=InnoDB;
