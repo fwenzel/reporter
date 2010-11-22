@@ -2,12 +2,12 @@
 
 function checkretval()
 {
-    retval=$?
-        if [[ $retval -gt 0 ]]
-        then
-                $error "Error!!! Exit status of the last command was $retval"
-                exit $retval
-        fi
+   retval=$?
+       if [[ $retval -gt 0 ]]
+       then
+               $error "Error!!! Exit status of the last command was $retval"
+               exit $retval
+       fi
 }
 
 INPUT_DIR="/data/input/python/input.mozilla.com/reporter"
@@ -33,11 +33,11 @@ cd $SYNC_DIR
 schematic migrations
 checkretval
 
-su - apache -s /bin/sh -c '/usr/bin/python26 /data/input/www/django/input.mozilla.com/reporter/manage.py compress_assets'
+/usr/bin/python26 $INPUT_DIR/manage.py compress_assets
 
 if [ -d $SYNC_DIR/migrations/sites ]; then
-    schematic migrations/sites
-    checkretval
+   schematic migrations/sites
+   checkretval
 fi
 
 su - apache -s /bin/sh -c '/usr/bin/python26 /data/input/www/django/input.mozilla.com/reporter/manage.py cron cluster'
@@ -47,3 +47,4 @@ checkretval
 #/data/bin/omg_push_generic_live.sh .
 
 #/data/bin/issue-multi-command.py generic 'service httpd reload'
+
