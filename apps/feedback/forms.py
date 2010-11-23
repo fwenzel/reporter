@@ -40,12 +40,19 @@ class FeedbackForm(forms.Form):
     """Feedback form fields shared between feedback types."""
 
     add_url = forms.BooleanField(initial=True, required=False)
-
     # NB: The ID 'id_url' is hard-coded in the Testpilot extension to
     # accommodate pre-filling the field client-side.
     # Do not change unless you know what you are doing.
     url = ExtendedURLField(required=False, widget=forms.TextInput(
         attrs={'placeholder': 'http://', 'id': 'id_url'}))
+
+    # NB the IDs 'id_manufacturer' and 'id_device' are hard-coded into the
+    # Testpilot extension on Mobile.
+    # Do not change unless you know what you are doing.
+    manufacturer = forms.CharField(required=False, widget=forms.HiddenInput(
+        attrs={'id': 'id_manufacturer'}))
+    device = forms.CharField(required=False, widget=forms.HiddenInput(
+        attrs={'id': 'id_device'}))
 
     def clean(self):
         # Ensure this is not a recent duplicate submission.

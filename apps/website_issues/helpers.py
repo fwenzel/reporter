@@ -1,4 +1,4 @@
-import urlparse
+import utils
 
 from django.utils.encoding import smart_unicode
 from django.utils.http import urlencode
@@ -31,7 +31,7 @@ def sites_url(context, form, url=None, **kwargs):
     if url or context.get('site'):
         # single site URL
         _baseurl = url or context['site'].url
-        _parsed = urlparse.urlparse(_baseurl)
+        _parsed = utils.urlparse(_baseurl)
         parts = [reverse('single_site', args=[_parsed.scheme, _parsed.netloc])]
         if 'q' in parameters:
             del parameters['q']
@@ -48,14 +48,17 @@ def sites_url(context, form, url=None, **kwargs):
 @register.filter
 def without_protocol(url_):
     """Extract the domain from a URL."""
-    parsed = urlparse.urlparse(url_)
-    return parsed.netloc or url_
+    parsed = utils.urlparse(url_)
+    if parsed.scheme in ('about', 'chrome'):
+        return url_
+    else:
+        return parsed.netloc
 
 
 @register.filter
 def protocol(url_):
     """Extract the protocol from a URL."""
-    parsed = urlparse.urlparse(url_)
+    parsed = utils.urlparse(url_)
     return parsed.scheme
 
 

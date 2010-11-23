@@ -105,7 +105,10 @@ def single_site(request, protocol, url_):
     if not form.is_valid():
         raise http.Http404
 
-    full_url = '%s://%s' % (protocol, url_)
+    if protocol == 'about':
+        full_url = '%s:%s' % (protocol, url_)
+    else:
+        full_url = '%s://%s' % (protocol, url_)
     sites, _ = _fetch_summaries(form, url=full_url)
     if sites:
         site = sites[0]

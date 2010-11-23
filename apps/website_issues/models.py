@@ -1,5 +1,3 @@
-import urlparse
-
 from django.db import models
 
 import caching.base
@@ -7,6 +5,9 @@ import caching.base
 from input.models import ModelBase
 from input.urlresolvers import reverse
 from input.utils import cached_property
+
+from website_issues import helpers
+from website_issues import utils
 
 
 class Comment(ModelBase):
@@ -118,15 +119,15 @@ class SiteSummary(ModelBase):
 
     @cached_property
     def parsed_url(self):
-        return urlparse.urlparse(self.url)
+        return utils.urlparse(self.url)
 
     @cached_property
     def protocol(self):
-        return self.parsed_url.scheme
+        return helpers.protocol(self.url)
 
     @cached_property
     def domain(self):
-        return self.parsed_url.netloc
+        return helpers.without_protocol(self.url)
 
     def get_absolute_url(self):
         return reverse('single_site', args=[self.protocol, self.domain])

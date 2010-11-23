@@ -134,6 +134,8 @@ class Client():
     def query(self, term, limit=20, offset=0, **kwargs):
         """Submits formatted query, retrieves ids, returns Opinions."""
         sc = self.sphinx
+        term = sanitize_query(term)
+
         # Extract and apply various filters.
         (includes, ranges, metas) = extract_filters(kwargs)
 
@@ -157,12 +159,12 @@ class Client():
             for meta in kwargs['meta']:
                 self.add_meta_query(meta, term)
 
-        sc.SetLimits(0, limit)
+        sc.SetLimits(min(SPHINX_HARD_LIMIT/limit, offset), limit)
         self.apply_meta_filters()
 
         # Always sort in reverse chronological order.
         sc.SetSortMode(sphinx.SPH_SORT_ATTR_DESC, 'created')
-        sc.AddQuery(sanitize_query(term), 'opinions')
+        sc.AddQuery(term, 'opinions')
         self.queries['primary'] = self.query_index
         self.query_index += 1
 

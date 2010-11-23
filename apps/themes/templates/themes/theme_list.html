@@ -15,7 +15,7 @@
           </li>
         </ul>
         <ul class="theme-items">
-          {% for item in theme.items.all()[:5] %}
+          {% for item in theme.items.select_related(depth=1)[:5] %}
           <li>{{ item.opinion.description }}</li>
           {% endfor %}
         </ul>

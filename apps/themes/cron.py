@@ -1,8 +1,8 @@
 import datetime
 import logging
-import sys
 
 from django.conf import settings
+from django.db import transaction
 
 import cronjobs
 from textcluster import Corpus, search
@@ -39,16 +39,16 @@ def cluster_panorama():
 
 
 @cronjobs.register
+@transaction.commit_on_success
 def cluster():
+    log.debug('Removing old clusters')
+    Theme.objects.all().delete()
     # Get all the happy/sad issues in the last week.
     week_ago = datetime.datetime.today() - datetime.timedelta(7)
-    nowish = datetime.datetime.now() - datetime.timedelta(minutes=30)
 
     base_qs = Opinion.objects.filter(locale='en-US', created__gte=week_ago)
     log.debug('Beginning clustering')
     cluster_by_product(base_qs)
-    log.debug('Removing old clusters')
-    Theme.objects.filter(created__lt=nowish).delete()
 
 
 def cluster_by_product(qs):

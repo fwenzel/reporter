@@ -11,10 +11,11 @@ from nose.tools import eq_
 from product_details import product_details
 from pyquery import pyquery
 
-from . import FIREFOX, MOBILE, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
-from .utils import detect_language, ua_parse, smart_truncate
-from .validators import validate_no_urls, ExtendedURLValidator
-from .version_compare import simplify_version
+from feedback import FIREFOX, MOBILE, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
+from feedback.models import Opinion
+from feedback.utils import detect_language, ua_parse, smart_truncate
+from feedback.validators import validate_no_urls, ExtendedURLValidator
+from feedback.version_compare import simplify_version
 
 
 class UtilTests(TestCase):
@@ -222,7 +223,8 @@ class ViewTests(TestCase):
                 'description': 'Hello!',
                 'type': OPINION_ISSUE,
             }, HTTP_USER_AGENT=(self.FX_UA % '20.0'), follow=True)
-        # Neither valid nor invalid URLs cause anything but a 200 response.
+        # No matter what you submit in the URL field, there must be a 200
+        # response code.
         eq_(r.status_code, 200)
         assert r.content.find('Thanks') >= 0
 
@@ -242,3 +244,20 @@ class ViewTests(TestCase):
 
         autocomplete_check(settings.DESKTOP_SITE_ID)
         autocomplete_check(settings.MOBILE_SITE_ID)
+
+    def test_submission_with_device_info(self):
+        """Ensure mobile device info can be submitted."""
+        r = self.client.post(
+            reverse('feedback.sad'), {
+                'description': 'Hello!',
+                'type': OPINION_ISSUE,
+                'manufacturer': 'FancyBrand',
+                'device': 'FancyPhone 2.0',
+            }, HTTP_USER_AGENT=(self.FX_UA % '20.0'), follow=True)
+        eq_(r.status_code, 200)
+        assert r.content.find('Thanks') >= 0
+
+        # Fetch row from model and check data made it there.
+        latest = Opinion.objects.order_by('-id')[0]
+        eq_(latest.manufacturer, 'FancyBrand')
+        eq_(latest.device, 'FancyPhone 2.0')

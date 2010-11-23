@@ -144,8 +144,13 @@ class SearchViewTest(SphinxTestCase):
         self.failUnlessEqual(r.status_code, 200)
 
     def test_page_2(self):
+        r = search_request()
+        doc = pq(r.content)
+        firstmsg = doc('.message').eq(1).text()
         r = search_request(page=2)
-        eq_(len(pq(r.content)('.message')), 11)
+        doc = pq(r.content)
+        eq_(len(doc('.message')), 11)
+        self.assertNotEqual(firstmsg, doc('.message').eq(1).text())
 
     @patch('search.views._get_results')
     def test_error(self, get_results):
@@ -162,6 +167,12 @@ class SearchViewTest(SphinxTestCase):
         """No error if start > end."""
         r = search_request(date_start='2010-09-01', date_end='2010-06-01')
         eq_(r.status_code, 200)
+
+    def test_carets(self):
+        """Rotten queries should not phase us."""
+        r = search_request(q='^')
+        eq_(r.status_code, 200)
+
 
 
 class FeedTest(SphinxTestCase):
