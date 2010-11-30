@@ -70,8 +70,8 @@ USE_L10N = True
 # Accepted locales
 INPUT_LANGUAGES = ('ar', 'bg', 'ca', 'cs', 'da', 'de', 'el', 'en-US', 'es',
                    'fr', 'fy-NL', 'gl', 'he', 'hu', 'id', 'it', 'ko', 'nb-NO',
-                   'nl', 'pl', 'pt-PT', 'ru', 'sk', 'sq', 'uk', 'vi', 'zh-CN',
-                   'zh-TW')
+                   'nl', 'pl', 'pt-PT', 'ro', 'ru', 'sk', 'sq', 'uk', 'vi',
+                   'zh-CN', 'zh-TW')
 RTL_LANGUAGES = ('ar', 'he',)  # ('fa', 'fa-IR')
 # Fallbacks for locales that are not recognized by Babel. Bug 596981.
 BABEL_FALLBACK = {'fy-nl': 'nl'}
