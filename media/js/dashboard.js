@@ -11,7 +11,7 @@ var feedback_chart; // Highcharts wants this to be global.
         var time_fmt_short = chart_div.attr('data-timeformat-short');
 
         feedback_chart = new Highcharts.Chart({
-            colors: ['#72B53E', '#BD5653'],
+            colors: ['#72B53E', '#BD5653', '#edd860'],
             chart: {
                 renderTo: chart_id,
                 defaultSeriesType: 'line',
