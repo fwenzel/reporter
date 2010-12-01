@@ -64,14 +64,12 @@ def give_feedback(request, ua, type):
             locale = detect_language(request)
 
             # Save to the DB.
-            new_opinion = Opinion(
-                type=type,
-                url=form.cleaned_data.get('url', ''),
-                description=form.cleaned_data['description'],
-                user_agent=ua, locale=locale,
-                manufacturer=form.cleaned_data['manufacturer'],
-                device=form.cleaned_data['device'])
-            new_opinion.save()
+            Opinion(type=type,
+                    url=form.cleaned_data.get('url', ''),
+                    description=form.cleaned_data['description'],
+                    user_agent=ua, locale=locale,
+                    manufacturer=form.cleaned_data['manufacturer'],
+                    device=form.cleaned_data['device']).save()
 
             return http.HttpResponseRedirect(reverse('feedback.thanks'))
 

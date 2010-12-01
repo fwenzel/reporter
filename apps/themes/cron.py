@@ -7,7 +7,8 @@ from django.db import transaction
 import cronjobs
 from textcluster import Corpus, search
 
-from feedback import APP_USAGE, OS_USAGE, LATEST_BETAS, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
+from feedback import (APP_USAGE, OS_USAGE, LATEST_BETAS, OPINION_PRAISE,
+                      OPINION_ISSUE, OPINION_SUGGESTION)
 from feedback.models import Opinion
 from themes.models import Theme, Item
 
