@@ -90,7 +90,7 @@ class FeedbackForm(forms.Form):
 class PraiseForm(FeedbackForm):
     """Form for Praise."""
     max_length=settings.MAX_FEEDBACK_LENGTH
-    description = forms.CharField(widget=forms.TextInput(
+    description = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _lazy('Enter your feedback here.')}),
         max_length=max_length,
         validators=[validate_swearwords, validate_no_html,
@@ -103,7 +103,7 @@ class PraiseForm(FeedbackForm):
 class IssueForm(FeedbackForm):
     """Form for negative feedback."""
     max_length=settings.MAX_FEEDBACK_LENGTH
-    description = forms.CharField(widget=forms.TextInput(
+    description = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _lazy('Enter your feedback here.')}),
         max_length=max_length,
         validators=[validate_swearwords, validate_no_html,
@@ -118,7 +118,7 @@ class SuggestionForm(FeedbackForm):
     """Form for submitting ideas and suggestions."""
     max_length=settings.MAX_SUGGESTION_LENGTH
     description = forms.CharField(widget=forms.Textarea(
-        attrs={'placeholder': _lazy('Enter your feedback here.')}),
+        attrs={'placeholder': _lazy('Enter your suggestions here.')}),
         max_length=max_length,
         validators=[validate_swearwords, validate_no_html,
                     validate_no_email, validate_no_urls])

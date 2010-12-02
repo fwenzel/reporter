@@ -609,6 +609,9 @@ input.placeholder {
 #feedback #count.verylow {
     color: #ff0000;
 }
+#feedback #feedbackform #id_description {
+    height: 2.5em;
+}
 #feedback #suggestionform #id_description {
     height: 5em;
 }
