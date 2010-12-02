@@ -33,8 +33,8 @@
     {% if defaults['sentiment'] not in ('happy', 'sad'): %}
     {% with sel = (defaults['sentiment'] == 'suggestions') %}
     <li>
-      <input id="issue_bar" name="sentiment" value="suggestions" type="checkbox" {{ 'checked' if sel else '' }} />
-      <label for="issue_bar" class="bar {{ 'selected' if sel else '' }}"
+      <input id="suggestion_bar" name="sentiment" value="suggestions" type="checkbox" {{ 'checked' if sel else '' }} />
+      <label for="suggestion_bar" class="bar {{ 'selected' if sel else '' }}"
         data-value="{{ sent.suggestions }}"
         data-value-pretty="{{ sent.suggestions|numberfmt }}">
         <strong>{{ _('Suggestions') }}</strong>
