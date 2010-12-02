@@ -94,15 +94,17 @@ class Opinion(ModelBase):
             self.version = parsed['version']
             self.os = parsed['os']
 
+        new = not self.pk
         super(Opinion, self).save(*args, **kwargs)
 
-        # Extract terms from description text and save them
-        terms = [t for t in extract_terms(self.description) if
-                 len(t) >= settings.MIN_TERM_LENGTH]
-        for term in terms:
-            this_term, created = Term.objects.get_or_create(term=term)
-            this_term.save()
-            self.terms.add(this_term)
+        # Extract terms from description text and save them if this is new.
+        if new:
+            terms = (t for t in extract_terms(self.description) if
+                     len(t) >= settings.MIN_TERM_LENGTH)
+            for term in terms:
+                this_term, created = Term.objects.get_or_create(term=term)
+                this_term.save()
+                self.terms.add(this_term)
 
     def get_url_path(self):
         return reverse('opinion.detail', args=(self.id,))

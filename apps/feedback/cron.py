@@ -9,7 +9,7 @@ import cronjobs
 import feedback
 from feedback.models import Opinion
 
-DEFAULT_NUM_OPINIONS = 100
+DEFAULT_NUM_OPINIONS = 10000
 TYPES = list(feedback.OPINION_TYPES)
 URLS = ['http://google.com', 'http://mozilla.com', 'http://bit.ly', '', '']
 text = """
@@ -45,7 +45,7 @@ def populate():
     num_opinions = getattr(settings, 'NUM_FAKE_OPINIONS', DEFAULT_NUM_OPINIONS)
 
     for i in xrange(num_opinions):
-        print "Creating %d of %d opinions" % (i, num_opinions)
+        print "Creating %d of %d opinions" % (i + 1, num_opinions)
         manufacturer = random.choice(DEVICES.keys())
         device = random.choice(DEVICES[manufacturer])
         o = Opinion.objects.create(type=random.choice(TYPES),

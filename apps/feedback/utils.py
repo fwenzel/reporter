@@ -87,8 +87,8 @@ def extract_terms(text):
 
     # Collect terms in lower case, but only the ones that consist of single
     # words (t[2] == 1), and are at most 25 chars long.
-    return [ t[0].lower() for t in terms if t[2] == 1 and
-             settings.MIN_TERM_LENGTH <= len(t[0]) <= settings.MAX_TERM_LENGTH ]
+    return [t[0].lower() for t in terms if t[2] == 1 and
+            settings.MIN_TERM_LENGTH <= len(t[0]) <= settings.MAX_TERM_LENGTH]
 
 
 def smart_truncate(content, length=100, suffix='...'):
