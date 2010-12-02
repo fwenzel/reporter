@@ -641,12 +641,19 @@ input.placeholder {
     background: transparent url(http://mozcom-cdn.mozilla.net/img/tignish/about/logo/download/logo-only-preview.png) 5px center no-repeat;
     padding-left: 50px;
 }
-p.feedback_suggestion {
+p.feedback_suggestion,
+p.feedback_suggestion_mobile {
     clear: both;
-    padding: 25px 0 0 60px;
     text-align: middle;
 }
-p.feedback_suggestion img {
+p.feedback_suggestion {
+    padding: 25px 0 0 60px;
+}
+p.feedback_suggestion_mobile {
+    padding: 25px 0 0 0;
+}
+p.feedback_suggestion img,
+p.feedback_suggestion_mobile img {
     height: 64px;
     width: 64px;
     vertical-align: middle;

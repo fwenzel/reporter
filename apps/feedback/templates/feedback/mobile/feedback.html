@@ -62,4 +62,13 @@
   </form>
 </div>
 
+{% if type in (OPINION_PRAISE, OPINION_ISSUE): %}
+  <p class="feedback_suggestion_mobile">
+  <img src="{{ MEDIA_URL }}img/suggestion-box-idea-large.png" />
+  {% trans %}
+    Or submit your ideas with our <a href="{{ url_suggestion }}">suggestion box</a>!
+  {% endtrans %}
+  </p>
+{% endif %}
+
 {% endblock %}
