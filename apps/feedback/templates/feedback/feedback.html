@@ -38,7 +38,7 @@
     {{ form.description.errors|safe }}
 
     <p>{{ form.description|safe }} <span id="count" data-max="{{
-      MAX_FEEDBACK_LENGTH }}">{{ MAX_FEEDBACK_LENGTH }}</span></p>
+      form.max_length }}">{{ form.max_length }}</span></p>
 
     {% if type in (OPINION_PRAISE, OPINION_ISSUE): %}
       {{ form.url.errors|safe }}

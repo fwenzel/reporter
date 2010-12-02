@@ -19,9 +19,9 @@ $(document).ready(function() {
         .NobleCount('#count', {
             max_chars: $('#count').attr('data-max'),
             on_update: function(t_obj, char_area, c_settings, char_rem) {
-                if (char_rem < 20)
+                if (char_rem <= (c_settings.max_chars * .1))
                     char_area.addClass('verylow').removeClass('low');
-                else if (char_rem <= 40)
+                else if (char_rem <= (c_settings.max_chars * .2))
                     char_area.addClass('low').removeClass('verylow');
                 else
                     char_area.removeClass('low').removeClass('verylow');
