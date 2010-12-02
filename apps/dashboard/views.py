@@ -52,7 +52,7 @@ def dashboard(request):
         chart_data = dict(series=[
             dict(name=_('Praise'), data=daily['praise']),
             dict(name=_('Issues'), data=daily['issue']),
-            dict(name=_('Suggestion'), data=daily['suggestion']),
+            dict(name=_('Suggestions'), data=daily['suggestion']),
             ],
             )
         total = c.total_found
