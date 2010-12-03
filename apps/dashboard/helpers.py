@@ -17,6 +17,7 @@ def new_context(context, **kw):
     c.update(kw)
     return c
 
+
 def render_template(template, context):
     """Helper rendering a Jinja template."""
     t = register.env.get_template(template).render(context)
@@ -57,6 +58,20 @@ def platforms_block(context, platforms, total, defaults=None):
         tpl = 'dashboard/platforms.html'
     else:
         tpl = 'dashboard/mobile/platforms.html'
+    return render_template(tpl, new_context(**locals()))
+
+
+@register.function
+@jinja2.contextfunction
+def manufacturer_block(context, manufacturers, total, defaults=None):
+    tpl = 'dashboard/manufacturers.html'
+    return render_template(tpl, new_context(**locals()))
+
+
+@register.function
+@jinja2.contextfunction
+def device_block(context, devices, total, defaults=None):
+    tpl = 'dashboard/devices.html'
     return render_template(tpl, new_context(**locals()))
 
 
@@ -139,8 +154,8 @@ def filter_box_toggle(context, label=''):
 
 @register.inclusion_tag('dashboard/mobile/bar.html')
 @jinja2.contextfunction
-def mobile_bar(context, name, label, value=None, id=None, count=None, total=None,
-               selected=False):
+def mobile_bar(context, name, label, value=None, id=None, count=None,
+               total=None, selected=False):
     """Filter / stats bars for mobile site."""
     if total:
         percentage = int(count / float(total) * 100)

@@ -1,0 +1,23 @@
+{% macro brand_item(manufacturer, count=0, selected=False) %}
+<li>
+  <input id="brand_{{ manufacturer }}" name="brand" value="{{ manufacturer }}"
+         type="checkbox" {{ 'checked' if selected else '' }} />
+  <label for="brand_{{ manufacturer }}"
+         class="bar {{ 'selected' if selected else '' }}"
+         data-value="{{ count }}">
+    <strong>{{ manufacturer or _('Unknown') }}</strong>
+  </label>
+</li>
+{% endmacro %}
+
+{% if manufacturers %}
+<div class="filter collapsible">
+  {{ filter_box_toggle(_('Manufacturer')) }}
+
+  <ul class="bars" data-total="{{ total }}">
+    {% for item in manufacturers %}
+      {{ brand_item(item.manufacturer, item.count) }}
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}

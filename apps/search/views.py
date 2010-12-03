@@ -9,7 +9,8 @@ from django.utils.feedgenerator import Atom1Feed
 import jingo
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from feedback import APPS, APP_IDS, FIREFOX, MOBILE, LATEST_BETAS, OPINION_TYPES, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
+from feedback import (APPS, APP_IDS, FIREFOX, MOBILE, LATEST_BETAS,
+                      OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION)
 from feedback.version_compare import simplify_version
 from input.decorators import cache_page
 from input.urlresolvers import reverse
@@ -49,11 +50,11 @@ def _get_results_opts(request, form, product, meta=[]):
 
     sentiment = form.cleaned_data.get('sentiment', '')
     if sentiment == 'happy':
-        search_opts['type'] = OPINION_PRAISE;
+        search_opts['type'] = OPINION_PRAISE
     elif sentiment == 'sad':
-        search_opts['type'] = OPINION_ISSUE;
+        search_opts['type'] = OPINION_ISSUE
     elif sentiment == 'suggestions':
-        search_opts['type'] = OPINION_SUGGESTION;
+        search_opts['type'] = OPINION_SUGGESTION
 
     return search_opts
 
@@ -118,7 +119,7 @@ class SearchFeed(Feed):
                       'version': item.version,
                       'os': item.os,
                       'locale': item.locale,
-                      'sentiment': sentiment
+                      'sentiment': sentiment,
                      }
         return (':'.join(i) for i in categories.items())
 
@@ -143,7 +144,8 @@ class SearchFeed(Feed):
 @cache_page(use_get=True)
 def index(request):
     try:
-        meta = ('type', 'locale', 'os', 'day_sentiment',)
+        meta = ('type', 'locale', 'os', 'day_sentiment', 'manufacturer',
+                'device')
         (results, form, product, version, metas) = _get_results(
                 request, meta=meta)
     except SearchError, e:
@@ -201,7 +203,9 @@ def index(request):
 
         data['opinions'] = data['page'].object_list
         data['sent'] = get_sentiment(metas.get('type'))
-        data['demo'] = dict(locale=metas.get('locale'), os=metas.get('os'))
+        data['demo'] = dict(locale=metas.get('locale'), os=metas.get('os'),
+                            manufacturer=metas.get('manufacturer'),
+                            device=metas.get('device'))
         if days >= 7 or period == 'infin':
             daily = metas.get('day_sentiment', {})
             chart_data = dict(series=[

@@ -1,14 +1,17 @@
-from calendar import timegm
-from datetime import timedelta
 import os
 import re
 import socket
+from calendar import timegm
+from collections import defaultdict
+from datetime import timedelta
+from operator import itemgetter
 
 from django.conf import settings
 
 from product_details import product_details
 from tower import ugettext as _
 
+from input import KNOWN_DEVICES, KNOWN_MANUFACTURERS
 from input.utils import crc32, manual_order
 from feedback import OS_USAGE, OPINION_PRAISE, OPINION_SUGGESTION
 from feedback.models import Opinion
@@ -17,6 +20,19 @@ from . import sphinxapi as sphinx
 
 
 SPHINX_HARD_LIMIT = 1000  # A hard limit that sphinx imposes.
+
+
+def collapsed(matches, trans, name):
+    """
+    Collapses aggregate matches into a list:
+    [{name: 'foo', 'count': 1} ..., {name: 'foo2', 'count': 23}]
+    """
+    data = defaultdict(int)
+    for result in matches:
+        data[trans.get(result['attrs'][name])] += result['attrs']['count']
+
+    return [{name: key, 'count': val} for key, val in
+            sorted(data.items(), key=itemgetter(1), reverse=True)]
 
 
 def sanitize_query(term):
@@ -42,8 +58,9 @@ def extract_filters(kwargs):
     if kwargs.get('type'):
         metas['type'] = kwargs['type']
 
-    if kwargs.get('os'):
-        metas['os'] = crc32(kwargs['os'])
+    for meta in ('os', 'manufacturer', 'device'):
+        if kwargs.get(meta):
+            metas[meta] = crc32(kwargs[meta])
 
     if kwargs.get('locale'):
         if kwargs['locale'] == 'unknown':
@@ -122,7 +139,6 @@ class Client():
             self.sphinx._filters = self.sphinx._filters[:-num]
 
     def add_filter(self, field, values, meta=False):
-
         if not isinstance(values, (tuple, list)):
             values = (values,)
 
@@ -159,7 +175,7 @@ class Client():
             for meta in kwargs['meta']:
                 self.add_meta_query(meta, term)
 
-        sc.SetLimits(min(SPHINX_HARD_LIMIT/limit, offset), limit)
+        sc.SetLimits(min(SPHINX_HARD_LIMIT / limit, offset), limit)
         self.apply_meta_filters()
 
         # Always sort in reverse chronological order.
@@ -187,6 +203,11 @@ class Client():
                 self.meta['locale'] = self._locale_meta(results, **kwargs)
             if 'os' in kwargs['meta']:
                 self.meta['os'] = self._os_meta(results, **kwargs)
+            if 'manufacturer' in kwargs['meta']:
+                self.meta['manufacturer'] = self._manufacturer_meta(results,
+                                                                    **kwargs)
+            if 'device' in kwargs['meta']:
+                self.meta['device'] = self._device_meta(results, **kwargs)
             if 'day_sentiment' in kwargs['meta']:
                 self.meta['day_sentiment'] = self._day_sentiment(results,
                                                                  **kwargs)
@@ -229,10 +250,19 @@ class Client():
         return [dict(count=f['attrs']['count'], os=t.get(f['attrs']['os']))
                 for f in result['matches']]
 
+    def _manufacturer_meta(self, results, **kwargs):
+        result = results[self.queries['manufacturer']]
+        t = dict(((crc32(m), m) for m in KNOWN_MANUFACTURERS))
+        return collapsed(result['matches'], t, 'manufacturer')
+
+    def _device_meta(self, results, **kwargs):
+        result = results[self.queries['device']]
+        t = dict(((crc32(d), d) for d in KNOWN_DEVICES))
+        return collapsed(result['matches'], t, 'device')
+
     def _locale_meta(self, results, **kwargs):
         result = results[self.queries['locale']]
         t = dict(((crc32(f), f) for f in product_details.languages))
-
         return [dict(count=f['attrs']['count'],
                      locale=t.get(f['attrs']['locale']))
                 for f in result['matches']]

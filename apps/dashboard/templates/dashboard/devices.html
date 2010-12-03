@@ -1,0 +1,22 @@
+{% macro device_item(device, count=0, selected=False) %}
+<li>
+  <input id="device_{{ device }}" name="device" value="{{ device }}"
+         type="checkbox" {{ 'checked' if selected else '' }} />
+  <label for="device_{{ device }}" class="bar {{ 'selected' if selected else '' }}" data-value="{{ count }}">
+    <strong>{{ device }}</strong>
+  </label>
+</li>
+{% endmacro %}
+
+{% if devices %}
+<div class="filter collapsible">
+  {{ filter_box_toggle(_('Devices')) }}
+
+  <ul class="bars" data-total="{{ total }}">
+
+    {% for item in devices %}
+      {{ device_item(item.device, item.count) }}
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
