@@ -57,8 +57,9 @@ def give_feedback(request, ua, type):
     if request.method == 'POST':
         form = Formtype(request.POST)
         if form.is_valid():
-            # Remove URL if checkbox disabled.
-            if not form.cleaned_data.get('add_url', False):
+            # Remove URL if checkbox disabled or no URL submitted.
+            if not (form.cleaned_data.get('add_url', False) and
+                    form.cleaned_data.get('url')):
                 form.cleaned_data['url'] = ''
 
             locale = detect_language(request)

@@ -189,14 +189,19 @@ class ViewTests(TestCase):
     def test_url_submission(self):
         def submit_url(url, valid=True):
             """Submit feedback with a given URL, check if it's accepted."""
-            r = self.client.post(
-                reverse('feedback.happy'), {
-                    # Need to vary text so we don't cause duplicates warnings.
-                    'description': 'Hello %d' % datetime.now().microsecond,
-                    'add_url': 'on',
-                    'type': OPINION_PRAISE,
-                    'url': url
-                }, HTTP_USER_AGENT=(self.FX_UA % '20.0'), follow=True)
+            data = {
+                # Need to vary text so we don't cause duplicates warnings.
+                'description': 'Hello %d' % datetime.now().microsecond,
+                'add_url': 'on',
+                'type': OPINION_PRAISE,
+            }
+
+            if url:
+                data['url'] = url
+
+            r = self.client.post(reverse('feedback.happy'), data,
+                                 HTTP_USER_AGENT=(self.FX_UA % '20.0'),
+                                 follow=True)
             # Neither valid nor invalid URLs cause anything but a 200 response.
             eq_(r.status_code, 200)
             if valid:
@@ -215,6 +220,9 @@ class ViewTests(TestCase):
         # Invalid URL types
         submit_url('gopher://something', valid=False)
         submit_url('zomg', valid=False)
+
+        # Try submitting add_url=on with no URL. Bug 613549.
+        submit_url(None)
 
     def test_submissions_without_url(self):
         """Ensure feedback without URL can be submitted. Bug 610023."""
