@@ -12,12 +12,16 @@ from textcluster.cluster import Corpus
 
 from feedback import LATEST_BETAS, FIREFOX, MOBILE, APP_IDS
 from feedback.models import Opinion
+from feedback import OPINION_PRAISE, OPINION_SUGGESTION
 
 from website_issues.models import Comment, Cluster, SiteSummary
 from website_issues.management.utils import normalize_url
 from website_issues.helpers import without_protocol
 
 DB_ALIAS = "website_issues"
+
+def is_positive(opinion):
+    return opinion.type == OPINION_PRAISE
 
 class Command(BaseCommand):
     """
@@ -124,28 +128,28 @@ class Command(BaseCommand):
 
         def add_variants(opinion, **keypart):
             """Add variants for "positive" and "os" set/ignored."""
-            add(opinion, os=opinion.os, positive=opinion.positive, **keypart)
-            add(opinion, os=opinion.os, positive=None,             **keypart)
+            add(opinion, os=opinion.os, positive=is_positive(opinion), **keypart)
+            add(opinion, os=opinion.os, positive=None,                 **keypart)
             # These will probably not be read anymore with 1.9 in production.
-            add(opinion, os=None,       positive=opinion.positive, **keypart)
-            add(opinion, os=None,       positive=None,             **keypart)
+            add(opinion, os=None,       positive=is_positive(opinion), **keypart)
+            add(opinion, os=None,       positive=None,                 **keypart)
             # These are for 1.9+ and allow siphoning by product.
             app = '<%s>' % APP_IDS[opinion.product].short
-            add(opinion, os=app,        positive=opinion.positive, **keypart)
-            add(opinion, os=app,        positive=None,             **keypart)
+            add(opinion, os=app,        positive=is_positive(opinion), **keypart)
+            add(opinion, os=app,        positive=None,                 **keypart)
 
 
         now = datetime.now()
         seven_days_ago = now - timedelta(days=7)
         one_day_ago = now - timedelta(days=1)
         queryset = Opinion.objects.filter(
-                       ~Q(url__exact="") & (
+                       ~Q(url__exact="") & ~Q(type__exact=OPINION_SUGGESTION) & (
                            Q(created__range=(seven_days_ago, now))
                            | Q(product__exact=FIREFOX.id)
                            | Q(product__exact=MOBILE.id)
                        )
                    ).only("url", "version", "created",
-                          "positive", "os", "product")
+                          "type", "os", "product")
 
         i = 0
         for i, opinion in enumerate(queryset):
@@ -164,7 +168,7 @@ class Command(BaseCommand):
                           site_summary=site_summary,
                           primary_description=opinion.description,
                           primary_comment=None,
-                          positive=opinion.positive,
+                          positive=is_positive(opinion),
                           size=1)
         storage.save(cluster)
         comment = Comment(pk=self.comment_id.next(),
@@ -201,7 +205,7 @@ class Command(BaseCommand):
             corpus = Corpus()
             remaining_opinions = { }
             for opinion in opinions:
-                if opinion.positive != positive: continue
+                if is_positive(opinion) != positive: continue
                 remaining_opinions[opinion.id] = opinion
                 corpus.add(opinion, str=unicode(opinion.description))
             clusters = corpus.cluster()
