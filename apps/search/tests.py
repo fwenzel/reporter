@@ -16,6 +16,7 @@ import test_utils
 
 from input.urlresolvers import reverse
 from feedback import FIREFOX, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
+from feedback.cron import populate
 from feedback.models import Opinion
 from search import views
 from search.client import Client, SearchError
@@ -139,18 +140,31 @@ def search_request(product='firefox', **kwargs):
 class SearchViewTest(SphinxTestCase):
     """Tests relating to the search template rendering."""
 
+    def setUp(self):
+        # add more opinions so we can test things.
+        populate(100, 'desktop')
+        super(SearchViewTest, self).setUp()
+
     def test_pagination_max(self):
         r = search_request(page=700)
         self.failUnlessEqual(r.status_code, 200)
 
-    def test_page_2(self):
-        r = search_request()
+    def compare_2_pages(self, page1, page2):
+        r = search_request(page=page1)
         doc = pq(r.content)
         firstmsg = doc('.message').eq(1).text()
-        r = search_request(page=2)
+        r = search_request(page=page2)
         doc = pq(r.content)
-        eq_(len(doc('.message')), 11)
         self.assertNotEqual(firstmsg, doc('.message').eq(1).text())
+
+    def test_page_2(self):
+        self.compare_2_pages(1, 2)
+
+    def test_pages_4_and_5(self):
+        """
+        There was a bug where we kept showing the same page, after page 4.
+        """
+        self.compare_2_pages(4, 5)
 
     @patch('search.views._get_results')
     def test_error(self, get_results):
@@ -174,7 +188,6 @@ class SearchViewTest(SphinxTestCase):
         eq_(r.status_code, 200)
 
 
-
 class FeedTest(SphinxTestCase):
     def test_invalid_form(self):
         # Sunbird is always the wrong product.
@@ -194,7 +207,6 @@ class FeedTest(SphinxTestCase):
                             {'product': 'firefox', 'q': u'é'})
         doc = pq(r.content.replace('xmlns', 'xmlnamespace'))
         eq_(doc('title').text(), u"Firefox Input: 'é'")
-
 
     def test_query(self):
         r = self.client.get(reverse('search.feed'),

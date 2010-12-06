@@ -86,7 +86,7 @@ class Opinion(ModelBase):
         except KeyError:
             return self.os
 
-    def save(self, *args, **kwargs):
+    def save(self, terms=True, *args, **kwargs):
         # parse UA and stick it into separate fields
         parsed = ua_parse(self.user_agent)
         if parsed:
@@ -98,7 +98,7 @@ class Opinion(ModelBase):
         super(Opinion, self).save(*args, **kwargs)
 
         # Extract terms from description text and save them if this is new.
-        if new:
+        if new and terms:
             terms = (t for t in extract_terms(self.description) if
                      len(t) >= settings.MIN_TERM_LENGTH)
             for term in terms:

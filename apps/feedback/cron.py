@@ -32,8 +32,10 @@ text = """
     """
 
 sample = lambda: ' '.join(random.sample(text.split(), 15))
-UA_STRINGS = ['Mozilla/5.0 (Android; Linux armv71; rv:2.0b6pre) Gecko/'
-              '20100924 Namoroka/4.0b7pre Fennec/2.0b1pre']
+UA_STRINGS = {'mobile': ['Mozilla/5.0 (Android; Linux armv71; rv:2.0b6pre)'
+                         ' Gecko/20100924 Namoroka/4.0b7pre Fennec/2.0b1pre'],
+              'desktop': ['Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
+                          'fr-FR; rv:2.0b1) Gecko/20100628 Firefox/4.0b1']}
 DEVICES = dict(Samsung = 'Epic Vibrant Transform'.split(),
                HTC = 'Evo Hero'.split(),
                Motorola = 'DroidX Droid2'.split())
@@ -41,19 +43,22 @@ DEVICES = dict(Samsung = 'Epic Vibrant Transform'.split(),
 # TODO: More than just Fennec.
 @cronjobs.register
 @transaction.commit_on_success
-def populate():
-    num_opinions = getattr(settings, 'NUM_FAKE_OPINIONS', DEFAULT_NUM_OPINIONS)
+def populate(num_opinions=None, product='mobile'):
+    if not num_opinions:
+        num_opinions = getattr(settings, 'NUM_FAKE_OPINIONS',
+                               DEFAULT_NUM_OPINIONS)
 
     for i in xrange(num_opinions):
-        print "Creating %d of %d opinions" % (i + 1, num_opinions)
-        manufacturer = random.choice(DEVICES.keys())
-        device = random.choice(DEVICES[manufacturer])
-        o = Opinion.objects.create(type=random.choice(TYPES),
-                                   url=random.choice(URLS),
-                                   description=sample(),
-                                   user_agent=random.choice(UA_STRINGS),
-                                   manufacturer=manufacturer,
-                                   device=device)
+        o = Opinion(type=random.choice(TYPES),
+                    url=random.choice(URLS),
+                    description=sample(),
+                    user_agent=random.choice(UA_STRINGS[product]))
+        if 'mobile':
+            manufacturer = random.choice(DEVICES.keys())
+            o.manufacturer = manufacturer
+            o.device = random.choice(DEVICES[manufacturer])
+
+        o.save(terms=False)
         o.created = datetime.datetime.now() - datetime.timedelta(
                 seconds=random.randint(0, 30 * 24 * 3600))
         o.save()
