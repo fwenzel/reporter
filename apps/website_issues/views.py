@@ -133,7 +133,7 @@ def single_site(request, protocol, url_):
 def site_theme(request, theme_id):
     """Display all comments in a per-site cluster."""
     cluster = get_object_or_404(Cluster, pk=theme_id)
-    comments = cluster.secondary_comments
+    comments = cluster.comments.all()
 
     # Paginate comments
     try:
@@ -152,7 +152,7 @@ def site_theme(request, theme_id):
 
     data = {"cluster": cluster,
             "page": page,
-            "opinion_count": pager.count + 1,
+            "opinion_count": pager.count,
             "opinions": opinions,
             "site": cluster.site_summary,}
     return jingo.render(request, 'website_issues/theme.html', data)

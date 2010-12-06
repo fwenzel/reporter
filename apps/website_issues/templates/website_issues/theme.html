@@ -18,7 +18,7 @@
       {{ _('Back to {domain} &raquo;')|f(domain=site.domain)|safe }}</a>
 
     <div id="theme-callout">
-      {{ cluster.primary_description }}
+      {{ _('Theme for {domain}')|f(domain=site.domain)|safe }}
     </div>
 
     {{ message_list(opinions, show_notfound=False) }}
