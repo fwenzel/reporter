@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block page_title -%}
+{{ theme.pivot.description }} :: {{ _('Theme') }}
+{%- endblock %}
+
+{% block content %}
+<div class="col left">
+  {{ big_count_block(theme.opinions.all()|count) }}
+</div><!--
+
+--><div class="col middle wide">
+  <div id="messages" class="block">
+    <h2>{{ _('Theme') }}</h2>
+
+    <a class="exit" href="{{ exit_url }}">
+      {{ _('Back to all themes &raquo;')|safe }}</a>
+
+    <div id="theme-callout">
+      {{ theme.pivot.description }}
+    </div>
+
+    {{ message_list(opinions, show_notfound=False) }}
+
+    {# Pagination #}
+    {% if page and page.has_other_pages() %}
+    <div class="pager">
+      {% with link_txt = _('&laquo; Previous Page')|safe %}
+        {% if page.has_previous() %}
+        <a class="prev" href="?page={{ page.previous_page_number() }}">{{ link_txt }}</a>
+        {% else %}
+        <span class="prev inactive">{{ link_txt }}</span>
+        {% endif %}
+      {% endwith %}
+
+      {% with link_txt = _('Next Page &raquo;')|safe %}
+        {% if page.has_next() %}
+        <a class="next" href="?page={{ page.next_page_number() }}">{{ link_txt }}</a>
+        {% else %}
+        <span class="next inactive">{{ link_txt }}</span>
+        {% endif %}
+      {% endwith %}
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

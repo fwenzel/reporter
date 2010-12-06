@@ -2,6 +2,7 @@ from django.db import models
 
 from feedback.models import Opinion
 from input.models import ModelBase
+from input.urlresolvers import reverse
 
 
 class Theme(ModelBase):
@@ -16,6 +17,9 @@ class Theme(ModelBase):
     def __unicode__(self):
         return '%d related opinions to "%s"' % (self.num_opinions,
                                                 self.pivot.description)
+
+    def get_absolute_url(self):
+        return reverse('theme', args=[self.id])
 
     class Meta:
         db_table = 'theme'

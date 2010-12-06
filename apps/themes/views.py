@@ -10,6 +10,7 @@ from tower import ugettext as _
 from feedback import APPS, OSES, FIREFOX, APP_USAGE, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
 from input.decorators import cache_page
 from input.helpers import urlparams
+from input.urlresolvers import reverse
 from themes.models import Theme
 
 
@@ -111,3 +112,21 @@ def index(request):
         args['themes'] = args['page'].object_list
 
     return jingo.render(request, 'themes/index.html', args)
+
+
+@cache_page(use_get=True)
+def theme(request, theme_id):
+    theme = Theme.objects.get(id=theme_id)
+
+    pager = Paginator(theme.opinions.all(), settings.SEARCH_PERPAGE)
+    try:
+        page = pager.page(request.GET.get('page', 1))
+    except (EmptyPage, InvalidPage):
+        page = pager.page(pager.num_pages)
+
+    return jingo.render(request,
+                        'themes/theme.html',
+                        {"theme": theme,
+                         "opinions": page.object_list,
+                         "page": page,
+                         "exit_url": reverse("themes")})

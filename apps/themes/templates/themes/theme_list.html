@@ -2,19 +2,21 @@
   <ul class="messages">
     {% for theme in themes %}
     {% with opinion=theme.pivot %}
-    <li class="message">
-      {% if opinion.positive %}
+    <li class="message theme">
+      {% if opinion|is_praise  %}
         <p class="type praise" title="{{ _('Praise') }}"><span>{{ _('Praise') }}</span></p>
       {% else %}
         <p class="type issue" title="{{ _('Issue') }}"><span>{{ _('Issue') }}</span></p>
       {% endif %}
-        <p class="body">{{ opinion.description }}</p>
-        <ul class="meta">
-          <li>
-            {{ _('{0} similar messages')|f(theme.num_opinions|numberfmt) }}
-          </li>
-        </ul>
-        <ul class="theme-items">
+        <p class="body primary"><a href="{{ theme.get_absolute_url() }}" title="{{ _('See all opinions') }}"><span>{{ opinion.description }}</span>
+        <span class="more">
+          {% trans count=(theme.num_opinions-1)|numberfmt %}
+            {{ count }} similar message
+          {% pluralize %}
+            {{ count }} similar messages
+          {% endtrans %}
+        </span></a></p>
+        <ul class="samples">
           {% for item in theme.items.select_related(depth=1)[:5] %}
           <li>{{ item.opinion.description }}</li>
           {% endfor %}

@@ -1,6 +1,13 @@
 import jinja2
 from jingo import register
 
+from feedback import OPINION_PRAISE
+
+
+@register.filter
+def is_praise(opinion):
+    return opinion.type == OPINION_PRAISE
+
 
 def new_context(context, **kw):
     """Helper adding variables to the existing context."""
