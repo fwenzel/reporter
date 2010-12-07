@@ -10,7 +10,7 @@
       {% endif %}
         <p class="body primary"><a href="{{ theme.get_absolute_url() }}" title="{{ _('See all opinions') }}"><span>{{ opinion.description }}</span>
         <span class="more">
-          {% trans count=(theme.num_opinions-1)|numberfmt %}
+          {% trans num=(theme.num_opinions-1), count=(theme.num_opinions-1)|numberfmt %}
             {{ count }} similar message
           {% pluralize %}
             {{ count }} similar messages
