@@ -85,7 +85,7 @@ body.mobile {
     background-position: 0 -110px;
 }
 .mobile#feedback .suggestion {
-    background: url(../img/suggestion-box-idea-small.png) no-repeat left top;
+    background: url(../img/suggestion-box-idea-medium.png) no-repeat left top;
     display: block;
     margin-right: 1em;
     height: 60px;
