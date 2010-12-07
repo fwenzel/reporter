@@ -116,7 +116,10 @@ def index(request):
 
 @cache_page(use_get=True)
 def theme(request, theme_id):
-    theme = Theme.objects.get(id=theme_id)
+    try:
+        theme = Theme.objects.get(id=theme_id)
+    except Theme.DoesNotExist:
+        raise http.Http404
 
     pager = Paginator(theme.opinions.all(), settings.SEARCH_PERPAGE)
     try:
