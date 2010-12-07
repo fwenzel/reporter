@@ -63,8 +63,8 @@ class Opinion(ModelBase):
         ordering = ('-created',)
 
     def __unicode__(self):
-        return '(%s) %s' % (
-            OPINION_TYPES[self.type],
+        return u'(%s) %s' % (
+            unicode(OPINION_TYPES[self.type]),
             self.truncated_description)
 
     @property

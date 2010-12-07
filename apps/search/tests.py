@@ -189,6 +189,10 @@ class SearchViewTest(SphinxTestCase):
 
 
 class FeedTest(SphinxTestCase):
+    def _pq(self, response):
+        """PyQuery-fy a response."""
+        return pq(response.content.replace('xmlns', 'xmlfail'))
+
     def test_invalid_form(self):
         # Sunbird is always the wrong product.
         r = self.client.get(reverse('search.feed'), {'search': 'sunbird'},
@@ -198,14 +202,14 @@ class FeedTest(SphinxTestCase):
     def test_title(self):
         r = self.client.get(reverse('search.feed'),
                             {'product': 'firefox', 'q': 'lol'})
-        doc = pq(r.content.replace('xmlns', 'xmlnamespace'))
+        doc = self._pq(r)
         eq_(doc('title').text(), "Firefox Input: 'lol'")
 
     def test_unicode_title(self):
         """Unicode in search queries must not fail. Bug 606001."""
         r = self.client.get(reverse('search.feed'),
                             {'product': 'firefox', 'q': u'é'})
-        doc = pq(r.content.replace('xmlns', 'xmlnamespace'))
+        doc = self._pq(r)
         eq_(doc('title').text(), u"Firefox Input: 'é'")
 
     def test_query(self):
@@ -213,11 +217,24 @@ class FeedTest(SphinxTestCase):
                             dict(product='firefox',
                                  date_start='01/01/2000',
                                  date_end='01/01/2011'))
-        doc = pq(r.content.replace('xmlns', 'xmfail'))
+        doc = self._pq(r)
         s = Site.objects.all()[0]
         url_base = 'http://%s/' % s.domain
         eq_(doc('entry link').attr['href'],
             '%s%s' % (url_base, 'en-US/opinion/29'))
+
+    def test_item_title(self):
+        """
+        If we don't convert opinion type names to unicode, the world will end.
+        Bug 617204.
+        """
+        r = self.client.get(
+            reverse('search.feed'), dict(
+                product='firefox', date_start='01/01/2000',
+                date_end='01/01/2011'))
+        doc = self._pq(r)
+        # If we get a memory address, this is not a unicode string.
+        eq_(doc('entry title').text().find('object at 0x'), -1)
 
 
 def test_get_sentiment():
