@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django import http
@@ -8,13 +10,16 @@ from django.views.decorators.vary import vary_on_headers
 import jingo
 from tower import ugettext as _
 
-from feedback import OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
+from feedback import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
+                      OPINION_RATING, OPINION_BROKEN, RATING_USAGE,
+                      RATING_TYPES, RATING_CHOICES)
+from feedback.forms import (PraiseForm, IssueForm, SuggestionForm,
+                            BrokenWebsiteForm, RatingForm, IdeaForm)
+from feedback.models import Opinion, Rating
+from feedback.utils import detect_language
+from feedback.validators import validate_ua
 from input.decorators import cache_page
 from input.urlresolvers import reverse
-from .forms import PraiseForm, IssueForm, SuggestionForm
-from .models import Opinion
-from .utils import detect_language
-from .validators import validate_ua
 
 
 def enforce_user_agent(f):
@@ -44,40 +49,29 @@ def enforce_user_agent(f):
 @enforce_user_agent
 @never_cache
 def give_feedback(request, ua, type):
-    """Submit feedback page"""
+    """Submit feedback page."""
 
-    Formtype = PraiseForm
-    if type == OPINION_PRAISE:
-        Formtype = PraiseForm
-    elif type == OPINION_ISSUE:
-        Formtype = IssueForm
-    elif type == OPINION_SUGGESTION:
-        Formtype = SuggestionForm
+    try:
+        FormType = {
+            OPINION_PRAISE: PraiseForm,
+            OPINION_ISSUE: IssueForm,
+            OPINION_SUGGESTION: SuggestionForm
+        }.get(type)
+    except KeyError:
+        return http.HttpResponseBadRequest(_('Invalid feedback type'))
 
     if request.method == 'POST':
-        form = Formtype(request.POST)
+        form = FormType(request.POST)
         if form.is_valid():
-            # Remove URL if checkbox disabled or no URL submitted.
-            if not (form.cleaned_data.get('add_url', False) and
-                    form.cleaned_data.get('url')):
-                form.cleaned_data['url'] = ''
-
-            locale = detect_language(request)
-
             # Save to the DB.
-            Opinion(type=type,
-                    url=form.cleaned_data.get('url', ''),
-                    description=form.cleaned_data['description'],
-                    user_agent=ua, locale=locale,
-                    manufacturer=form.cleaned_data['manufacturer'],
-                    device=form.cleaned_data['device']).save()
+            save_opinion_from_form(request, type, ua, form)
 
             return http.HttpResponseRedirect(reverse('feedback.thanks'))
 
     else:
         # URL is fed in by the feedback extension.
         url = request.GET.get('url', '')
-        form = Formtype(initial={'url': url, 'add_url': False, 'type': type})
+        form = FormType(initial={'url': url, 'add_url': False, 'type': type})
 
     # Set the div id for css styling
     div_id = 'feedbackform'
@@ -103,13 +97,75 @@ def give_feedback(request, ua, type):
 @vary_on_headers('User-Agent')
 @enforce_user_agent
 @cache_page
-def feedback(request, ua):
-    """The index page for feedback, which shows links to the happy and sad
-      feedback pages.
+def beta_feedback(request, ua):
     """
-    template = 'feedback/%sindex.html' % (
+    The index page for beta version feedback, which shows links to the happy
+    and sad feedback pages.
+    """
+    template = 'feedback/%sbeta_index.html' % (
         'mobile/' if request.mobile_site else '')
     return jingo.render(request, template)
+
+
+@vary_on_headers('User-Agent')
+@enforce_user_agent  # TODO enforce *stable*, not beta version
+@cache_page
+def stable_feedback(request, ua):
+    """The index page for stable version feedback."""
+    data = {
+        'RATING_USAGE': RATING_USAGE,
+        'RATING_TYPES': RATING_TYPES,
+        'RATING_CHOICES': RATING_CHOICES,
+    }
+
+    if request.method == 'POST':
+        try:
+            type = int(request.POST.get('type'))
+            FormType = {
+                OPINION_RATING: RatingForm,
+                OPINION_BROKEN: BrokenWebsiteForm,
+                OPINION_SUGGESTION: IdeaForm,
+            }[type]
+        except (ValueError, KeyError):
+            return http.HttpResponseBadRequest(_('Invalid feedback type'))
+
+        form = FormType(request.POST)
+        if form.is_valid():
+            save_opinion_from_form(request, type, ua, form)
+
+            if request.is_ajax():
+                return http.HttpResponse(json.dumps('ok'),
+                                         mimetype='application/json')
+            else:
+                return http.HttpResponseRedirect(
+                    reverse('feedback.stable_feedback') + '#thanks')
+
+        elif request.is_ajax():
+            # For AJAX request, return errors only.
+            return http.HttpResponseBadRequest(json.dumps(form.errors),
+                                               mimetype='application/json')
+
+        else:
+            # For non-AJAX, return form with errors, and blank other feedback
+            # forms.
+            data.update({
+                'rating_form': (form if type == OPINION_RATING else
+                                RatingForm()),
+                'website_form': (form if type == OPINION_BROKEN else
+                                 BrokenWebsiteForm()),
+                'suggestion_form': (form if type == OPINION_SUGGESTION else
+                                    IdeaForm()),
+            })
+
+    else:
+        data.update({
+            'rating_form': RatingForm(),
+            'website_form': BrokenWebsiteForm(),
+            'suggestion_form': IdeaForm(),
+        })
+
+    template = 'feedback/stable_index.html'
+    return jingo.render(request, template, data)
 
 
 @cache_page
@@ -134,3 +190,38 @@ def thanks(request):
 def opinion_detail(request, id):
     o = get_object_or_404(Opinion, pk=id)
     return jingo.render(request, 'feedback/opinion.html', {'opinion': o})
+
+
+def save_opinion_from_form(request, type, ua, form):
+    """Given a (valid) form and feedback type, save it to the DB."""
+    locale = detect_language(request)
+
+    # Remove URL if checkbox disabled or no URL submitted.
+    if not (form.cleaned_data.get('add_url', False) and
+            form.cleaned_data.get('url')):
+        form.cleaned_data['url'] = ''
+
+    if type in (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
+                OPINION_BROKEN):
+        return Opinion(
+            type=type,
+            url=form.cleaned_data.get('url', ''),
+            description=form.cleaned_data['description'],
+            user_agent=ua, locale=locale,
+            manufacturer=form.cleaned_data['manufacturer'],
+            device=form.cleaned_data['device']).save()
+
+    elif type == OPINION_RATING:
+        opinion = Opinion(
+            type=type,
+            user_agent=ua, locale=locale)
+        opinion.save()
+        for qid in RATING_USAGE:
+            Rating(
+                opinion=opinion,
+                type=qid,
+                value=form.cleaned_data.get(RATING_TYPES[qid]['short'])).save()
+        return opinion
+
+    else:
+        raise ValueError('Unknown type %s' % type)

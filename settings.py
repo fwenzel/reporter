@@ -175,6 +175,12 @@ MINIFY_BUNDLES = {
             'css/reporter.css',
             'css/mobile.css',
         ),
+
+        # Feedback for stable Firefox versions
+        'stable': (
+            'css/reset-min.css',
+            'css/stable.css',
+        ),
     },
     'js': {
         'common': (
@@ -198,6 +204,12 @@ MINIFY_BUNDLES = {
             'js/jquery.NobleCount.js',
             'js/init.js',
             'js/reporter.js',
+        ),
+
+        # Stable versions feedback
+        'stable': (
+            'js/jquery.min.js',
+            'js/stable.js',
         ),
     },
 }
@@ -227,6 +239,7 @@ ROOT_URLCONF = 'reporter.urls'
 
 INSTALLED_APPS = [
     'input',  # comes first so it always takes precedence.
+
     'dashboard',
     'feedback',
     'myadmin',

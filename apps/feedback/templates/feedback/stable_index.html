@@ -1,0 +1,267 @@
+{% extends "base_stable.html" %}
+
+{% block page_title %}{{ _('Submit Feedback') }}{% endblock %}
+
+{% block site_header %}{% endblock %}
+
+{% block content %}
+<article id="intro">
+  <header>
+  <h1>{{ _('Submit Your Feedback') }}</h1>
+  <p>{{ _('Your feedback helps us improve Firefox.') }}</p>
+  </header>
+
+  <section class="content">
+    <ul id="feedback-types">
+      <!--
+      --><li><a href="#rate"><span><strong></strong></span> {{ _('Rate Your Experience') }}</a></li><!--
+      --><li><a href="#broken"><span><strong></strong></span> {{ _('Report a Broken Website') }}</span></a></li><!--
+    --><li><a href="#idea"><span><strong></strong></span> {{ _('Share an Idea') }}</span></a></li>  <!--
+      -->
+    </ul>
+  </section>
+
+  <aside>
+    <span>
+      {% trans support_url='http://support.mozilla.com' %}
+      If you need help or have a problem with Firefox, please visit
+      <a href="{{ support_url }}">Firefox Support</a>.
+      {% endtrans %}
+    </span>
+  </aside>
+
+  <span class="fade"></span>
+</article>
+
+
+<article id="rate">
+  <header>
+  <h1>{{ _('Rate Your Experience') }}</h1>
+  <p>{{ _('How would you rate these aspects of Firefox?') }}</p>
+    <nav>
+    <a href="#intro" title="{{ _('Go Back') }}">{{ _('Go Back') }} <strong></strong></a>
+    </nav>
+  </header>
+
+  <section class="content">
+    <form method="post" action="#rate">
+      {{ csrf() }}
+
+      <table>
+        <colgroup class="labels">
+          <col />
+        </colgroup>
+
+        <colgroup class="values">
+          {% for _ in RATING_CHOICES %}
+            <col />
+          {% endfor %}
+        </colgroup>
+
+        <thead>
+          <tr>
+            <th></th>
+            {% for _, choice in RATING_CHOICES %}
+              <th>{{ choice }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for qid in RATING_USAGE %}
+            {% set question = RATING_TYPES[qid] %}
+            <tr>
+              <th>
+                <span class="help error-target-{{ question.short }}" title="{{ question['help'] }}">{{ question['name'] }}</span>
+                {{ rating_form[question.short].errors|safe }}
+              </th>
+              {% for cid, choice in RATING_CHOICES %}
+                <td><input id="q{{ qid }}-a{{ cid }}" type="radio" name="{{ question.short }}" value="{{ cid }}" />
+                  <label title="{{ choice }}" for="q{{ qid }}-a{{ cid }}"></label>
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% for hidden in rating_form.hidden_fields() %}
+        {{ hidden|safe }}
+        {% if hidden.errors %}
+          {{ hidden.name }}:
+          {{ hidden.errors|safe }}
+        {% endif %}
+      {% endfor %}
+
+      {{ rating_form.errors['__all__']|safe }}
+
+      <div class="submit">
+        <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>
+        <noscript><button type="submit">{{ _('Submit Feedback') }}</button></noscript>
+      </div>
+    </form>
+  </section>
+
+  <span class="fade"></span>
+</article>
+
+
+<article id="broken">
+  <header>
+  <h1>{{ _('Report a Broken Website') }}</h1>
+    <p>
+    <span>{{ _('Does a website look or behave incorrectly in Firefox?') }}</span>
+    <span>{{ _("Provide us some details about the problem and we'll try to fix it.") }}</span>
+    </p>
+    <nav>
+    <a href="#intro" title="{{ _('Go Back') }}">{{ _('Go Back') }} <strong></strong></a>
+    </nav>
+  </header>
+
+  <section class="content">
+    <form method="post" action="#broken">
+      {{ csrf() }}
+
+      <div class="fields">
+        <div>
+          <label for="broken-url">{{ _('What is the URL of the broken site?') }}</label>
+          <p>{{ website_form.url|safe }}</p>
+          {{ website_form.url.errors|safe }}
+        </div>
+
+        <div>
+          <label for="broken-desc">{{ _('Describe the problem with the website.') }}</label>
+          <p>{{ website_form.description|safe }}</p>
+          {{ website_form.description.errors|safe }}
+          <p class="privacy"><span>
+            {% trans %}
+            To protect your privacy, please ensure that no personally identifiable
+            information is included in your feedback.
+            {% endtrans %}
+          </span></p>
+        </div>
+      </div>
+
+      {% for hidden in website_form.hidden_fields() %}
+        {{ hidden|safe }}
+        {% if hidden.errors %}
+          {{ hidden.name }}:
+          {{ hidden.errors|safe }}
+        {% endif %}
+      {% endfor %}
+
+      {{ website_form.errors['__all__']|safe }}
+
+      <div class="submit">
+        <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>
+        <noscript><button type="submit">{{ _('Submit Feedback') }}</button></noscript>
+      </div>
+    </form>
+  </section>
+
+  <span class="fade"></span>
+</article>
+
+
+<article id="idea">
+  <header>
+    <h1>{{ _('Share an Idea') }}</h1>
+    <p>{{ _('Have an idea how Firefox could be better? Let us know!') }}</p>
+    <nav>
+      <a href="#intro" title="{{ _('Go Back') }}">{{ _('Go Back') }} <strong></strong></a>
+    </nav>
+  </header>
+
+  <section class="content">
+    <form method="post" action="#idea">
+      {{ csrf() }}
+
+      <div class="fields">
+        <div>
+          <label>{{ _('Describe your idea below.') }}</label>
+          <p>{{ suggestion_form.description|safe }}</p>
+          {{ suggestion_form.description.errors|safe }}
+          <p class="privacy"><span>
+            {% trans %}
+            To protect your privacy, please ensure that no personally
+            identifiable information is included in your feedback.
+            {% endtrans %}
+          </span></p>
+          <span id="count" data-max="{{ suggestion_form.max_length }}">{{
+            suggestion_form.max_length }}</span>
+        </div>
+      </div>
+
+      {% for hidden in suggestion_form.hidden_fields() %}
+        {{ hidden|safe }}
+        {% if hidden.errors %}
+          {{ hidden.name }}:
+          {{ hidden.errors|safe }}
+        {% endif %}
+      {% endfor %}
+
+      {{ suggestion_form.errors['__all__']|safe }}
+
+      <div class="submit">
+        <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>
+        <noscript><button type="submit">{{ _('Submit Feedback') }}</button></noscript>
+      </div>
+    </form>
+  </section>
+
+  <span class="fade"></span>
+</article>
+
+
+<article id="thanks">
+  <header>
+    <h1>{{ _('Thanks for Your Feedback') }}</h1>
+    <p>
+      <span>
+        {% trans %}
+        Your feedback will be used to create a better experience in future
+        releases of Firefox.
+        {% endtrans %}
+      </span>
+    </p>
+  </header>
+
+  <div class="content">
+    <div>
+      <h3>{{ _('Have more to say?') }}</h3>
+      <p>
+      {% trans more_url="#intro" %}
+        Feel free to <a href="{{ more_url }}">submit more feedback</a>
+      {% endtrans %}
+      </p>
+    </div>
+
+    <div>
+      <h3>{{ _('Want to see where your feedback goes?') }}</h3>
+      <p>
+        {% trans dashboard_url=url('dashboard') %}
+          Visit the <a href="{{ dashboard_url }}">Firefox Feedback Dashboard</a>
+        {% endtrans %}
+      </p>
+    </div>
+
+    <div>
+      <h3>{{ _('Find the latest news about Firefox.') }}</h3>
+      <ul>
+        <!--
+        --><li><a id="twitter" href="http://twitter.com/firefox/"><span>{{ _('Twitter') }}</span></a></li><!--
+        --><li><a id="facebook" href="http://www.facebook.com/group.php?v=wall&amp;gid=173578463110"><span>{{ _('Facebook') }}</a></span></li><!--
+        --><li><a id="planet" href="http://planet.mozilla.org"><span>{{ _('Planet Mozilla') }}</a></span></li><!--
+        -->
+      </ul>
+    </div>
+  </div>
+
+  <span class="fade"></span>
+</article>
+
+{% endblock %}
+
+{% block site_footer %}
+{% include "includes/footer_stable.html" %}
+{% endblock %}

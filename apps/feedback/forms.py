@@ -9,12 +9,15 @@ from django.core.validators import URLValidator
 from annoying.decorators import autostrip
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from . import FIREFOX, MOBILE, LATEST_BETAS, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION, fields
-from .models import Opinion
-from .validators import (validate_swearwords, validate_no_html,
-                         validate_no_email, validate_no_urls,
-                         ExtendedURLValidator)
-from .version_compare import version_int
+from feedback import (FIREFOX, MOBILE, LATEST_BETAS, OPINION_PRAISE,
+                      OPINION_ISSUE, OPINION_SUGGESTION, OPINION_RATING,
+                      OPINION_BROKEN, RATING_USAGE, RATING_TYPES,
+                      RATING_CHOICES, fields)
+from feedback.models import Opinion
+from feedback.validators import (validate_swearwords, validate_no_html,
+                                 validate_no_email, validate_no_urls,
+                                 ExtendedURLValidator)
+from feedback.version_compare import version_int
 
 
 class ExtendedURLField(forms.URLField):
@@ -28,12 +31,38 @@ class ExtendedURLField(forms.URLField):
         self.validators.append(ExtendedURLValidator())
 
     def to_python(self, value):
-        """Do not convert about and chorme URLs to fake http addresses."""
+        """Do not convert about and chrome URLs to fake http addresses."""
         if value and not (value.startswith('about:') or
                           value.startswith('chrome://')):
             return super(ExtendedURLField, self).to_python(value)
         else:
             return value
+
+    def clean(self, url):
+        """Sanitize URL input, remove PWs, etc."""
+        # Run existing validators.
+        url = super(ExtendedURLField, self).clean(url)
+
+        # Empty URLs are fine.
+        if not url:
+            return url
+
+        # Do not mess with about: URLs (bug 600094).
+        if url.startswith('about:'):
+            return url
+
+        # Note: http/https/chrome is already enforced by URL field type.
+        parsed = urlparse.urlparse(url)
+
+        # Rebuild URL to drop query strings, passwords, and the like.
+        new_url = (parsed.scheme, parsed.hostname, parsed.path, None, None,
+                   None)
+        return urlparse.urlunparse(new_url)
+
+
+class URLInput(forms.TextInput):
+    """Text field with HTML5 URL Input type."""
+    input_type = 'url'
 
 
 class FeedbackForm(forms.Form):
@@ -66,62 +95,88 @@ class FeedbackForm(forms.Form):
 
         return super(FeedbackForm, self).clean()
 
-    def clean_url(self):
-        """Sanitize URL input, remove PWs, etc."""
-        url = self.cleaned_data['url']
-        # Empty URLs are fine.
-        if not url:
-            return url
-
-        # Do not mess with about: URLs (bug 600094).
-        if self.cleaned_data['url'].startswith('about:'):
-            return self.cleaned_data['url']
-
-        # Note: http/https/chrome is already enforced by URL field type.
-        parsed = urlparse.urlparse(url)
-
-        # Rebuild URL to drop query strings, passwords, and the like.
-        new_url = (parsed.scheme, parsed.hostname, parsed.path, None, None,
-                   None)
-        return urlparse.urlunparse(new_url)
-
 
 @autostrip
 class PraiseForm(FeedbackForm):
     """Form for Praise."""
-    max_length=settings.MAX_FEEDBACK_LENGTH
+    max_length = settings.MAX_FEEDBACK_LENGTH
     description = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _lazy('Enter your feedback here.')}),
         max_length=max_length,
         validators=[validate_swearwords, validate_no_html,
                     validate_no_email, validate_no_urls])
     type = forms.CharField(initial=OPINION_PRAISE,
-                                  widget=forms.HiddenInput(),
-                                  required=True)
+                           widget=forms.HiddenInput(),
+                           required=True)
 
 @autostrip
 class IssueForm(FeedbackForm):
     """Form for negative feedback."""
-    max_length=settings.MAX_FEEDBACK_LENGTH
+    max_length = settings.MAX_FEEDBACK_LENGTH
     description = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _lazy('Enter your feedback here.')}),
         max_length=max_length,
         validators=[validate_swearwords, validate_no_html,
                     validate_no_email, validate_no_urls])
     type = forms.CharField(initial=OPINION_ISSUE,
-                                  widget=forms.HiddenInput(),
-                                  required=True)
+                           widget=forms.HiddenInput(),
+                           required=True)
 
 
 @autostrip
 class SuggestionForm(FeedbackForm):
     """Form for submitting ideas and suggestions."""
-    max_length=settings.MAX_SUGGESTION_LENGTH
+    max_length = settings.MAX_SUGGESTION_LENGTH
     description = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _lazy('Enter your suggestions here.')}),
         max_length=max_length,
         validators=[validate_swearwords, validate_no_html,
                     validate_no_email, validate_no_urls])
     type = forms.CharField(initial=OPINION_SUGGESTION,
-                                  widget=forms.HiddenInput(),
-                                  required=True)
+                           widget=forms.HiddenInput(),
+                           required=True)
+
+
+@autostrip
+class RatingForm(forms.Form):
+    """Form for rating-type feedback."""
+    type = forms.CharField(initial=OPINION_RATING,
+                           widget=forms.HiddenInput(),
+                           required=True)
+
+    def __init__(self, *args, **kwargs):
+        super(RatingForm, self).__init__(*args, **kwargs)
+
+        for qid in RATING_USAGE:
+            self.fields[RATING_TYPES[qid]['short']] = forms.TypedChoiceField(
+                choices=RATING_CHOICES, coerce=lambda x: int(x),
+                empty_value=None)
+
+
+@autostrip
+class BrokenWebsiteForm(FeedbackForm):
+    """'Report Broken Website' form."""
+    url = ExtendedURLField(required=True, widget=URLInput(
+        attrs={'placeholder': 'http://brokensite.com', 'id': 'broken-url',
+               'size': 45,}))
+    description = forms.CharField(required=True, widget=forms.Textarea(
+        attrs={'placeholder': _lazy('Example: Images were not loading, but '
+                                    'the rest of the page was.'),
+               'id': 'broken-desc', 'cols': 55, 'rows': 3,}),
+        validators=[validate_swearwords, validate_no_html,
+                    validate_no_email, validate_no_urls])
+    type = forms.CharField(initial=OPINION_BROKEN,
+                           widget=forms.HiddenInput(),
+                           required=True)
+
+
+@autostrip
+class IdeaForm(SuggestionForm):
+    """Flavor of SuggestionForm to be used for stable feedback."""
+    max_length = settings.MAX_SUGGESTION_LENGTH
+    description = forms.CharField(widget=forms.Textarea(
+        attrs={'placeholder': _lazy('Enter your suggestions here.'),
+               'id': 'idea-desc', 'cols': 55, 'rows': 5}),
+        max_length=max_length,
+        validators=[validate_swearwords, validate_no_html,
+                    validate_no_email, validate_no_urls])

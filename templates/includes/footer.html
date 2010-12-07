@@ -1,8 +1,9 @@
-{# Start #footer #}
 <footer id="footer">
   <div id="footer-contents" class="funnel">
     <div id="copyright">
-      {% include 'includes/lang_switcher.html' %}
+      {% block lang_switcher %}
+        {% include 'includes/lang_switcher.html' %}
+      {% endblock %}
       <p id="footer-links">
         <a href="http://www.mozilla.com/en-US/privacy-policy.html">{{ _('Privacy Policy') }}</a> &nbsp;|&nbsp;
         <a href="http://www.mozilla.com/en-US/about/legal.html">{{ _('Legal Notices') }}</a> &nbsp;|&nbsp;
@@ -20,4 +21,3 @@
     </div>
   </div>
 </footer>
-{# End #footer #}

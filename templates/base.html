@@ -24,6 +24,7 @@
     </ul>
     </nav>
 
+    {% block site_header %}
     <div id="header"><div class="funnel">
       <h1><a href="{{ url('dashboard') }}">
         <strong>Firefox Input</strong> {{ _('Dashboard') }}
@@ -40,12 +41,15 @@
         <li><a class="issues" href="{{ url('website_issues') }}"><span>{{ _('Sites') }}</span></a></li>
       </ul>
     </div></div>
+    {% endblock site_header %}
 
     <div id="body"><div class="funnel">
       {% block content %}{% endblock %}
     </div></div>
 
-    {% include "includes/footer.html" %}
+    {% block site_footer %}
+      {% include "includes/footer.html" %}
+    {% endblock %}
 
     {% block site_js %}
     {{ js('common') }}

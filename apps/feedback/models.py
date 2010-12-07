@@ -8,8 +8,10 @@ import caching.base
 
 from input.models import ModelBase
 from input.urlresolvers import reverse
-from . import APP_IDS, OSES, OPINION_TYPES, OPINION_PRAISE, query
-from .utils import ua_parse, extract_terms, smart_truncate
+
+from feedback import (APP_IDS, OSES, OPINION_TYPES, OPINION_PRAISE, RATING_USAGE,
+                      query)
+from feedback.utils import ua_parse, extract_terms, smart_truncate
 
 
 class OpinionManager(caching.base.CachingManager):
@@ -40,7 +42,7 @@ class Opinion(ModelBase):
     """A single feedback item."""
     type = models.PositiveSmallIntegerField(blank=True, default=OPINION_PRAISE)
     url = models.URLField(verify_exists=False, blank=True)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     terms = models.ManyToManyField('Term', related_name='used_in')
 
     user_agent = models.CharField(
@@ -157,3 +159,11 @@ class Term(ModelBase):
 
     class Meta:
         ordering = ('term',)
+
+
+class Rating(ModelBase):
+    """Ratings associated with an opinion."""
+    opinion = models.ForeignKey(Opinion)
+    type = models.PositiveSmallIntegerField(default=RATING_USAGE[0],
+                                            db_index=True)
+    value = models.PositiveSmallIntegerField(null=True)

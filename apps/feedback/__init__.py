@@ -86,16 +86,66 @@ class OS_OTHER:
     ua_pattern = None
     apps = set((FIREFOX, MOBILE))
 
-OS_USAGE = _oses = (WINDOWS_XP, WINDOWS_VISTA, WINDOWS_7, OSX, MAEMO, ANDROID, LINUX)
-OS_PATTERNS = [ (o.ua_pattern, o.short) for o in OS_USAGE ]
+OS_USAGE = _oses = (WINDOWS_XP, WINDOWS_VISTA, WINDOWS_7, OSX, MAEMO, ANDROID,
+                    LINUX)
+OS_PATTERNS = [(o.ua_pattern, o.short) for o in OS_USAGE]
 OSES = dict((os.short, os) for os in _oses)
 
 # Opinion Types
-OPINION_TYPES = {
-  1: _('Praise'),
-  2: _('Issue'),
-  3: _('Suggestion'),
-}
 OPINION_PRAISE = 1
 OPINION_ISSUE = 2
 OPINION_SUGGESTION = 3
+OPINION_RATING = 4
+OPINION_BROKEN = 5
+
+OPINION_TYPES = {
+    OPINION_PRAISE: _(u'Praise'),
+    OPINION_ISSUE: _(u'Issue'),
+    OPINION_SUGGESTION: _(u'Suggestion'),
+    OPINION_RATING: _(u'Rating'),
+    OPINION_BROKEN: _(u'Broken Website'),
+}
+
+# Rating Types
+RATING_STARTUP = 1
+RATING_PAGELOAD = 2
+RATING_RESPONSIVE = 3
+RATING_CRASHY = 4
+RATING_FEATURES = 5
+
+RATING_USAGE = (RATING_STARTUP, RATING_PAGELOAD, RATING_RESPONSIVE,
+                RATING_CRASHY, RATING_FEATURES)
+RATING_TYPES = {
+    RATING_STARTUP: {
+        'short': 'startup',
+        'name': _(u'Start-Up Time'),
+        'help': _(u'How long Firefox takes to start running'),
+    },
+    RATING_PAGELOAD: {
+        'short': 'pageload',
+        'name': _(u'Page Load Time'),
+        'help': _(u'How long it takes for web pages to load'),
+    },
+    RATING_RESPONSIVE: {
+        'short': 'responsive',
+        'name': _(u'Responsiveness'),
+         'help': _(u'How quickly web pages respond once they have loaded'),
+    },
+    RATING_CRASHY: {
+        'short': 'crashy',
+        'name': _(u'Crashiness'),
+        'help': _(u'How frequently Firefox crashes or loses data'),
+    },
+    RATING_FEATURES: {
+        'short': 'features',
+        'name': _(u'Features'),
+        'help': _(u"How well Firefox's built-in features serve your needs"),
+    },
+}
+RATING_CHOICES = (
+    (1, _(u'Poor')),
+    (2, _(u'Fair')),
+    (3, _(u"Don't Care")),
+    (4, _(u'Good')),
+    (5, _(u'Excellent')),
+)
