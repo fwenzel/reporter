@@ -6,8 +6,9 @@ from django import forms
 from product_details import product_details
 from tower import ugettext_lazy as _lazy
 
-from feedback import FIREFOX, MOBILE, OS_USAGE, OPINION_TYPES
+from feedback import FIREFOX, MOBILE, OS_USAGE
 from feedback.version_compare import simplify_version, version_int
+from input import KNOWN_DEVICES, KNOWN_MANUFACTURERS
 from input.fields import DateInput, SearchInput
 from input.utils import uniquifier
 
@@ -34,17 +35,23 @@ VERSION_CHOICES = {
 SENTIMENT_CHOICES = [('', _lazy('-- all --', 'sentiment_choice')),
     ('happy', _lazy('Praise')),
     ('sad', _lazy('Issues')),
-    ('suggestions', _lazy('Suggestions'))
+    ('suggestions', _lazy('Suggestions')),
 ]
-SENTIMENTS = ('happy', 'sad', 'suggestions')
 
+SENTIMENTS = ('happy', 'sad', 'suggestions')
 
 OS_CHOICES = ([('', _lazy('-- all --', 'os_choice'))] +
               [(o.short, o.pretty) for o in OS_USAGE])
 
+MANUFACTURER_CHOICES = [('Unknown', _lazy('Unknown'))] + [(m, m) for m in
+                                                          KNOWN_MANUFACTURERS]
+
+DEVICE_CHOICES = [('Unknown', _lazy('Unknown'))] + [(d, d) for d in
+                                                    KNOWN_DEVICES]
+
 LOCALE_CHOICES = [
     ('', _lazy('-- all --', 'locale_choice')),
-    ('unknown', _lazy('unknown')),
+    ('Unknown', _lazy('Unknown')),
 ] + [(lang, lang) for lang in sorted(product_details.languages)]
 
 
@@ -61,6 +68,9 @@ class ReporterSearchForm(forms.Form):
                                choices=LOCALE_CHOICES)
     os = forms.ChoiceField(required=False, label=_lazy('OS:'),
                            choices=OS_CHOICES)
+    manufacturer = forms.ChoiceField(required=False,
+                                     choices=MANUFACTURER_CHOICES)
+    device = forms.ChoiceField(required=False, choices=DEVICE_CHOICES)
     date_start = forms.DateField(required=False, widget=DateInput(
         attrs={'class': 'datepicker'}), label=_lazy('Date range:'))
     date_end = forms.DateField(required=False, widget=DateInput(

@@ -1,9 +1,11 @@
 {% macro device_item(device, count=0, selected=False) %}
 <li>
-  <input id="device_{{ device }}" name="device" value="{{ device }}"
+  <input id="device_{{ device }}" name="device"
+         value="{{ device or 'Unknown' }}"
+         {{ 'disabled' if defaults['manufacturer'] and not device }}
          type="checkbox" {{ 'checked' if selected else '' }} />
   <label for="device_{{ device }}" class="bar {{ 'selected' if selected else '' }}" data-value="{{ count }}">
-    <strong>{{ device }}</strong>
+    <strong>{{ device or _('Unknown') }}</strong>
   </label>
 </li>
 {% endmacro %}
@@ -13,10 +15,13 @@
   {{ filter_box_toggle(_('Devices')) }}
 
   <ul class="bars" data-total="{{ total }}">
-
-    {% for item in devices %}
-      {{ device_item(item.device, item.count) }}
-    {% endfor %}
+    {% if defaults['device'] %}
+      {{ device_item(defaults['device'], selected=True) }}
+    {% else %}
+      {% for item in devices[:15] %}
+        {{ device_item(item.device, item.count) }}
+      {% endfor %}
+    {% endif %}
   </ul>
 </div>
 {% endif %}

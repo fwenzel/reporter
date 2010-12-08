@@ -143,11 +143,28 @@ class SearchViewTest(SphinxTestCase):
     def setUp(self):
         # add more opinions so we can test things.
         populate(100, 'desktop')
+        populate(100)
         super(SearchViewTest, self).setUp()
 
     def test_pagination_max(self):
         r = search_request(page=700)
         self.failUnlessEqual(r.status_code, 200)
+
+    def test_filters(self):
+        """
+        Make sure Manufacturer and Device filters don't show up on search for
+        desktop.
+        """
+        r = search_request()
+        doc = pq(r.content)
+        filters = doc('.filter h3 a')
+        assert not any(['Manufacturer' in f.text_content() for f in filters])
+        assert not any(['Device' in f.text_content() for f in filters])
+        r = search_request(product='mobile')
+        doc = pq(r.content)
+        filters = doc('.filter h3 a')
+        assert any(['Manufacturer' in f.text_content() for f in filters])
+        assert any(['Device' in f.text_content() for f in filters])
 
     def compare_2_pages(self, page1, page2):
         r = search_request(page=page1)

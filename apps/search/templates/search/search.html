@@ -31,12 +31,12 @@
     {# TODO URL provided box #}
 
     {{ platforms_block(demo.os, opinion_count, defaults=defaults) }}
+    {% if product == 'mobile' %}
+      {{ manufacturer_block(demo.manufacturer, opinion_count,
+                            defaults=defaults) }}
 
-    {{ manufacturer_block(demo.manufacturer, opinion_count,
-                          defaults=defaults) }}
-
-    {{ device_block(demo.device, opinion_count, defaults=defaults) }}
-
+      {{ device_block(demo.device, opinion_count, defaults=defaults) }}
+    {% endif %}
     {{ locales_block(demo.locale, opinion_count, defaults=defaults) }}
 
   </form>
