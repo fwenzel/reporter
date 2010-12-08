@@ -1,6 +1,7 @@
 {% macro brand_item(manufacturer, count=0, selected=False) %}
 <li>
-  <input id="brand_{{ manufacturer }}" name="brand" value="{{ manufacturer }}"
+  <input id="brand_{{ manufacturer }}" name="manufacturer"
+         value="{{ manufacturer or 'Unknown' }}"
          type="checkbox" {{ 'checked' if selected else '' }} />
   <label for="brand_{{ manufacturer }}"
          class="bar {{ 'selected' if selected else '' }}"
@@ -15,9 +16,13 @@
   {{ filter_box_toggle(_('Manufacturer')) }}
 
   <ul class="bars" data-total="{{ total }}">
-    {% for item in manufacturers %}
-      {{ brand_item(item.manufacturer, item.count) }}
-    {% endfor %}
+    {% if defaults['manufacturer'] %}
+      {{ brand_item(defaults['manufacturer'], selected=True) }}
+    {% else %}
+      {% for item in manufacturers %}
+        {{ brand_item(item.manufacturer, item.count) }}
+      {% endfor %}
+    {% endif %}
   </ul>
 </div>
 {% endif %}

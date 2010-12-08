@@ -59,7 +59,11 @@ def extract_filters(kwargs):
         metas['type'] = kwargs['type']
 
     for meta in ('os', 'manufacturer', 'device'):
-        if kwargs.get(meta):
+        val = kwargs.get(meta)
+        if val and val.lower() == 'unknown':
+            # In this situation 'unknown' usually means empty.
+            metas[meta] = crc32('')
+        elif val:
             metas[meta] = crc32(kwargs[meta])
 
     if kwargs.get('locale'):

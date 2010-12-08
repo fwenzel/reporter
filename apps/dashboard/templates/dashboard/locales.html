@@ -18,7 +18,7 @@
     {% if defaults['locale'] %}
       {{ locale_item(defaults['locale'], selected=True) }}
     {% else %}
-      {% for item in locales %}
+      {% for item in locales[:15] %}
       {{ locale_item(item.locale, item.count) }}
       {% endfor %}
     {% endif %}

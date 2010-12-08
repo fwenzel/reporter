@@ -13,7 +13,7 @@ def os_name(os):
 
 
 @register.function
-def locale_name(locale, native=False, default=_lazy('unknown')):
+def locale_name(locale, native=False, default=_lazy('Unknown')):
     """Convert a locale code into a human readable locale name."""
     if locale in product_details.languages:
         return product_details.languages[locale][
@@ -31,10 +31,10 @@ def smiley(style, page=None):
     """
     if not style in ('happy', 'sad'):
         return ''
-    if style == 'happy': # positive smiley
+    if style == 'happy':  # positive smiley
         character = '&#9786;'
         title = _('Praise')
-    else: # negative smiley
+    else:  # negative smiley
         character = '&#9785;'
         title = _('Issue')
     return jinja2.Markup(
