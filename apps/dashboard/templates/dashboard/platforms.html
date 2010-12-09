@@ -17,7 +17,9 @@
       {{ os_item(defaults['os'], selected=True) }}
     {% else %}
       {% for item in platforms %}
-        {{ os_item(item.os, item.count) }}
+        {% if item.os %}
+          {{ os_item(item.os, item.count) }}
+        {% endif %}
       {% endfor %}
     {% endif %}
   </ul>
