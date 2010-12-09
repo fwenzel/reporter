@@ -204,6 +204,16 @@ class SearchViewTest(SphinxTestCase):
         r = search_request(q='^')
         eq_(r.status_code, 200)
 
+    def test_drop_page_on_new_search(self):
+        """
+        Make sure `page` paramter is dropped when changing search
+        parameters. Bug 617211.
+        """
+        r = search_request(page=2)
+        doc = pq(r.content)
+        eq_(doc('#kw-search input[name="page"]').length, 0)
+        eq_(doc('#filters input[name="page"]').length, 0)
+
 
 class FeedTest(SphinxTestCase):
     def _pq(self, response):
