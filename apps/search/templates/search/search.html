@@ -71,7 +71,7 @@
       {% endwith %}
 
       {% with link_txt = _('Older Messages &raquo;')|safe %}
-        {% if page.has_next() %}
+        {% if page.has_next() and page < settings.SEARCH_MAX_PAGES %}
         <a href="{{ search_url(
           defaults=form.data, extra={'page': page.next_page_number()})
           }}" class="next">{{ link_txt }}</a>

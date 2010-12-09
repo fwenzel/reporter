@@ -142,13 +142,20 @@ class SearchViewTest(SphinxTestCase):
 
     def setUp(self):
         # add more opinions so we can test things.
-        populate(100, 'desktop')
+        populate(1000, 'desktop')
         populate(100)
         super(SearchViewTest, self).setUp()
 
     def test_pagination_max(self):
         r = search_request(page=700)
         self.failUnlessEqual(r.status_code, 200)
+
+    def test_no_next_page(self):
+        """Once we're on page 50, let's not show an older messages link."""
+        for page in (50, 51, 100, 200):
+            r = search_request(page=50)
+            doc = pq(r.content)
+            assert not doc('.pager a.next')
 
     def test_filters(self):
         """

@@ -284,7 +284,9 @@ TEST_SPHINXQL_PORT = 3409
 TEST_SPHINX_CATALOG_PATH = path('tmp/test/data/sphinx')
 TEST_SPHINX_LOG_PATH = path('tmp/test/log/searchd')
 
+SEARCH_MAX_RESULTS = 1000
 SEARCH_PERPAGE = 20  # results per page
+SEARCH_MAX_PAGES = SEARCH_MAX_RESULTS / SEARCH_PERPAGE
 
 TEST_RUNNER = 'test_utils.runner.RadicalTestSuiteRunner'
 
