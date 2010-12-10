@@ -157,7 +157,7 @@ class SearchViewTest(SphinxTestCase):
     def test_no_next_page(self):
         """Once we're on page 50, let's not show an older messages link."""
         for page in (50, 51, 100, 200):
-            r = search_request(page=50)
+            r = search_request(page=page)
             doc = pq(r.content)
             assert not doc('.pager a.next')
 
