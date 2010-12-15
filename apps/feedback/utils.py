@@ -7,8 +7,8 @@ from django.utils.translation.trans_real import parse_accept_lang_header
 from product_details import product_details
 from topia.termextract import extract
 
-from . import BROWSERS, OS_OTHER, OS_PATTERNS
-from .decorators import cached
+from feedback import BROWSERS, OS_OTHER, OS_PATTERNS
+from feedback.decorators import cached
 
 
 @cached()

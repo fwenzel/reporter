@@ -13,11 +13,9 @@
 
   <section class="content">
     <ul id="feedback-types">
-      <!--
-      --><li><a href="#rate"><span><strong></strong></span> {{ _('Rate Your Experience') }}</a></li><!--
-      --><li><a href="#broken"><span><strong></strong></span> {{ _('Report a Broken Website') }}</span></a></li><!--
-    --><li><a href="#idea"><span><strong></strong></span> {{ _('Share an Idea') }}</span></a></li>  <!--
-      -->
+      <li><a id="intro-rate" href="#rate"><span><strong></strong></span> {{ _('Rate Your Experience') }}</a></li>
+      <li><a id="intro-broken" href="#broken"><span><strong></strong></span> {{ _('Report a Broken Website') }}</span></a></li>
+      <li><a id="intro-idea" href="#idea"><span><strong></strong></span> {{ _('Share an Idea') }}</span></a></li>
     </ul>
   </section>
 
@@ -68,16 +66,15 @@
         </thead>
 
         <tbody>
-          {% for qid in RATING_USAGE %}
-            {% set question = RATING_TYPES[qid] %}
+          {% for question in RATING_USAGE %}
             <tr>
               <th>
-                <span class="help error-target-{{ question.short }}" title="{{ question['help'] }}">{{ question['name'] }}</span>
+                <span class="help error-target-{{ question.short }}" title="{{ question.help }}">{{ question.pretty }}</span>
                 {{ rating_form[question.short].errors|safe }}
               </th>
               {% for cid, choice in RATING_CHOICES %}
-                <td><input id="q{{ qid }}-a{{ cid }}" type="radio" name="{{ question.short }}" value="{{ cid }}" />
-                  <label title="{{ choice }}" for="q{{ qid }}-a{{ cid }}"></label>
+                <td><input id="q{{ question.id }}-a{{ cid }}" type="radio" name="{{ question.short }}" value="{{ cid }}" />
+                  <label title="{{ choice }}" for="q{{ question.id }}-a{{ cid }}"></label>
                 </td>
               {% endfor %}
             </tr>
@@ -133,6 +130,9 @@
           <label for="broken-desc">{{ _('Describe the problem with the website.') }}</label>
           <p>{{ website_form.description|safe }}</p>
           {{ website_form.description.errors|safe }}
+          <span id="count-broken-desc" class="count" data-max="{{
+            website_form.max_length }}">{{
+            website_form.max_length }}</span>
           <p class="privacy"><span>
             {% trans %}
             To protect your privacy, please ensure that no personally identifiable
@@ -181,14 +181,15 @@
           <label>{{ _('Describe your idea below.') }}</label>
           <p>{{ suggestion_form.description|safe }}</p>
           {{ suggestion_form.description.errors|safe }}
+          <span id="count-idea-desc" class="count" data-max="{{
+            suggestion_form.max_length }}">{{
+            suggestion_form.max_length }}</span>
           <p class="privacy"><span>
             {% trans %}
             To protect your privacy, please ensure that no personally
             identifiable information is included in your feedback.
             {% endtrans %}
           </span></p>
-          <span id="count" data-max="{{ suggestion_form.max_length }}">{{
-            suggestion_form.max_length }}</span>
         </div>
       </div>
 
@@ -248,11 +249,9 @@
     <div>
       <h3>{{ _('Find the latest news about Firefox.') }}</h3>
       <ul>
-        <!--
-        --><li><a id="twitter" href="http://twitter.com/firefox/"><span>{{ _('Twitter') }}</span></a></li><!--
-        --><li><a id="facebook" href="http://www.facebook.com/group.php?v=wall&amp;gid=173578463110"><span>{{ _('Facebook') }}</a></span></li><!--
-        --><li><a id="planet" href="http://planet.mozilla.org"><span>{{ _('Planet Mozilla') }}</a></span></li><!--
-        -->
+        <li><a id="twitter" href="http://twitter.com/firefox/"><span>{{ _('Twitter') }}</span></a></li>
+        <li><a id="facebook" href="http://www.facebook.com/group.php?v=wall&amp;gid=173578463110"><span>{{ _('Facebook') }}</a></span></li>
+        <li><a id="planet" href="http://planet.mozilla.org"><span>{{ _('Planet Mozilla') }}</a></span></li>
       </ul>
     </div>
   </div>

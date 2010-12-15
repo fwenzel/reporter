@@ -10,31 +10,32 @@
 
         switchTo: function(what, callback) {
             var fromElem = this,
-                toElem = $(what);
+                toElem = $(what),
+                width = $(window).width();
 
             if (fromElem.nodeIndex() < toElem.nodeIndex()) {
-                var height = fromElem.height();
-                var fromEnd = 0 - height;
-                var toStart = height;
+                var fromEnd = -width,
+                    toStart = width;
             } else {
-                var height = toElem.height();
-                var fromEnd = height;
-                var toStart = 0 - height;
+                var fromEnd = width,
+                    toStart = -width;
             }
 
-            fromElem.css({ top: 0, opacity: 1 });
-            toElem.css({ top: toStart, opacity: 0, display: 'block' });
+            fromElem.css({left: 0, right: 0});
+            toElem.addClass('entering')
+                  .css({ left: toStart, right: -toStart, display: 'block' });
             $('html').addClass('transitioning');
 
             toElem.one('transitionend', function(e) {
-                fromElem.css({ display: 'none' });
+                fromElem.css({display: 'none'});
+                toElem.removeClass('entering');
                 $('html').removeClass('transitioning');
                 if (callback) callback();
             });
 
             setTimeout(function() {
-                fromElem.css({ top: fromEnd, opacity: 0 });
-                toElem.css({ top: 0, opacity: 1 });
+                fromElem.css({ left: fromEnd, right: -fromEnd });
+                toElem.css({ left: 0, right: 0 });
             }, 100);
 
             return this;
@@ -140,7 +141,29 @@
     });
 
     $(document).ready(function() {
-        // Submit on locale choice
+
+        $(':input.countable').each(function() {
+            var counter_id = '#count-'+$(this).attr('id');
+
+            $(this).focus(function() {
+                // Need to trigger keydown on focus, because placeholder
+                // confuses NobleCount.
+                $(this).trigger('keydown');
+            })
+            .NobleCount(counter_id, {
+                max_chars: $(counter_id).attr('data-max'),
+                on_update: function(t_obj, char_area, c_settings, char_rem) {
+                    if (char_rem <= (c_settings.max_chars * .1))
+                        char_area.addClass('verylow').removeClass('low');
+                    else if (char_rem <= (c_settings.max_chars * .2))
+                        char_area.addClass('low').removeClass('verylow');
+                    else
+                        char_area.removeClass('low').removeClass('verylow');
+                }
+            });
+        });
+
+        // Submit locale chooser in footer on select
         $('form.languages')
             .find('select').change(function(){
                 this.form.submit();

@@ -11,9 +11,9 @@ from tower import ugettext as _
 
 import swearwords
 
-from . import FIREFOX, MOBILE, LATEST_BETAS
-from .utils import ua_parse
-from .version_compare import version_int
+from feedback import FIREFOX, MOBILE, LATEST_BETAS, LATEST_STABLE
+from feedback.utils import ua_parse
+from feedback.version_compare import version_int, version_dict
 
 
 # Simple email regex to keep people from submitting personal data.
@@ -23,7 +23,7 @@ EMAIL_RE = re.compile(r'[^\s]+@[^\s]+\.[^\s]{2,6}')
 URL_RE = re.compile(r'(://|www\.[^\s]|\.\w{2,}/)')
 
 
-def validate_ua(ua):
+def validate_beta_ua(ua):
     """Ensure a UA string represents a valid latest beta version."""
     parsed = ua_parse(ua)
     if not parsed:
@@ -36,7 +36,25 @@ def validate_ua(ua):
 
         if ref_version > this_version:
             raise ValidationError(_('Submitted User Agent is not the '
-                                  'latest beta version.'))
+                                    'latest beta version.'))
+
+
+def validate_stable_ua(ua):
+    """Ensure a UA string represents a valid latest stable version."""
+    parsed = ua_parse(ua)
+    if not parsed:
+        raise ValidationError(_('User agent string was not recognizable.'))
+
+    # compare to latest beta, if UA enforced.
+    if settings.ENFORCE_USER_AGENT:
+        ref_version = version_dict(LATEST_STABLE[parsed['browser']])
+        this_version = version_dict(parsed['version'])
+
+        if ((ref_version['major'], ref_version['minor1']) >
+            (this_version['major'], this_version['minor1'])):
+            raise ValidationError(_('Submitted User Agent is not the '
+                                    'latest stable version.'))
+        return this_version
 
 
 def validate_swearwords(str):

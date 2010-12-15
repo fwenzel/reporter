@@ -6,11 +6,11 @@ from django.db.models import Count
 
 import caching.base
 
+from input import RATING_USAGE
 from input.models import ModelBase
 from input.urlresolvers import reverse
 
-from feedback import (APP_IDS, OSES, OPINION_TYPES, OPINION_PRAISE, RATING_USAGE,
-                      query)
+from feedback import APP_IDS, OSES, OPINION_TYPES, OPINION_PRAISE, query
 from feedback.utils import ua_parse, extract_terms, smart_truncate
 
 
@@ -163,7 +163,7 @@ class Term(ModelBase):
 
 class Rating(ModelBase):
     """Ratings associated with an opinion."""
-    opinion = models.ForeignKey(Opinion)
+    opinion = models.ForeignKey(Opinion, related_name='ratings')
     type = models.PositiveSmallIntegerField(default=RATING_USAGE[0],
                                             db_index=True)
     value = models.PositiveSmallIntegerField(null=True)

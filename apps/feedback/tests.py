@@ -1,21 +1,26 @@
+import copy
 from datetime import datetime
+import json
 
 from django import http
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from input.urlresolvers import reverse
 
 from nose.tools import eq_
-from product_details import product_details
 from pyquery import pyquery
 
-from feedback import FIREFOX, MOBILE, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
+from input import RATING_USAGE, RATING_CHOICES
+from input.urlresolvers import reverse
+from feedback import (FIREFOX, MOBILE, OPINION_PRAISE, OPINION_ISSUE,
+                      OPINION_SUGGESTION, OPINION_RATING, OPINION_BROKEN,
+                      LATEST_BETAS, LATEST_STABLE)
 from feedback.models import Opinion
 from feedback.utils import detect_language, ua_parse, smart_truncate
 from feedback.validators import validate_no_urls, ExtendedURLValidator
-from feedback.version_compare import simplify_version
+from feedback.version_compare import (simplify_version, version_dict,
+                                      version_int)
 
 
 class UtilTests(TestCase):
@@ -140,8 +145,28 @@ class VersionCompareTest(TestCase):
         for v in versions:
             self.assertEquals(simplify_version(v), versions[v])
 
+    def test_dict_vs_int(self):
+        """
+        version_dict and _int can use each other's data but must not overwrite
+        it.
+        """
+        version_string = '4.0b8pre'
+        dict1 = copy.copy(version_dict(version_string))
+        int1 = version_int(version_string)
+        dict2 = version_dict(version_string)
+        int2 = version_int(version_string)
+        eq_(dict1, dict2)
+        eq_(int1, int2)
 
-class ViewTests(TestCase):
+
+class ViewTestCase(TestCase):
+    def setUp(self):
+        """Let's detect the locale first."""
+        self.client.get('/')
+
+
+class BetaViewTests(ViewTestCase):
+    """Tests for our beta feedback submissions."""
 
     fixtures = ['feedback/opinions']
     FX_UA = ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
@@ -149,34 +174,36 @@ class ViewTests(TestCase):
 
     def test_enforce_user_agent(self):
         """Make sure unknown user agents are forwarded to download page."""
+
+        def get_page(ver=None):
+            """Request stable feedback page."""
+            extra = dict(HTTP_USER_AGENT=self.FX_UA % ver) if ver else {}
+            return self.client.get(reverse('feedback.sad'),
+                                   **extra)
+
         old_enforce_setting = settings.ENFORCE_USER_AGENT
-        settings.ENFORCE_USER_AGENT = True
+        try:
+            settings.ENFORCE_USER_AGENT = True
 
-        # Let's detect the locale first
-        self.client.get('/')
+            # no UA: redirect
+            r = get_page()
+            eq_(r.status_code, 302)
 
-        # no UA: redirect
-        r = self.client.get(reverse('feedback.sad'))
-        self.assertEquals(r.status_code, 302)
+            # old version: redirect
+            r = get_page('3.5')
+            eq_(r.status_code, 302)
+            assert r['Location'].endswith(reverse('feedback.need_beta'))
 
-        # old version: redirect
-        r = self.client.get(reverse('feedback.sad'),
-                            HTTP_USER_AGENT=self.FX_UA % '3.5')
-        self.assertEquals(r.status_code, 302)
-        self.assertTrue(r['Location'].endswith(reverse('feedback.need_beta')))
+            # latest beta: no redirect
+            r = get_page(LATEST_BETAS[FIREFOX])
+            eq_(r.status_code, 200)
 
-        # latest beta: no redirect
-        r = self.client.get(
-            reverse('feedback.sad'), HTTP_USER_AGENT=(self.FX_UA % (
-                product_details.firefox_versions['LATEST_FIREFOX_DEVEL_VERSION'])))
-        self.assertEquals(r.status_code, 200)
+            # version newer than current: no redirect
+            r = get_page('20.0')
+            eq_(r.status_code, 200)
 
-        # version newer than current: no redirect
-        r = self.client.get(reverse('feedback.sad'),
-                            HTTP_USER_AGENT=(self.FX_UA % '20.0'))
-        self.assertEquals(r.status_code, 200)
-
-        settings.ENFORCE_USER_AGENT = old_enforce_setting
+        finally:
+            settings.ENFORCE_USER_AGENT = old_enforce_setting
 
     def test_give_feedback(self):
         r = self.client.post(reverse('feedback.sad'))
@@ -269,3 +296,174 @@ class ViewTests(TestCase):
         latest = Opinion.objects.order_by('-id')[0]
         eq_(latest.manufacturer, 'FancyBrand')
         eq_(latest.device, 'FancyPhone 2.0')
+
+
+class StableViewTests(ViewTestCase):
+    """Test feedback for stable Firefox versions."""
+
+    FX_UA = ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
+             'de; rv:1.9.2.3) Gecko/20100401 Firefox/%s')
+
+    def test_enforce_user_agent(self):
+        """Make sure unknown user agents are forwarded to download page."""
+
+        def get_page(ver=None):
+            """Request stable feedback page."""
+            extra = dict(HTTP_USER_AGENT=self.FX_UA % ver) if ver else {}
+            return self.client.get(reverse('feedback.stable_feedback'),
+                                   **extra)
+
+        old_enforce_setting = settings.ENFORCE_USER_AGENT
+        try:
+            settings.ENFORCE_USER_AGENT = True
+
+            # no UA: redirect
+            r = get_page()
+            eq_(r.status_code, 302)
+
+            # old version: redirect
+            r = get_page('3.5')
+            eq_(r.status_code, 302)
+            assert r['Location'].endswith(reverse('feedback.need_stable'))
+
+            # latest stable: no redirect
+            r = get_page(LATEST_STABLE[FIREFOX])
+            eq_(r.status_code, 200)
+
+            # version newer than current: no redirect
+            r = get_page('20.0')
+            eq_(r.status_code, 200)
+
+            # beta: redirect to beta feedback
+            r = get_page(LATEST_BETAS[FIREFOX])
+            eq_(r.status_code, 302)
+            assert r['Location'].endswith(reverse('feedback.beta_feedback'))
+
+        finally:
+            settings.ENFORCE_USER_AGENT = old_enforce_setting
+
+    def post_feedback(self, data, ajax=False, follow=True):
+        """POST to the stable feedback page."""
+        options = dict(HTTP_USER_AGENT=(self.FX_UA % '20.0'), follow=follow)
+        if ajax:
+            options['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
+
+        return self.client.post(reverse('feedback.stable_feedback'), data,
+                                **options)
+
+    def test_feedback_loads(self):
+        """No general errors on stable feedback page."""
+        r = self.client.get(reverse('feedback.stable_feedback'),
+                            HTTP_USER_AGENT=(self.FX_UA % '20.0'),
+                            follow=True)
+        eq_(r.status_code, 200)
+        doc = pyquery.PyQuery(r.content)
+        # Find all three forms
+        eq_(doc('article form').length, 3)
+
+    def test_rating(self):
+        """Submit rating form with and without AJAX."""
+
+        # Empty POST: Count errors
+        for ajax in True, False:
+            r = self.post_feedback({'type': OPINION_RATING}, ajax=ajax)
+            if not ajax:
+                doc = pyquery.PyQuery(r.content)
+                eq_(doc('article#rate form .errorlist').length, len(RATING_USAGE))
+            else:
+                eq_(r.status_code, 400)
+                errors = json.loads(r.content)
+                eq_(len(errors), len(RATING_USAGE))
+                for question in RATING_USAGE:
+                    assert question.short in errors
+
+        # Submit actual rating
+        data = {'type': OPINION_RATING}
+        for type in RATING_USAGE:
+            data[type.short] = RATING_CHOICES[type.id % len(RATING_CHOICES)][0]
+
+        for ajax in True, False:
+            r = self.post_feedback(data, follow=False, ajax=ajax)
+            if not ajax:
+                eq_(r.status_code, 302)
+                assert r['Location'].endswith(
+                    reverse('feedback.stable_feedback') + '#thanks')
+            else:
+                eq_(r.status_code, 200)
+                eq_(r['Content-Type'], 'application/json')
+
+            # Check the content made it into the database.
+            latest = Opinion.objects.order_by('-id')[0]
+            eq_(latest.ratings.count(), len(RATING_USAGE))
+            latest.delete()
+
+    def test_broken(self):
+        """Submit broken website report with and without AJAX."""
+        # Empty POST: Count errors
+        for ajax in True, False:
+            r = self.post_feedback({'type': OPINION_BROKEN}, ajax=ajax)
+            if not ajax:
+                doc = pyquery.PyQuery(r.content)
+                eq_(doc('article#broken form .errorlist').length, 2)
+            else:
+                eq_(r.status_code, 400)
+                errors = json.loads(r.content)
+                assert 'url' in errors
+                assert 'description' in errors
+
+        # Submit actual form
+        data = {
+            'type': OPINION_BROKEN,
+            'url': 'http://example.com/broken',
+            'description': 'This does not work.',
+        }
+
+        for ajax in True, False:
+            r = self.post_feedback(data, follow=False, ajax=ajax)
+            if not ajax:
+                eq_(r.status_code, 302)
+                assert r['Location'].endswith(
+                    reverse('feedback.stable_feedback') + '#thanks')
+            else:
+                eq_(r.status_code, 200)
+                eq_(r['Content-Type'], 'application/json')
+
+            # Check the content made it into the database.
+            latest = Opinion.objects.order_by('-id')[0]
+            eq_(latest.description, data['description'])
+            eq_(latest.url, data['url'])
+            latest.delete()
+
+    def test_suggestion(self):
+        """Submit suggestion with and without AJAX."""
+        # Empty POST: Count errors
+        for ajax in True, False:
+            r = self.post_feedback({'type': OPINION_SUGGESTION}, ajax=ajax)
+            if not ajax:
+                doc = pyquery.PyQuery(r.content)
+                eq_(doc('article#idea form .errorlist').length, 1)
+            else:
+                eq_(r.status_code, 400)
+                errors = json.loads(r.content)
+                assert 'description' in errors
+
+        # Submit actual form
+        data = {
+            'type': OPINION_SUGGESTION,
+            'description': 'This is a suggestion.',
+        }
+
+        for ajax in True, False:
+            r = self.post_feedback(data, follow=False, ajax=ajax)
+            if not ajax:
+                eq_(r.status_code, 302)
+                assert r['Location'].endswith(
+                    reverse('feedback.stable_feedback') + '#thanks')
+            else:
+                eq_(r.status_code, 200)
+                eq_(r['Content-Type'], 'application/json')
+
+            # Check the content made it into the database.
+            latest = Opinion.objects.order_by('-id')[0]
+            eq_(latest.description, data['description'])
+            latest.delete()

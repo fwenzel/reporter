@@ -26,17 +26,8 @@ article {
     margin-bottom: 65px;
     -moz-box-sizing: border-box;
     background: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
 }
-    article:before {
-        position: absolute;
-        left: -5px;
-        top: -5px;
-        right: 0;
-        bottom: 0;
-        -moz-transform: rotate(-.5deg);
-        z-index: -1;
-    }
     a {
         color: #5084c8;
         text-decoration: none;
@@ -53,17 +44,22 @@ html.transitioning {
 
 html.transitioning article {
     position: absolute;
-    -moz-transition: top 1s ease-in-out, opacity 1s ease-in-out;
-    -webkit-transition: top 1s ease-in-out, opacity 1s ease-in-out;
+    -moz-transition: left .6s ease-in, right .6s ease-in-out;
 }
 
+html.transitioning article.entering {
+    -moz-transition-delay: .3s;
+    -moz-transition-timing-function: ease-in-out;
+}
 
 article header {
     position: relative;
     padding: 20px 35px;
     background: -moz-linear-gradient(#FFFFFF, #F7F8F9);
-    background: -moz-radial-gradient(center 0, #FFFFFF, #F7F8F9);
-    box-shadow: inset 0 -1px 0 rgba(0,0,0,.01);
+    background: -moz-radial-gradient(center 0, #fff, #ebedf0);
+    border-radius: 10px 10px 0 0;
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.00);
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
 /*    border-bottom: 1px solid #f0f1f2;
 */
 }
@@ -102,8 +98,8 @@ article header {
             background: url(../img/back.png) no-repeat 0 0;
             right: 35px;
             top: 20px;
-            width: 34px;
-            height: 34px;
+            width: 35px;
+            height: 35px;
             text-indent: -1000em;
         }
             article header nav a strong {
@@ -112,7 +108,7 @@ article header {
                 right: 0;
                 top: 0;
                 bottom: 0;
-                background: url(../img/back.png) no-repeat -34px 0;
+                background: url(../img/back.png) no-repeat -40px 0;
                 opacity: 0;
                 -moz-transition: opacity .25s;
             }
@@ -152,6 +148,7 @@ article .content {
             box-shadow: 0px 3px 0 #438814;
             color: #fff;
             font-size: 21px;
+            font-weight: normal;
             line-height: 1;
             text-align: center;
             text-decoration: none;
@@ -211,6 +208,7 @@ input[type=text], input[type=url], textarea {
     color: #606060;
     color: #5e5f60;
     font-family: inherit;
+    font-weight: normal;
     font-size: 21px;
     padding: .25em .25em;
     border-radius: .25em;
@@ -332,6 +330,7 @@ footer:hover {
 #intro {
 }
     #intro header {
+        text-align: center;
     }
     #intro .content {
         position: relative;
@@ -340,6 +339,7 @@ footer:hover {
     }
         #intro .content li {
             display: inline;
+            margin-right: -.5em;
             vertical-align: top;
         }
             #intro .content li a {
@@ -360,21 +360,27 @@ footer:hover {
                     height: 96px;
                     margin: 0 auto;
                     margin-bottom: 1em;
-                    background: url(../img/type-FPO.png) no-repeat 0 0;
+                    background: url(../img/type.png) no-repeat 0 0;
                 }
+                #intro #intro-rate span { background-position: 0 0; }
+                #intro #intro-broken span { background-position: -100px 0; }
+                #intro #intro-idea span { background-position: -200px 0; }
                 #intro .content li a strong {
                     position: absolute;
                     left: 0;
                     right: 0;
                     top: 0;
                     bottom: 0;
-                    background: url(../img/type-FPO.png) no-repeat 0 -100px;
+                    background: url(../img/type.png) no-repeat 0 -100px;
                     opacity: 0;
                     -moz-transition: opacity .25s;
                 }
                 #intro .content li a:hover strong {
                     opacity: 1;
                 }
+                #intro #intro-rate strong { background-position: 0 -100px; }
+                #intro #intro-broken strong { background-position: -100px -100px; }
+                #intro #intro-idea strong { background-position: -200px -100px; }
     #intro aside {
         position: relative;
         padding: 20px 35px 35px;
@@ -389,7 +395,9 @@ footer:hover {
         color: #5C4B00;
         background: #FFFFDD;
     }
-
+    #intro aside a {
+        font-weight: normal;
+    }
 
 #rate {
 
@@ -506,6 +514,19 @@ footer:hover {
     }
 
 
+.count {
+    color: #008000;
+    float: right;
+    font-weight: bold;
+    margin-top: .2em;
+}
+.count.low {
+    color: #ff8c00;
+}
+.count.verylow {
+    color: #ff0000;
+}
+
 #thanks {
 }
     #thanks h1 {
@@ -544,6 +565,7 @@ footer:hover {
         }
         #thanks .content li {
             display: inline;
+            margin-left: -.3em;
         }
             #thanks .content li a {
                 text-decoration: none;

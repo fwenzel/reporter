@@ -209,6 +209,7 @@ MINIFY_BUNDLES = {
         # Stable versions feedback
         'stable': (
             'js/jquery.min.js',
+            'js/jquery.NobleCount.js',
             'js/stable.js',
         ),
     },

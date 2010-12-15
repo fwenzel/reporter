@@ -1,4 +1,6 @@
 """Version comparison module for Mozilla-style application versions."""
+# TODO liberate
+
 import re
 
 from django.utils.functional import memoize
@@ -54,14 +56,15 @@ version_dict = memoize(version_dict, _version_dict_cache, 1)
 
 
 def version_int(version):
-    d = version_dict(str(version))
+    version_data = version_dict(str(version))
+
+    d = {}
     for key in ['alpha_ver', 'major', 'minor1', 'minor2', 'minor3',
                 'pre_ver']:
-        if not d[key]:
-            d[key] = 0
+        d[key] = version_data.get(key) or 0
     atrans = {'a': 0, 'b': 1}
-    d['alpha'] = atrans.get(d['alpha'], 2)
-    d['pre'] = 0 if d['pre'] else 1
+    d['alpha'] = atrans.get(version_data['alpha'], 2)
+    d['pre'] = 0 if version_data['pre'] else 1
 
     v = "%d%02d%02d%02d%d%02d%d%02d" % (d['major'], d['minor1'],
             d['minor2'], d['minor3'], d['alpha'], d['alpha_ver'], d['pre'],

@@ -1,8 +1,9 @@
+from functools import wraps
 import json
 
+from django import http
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django import http
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 from django.views.decorators.vary import vary_on_headers
@@ -10,43 +11,56 @@ from django.views.decorators.vary import vary_on_headers
 import jingo
 from tower import ugettext as _
 
+from input import RATING_USAGE, RATING_CHOICES
+from input.decorators import cache_page
+from input.urlresolvers import reverse
+
 from feedback import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
-                      OPINION_RATING, OPINION_BROKEN, RATING_USAGE,
-                      RATING_TYPES, RATING_CHOICES)
+                      OPINION_RATING, OPINION_BROKEN, OPINION_TYPES)
 from feedback.forms import (PraiseForm, IssueForm, SuggestionForm,
                             BrokenWebsiteForm, RatingForm, IdeaForm)
 from feedback.models import Opinion, Rating
 from feedback.utils import detect_language
-from feedback.validators import validate_ua
-from input.decorators import cache_page
-from input.urlresolvers import reverse
+from feedback.validators import validate_beta_ua, validate_stable_ua
 
 
-def enforce_user_agent(f):
+def enforce_ua(beta):
     """
-    View decorator enforcing feedback from the latest beta users only.
+    View decorator enforcing feedback from the right (latest beta, latest
+    stable) users only.
 
     Can be disabled with settings.ENFORCE_USER_AGENT = False.
     """
-    def wrapped(request, *args, **kwargs):
-        # Validate User-Agent request header.
-        ua = request.META.get('HTTP_USER_AGENT', None)
-        try:
-            validate_ua(ua)
-        except ValidationError:
-            if request.method == 'GET':
-                return http.HttpResponseRedirect(reverse('feedback.need_beta'))
-            else:
-                return http.HttpResponseBadRequest(
-                    _('User-Agent request header must be set.'))
+    validator = validate_beta_ua if beta else validate_stable_ua
+    upgrade_url = 'feedback.need_beta' if beta else 'feedback.need_stable'
 
-        # if we made it here, it's a latest beta user
-        return f(request, ua=ua, *args, **kwargs)
+    def decorate(f):
+        @wraps(f)
+        def wrapped(request, *args, **kwargs):
+            # Validate User-Agent request header.
+            ua = request.META.get('HTTP_USER_AGENT', None)
+            try:
+                parsed = validator(ua)
+            except ValidationError:
+                if request.method == 'GET':
+                    return http.HttpResponseRedirect(reverse(upgrade_url))
+                else:
+                    return http.HttpResponseBadRequest(
+                        _('User-Agent request header must be set.'))
 
-    return wrapped
+            # Forward beta users to beta channel
+            if not beta and parsed and parsed.get('alpha'):
+                return http.HttpResponseRedirect(
+                    reverse('feedback.beta_feedback'))
+
+            # if we made it here, it's a latest beta user
+            return f(request, ua=ua, *args, **kwargs)
+
+        return wrapped
+    return decorate
 
 
-@enforce_user_agent
+@enforce_ua(beta=True)
 @never_cache
 def give_feedback(request, ua, type):
     """Submit feedback page."""
@@ -95,7 +109,7 @@ def give_feedback(request, ua, type):
 
 
 @vary_on_headers('User-Agent')
-@enforce_user_agent
+@enforce_ua(beta=True)
 @cache_page
 def beta_feedback(request, ua):
     """
@@ -108,13 +122,12 @@ def beta_feedback(request, ua):
 
 
 @vary_on_headers('User-Agent')
-@enforce_user_agent  # TODO enforce *stable*, not beta version
+@enforce_ua(beta=False)
 @cache_page
 def stable_feedback(request, ua):
     """The index page for stable version feedback."""
     data = {
         'RATING_USAGE': RATING_USAGE,
-        'RATING_TYPES': RATING_TYPES,
         'RATING_CHOICES': RATING_CHOICES,
     }
 
@@ -148,21 +161,17 @@ def stable_feedback(request, ua):
         else:
             # For non-AJAX, return form with errors, and blank other feedback
             # forms.
-            data.update({
-                'rating_form': (form if type == OPINION_RATING else
-                                RatingForm()),
-                'website_form': (form if type == OPINION_BROKEN else
-                                 BrokenWebsiteForm()),
-                'suggestion_form': (form if type == OPINION_SUGGESTION else
-                                    IdeaForm()),
-            })
+            data.update(
+                rating_form=(form if type == OPINION_RATING else
+                             RatingForm()),
+                website_form=(form if type == OPINION_BROKEN else
+                              BrokenWebsiteForm()),
+                suggestion_form=(form if type == OPINION_SUGGESTION else
+                                 IdeaForm()))
 
     else:
-        data.update({
-            'rating_form': RatingForm(),
-            'website_form': BrokenWebsiteForm(),
-            'suggestion_form': IdeaForm(),
-        })
+        data.update(rating_form=RatingForm(), website_form=BrokenWebsiteForm(),
+                    suggestion_form=IdeaForm())
 
     template = 'feedback/stable_index.html'
     return jingo.render(request, template, data)
@@ -174,6 +183,14 @@ def need_beta(request):
 
     template = 'feedback/%sneed_beta.html' % (
         'mobile/' if request.mobile_site else '')
+    return jingo.render(request, template)
+
+
+@cache_page
+def need_stable(request):
+    """Encourage people to download a current stable version."""
+
+    template = 'feedback/need_stable.html'
     return jingo.render(request, template)
 
 
@@ -196,13 +213,17 @@ def save_opinion_from_form(request, type, ua, form):
     """Given a (valid) form and feedback type, save it to the DB."""
     locale = detect_language(request)
 
-    # Remove URL if checkbox disabled or no URL submitted.
-    if not (form.cleaned_data.get('add_url', False) and
-            form.cleaned_data.get('url')):
+    # Remove URL if checkbox disabled or no URL submitted. Broken Website
+    # report does not have the option to disable URL submission.
+    if (type != OPINION_BROKEN and
+        not (form.cleaned_data.get('add_url', False) and
+             form.cleaned_data.get('url'))):
         form.cleaned_data['url'] = ''
 
-    if type in (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
-                OPINION_BROKEN):
+    if type not in OPINION_TYPES:
+        raise ValueError('Unknown type %s' % type)
+
+    if type != OPINION_RATING:
         return Opinion(
             type=type,
             url=form.cleaned_data.get('url', ''),
@@ -211,17 +232,14 @@ def save_opinion_from_form(request, type, ua, form):
             manufacturer=form.cleaned_data['manufacturer'],
             device=form.cleaned_data['device']).save()
 
-    elif type == OPINION_RATING:
+    else:
         opinion = Opinion(
             type=type,
             user_agent=ua, locale=locale)
         opinion.save()
-        for qid in RATING_USAGE:
+        for question in RATING_USAGE:
             Rating(
                 opinion=opinion,
-                type=qid,
-                value=form.cleaned_data.get(RATING_TYPES[qid]['short'])).save()
+                type=question.id,
+                value=form.cleaned_data.get(question.short)).save()
         return opinion
-
-    else:
-        raise ValueError('Unknown type %s' % type)
