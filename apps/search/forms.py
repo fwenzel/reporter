@@ -114,7 +114,11 @@ class ReporterSearchForm(forms.Form):
             (cleaned['date_start'], cleaned['date_end']) = (
                     cleaned['date_end'], cleaned['date_start'])
 
-        if not cleaned.get('page'):
+        # Ensure page is a natural number.
+        try:
+            cleaned['page'] = int(cleaned.get('page'))
+            assert cleaned['page'] > 0
+        except (TypeError, AssertionError):
             cleaned['page'] = 1
 
         return cleaned

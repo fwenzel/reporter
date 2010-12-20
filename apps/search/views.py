@@ -45,7 +45,7 @@ def _get_results_opts(request, form, product, meta=[]):
     search_opts = form.cleaned_data
     search_opts['product'] = APPS[product].id
     search_opts['meta'] = meta
-    search_opts['offset'] = ((int(request.GET.get('page', 1)) - 1) *
+    search_opts['offset'] = ((form.cleaned_data['page'] - 1) *
                              settings.SEARCH_PERPAGE)
 
     sentiment = form.cleaned_data.get('sentiment', '')

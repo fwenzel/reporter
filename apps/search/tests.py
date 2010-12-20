@@ -194,6 +194,13 @@ class SearchViewTest(SphinxTestCase):
         """
         self.compare_2_pages(4, 5)
 
+    def test_page_0(self):
+        """In bug 620296, page 0 led to an AssertionError."""
+        for page in (-1, 0):
+            r = search_request(page=page)
+            eq_(r.status_code, 200)
+            eq_(r.context['form'].cleaned_data['page'], 1)
+
     @patch('search.views._get_results')
     def test_error(self, get_results):
         get_results.side_effect = SearchError()
