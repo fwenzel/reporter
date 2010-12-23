@@ -293,7 +293,7 @@ class BetaViewTests(ViewTestCase):
         assert r.content.find('Thanks') >= 0
 
         # Fetch row from model and check data made it there.
-        latest = Opinion.objects.order_by('-id')[0]
+        latest = Opinion.objects.no_cache().order_by('-id')[0]
         eq_(latest.manufacturer, 'FancyBrand')
         eq_(latest.device, 'FancyPhone 2.0')
 
@@ -393,7 +393,7 @@ class StableViewTests(ViewTestCase):
                 eq_(r['Content-Type'], 'application/json')
 
             # Check the content made it into the database.
-            latest = Opinion.objects.order_by('-id')[0]
+            latest = Opinion.objects.no_cache().order_by('-id')[0]
             eq_(latest.ratings.count(), len(RATING_USAGE))
             latest.delete()
 
@@ -429,7 +429,7 @@ class StableViewTests(ViewTestCase):
                 eq_(r['Content-Type'], 'application/json')
 
             # Check the content made it into the database.
-            latest = Opinion.objects.order_by('-id')[0]
+            latest = Opinion.objects.no_cache().order_by('-id')[0]
             eq_(latest.description, data['description'])
             eq_(latest.url, data['url'])
             latest.delete()
@@ -464,6 +464,6 @@ class StableViewTests(ViewTestCase):
                 eq_(r['Content-Type'], 'application/json')
 
             # Check the content made it into the database.
-            latest = Opinion.objects.order_by('-id')[0]
+            latest = Opinion.objects.no_cache().order_by('-id')[0]
             eq_(latest.description, data['description'])
             latest.delete()
