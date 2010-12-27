@@ -1,6 +1,7 @@
 import re
 
 from django.conf import settings
+from django.utils.functional import memoize
 from django.utils.translation import to_locale
 from django.utils.translation.trans_real import parse_accept_lang_header
 
@@ -8,10 +9,8 @@ from product_details import product_details
 from topia.termextract import extract
 
 from feedback import BROWSERS, OS_OTHER, OS_PATTERNS
-from feedback.decorators import cached
 
 
-@cached()
 def ua_parse(ua):
     """
     Simple user agent string parser for Firefox and friends.
@@ -51,6 +50,8 @@ def ua_parse(ua):
     detected['os'] = os
 
     return detected
+_ua_parse_cache = {}
+ua_parse = memoize(ua_parse, _ua_parse_cache, 1)
 
 
 def detect_language(request):
