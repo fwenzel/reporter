@@ -12,6 +12,7 @@ from nose.tools import eq_
 from pyquery import pyquery
 
 from input import RATING_USAGE, RATING_CHOICES
+from input.tests import ViewTestCase
 from input.urlresolvers import reverse
 from feedback import (FIREFOX, MOBILE, OPINION_PRAISE, OPINION_ISSUE,
                       OPINION_SUGGESTION, OPINION_RATING, OPINION_BROKEN,
@@ -157,12 +158,6 @@ class VersionCompareTest(TestCase):
         int2 = version_int(version_string)
         eq_(dict1, dict2)
         eq_(int1, int2)
-
-
-class ViewTestCase(TestCase):
-    def setUp(self):
-        """Let's detect the locale first."""
-        self.client.get('/')
 
 
 class BetaViewTests(ViewTestCase):

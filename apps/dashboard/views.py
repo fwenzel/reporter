@@ -8,13 +8,14 @@ from tower import ugettext as _
 from feedback import stats, LATEST_BETAS, OPINION_TYPES, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
 from feedback.models import Opinion, Term
 from feedback.version_compare import simplify_version
-from input.decorators import cache_page
+from input.decorators import cache_page, forward_mobile
 from search.client import Client, SearchError
 from search.forms import ReporterSearchForm, PROD_CHOICES, VERSION_CHOICES
 from search.views import get_sentiment
 from website_issues.models import SiteSummary
 
 
+@forward_mobile
 @cache_page
 def dashboard(request):
     """Front page view."""

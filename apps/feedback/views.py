@@ -12,7 +12,7 @@ import jingo
 from tower import ugettext as _
 
 from input import RATING_USAGE, RATING_CHOICES
-from input.decorators import cache_page
+from input.decorators import cache_page, forward_mobile
 from input.urlresolvers import reverse
 
 from feedback import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
@@ -60,6 +60,7 @@ def enforce_ua(beta):
     return decorate
 
 
+@forward_mobile
 @enforce_ua(beta=True)
 @never_cache
 def give_feedback(request, ua, type):
@@ -108,6 +109,7 @@ def give_feedback(request, ua, type):
     return jingo.render(request, template, data)
 
 
+@forward_mobile
 @vary_on_headers('User-Agent')
 @enforce_ua(beta=True)
 @cache_page
@@ -121,6 +123,7 @@ def beta_feedback(request, ua):
     return jingo.render(request, template)
 
 
+@forward_mobile
 @vary_on_headers('User-Agent')
 @enforce_ua(beta=False)
 @cache_page

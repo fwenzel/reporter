@@ -98,7 +98,7 @@ class Prefixer(object):
 
     def fix(self, path):
         path = path.lstrip('/')
-        url_parts = [self.request.META['SCRIPT_NAME']]
+        url_parts = [self.request.META.get('SCRIPT_NAME', '')]
 
         if path.partition('/')[0] not in settings.SUPPORTED_NONLOCALES:
             locale = self.locale if self.locale else self.get_language()

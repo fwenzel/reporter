@@ -1,9 +1,18 @@
 from functools import wraps
+import re
+import urllib
 
 from django.conf import settings
+from django.contrib.sites.models import Site
+from django.http import HttpResponsePermanentRedirect
 from django.utils.hashcompat import md5_constructor
 
 from view_cache_utils import cache_page_with_prefix
+
+
+# Known mobile device patterns. Excludes iPad because it's big enough to show
+# the desktop dashboard.
+MOBILE_DEVICE_PATTERN = re.compile('^Mozilla.*(Fennec|Android|Maemo|iPhone|iPod)')
 
 
 def cache_page(cache_timeout=None, use_get=False, **kwargs):
@@ -33,3 +42,26 @@ def cache_page(cache_timeout=None, use_get=False, **kwargs):
             return f(request, *args, **kwargs)
         return cached_view
     return wrap
+
+
+def forward_mobile(f):
+    """Forward mobile requests to the same path on the mobile domain."""
+
+    @wraps(f)
+    def wrapped(request, *args, **kwargs):
+        if (settings.SITE_ID == settings.DESKTOP_SITE_ID and
+            MOBILE_DEVICE_PATTERN.search(
+                request.META.get('HTTP_USER_AGENT', ''))):
+            mobile_site = Site.objects.get(id=settings.MOBILE_SITE_ID)
+            target = '%s://%s%s' % ('https' if request.is_secure() else 'http',
+                                    mobile_site.domain, request.path)
+            if request.GET:
+                target = '%s?%s' % (target, urllib.urlencode(request.GET))
+
+            response = HttpResponsePermanentRedirect(target)
+            response['Vary'] = 'User-Agent'
+            return response
+
+        return f(request, *args, **kwargs)
+
+    return wrapped
