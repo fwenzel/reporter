@@ -18,18 +18,19 @@ PROD_CHOICES = (
     (MOBILE.short, MOBILE.pretty),
 )
 
-# TODO need this for Mobile as well
+def _version_list(app, releases):
+    """Build a list of simplified versions for a given app."""
+    versions = [
+        (simplify_version(v[0]), v[0]) for v in
+        sorted(releases.items(), key=lambda x: x[1], reverse=True) if
+        version_int(v[0]) >= version_int(getattr(app, 'hide_below', '0.0'))]
+    return uniquifier(versions, key=lambda x: x[0])
+
 VERSION_CHOICES = {
-    FIREFOX: [('', _lazy('-- all --', 'version_choice'))] + uniquifier(
-        [(simplify_version(v[0]), v[0]) for v in
-         sorted(product_details.firefox_history_development_releases.items(),
-                key=lambda x: x[1], reverse=True) if
-         version_int(v[0]) >= version_int(FIREFOX.hide_below)],
-         key=lambda x: x[0]),
-    MOBILE: [('', _lazy('-- all --', 'version_choice'))] + uniquifier(
-        [(simplify_version(v[0]), v[0]) for v in
-         sorted(product_details.mobile_history_development_releases.items(),
-                key=lambda x: x[1], reverse=True)]),
+    FIREFOX: [('', _lazy('-- all --', 'version_choice'))] + _version_list(
+        FIREFOX, product_details.firefox_history_development_releases),
+    MOBILE: [('', _lazy('-- all --', 'version_choice'))] + _version_list(
+        MOBILE, product_details.mobile_history_development_releases),
 }
 
 SENTIMENT_CHOICES = [('', _lazy('-- all --', 'sentiment_choice')),
