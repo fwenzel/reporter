@@ -15,6 +15,7 @@ class MOBILE:
     short = 'mobile'
     pretty = _(u'Mobile')
     guid = '{a23983c0-fd0e-11dc-95ff-0800200c9a66}'
+    hide_below = '4.0b1'
 
 APP_USAGE = _apps = (FIREFOX, MOBILE)
 APPS = dict((app.short, app) for app in _apps)
