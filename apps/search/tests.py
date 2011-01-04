@@ -240,9 +240,19 @@ class SearchViewTest(SphinxTestCase):
         }
         r = self.client.get(reverse('search'), data, follow=True)
         eq_(r.status_code, 200)
-        assert not r.context['form'].cleaned_data['date_start']
-        print r.context
-        assert 'date_end' in r.context['form'].cleaned_data
+        assert not r.context['form'].cleaned_data.get('date_start')
+        assert not r.context['form'].cleaned_data.get('date_end')
+
+    def test_search_with_invalid_date(self):
+        """Date validation should not error out."""
+        data = {
+            'product': 'firefox',
+            'date_start': 'cheesecake',
+            'date_end': '',
+        }
+        r = self.client.get(reverse('search'), data, follow=True)
+        eq_(r.status_code, 200)
+        assert not hasattr(r.context['form'], 'cleaned_data')
 
 
 class FeedTest(SphinxTestCase):
