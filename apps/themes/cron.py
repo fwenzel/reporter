@@ -19,10 +19,6 @@ STOPWORDS.update(dict((w, 1,) for w in NEW_WORDS))
 
 log = logging.getLogger('reporter')
 
-def _o(str):
-    print str
-
-log.debug = _o
 
 @cronjobs.register
 def cluster_panorama():
