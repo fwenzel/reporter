@@ -19,6 +19,10 @@ STOPWORDS.update(dict((w, 1,) for w in NEW_WORDS))
 
 log = logging.getLogger('reporter')
 
+def _o(str):
+    print str
+
+log.debug = _o
 
 @cronjobs.register
 def cluster_panorama():
@@ -56,8 +60,8 @@ def cluster_by_product(qs):
     for app in APP_USAGE:
         log.debug('Clustering %s(%s)' %
                   (unicode(app.pretty), LATEST_BETAS[app]))
-        qs = qs.filter(product=app.id, version=LATEST_BETAS[app])
-        cluster_by_feeling(qs, app)
+        qs_product = qs.filter(product=app.id, version=LATEST_BETAS[app])
+        cluster_by_feeling(qs_product, app)
 
 
 def cluster_by_feeling(qs, app):
