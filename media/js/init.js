@@ -6,6 +6,46 @@ $(document).ready(function(){
     // initialize date pickers
     if ($.datepicker) $('.datepicker').datepicker({ maxDate: '0' });
 
+    // initialize Copy UA lightbox
+    var overlay = $('#ua_overlay');
+    if (overlay.length) {
+        $('.messages .options a.copy_ua').click(function(e) {
+            var ua = $(this).attr("data-ua");
+            $('.hint', overlay).show();
+            $('.copied', overlay).hide();
+            overlay.animate(
+                {opacity: 'show'}, 200, 'linear',
+                function() {
+                    $('.ua', overlay).text(ua).focus().get(0).select();
+                }
+            );
+            e.preventDefault();
+        });
+
+        function closeOverlay() {
+            overlay.animate({opacity: 'hide'}, 200, 'linear');
+        }
+
+        $('.ua', overlay).bind('copy', function(e) {
+            $('.hint', overlay).hide();
+            $('.copied', overlay).show();
+            setTimeout(closeOverlay, 600);
+        });
+
+        $('.close', overlay).bind('click', function(e) {
+            closeOverlay();
+            e.preventDefault();
+        });
+
+        overlay.bind('click', function(e) {
+            if ($(e.target).closest('.dialog').length == 0) closeOverlay();
+        });
+
+        overlay.bind('keydown', function(e) {
+            if (e.keyCode == 27 /* ESC */) closeOverlay();
+        });
+    }
+
     // Submit on locale choice
     $('form.languages')
         .find('select').change(function(){
