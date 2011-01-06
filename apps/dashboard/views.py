@@ -68,7 +68,7 @@ def dashboard(request):
             'OPINION_PRAISE': OPINION_PRAISE,
             'OPINION_ISSUE': OPINION_ISSUE,
             'OPINION_SUGGESTION': OPINION_SUGGESTION,
-            'product': app.short,
+            'product': app.pretty,
             'products': PROD_CHOICES,
             'sentiments': get_sentiment(metas.get('type', [])),
             'terms': stats.frequent_terms(qs=frequent_terms),
