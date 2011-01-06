@@ -18,9 +18,19 @@
     {% if defaults['locale'] %}
       {{ locale_item(defaults['locale'], selected=True) }}
     {% else %}
-      {% for item in locales[:15] %}
-      {{ locale_item(item.locale, item.count) }}
-      {% endfor %}
+      <div>
+        {% for item in locales[:10] %}
+        {{ locale_item(item.locale, item.count) }}
+        {% endfor %}
+      </div>
+      {% if locales|length > 10 %}
+      <li><a href="#" class="more">{{ _('More Locales') }}</a></li>
+      {% endif %}
+      <div class="extra">
+        {% for item in locales[10:] %}
+        {{ locale_item(item.locale, item.count) }}
+        {% endfor %}
+      </div>
     {% endif %}
   </ul>
 </div>
