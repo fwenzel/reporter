@@ -188,6 +188,7 @@ MINIFY_BUNDLES = {
             'js/jquery-ui.min.js',
             'js/init.js',
             'js/input.js',
+            'js/search.js',
 
             # Time-based charts
             'js/highcharts.js',

@@ -294,6 +294,9 @@ header, footer, article, section { display: block; }
                     right: -18px;
                     }
 
+.filter .extra {
+    display: none;
+}
 
 .messages {
     }
