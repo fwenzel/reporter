@@ -209,7 +209,11 @@ def thanks(request):
 @cache_page
 def opinion_detail(request, id):
     o = get_object_or_404(Opinion, pk=id)
-    return jingo.render(request, 'feedback/opinion.html', {'opinion': o})
+    return jingo.render(request, 'feedback/opinion.html', {
+        'opinion': o,
+        'OPINION_PRAISE': OPINION_PRAISE,
+        'OPINION_ISSUE': OPINION_ISSUE,
+        'OPINION_SUGGESTION': OPINION_SUGGESTION})
 
 
 def save_opinion_from_form(request, type, ua, form):
