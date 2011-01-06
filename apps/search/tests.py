@@ -19,7 +19,7 @@ from feedback import FIREFOX, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
 from feedback.cron import populate
 from feedback.models import Opinion
 from search import forms, views
-from search.client import Client, SearchError
+from search.client import Client, SearchError, extract_filters
 from search.utils import start_sphinx, stop_sphinx, reindex
 
 
@@ -338,3 +338,12 @@ def test_version_filter():
     eq_(len(expected), len(test_list))
     for n, v in enumerate(test_list):
         eq_(v[0], expected[n])
+
+def test_date_filter_timezone():
+    """Ensure date filters are applied in app time (= PST), not UTC."""
+    dates = dict(date_start=datetime.date(2010, 1, 1),
+                   date_end=datetime.date(2010, 1, 31))
+    _, ranges, _ = extract_filters(dates)
+    eq_(ranges['created'][0], 1262332800)  # 8:00 UTC on 1/1/2010
+    # 8:00 UTC on 2/1/2010 (sic, to include all of the last day)
+    eq_(ranges['created'][1], 1265011200)

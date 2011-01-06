@@ -1,7 +1,7 @@
 import os
 import re
 import socket
-from calendar import timegm
+import time
 from collections import defaultdict
 from datetime import timedelta
 from operator import itemgetter
@@ -73,9 +73,9 @@ def extract_filters(kwargs):
             filters['locale'] = crc32(kwargs['locale'])
 
     if kwargs.get('date_end') and kwargs.get('date_start'):
-        start = int(timegm(kwargs['date_start'].timetuple()))
+        start = int(time.mktime(kwargs['date_start'].timetuple()))
         end_date = kwargs['date_end'] + timedelta(days=1)
-        end = int(timegm(end_date.timetuple()))
+        end = int(time.mktime(end_date.timetuple()))
         ranges['created'] = (start, end)
 
     return (filters, ranges, metas)
