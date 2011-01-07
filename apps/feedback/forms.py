@@ -71,19 +71,22 @@ class FeedbackForm(forms.Form):
     """Feedback form fields shared between feedback types."""
 
     add_url = forms.BooleanField(initial=True, required=False)
-    # NB: The ID 'id_url' is hard-coded in the Testpilot extension to
+    # NB: The class 'url' is hard-coded in the Testpilot extension to
     # accommodate pre-filling the field client-side.
     # Do not change unless you know what you are doing.
+    # TODO @deprecated id == id_url used to be used by the extension.
     url = ExtendedURLField(required=False, widget=forms.TextInput(
-        attrs={'placeholder': 'http://', 'id': 'id_url'}))
+        attrs={'placeholder': 'http://', 'id': 'id_url',
+               'class': 'url'}))
 
-    # NB the IDs 'id_manufacturer' and 'id_device' are hard-coded into the
+    # NB the classes 'manufacturer' and 'device' are hard-coded into the
     # Testpilot extension on Mobile.
     # Do not change unless you know what you are doing.
+    # TODO @deprecated the id_* IDs used to be used by the extension.
     manufacturer = forms.CharField(required=False, widget=forms.HiddenInput(
-        attrs={'id': 'id_manufacturer'}))
+        attrs={'id': 'id_manufacturer', 'class': 'manufacturer'}))
     device = forms.CharField(required=False, widget=forms.HiddenInput(
-        attrs={'id': 'id_device'}))
+        attrs={'id': 'id_device', 'class': 'device'}))
 
     def clean(self):
         # Ensure this is not a recent duplicate submission.
@@ -159,9 +162,12 @@ class RatingForm(forms.Form):
 class BrokenWebsiteForm(FeedbackForm):
     """'Report Broken Website' form."""
     max_length = settings.MAX_FEEDBACK_LENGTH
+    # NB: The class 'url' is hard-coded in the Testpilot extension to
+    # accommodate pre-filling the field client-side.
+    # Do not change unless you know what you are doing.
     url = ExtendedURLField(required=True, widget=URLInput(
         attrs={'placeholder': 'http://mozilla.org/broken', 'id': 'broken-url',
-               'size': 45,}))
+               'size': 45, 'class': 'url'}))
     description = forms.CharField(required=True, widget=forms.Textarea(
         attrs={'placeholder': _lazy('Example: Images were not loading, but '
                                     'the rest of the page was.'),
