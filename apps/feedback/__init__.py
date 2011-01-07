@@ -38,7 +38,7 @@ LATEST_BETAS = {
     MOBILE: product_details.mobile_details['beta_version'],
 }
 
-LATEST_STABLE = {
+LATEST_RELEASE = {
     FIREFOX: product_details.firefox_versions['LATEST_FIREFOX_VERSION'],
     MOBILE: product_details.mobile_details['version'],
 }

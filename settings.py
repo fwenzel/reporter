@@ -176,10 +176,10 @@ MINIFY_BUNDLES = {
             'css/mobile.css',
         ),
 
-        # Feedback for stable Firefox versions
-        'stable': (
+        # Feedback for Firefox release versions
+        'release': (
             'css/reset-min.css',
-            'css/stable.css',
+            'css/release.css',
         ),
     },
     'js': {
@@ -207,11 +207,11 @@ MINIFY_BUNDLES = {
             'js/reporter.js',
         ),
 
-        # Stable versions feedback
-        'stable': (
+        # Release versions feedback
+        'release': (
             'js/jquery.min.js',
             'js/jquery.NobleCount.js',
-            'js/stable.js',
+            'js/release.js',
         ),
     },
 }

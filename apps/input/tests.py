@@ -49,7 +49,7 @@ class DecoratorTests(ViewTestCase):
             reverse('feedback.happy'),
             reverse('feedback.sad'),
             reverse('feedback.suggestion'),
-            reverse('feedback.stable_feedback'),
+            reverse('feedback.release_feedback'),
         )
 
         # User Agent Patterns: (UA, forward: true/false?)

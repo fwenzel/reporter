@@ -183,7 +183,7 @@ class BrokenWebsiteForm(FeedbackForm):
 
 @autostrip
 class IdeaForm(SuggestionForm):
-    """Flavor of SuggestionForm to be used for stable feedback."""
+    """Flavor of SuggestionForm to be used for release feedback."""
     max_length = settings.MAX_SUGGESTION_LENGTH
     description = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _lazy('Enter your suggestions here.'),

@@ -16,7 +16,7 @@ from input.tests import ViewTestCase
 from input.urlresolvers import reverse
 from feedback import (FIREFOX, MOBILE, OPINION_PRAISE, OPINION_ISSUE,
                       OPINION_SUGGESTION, OPINION_RATING, OPINION_BROKEN,
-                      LATEST_BETAS, LATEST_STABLE)
+                      LATEST_BETAS, LATEST_RELEASE)
 from feedback.models import Opinion
 from feedback.utils import detect_language, ua_parse, smart_truncate
 from feedback.validators import validate_no_urls, ExtendedURLValidator
@@ -171,7 +171,7 @@ class BetaViewTests(ViewTestCase):
         """Make sure unknown user agents are forwarded to download page."""
 
         def get_page(ver=None):
-            """Request stable feedback page."""
+            """Request release feedback page."""
             extra = dict(HTTP_USER_AGENT=self.FX_UA % ver) if ver else {}
             return self.client.get(reverse('feedback.sad'),
                                    **extra)
@@ -293,8 +293,8 @@ class BetaViewTests(ViewTestCase):
         eq_(latest.device, 'FancyPhone 2.0')
 
 
-class StableViewTests(ViewTestCase):
-    """Test feedback for stable Firefox versions."""
+class ReleaseViewTests(ViewTestCase):
+    """Test feedback for Firefox release versions."""
 
     FX_UA = ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
              'de; rv:1.9.2.3) Gecko/20100401 Firefox/%s')
@@ -303,9 +303,9 @@ class StableViewTests(ViewTestCase):
         """Make sure unknown user agents are forwarded to download page."""
 
         def get_page(ver=None):
-            """Request stable feedback page."""
+            """Request release feedback page."""
             extra = dict(HTTP_USER_AGENT=self.FX_UA % ver) if ver else {}
-            return self.client.get(reverse('feedback.stable_feedback'),
+            return self.client.get(reverse('feedback.release_feedback'),
                                    **extra)
 
         old_enforce_setting = settings.ENFORCE_USER_AGENT
@@ -319,10 +319,10 @@ class StableViewTests(ViewTestCase):
             # old version: redirect
             r = get_page('3.5')
             eq_(r.status_code, 302)
-            assert r['Location'].endswith(reverse('feedback.need_stable'))
+            assert r['Location'].endswith(reverse('feedback.need_release'))
 
-            # latest stable: no redirect
-            r = get_page(LATEST_STABLE[FIREFOX])
+            # latest release: no redirect
+            r = get_page(LATEST_RELEASE[FIREFOX])
             eq_(r.status_code, 200)
 
             # version newer than current: no redirect
@@ -338,17 +338,17 @@ class StableViewTests(ViewTestCase):
             settings.ENFORCE_USER_AGENT = old_enforce_setting
 
     def post_feedback(self, data, ajax=False, follow=True):
-        """POST to the stable feedback page."""
+        """POST to the release feedback page."""
         options = dict(HTTP_USER_AGENT=(self.FX_UA % '20.0'), follow=follow)
         if ajax:
             options['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
 
-        return self.client.post(reverse('feedback.stable_feedback'), data,
+        return self.client.post(reverse('feedback.release_feedback'), data,
                                 **options)
 
     def test_feedback_loads(self):
-        """No general errors on stable feedback page."""
-        r = self.client.get(reverse('feedback.stable_feedback'),
+        """No general errors on release feedback page."""
+        r = self.client.get(reverse('feedback.release_feedback'),
                             HTTP_USER_AGENT=(self.FX_UA % '20.0'),
                             follow=True)
         eq_(r.status_code, 200)
@@ -382,7 +382,7 @@ class StableViewTests(ViewTestCase):
             if not ajax:
                 eq_(r.status_code, 302)
                 assert r['Location'].endswith(
-                    reverse('feedback.stable_feedback') + '#thanks')
+                    reverse('feedback.release_feedback') + '#thanks')
             else:
                 eq_(r.status_code, 200)
                 eq_(r['Content-Type'], 'application/json')
@@ -418,7 +418,7 @@ class StableViewTests(ViewTestCase):
             if not ajax:
                 eq_(r.status_code, 302)
                 assert r['Location'].endswith(
-                    reverse('feedback.stable_feedback') + '#thanks')
+                    reverse('feedback.release_feedback') + '#thanks')
             else:
                 eq_(r.status_code, 200)
                 eq_(r['Content-Type'], 'application/json')
@@ -453,7 +453,7 @@ class StableViewTests(ViewTestCase):
             if not ajax:
                 eq_(r.status_code, 302)
                 assert r['Location'].endswith(
-                    reverse('feedback.stable_feedback') + '#thanks')
+                    reverse('feedback.release_feedback') + '#thanks')
             else:
                 eq_(r.status_code, 200)
                 eq_(r['Content-Type'], 'application/json')

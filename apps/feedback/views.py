@@ -21,18 +21,18 @@ from feedback.forms import (PraiseForm, IssueForm, SuggestionForm,
                             BrokenWebsiteForm, RatingForm, IdeaForm)
 from feedback.models import Opinion, Rating
 from feedback.utils import detect_language
-from feedback.validators import validate_beta_ua, validate_stable_ua
+from feedback.validators import validate_beta_ua, validate_release_ua
 
 
 def enforce_ua(beta):
     """
     View decorator enforcing feedback from the right (latest beta, latest
-    stable) users only.
+    release) users only.
 
     Can be disabled with settings.ENFORCE_USER_AGENT = False.
     """
-    validator = validate_beta_ua if beta else validate_stable_ua
-    upgrade_url = 'feedback.need_beta' if beta else 'feedback.need_stable'
+    validator = validate_beta_ua if beta else validate_release_ua
+    upgrade_url = 'feedback.need_beta' if beta else 'feedback.need_release'
 
     def decorate(f):
         @wraps(f)
@@ -127,8 +127,8 @@ def beta_feedback(request, ua):
 @vary_on_headers('User-Agent')
 @enforce_ua(beta=False)
 @cache_page
-def stable_feedback(request, ua):
-    """The index page for stable version feedback."""
+def release_feedback(request, ua):
+    """The index page for release version feedback."""
     data = {
         'RATING_USAGE': RATING_USAGE,
         'RATING_CHOICES': RATING_CHOICES,
@@ -154,7 +154,7 @@ def stable_feedback(request, ua):
                                          mimetype='application/json')
             else:
                 return http.HttpResponseRedirect(
-                    reverse('feedback.stable_feedback') + '#thanks')
+                    reverse('feedback.release_feedback') + '#thanks')
 
         elif request.is_ajax():
             # For AJAX request, return errors only.
@@ -176,7 +176,7 @@ def stable_feedback(request, ua):
         data.update(rating_form=RatingForm(), website_form=BrokenWebsiteForm(),
                     suggestion_form=IdeaForm())
 
-    template = 'feedback/stable_index.html'
+    template = 'feedback/release_index.html'
     return jingo.render(request, template, data)
 
 
@@ -190,10 +190,10 @@ def need_beta(request):
 
 
 @cache_page
-def need_stable(request):
-    """Encourage people to download a current stable version."""
+def need_release(request):
+    """Encourage people to download a current release version."""
 
-    template = 'feedback/need_stable.html'
+    template = 'feedback/need_release.html'
     return jingo.render(request, template)
 
 

@@ -1,4 +1,4 @@
-/** JS Code for the feedback pages for stable Firefox versions. */
+/** JS Code for the feedback pages for Firefox release versions. */
 
 (function($) {
     $.extend($.fn, {

@@ -18,7 +18,7 @@ KNOWN_DEVICES = (
     'X10i',
 )
 
-# Stable Feedback: Rating Types
+# Release Feedback: Rating Types
 class RATING_STARTUP:
     id = 1
     short = 'startup'
