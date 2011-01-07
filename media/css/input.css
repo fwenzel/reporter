@@ -314,20 +314,17 @@ header, footer, article, section { display: block; }
             top: 15px;
             width: 24px;
             height: 24px;
-            background: transparent no-repeat center center;
+            background: url('../img/msg-sprite.png') no-repeat;
             }
         [dir="rtl"] .message .type {
             left: auto;
             right: 0;
             }
-        .message .type.praise {
-            background-image: url(../img/msg-praise.png);
+        .message .praise {
+            background-position: 0px -30px;
             }
-        .message .type.issue {
-            background-image: url(../img/msg-issue.png);
-            }
-        .message .type.suggestion {
-            background-image: url(../img/suggestion-box-idea-small.png);
+        .message .suggestion {
+            background-position: 0px -60px;
             }
             .message .type > span {
                 display: block;
@@ -457,17 +454,14 @@ header, footer, article, section { display: block; }
             top: 15px;
             width: 24px;
             height: 24px;
-            background: transparent no-repeat center center;
+            background-image: url(../img/msg-sprite.png) no-repeat;
             }
         [dir="rtl"] .theme .type {
             left: auto;
             right: 0;
             }
         .theme .type.praise {
-            background-image: url(../img/msg-praise.png);
-            }
-        .theme .type.issue {
-            background-image: url(../img/msg-issue.png);
+            background-position: 0px -30px;
             }
             .theme .type > span {
                 display: block;

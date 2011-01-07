@@ -184,7 +184,8 @@ html {
             top: 15px;
             width: 24px;
             height: 24px;
-            background: transparent no-repeat center center;
+            background: url(../img/msg-sprite.png) no-repeat;
+
             }
             .message .praise span,
             .message .issue span,
@@ -195,13 +196,10 @@ html {
                 overflow: hidden;
                 }
         .message .praise {
-            background-image: url(../img/msg-praise.png);
-            }
-        .message .issue {
-            background-image: url(../img/msg-issue.png);
+            background-position: 0px -30px;
             }
         .message .suggestion {
-            background-image: url(../img/suggestion-box-idea-small.png);
+            background-position: 0px -60px;
             }
         .message .body,
         .message .meta {
