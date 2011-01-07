@@ -341,47 +341,6 @@ a:active {
 	color: #0489b7;
 }
 
-a.external:link,
-a.external:visited {
-	padding-right: 8px;
-}
-
-a.external:hover,
-a.external:active {
-	padding-right: 8px;
-	background: transparent url(../img/external-link.png) center right no-repeat;
-}
-
-h1 a.external:link,
-h2 a.external:link,
-h3 a.external:link,
-h4 a.external:link,
-h5 a.external:link,
-h6 a.external:link,
-h1 a.external:visited,
-h2 a.external:visited,
-h3 a.external:visited,
-h4 a.external:visited,
-h5 a.external:visited,
-h6 a.external:visited {
-	padding-right: 16px;
-}
-
-h1 a.external:hover,
-h2 a.external:hover,
-h3 a.external:hover,
-h4 a.external:hover,
-h5 a.external:hover,
-h6 a.external:hover,
-h1 a.external:active,
-h2 a.external:active,
-h3 a.external:active,
-h4 a.external:active,
-h5 a.external:active,
-h6 a.external:active {
-	padding-right: 16px;
-	background: transparent url(../img/external-link-large.png) center right no-repeat;
-}
 a.email:link,
 a.email:visited {
 	padding-right: 16px;
@@ -398,11 +357,6 @@ dd,
 #content li,
 #main-content li {
 	line-height: 1.5;
-}
-
-#footer a.external:hover,
-#footer a.external:hover {
-	background-image: url(../img/external-link-footer.png);
 }
 
 strong { font-weight: bold; }
@@ -1103,130 +1057,5 @@ p.feedback_suggestion_mobile img {
 }
 .opinions .uapreview .locale {
     float: right;
-}
-/* }}} */
-/* {{{ Search Form */
-#search_form {
-    line-height: 200%;
-    position: relative;
-}
-#search_form button {
-    font-family: inherit;
-    font-size: inherit;
-}
-#search_form #id_q {
-    background: #fff url(../img/magnifying-glass.gif) no-repeat .3em center;
-    padding: 3px 3px 3px 30px;
-    border-radius: 12px;
-    -moz-border-radius: 12px;
-    -webkit-border-radius: 12px;
-}
-#search_form .wrap_product label,
-#search_form .wrap_version label {
-    position: absolute;
-    top: -10000px;
-}
-#search_form #show_search_adv {
-    border-radius: 5px 5px 0 0;
-    -moz-border-radius: 5px 5px 0 0;
-    -webkit-border-top-left-radius: 5px;
-    -webkit-border-top-right-radius: 5px;
-    display: none;
-    padding: 0 0 25px;
-    position: absolute;
-    right: 0;
-    top: 0;
-}
-#search #search_form #show_search_adv {
-    padding: 0 0 15%;
-}
-
-#search_form #show_search_adv.active {
-    background-color: #fff;
-}
-#search_form #show_search_adv a {
-    color: #fff;
-    display: block;
-    padding: 0 .6em;
-}
-#search_form #show_search_adv.active a {
-    color: #0489B7;
-}
-#search_form #search_adv {
-    background-color: #fff;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    padding: .5em 5%;
-    position: relative;
-}
-#search_form .wrap_date_end label {
-    margin: 0 .5em;
-}
-#search_form #id_date_start,
-#search_form #id_date_end {
-    width: 6em;
-}
-/* }}} */
-/* {{{ Search Results */
-#search #main-content h1 {
-    font-size: 225%;
-    margin-top: 0;
-}
-#search #search_options .opt {
-    font-weight: bold;
-}
-#search #search_box {
-    min-height: 20px;
-    margin-bottom: 15px;
-}
-#search #search_options,
-#search #search_form {
-    width: 48%;
-}
-#search #search_options {
-    float: left;
-}
-#search #search_form {
-    float: right;
-}
-#search #search_form #show_search_adv {
-    top: 35px;
-}
-#search #search_form .wrap_q {
-    margin-bottom: .5em;
-}
-#search #search_form #id_q {
-    width: 90%;
-}
-#search #search_form .wrap_product,
-#search #search_form .wrap_version,
-#search #search_form .wrap_os,
-#search #search_form button {
-    margin-left: 1em;
-}
-#search #search_adv {
-    margin-top: .5em;
-}
-#search #search_form .wrap_product,
-#search #search_form .wrap_version,
-#search #search_form .wrap_sentiment,
-#search #search_form .wrap_os,
-#search #search_form .wrap_date_start {
-    float: left;
-}
-#search #search_form .wrap_locale {
-    clear: left;
-}
-#search .warning {
-	background: #FFDEAE;
-    border: 1px solid #D54900;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    color: #D54900;
-    margin: 0 0 20px;
-    padding: 5px;
-    float: left;
 }
 /* }}} */
