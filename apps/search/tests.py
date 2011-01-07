@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+import datetime
 import os
 import shutil
-import time
-import datetime
 import socket
+import time
+from urlparse import urlparse
 
 from django.contrib.sites.models import Site
 from django.test.client import Client as TestClient
@@ -253,6 +254,24 @@ class SearchViewTest(SphinxTestCase):
         r = self.client.get(reverse('search'), data, follow=True)
         eq_(r.status_code, 200)
         assert not hasattr(r.context['form'], 'cleaned_data')
+
+    def test_when_selectors(self):
+        """Test that the date selectors show the right dates."""
+        r = search_request()
+        doc = pq(r.content)
+        date_selectors = doc('#when li a')
+
+        # We expect 1, 7, 30 days, infinity in that order.
+        ago = lambda x: datetime.date.today() - datetime.timedelta(days=x)
+        expect = (ago(1), ago(7), ago(30), None, None)
+        for n, a in enumerate(date_selectors):
+            a = pq(a)
+            link = a.attr('href')
+            if expect[n]:
+                assert link.find('date_start=%s' % expect[n].strftime('%Y-%m-%d')) >= 0
+            else:
+                assert link.find('date_start') == -1
+            assert link.find('date_end') == -1  # Never add end date.
 
 
 class FeedTest(SphinxTestCase):
