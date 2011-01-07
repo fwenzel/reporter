@@ -161,7 +161,7 @@ def index(request):
 
     data = {
         'form': form,
-        'product': product.short,
+        'product': product,
         'products': PROD_CHOICES,
         'version': version,
         'versions': VERSION_CHOICES[product],
