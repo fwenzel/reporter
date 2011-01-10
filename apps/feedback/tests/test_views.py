@@ -1,12 +1,8 @@
-import copy
 from datetime import datetime
+from functools import wraps
 import json
 
-from django import http
 from django.conf import settings
-from django.contrib.sites.models import Site
-from django.core.exceptions import ValidationError
-from django.test import TestCase
 
 from nose.tools import eq_
 from pyquery import pyquery
@@ -14,150 +10,23 @@ from pyquery import pyquery
 from input import RATING_USAGE, RATING_CHOICES
 from input.tests import ViewTestCase
 from input.urlresolvers import reverse
-from feedback import (FIREFOX, MOBILE, OPINION_PRAISE, OPINION_ISSUE,
+from feedback import (FIREFOX, OPINION_PRAISE, OPINION_ISSUE,
                       OPINION_SUGGESTION, OPINION_RATING, OPINION_BROKEN,
                       LATEST_BETAS, LATEST_RELEASE)
 from feedback.models import Opinion
-from feedback.utils import detect_language, ua_parse, smart_truncate
-from feedback.validators import validate_no_urls, ExtendedURLValidator
-from feedback.version_compare import (simplify_version, version_dict,
-                                      version_int)
 
 
-class UtilTests(TestCase):
-    def test_ua_parse(self):
-        """Test user agent parser for Firefox."""
-        patterns = (
-            # valid Fx
-            ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; de; rv:1.9.2.3) '
-             'Gecko/20100401 Firefox/3.6.3',
-             FIREFOX, '3.6.3', 'mac'),
-            ('Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.4) '
-             'Gecko/20100611 Firefox/3.6.4 (.NET CLR 3.5.30729)',
-             FIREFOX, '3.6.4', 'winxp'),
-            # additional parentheses (bug 578339)
-            ('Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-US; rv:2.0b1) '
-             'Gecko/20100628 Firefox/4.0b1',
-             FIREFOX, '4.0b1', 'linux'),
-            # locale fallback (bug 578339)
-            ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; fr-FR; rv:2.0b1) '
-             'Gecko/20100628 Firefox/4.0b1',
-             FIREFOX, '4.0b1', 'mac'),
-            ('Mozilla/5.0 (X11; U; Linux x86_64; cs-CZ; rv:2.0b2pre) Gecko/20100630 '
-             'Minefield/4.0b2pre',
-             FIREFOX, '4.0b2pre', 'linux'),
-
-            # valid Fennec
-            ('Mozilla/5.0 (X11; U; Linux armv6l; fr; rv:1.9.1b1pre) Gecko/'
-             '20081005220218 Gecko/2008052201 Fennec/0.9pre',
-             MOBILE, '0.9pre', 'linux'),
-            ('Mozilla/5.0 (X11; U; FreeBSD; en-US; rv:1.9.2a1pre) '
-             'Gecko/20090626 Fennec/1.0b2',
-             MOBILE, '1.0b2', 'other'),
-            ('Mozilla/5.0 (Maemo; Linux armv71; rv:2.0b6pre) Gecko/'
-             '20100924 Namoroka/4.0b7pre Fennec/2.0b1pre',
-             MOBILE, '2.0b1pre', 'maemo'),
-            ('Mozilla/5.0 (Android; Linux armv71; rv:2.0b6pre) Gecko/'
-             '20100924 Namoroka/4.0b7pre Fennec/2.0b1pre',
-             MOBILE, '2.0b1pre', 'android'),
-
-            # invalid
-            ('A completely bogus Firefox user agent string.', None),
-            ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-us) '
-             'AppleWebKit/531.22.7 (KHTML, like Gecko) Version/4.0.5 '
-             'Safari/531.22.7', None),
-        )
-
-        for pattern in patterns:
-            parsed = ua_parse(pattern[0])
-            if pattern[1]:
-                self.assertEquals(parsed['browser'], pattern[1])
-                self.assertEquals(parsed['version'], pattern[2])
-                self.assertEquals(parsed['os'], pattern[3])
-            else:
-                self.assert_(parsed is None)
-
-    def test_detect_language(self):
-        """Check Accept-Language matching for feedback submission."""
-        patterns = (
-            ('en-us,en;q=0.7,de;q=0.8', 'en-US'),
-            ('fr-FR,de-DE;q=0.5', 'fr'),
-            ('zh, en-us;q=0.8, en;q=0.6', 'en-US'),
-            ('German', ''), # invalid
-        )
-
-        for pattern in patterns:
-            req = http.HttpRequest()
-            req.META['HTTP_ACCEPT_LANGUAGE'] = pattern[0]
-            self.assertEquals(detect_language(req), pattern[1])
-
-    def test_smart_truncate(self):
-        """Test text truncation on word boundaries."""
-        patterns = (
-            ('text, teeext', 10, 'text,...'),
-            ('somethingreallylongwithnospaces', 10, 'somethingr...'),
-            ('short enough', 12, 'short enough'),
-        )
-        for pattern in patterns:
-            eq_(smart_truncate(pattern[0], length=pattern[1]), pattern[2])
-
-
-class ValidatorTests(TestCase):
-    def test_url_in_text(self):
-        """Find URLs in text."""
-        patterns = (
-            ('This contains no URLs.', False),
-            ('I like the www. Do you?', False),
-            ('If I write youtube.com, what happens?', False),
-            ('Visit example.com/~myhomepage!', True),
-            ('OMG http://foo.de', True),
-            ('www.youtube.com is the best', True),
-        )
-        for pattern in patterns:
-            if pattern[1]:
-                self.assertRaises(ValidationError, validate_no_urls,
-                                  pattern[0])
-            else:
-                validate_no_urls(pattern[0]) # Will fail if exception raised.
-
-    def test_chrome_url(self):
-        """Make sure URL validator allows chrome and about URLs."""
-        v = ExtendedURLValidator()
-
-        # These will fail if validation error is raised.
-        v('about:blank')
-        v('chrome://mozapps/content/downloads/downloads.xul')
-
-        # These should fail.
-        self.assertRaises(ValidationError, v, 'about:')
-        self.assertRaises(ValidationError, v, 'chrome:bogus')
-
-
-class VersionCompareTest(TestCase):
-    def test_simplify_version(self):
-        """Make sure version simplification works."""
-        versions = {
-            '4.0b1': '4.0b1',
-            '3.6': '3.6',
-            '3.6.4b1': '3.6.4b1',
-            '3.6.4build1': '3.6.4',
-            '3.6.4build17': '3.6.4',
-        }
-        for v in versions:
-            self.assertEquals(simplify_version(v), versions[v])
-
-    def test_dict_vs_int(self):
-        """
-        version_dict and _int can use each other's data but must not overwrite
-        it.
-        """
-        version_string = '4.0b8pre'
-        dict1 = copy.copy(version_dict(version_string))
-        int1 = version_int(version_string)
-        dict2 = version_dict(version_string)
-        int2 = version_int(version_string)
-        eq_(dict1, dict2)
-        eq_(int1, int2)
+def enforce_ua(f):
+    """Decorator to switch on UA enforcement for the duration of a test."""
+    @wraps(f)
+    def wrapped(*args, **kwargs):
+        old_enforce_setting = settings.ENFORCE_USER_AGENT
+        try:
+            settings.ENFORCE_USER_AGENT = True
+            f(*args, **kwargs)
+        finally:
+            settings.ENFORCE_USER_AGENT = old_enforce_setting
+    return wrapped
 
 
 class BetaViewTests(ViewTestCase):
@@ -167,48 +36,51 @@ class BetaViewTests(ViewTestCase):
     FX_UA = ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
              'de; rv:1.9.2.3) Gecko/20100401 Firefox/%s')
 
-    def test_enforce_user_agent(self):
-        """Make sure unknown user agents are forwarded to download page."""
+    def _get_page(self, ver=None):
+        """Request beta feedback page."""
+        extra = dict(HTTP_USER_AGENT=self.FX_UA % ver) if ver else {}
+        return self.client.get(reverse('feedback.sad'),
+                               **extra)
 
-        def get_page(ver=None):
-            """Request beta feedback page."""
-            extra = dict(HTTP_USER_AGENT=self.FX_UA % ver) if ver else {}
-            return self.client.get(reverse('feedback.sad'),
-                                   **extra)
+    @enforce_ua
+    def test_no_ua(self):
+        """No UA: Redirect to beta download."""
+        r = self._get_page()
+        eq_(r.status_code, 302)
+        assert r['Location'].endswith(reverse('feedback.need_beta'))
 
-        old_enforce_setting = settings.ENFORCE_USER_AGENT
-        try:
-            settings.ENFORCE_USER_AGENT = True
+    @enforce_ua
+    def test_release(self):
+        """Release version on beta page: redirect."""
+        r = self._get_page('3.6')
+        eq_(r.status_code, 302)
+        assert r['Location'].endswith(reverse('feedback.release_feedback'))
 
-            # No UA: redirect.
-            r = get_page()
-            eq_(r.status_code, 302)
+    @enforce_ua
+    def test_old_beta(self):
+        """Old beta: redirect."""
+        r = self._get_page('3.6b2')
+        eq_(r.status_code, 302)
+        assert r['Location'].endswith(reverse('feedback.need_beta'))
 
-            # Release version: redirect.
-            r = get_page('3.6')
-            eq_(r.status_code, 302)
-            assert r['Location'].endswith(reverse('feedback.release_feedback'))
+    @enforce_ua
+    def test_latest_beta(self):
+        """Latest beta: no redirect."""
+        r = self._get_page(LATEST_BETAS[FIREFOX])
+        eq_(r.status_code, 200)
 
-            # Old beta: redirect.
-            r = get_page('3.6b2')
-            eq_(r.status_code, 302)
-            assert r['Location'].endswith(reverse('feedback.need_beta'))
+    @enforce_ua
+    def test_newer_beta(self):
+        """Beta version newer than current: no redirect."""
+        r = self._get_page('20.0b2')
+        eq_(r.status_code, 200)
 
-            # Latest beta: no redirect.
-            r = get_page(LATEST_BETAS[FIREFOX])
-            eq_(r.status_code, 200)
-
-            # Beta version newer than current: no redirect.
-            r = get_page('20.0b2')
-            eq_(r.status_code, 200)
-
-            # Nightly version: redirect.
-            r = get_page('20.0b2pre')
-            eq_(r.status_code, 302)
-            assert r['Location'].endswith(reverse('feedback.need_beta'))
-
-        finally:
-            settings.ENFORCE_USER_AGENT = old_enforce_setting
+    @enforce_ua
+    def test_nightly(self):
+        """Nightly version: redirect."""
+        r = self._get_page('20.0b2pre')
+        eq_(r.status_code, 302)
+        assert r['Location'].endswith(reverse('feedback.need_beta'))
 
     def test_give_feedback(self):
         r = self.client.post(reverse('feedback.sad'))
@@ -309,49 +181,51 @@ class ReleaseViewTests(ViewTestCase):
     FX_UA = ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
              'de; rv:1.9.2.3) Gecko/20100401 Firefox/%s')
 
-    def test_enforce_user_agent(self):
-        """Make sure unknown user agents are forwarded to download page."""
+    def _get_page(self, ver=None):
+        """Request release feedback page."""
+        extra = dict(HTTP_USER_AGENT=self.FX_UA % ver) if ver else {}
+        return self.client.get(reverse('feedback.release_feedback'),
+                               **extra)
 
-        def get_page(ver=None):
-            """Request release feedback page."""
-            extra = dict(HTTP_USER_AGENT=self.FX_UA % ver) if ver else {}
-            return self.client.get(reverse('feedback.release_feedback'),
-                                   **extra)
+    @enforce_ua
+    def test_no_ua(self):
+        """No UA: redirect."""
+        r = self._get_page()
+        eq_(r.status_code, 302)
+        assert r['Location'].endswith(reverse('feedback.need_release'))
 
-        old_enforce_setting = settings.ENFORCE_USER_AGENT
-        try:
-            settings.ENFORCE_USER_AGENT = True
+    @enforce_ua
+    def test_beta(self):
+        """Beta version on release page: redirect."""
+        r = self._get_page('3.6b2')
+        eq_(r.status_code, 302)
+        assert r['Location'].endswith(reverse('feedback.beta_feedback'))
 
-            # No UA: redirect.
-            r = get_page()
-            eq_(r.status_code, 302)
+    @enforce_ua
+    def test_old_release(self):
+        """Old release: redirect."""
+        r = self._get_page('3.5')
+        eq_(r.status_code, 302)
+        assert r['Location'].endswith(reverse('feedback.need_release'))
 
-            # Beta version: redirect.
-            r = get_page('3.6b2')
-            eq_(r.status_code, 302)
-            assert r['Location'].endswith(reverse('feedback.beta_feedback'))
+    @enforce_ua
+    def test_latest_release(self):
+        """Latest release: no redirect."""
+        r = self._get_page(LATEST_RELEASE[FIREFOX])
+        eq_(r.status_code, 200)
 
-            # Old release: redirect.
-            r = get_page('3.5')
-            eq_(r.status_code, 302)
-            assert r['Location'].endswith(reverse('feedback.need_release'))
+    @enforce_ua
+    def test_newer_release(self):
+        """Release version newer than current: no redirect."""
+        r = self._get_page('20.0')
+        eq_(r.status_code, 200)
 
-            # Latest release: no redirect.
-            r = get_page(LATEST_RELEASE[FIREFOX])
-            eq_(r.status_code, 200)
-
-            # Release version newer than current: no redirect.
-            r = get_page('20.0')
-            eq_(r.status_code, 200)
-
-            # Nightly version: redirect.
-            r = get_page('20.0b2pre')
-            eq_(r.status_code, 302)
-            print r['Location']
-            assert r['Location'].endswith(reverse('feedback.need_release'))
-
-        finally:
-            settings.ENFORCE_USER_AGENT = old_enforce_setting
+    @enforce_ua
+    def test_nightly(self):
+        """Nightly version: redirect."""
+        r = self._get_page('20.0b2pre')
+        eq_(r.status_code, 302)
+        assert r['Location'].endswith(reverse('feedback.need_release'))
 
     def post_feedback(self, data, ajax=False, follow=True):
         """POST to the release feedback page."""
@@ -478,3 +352,4 @@ class ReleaseViewTests(ViewTestCase):
             latest = Opinion.objects.no_cache().order_by('-id')[0]
             eq_(latest.description, data['description'])
             latest.delete()
+
