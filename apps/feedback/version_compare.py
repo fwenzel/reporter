@@ -17,6 +17,52 @@ version_re = re.compile(r"""(?P<major>\d+)      # major (x in x.y)
                         re.VERBOSE)
 
 
+class Version(object):
+    """An object representing a version."""
+    _version = None
+    _version_int = None
+    _version_dict = None
+
+    def __init__(self, version):
+        """Version constructor."""
+        try:
+            # Parse version.
+            assert version
+            self._version = version
+            self._version_int = version_int(version)
+            assert version_int != 0
+            self._version_dict = version_dict(version)
+
+            # Make parsed data available as properties.
+            for key, val in self._version_dict.items():
+                setattr(self, key, val)
+
+        except AssertionError, e:
+            raise ValueError('Error parsing version: %s' % e)
+
+    def __cmp__(self, other):
+        """Compare two versions."""
+        assert isinstance(other, Version)
+        return self._version_int - other._version_int
+
+    @property
+    def is_beta(self):
+        """
+        Is this a beta version?
+
+        Nightlies, while containing "b2" etc., are not betas.
+        """
+        return self.alpha == 'b' and not self.is_nightly
+
+    @property
+    def is_nightly(self):
+        return self.pre == 'pre'
+
+    @property
+    def is_release(self):
+        return not (self.is_beta or self.is_nightly)
+
+
 def dict_from_int(version_int):
     """Converts a version integer into a dictionary with major/minor/...
     info."""

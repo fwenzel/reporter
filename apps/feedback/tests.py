@@ -171,7 +171,7 @@ class BetaViewTests(ViewTestCase):
         """Make sure unknown user agents are forwarded to download page."""
 
         def get_page(ver=None):
-            """Request release feedback page."""
+            """Request beta feedback page."""
             extra = dict(HTTP_USER_AGENT=self.FX_UA % ver) if ver else {}
             return self.client.get(reverse('feedback.sad'),
                                    **extra)
@@ -180,22 +180,32 @@ class BetaViewTests(ViewTestCase):
         try:
             settings.ENFORCE_USER_AGENT = True
 
-            # no UA: redirect
+            # No UA: redirect.
             r = get_page()
             eq_(r.status_code, 302)
 
-            # old version: redirect
-            r = get_page('3.5')
+            # Release version: redirect.
+            r = get_page('3.6')
+            eq_(r.status_code, 302)
+            assert r['Location'].endswith(reverse('feedback.release_feedback'))
+
+            # Old beta: redirect.
+            r = get_page('3.6b2')
             eq_(r.status_code, 302)
             assert r['Location'].endswith(reverse('feedback.need_beta'))
 
-            # latest beta: no redirect
+            # Latest beta: no redirect.
             r = get_page(LATEST_BETAS[FIREFOX])
             eq_(r.status_code, 200)
 
-            # version newer than current: no redirect
-            r = get_page('20.0')
+            # Beta version newer than current: no redirect.
+            r = get_page('20.0b2')
             eq_(r.status_code, 200)
+
+            # Nightly version: redirect.
+            r = get_page('20.0b2pre')
+            eq_(r.status_code, 302)
+            assert r['Location'].endswith(reverse('feedback.need_beta'))
 
         finally:
             settings.ENFORCE_USER_AGENT = old_enforce_setting
@@ -222,7 +232,7 @@ class BetaViewTests(ViewTestCase):
                 data['url'] = url
 
             r = self.client.post(reverse('feedback.happy'), data,
-                                 HTTP_USER_AGENT=(self.FX_UA % '20.0'),
+                                 HTTP_USER_AGENT=(self.FX_UA % '20.0b2'),
                                  follow=True)
             # Neither valid nor invalid URLs cause anything but a 200 response.
             eq_(r.status_code, 200)
@@ -252,7 +262,7 @@ class BetaViewTests(ViewTestCase):
             reverse('feedback.sad'), {
                 'description': 'Hello!',
                 'type': OPINION_ISSUE,
-            }, HTTP_USER_AGENT=(self.FX_UA % '20.0'), follow=True)
+            }, HTTP_USER_AGENT=(self.FX_UA % '20.0b2'), follow=True)
         # No matter what you submit in the URL field, there must be a 200
         # response code.
         eq_(r.status_code, 200)
@@ -264,7 +274,7 @@ class BetaViewTests(ViewTestCase):
         """
         def autocomplete_check(site_id):
             r = self.client.get(reverse('feedback.sad'), HTTP_USER_AGENT=(
-                self.FX_UA % '20.0'), SITE_ID=site_id, follow=True)
+                self.FX_UA % '20.0b2'), SITE_ID=site_id, follow=True)
             doc = pyquery.PyQuery(r.content)
             form = doc('#feedbackform form')
 
@@ -283,7 +293,7 @@ class BetaViewTests(ViewTestCase):
                 'type': OPINION_ISSUE,
                 'manufacturer': 'FancyBrand',
                 'device': 'FancyPhone 2.0',
-            }, HTTP_USER_AGENT=(self.FX_UA % '20.0'), follow=True)
+            }, HTTP_USER_AGENT=(self.FX_UA % '20.0b2'), follow=True)
         eq_(r.status_code, 200)
         assert r.content.find('Thanks') >= 0
 
@@ -312,27 +322,33 @@ class ReleaseViewTests(ViewTestCase):
         try:
             settings.ENFORCE_USER_AGENT = True
 
-            # no UA: redirect
+            # No UA: redirect.
             r = get_page()
             eq_(r.status_code, 302)
 
-            # old version: redirect
+            # Beta version: redirect.
+            r = get_page('3.6b2')
+            eq_(r.status_code, 302)
+            assert r['Location'].endswith(reverse('feedback.beta_feedback'))
+
+            # Old release: redirect.
             r = get_page('3.5')
             eq_(r.status_code, 302)
             assert r['Location'].endswith(reverse('feedback.need_release'))
 
-            # latest release: no redirect
+            # Latest release: no redirect.
             r = get_page(LATEST_RELEASE[FIREFOX])
             eq_(r.status_code, 200)
 
-            # version newer than current: no redirect
+            # Release version newer than current: no redirect.
             r = get_page('20.0')
             eq_(r.status_code, 200)
 
-            # beta: redirect to beta feedback
-            r = get_page(LATEST_BETAS[FIREFOX])
+            # Nightly version: redirect.
+            r = get_page('20.0b2pre')
             eq_(r.status_code, 302)
-            assert r['Location'].endswith(reverse('feedback.beta_feedback'))
+            print r['Location']
+            assert r['Location'].endswith(reverse('feedback.need_release'))
 
         finally:
             settings.ENFORCE_USER_AGENT = old_enforce_setting

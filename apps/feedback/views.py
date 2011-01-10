@@ -16,12 +16,13 @@ from input.decorators import cache_page, forward_mobile
 from input.urlresolvers import reverse
 
 from feedback import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
-                      OPINION_RATING, OPINION_BROKEN, OPINION_TYPES)
+                      OPINION_RATING, OPINION_BROKEN, OPINION_TYPES,
+                      LATEST_BETAS, LATEST_RELEASE)
 from feedback.forms import (PraiseForm, IssueForm, SuggestionForm,
                             BrokenWebsiteForm, RatingForm, IdeaForm)
 from feedback.models import Opinion, Rating
-from feedback.utils import detect_language
-from feedback.validators import validate_beta_ua, validate_release_ua
+from feedback.utils import detect_language, ua_parse
+from feedback.version_compare import Version
 
 
 def enforce_ua(beta):
@@ -31,7 +32,6 @@ def enforce_ua(beta):
 
     Can be disabled with settings.ENFORCE_USER_AGENT = False.
     """
-    validator = validate_beta_ua if beta else validate_release_ua
     upgrade_url = 'feedback.need_beta' if beta else 'feedback.need_release'
 
     def decorate(f):
@@ -39,21 +39,42 @@ def enforce_ua(beta):
         def wrapped(request, *args, **kwargs):
             # Validate User-Agent request header.
             ua = request.META.get('HTTP_USER_AGENT', None)
-            try:
-                parsed = validator(ua)
-            except ValidationError:
+            parsed = ua_parse(ua)
+            if not parsed:  # Unknown UA.
                 if request.method == 'GET':
                     return http.HttpResponseRedirect(reverse(upgrade_url))
                 else:
                     return http.HttpResponseBadRequest(
                         _('User-Agent request header must be set.'))
 
-            # Forward beta users to beta channel
-            if not beta and parsed and parsed.get('alpha'):
-                return http.HttpResponseRedirect(
-                    reverse('feedback.beta_feedback'))
+            this_ver = Version(parsed['version'])
+            # Enforce beta releases.
+            if beta:
+                if this_ver.is_release:  # Forward release to release feedback.
+                    return http.HttpResponseRedirect(
+                        reverse('feedback.release_feedback'))
+                elif not this_ver.is_beta:  # Not a beta? Upgrade to beta.
+                    return http.HttpResponseRedirect(reverse(upgrade_url))
 
-            # if we made it here, it's a latest beta user
+                # Check for outdated beta.
+                ref_ver = Version(LATEST_BETAS[parsed['browser']])
+                if settings.ENFORCE_USER_AGENT and this_ver < ref_ver:
+                    return http.HttpResponseRedirect(reverse(upgrade_url))
+
+            # Enforce release versions.
+            else:
+                if this_ver.is_beta:  # Forward betas to beta feedback.
+                    return http.HttpResponseRedirect(
+                        reverse('feedback.beta_feedback'))
+                elif not this_ver.is_release:  # Not a release? Upgrade.
+                    return http.HttpResponseRedirect(reverse(upgrade_url))
+
+                # Check for outdated release.
+                ref_ver = Version(LATEST_RELEASE[parsed['browser']])
+                if settings.ENFORCE_USER_AGENT and this_ver < ref_ver:
+                    return http.HttpResponseRedirect(reverse(upgrade_url))
+
+            # If we made it here, it's a valid version.
             return f(request, ua=ua, *args, **kwargs)
 
         return wrapped
