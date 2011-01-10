@@ -75,7 +75,7 @@ def _common_data(form):
             "oses": oses,
             "latest_betas": LATEST_BETAS,
             "products": PROD_CHOICES,
-            "product": form.cleaned_data["product"],
+            "product": product,
             "versions": VERSION_CHOICES[product],
             "version": form.cleaned_data["version"]}
 
