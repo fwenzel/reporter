@@ -40,7 +40,7 @@ class RATING_RESPONSIVE:
 class RATING_CRASHY:
     id = 4
     short = 'crashy'
-    pretty = _(u'Crashiness')
+    pretty = _(u'Stability')
     help = _(u'How frequently Firefox crashes or loses data')
 
 class RATING_FEATURES:
