@@ -43,7 +43,7 @@ class Version(object):
     def __cmp__(self, other):
         """Compare two versions."""
         assert isinstance(other, Version)
-        return self._version_int - other._version_int
+        return cmp(self._version_int, other._version_int)
 
     @property
     def is_beta(self):
