@@ -92,7 +92,7 @@ class SearchFeed(Feed):
 
     def link(self, obj):
         """Global feed link. Also used as GUID."""
-        return reverse('search') + '?' + obj['request'].META['QUERY_STRING']
+        return u'%s?%s' % (reverse('search'), obj['request'].META['QUERY_STRING'])
 
     def title(self, obj):
         """Global feed title."""
