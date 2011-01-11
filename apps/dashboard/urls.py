@@ -1,4 +1,7 @@
 from django.conf.urls.defaults import patterns, url
+from django.http import HttpResponsePermanentRedirect
+
+from input.urlresolvers import reverse
 
 
 urlpatterns = patterns('dashboard.views',

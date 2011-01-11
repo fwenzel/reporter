@@ -16,6 +16,11 @@ def render_template(template, context):
 
 
 class TestDashboard(SphinxTestCase):
+    def test_root(self):
+        """Ensure our site root always works."""
+        r = self.client.get('/', follow=True)
+        eq_(r.status_code, 200)
+
     def test_dashboard(self):
         r = self.client.get(reverse('dashboard'), follow=True)
         eq_(r.status_code, 200)
