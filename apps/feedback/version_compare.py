@@ -115,7 +115,7 @@ def version_int(version):
     v = "%d%02d%02d%02d%d%02d%d%02d" % (d['major'], d['minor1'],
             d['minor2'], d['minor3'], d['alpha'], d['alpha_ver'], d['pre'],
             d['pre_ver'])
-    return long(v)
+    return int(v)
 _version_int_cache = {}
 version_int = memoize(version_int, _version_int_cache, 1)
 
