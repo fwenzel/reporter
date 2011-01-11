@@ -13,6 +13,8 @@ $(document).ready(function(){
             var ua = $(this).attr("data-ua");
             $('.hint', overlay).show();
             $('.copied', overlay).hide();
+            fixOverlaySize();
+            $(window).bind('resize', fixOverlaySize);
             overlay.animate(
                 {opacity: 'show'}, 200, 'linear',
                 function() {
@@ -22,8 +24,14 @@ $(document).ready(function(){
             e.preventDefault();
         });
 
+        function fixOverlaySize() {
+            overlay.height($(document).height());
+            overlay.width($(document).width());
+        }
+
         function closeOverlay() {
             overlay.animate({opacity: 'hide'}, 200, 'linear');
+            $(window).unbind('resize', fixOverlaySize);
         }
 
         $('.ua', overlay).bind('copy', function(e) {
