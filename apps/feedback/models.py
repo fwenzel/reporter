@@ -40,7 +40,8 @@ class OpinionManager(caching.base.CachingManager):
 
 class Opinion(ModelBase):
     """A single feedback item."""
-    type = models.PositiveSmallIntegerField(blank=True, default=OPINION_PRAISE)
+    type = models.PositiveSmallIntegerField(blank=True, default=OPINION_PRAISE,
+                                            db_index=True)
     url = models.URLField(verify_exists=False, blank=True)
     description = models.TextField(blank=True)
     terms = models.ManyToManyField('Term', related_name='used_in')
@@ -48,16 +49,16 @@ class Opinion(ModelBase):
     user_agent = models.CharField(
         max_length=255, help_text=('Product name etc. are derived from user '
                                    'agent string on save.'))
-    product = models.PositiveSmallIntegerField()
-    version = models.CharField(max_length=30)
-    os = models.CharField(max_length=30)
-    locale = models.CharField(max_length=30, blank=True)
+    product = models.PositiveSmallIntegerField(db_index=True)
+    version = models.CharField(max_length=30, db_index=True)
+    os = models.CharField(max_length=30, db_index=True)
+    locale = models.CharField(max_length=30, blank=True, db_index=True)
 
     # Mobile device information
-    manufacturer = models.CharField(max_length=255, blank=True)
-    device = models.CharField(max_length=255, blank=True)
+    manufacturer = models.CharField(max_length=255, blank=True, db_index=True)
+    device = models.CharField(max_length=255, blank=True, db_index=True)
 
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
 
     objects = OpinionManager()
 

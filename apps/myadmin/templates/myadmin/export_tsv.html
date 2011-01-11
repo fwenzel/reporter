@@ -1,0 +1,18 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+<div class="col wide"><div class="block">
+  <h2>Export opinions to TSV</h2>
+
+  {% if exporting %}
+    <p>Export process queued.</p>
+  {% else %}
+    <form action="" method="POST">
+      {{ csrf() }}
+      <button type="submit" name="go">Start export</button>
+    </form>
+  {% endif %}
+
+</div></div>
+
+{% endblock %}

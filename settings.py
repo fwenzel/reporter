@@ -16,8 +16,10 @@ ROOT_PACKAGE = os.path.basename(ROOT)
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+## Log settings
 LOG_LEVEL = logging.DEBUG
 SYSLOG_TAG = "http_app_reporter"
+logging.basicConfig()
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
@@ -244,6 +246,7 @@ ROOT_URLCONF = 'reporter.urls'
 INSTALLED_APPS = [
     'input',  # comes first so it always takes precedence.
 
+    'api',
     'dashboard',
     'feedback',
     'myadmin',
@@ -303,17 +306,25 @@ SEARCH_MAX_PAGES = SEARCH_MAX_RESULTS / SEARCH_PERPAGE
 
 TEST_RUNNER = 'test_utils.runner.RadicalTestSuiteRunner'
 
-import logging
-logging.basicConfig()
-
 CLUSTER_SIM_THRESHOLD = 2
 
-# Celery
+## Celery
+BROKER_HOST = "127.0.0.1"
+BROKER_PORT = 5672
+BROKER_VHOST = "input"
+BROKER_USER = "guest"
+BROKER_PASSWORD = "guest"
+BROKER_CONNECTION_TIMEOUT = 0.1
+CELERY_RESULT_BACKEND = 'amqp'
+CELERY_IGNORE_RESULT = True
 
 import djcelery
 djcelery.setup_loader()
 
-# FEATURE FLAGS:
+## API
+TSV_EXPORT_DIR = path('media/data')
+
+## FEATURE FLAGS:
 # Setting this to False allows feedback to be collected from any user agent.
 # (good for testing)
 ENFORCE_USER_AGENT = True
