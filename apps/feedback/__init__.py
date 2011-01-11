@@ -111,3 +111,12 @@ OPINION_TYPES = {
     OPINION_RATING: _(u'Rating'),
     OPINION_BROKEN: _(u'Broken Website'),
 }
+
+# TODO: Represent opinions as classes, like all other constants we have.
+OPINION_SHORT = {
+    OPINION_PRAISE: 'praise',
+    OPINION_ISSUE: 'issue',
+    OPINION_SUGGESTION: 'suggestion',
+    OPINION_RATING: 'rating',
+    OPINION_BROKEN: 'brokenwebsite',
+}

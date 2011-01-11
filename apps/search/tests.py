@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from collections import defaultdict
 import datetime
 import os
 import shutil
@@ -16,7 +17,9 @@ from pyquery import PyQuery as pq
 import test_utils
 
 from input.urlresolvers import reverse
-from feedback import FIREFOX, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
+import feedback
+from feedback import (FIREFOX, OPINION_PRAISE, OPINION_ISSUE,
+                      OPINION_SUGGESTION, OPINION_TYPES)
 from feedback.cron import populate
 from feedback.models import Opinion
 from search import forms, views
@@ -322,6 +325,19 @@ class FeedTest(SphinxTestCase):
         # If we get a memory address, this is not a unicode string.
         eq_(doc('entry title').text().find('object at 0x'), -1)
 
+    @patch('search.views.SearchFeed.get_object')
+    @patch('search.views.SearchFeed.items')
+    def test_opinion_types(self, *args):
+        def mock_get_object(self, request):
+            return {'request': request}
+        views.SearchFeed.get_object = mock_get_object
+
+        def mock_items(self, obj):
+            return [Opinion(id=n, type=type, product=FIREFOX.id) for n, type in
+                    enumerate(OPINION_TYPES)]
+        views.SearchFeed.items = mock_items
+
+        r = self.client.get(reverse('search.feed'))
 
 def test_get_sentiment():
     r = views.get_sentiment([{'type': OPINION_ISSUE, 'count': 1}])
@@ -357,6 +373,7 @@ def test_version_filter():
     eq_(len(expected), len(test_list))
     for n, v in enumerate(test_list):
         eq_(v[0], expected[n])
+
 
 def test_date_filter_timezone():
     """Ensure date filters are applied in app time (= PST), not UTC."""

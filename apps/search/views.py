@@ -10,7 +10,8 @@ import jingo
 from tower import ugettext as _, ugettext_lazy as _lazy
 
 from feedback import (APPS, APP_IDS, FIREFOX, MOBILE, LATEST_BETAS,
-                      OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION)
+                      OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
+                      OPINION_SHORT)
 from feedback.version_compare import simplify_version
 from input.decorators import cache_page
 from input.urlresolvers import reverse
@@ -108,19 +109,14 @@ class SearchFeed(Feed):
 
     def item_categories(self, item):
         """Categorize comments. Style: "product:firefox" etc."""
-        if item.type == OPINION_PRAISE:
-            sentiment = 'praise'
-        elif item.type == OPINION_ISSUE:
-            sentiment = 'issue'
-        elif item.type == OPINION_SUGGESTION:
-            sentiment = 'suggestion'
+        categories = {
+            'product': APP_IDS.get(item.product).short,
+            'version': item.version,
+            'os': item.os,
+            'locale': item.locale,
+            'sentiment': OPINION_SHORT.get(item.type, '')
+        }
 
-        categories = {'product': APP_IDS.get(item.product).short,
-                      'version': item.version,
-                      'os': item.os,
-                      'locale': item.locale,
-                      'sentiment': sentiment,
-                     }
         return (':'.join(i) for i in categories.items())
 
     def item_description(self, item):
