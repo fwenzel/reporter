@@ -25,6 +25,11 @@ $(document).ready(function() {
                     char_area.addClass('low').removeClass('verylow');
                 else
                     char_area.removeClass('low').removeClass('verylow');
+
+                if (char_rem < 0) 
+                    $("#submit_button").attr('disabled','disabled');
+                else
+                    $("#submit_button").removeAttr('disabled');
             }
         })
         .focus();
