@@ -225,7 +225,7 @@ class ReleaseViewTests(ViewTestCase):
         """Nightly version: redirect."""
         r = self._get_page('20.0b2pre')
         eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback.need_release'))
+        assert r['Location'].endswith(reverse('feedback.need_beta'))
 
     def post_feedback(self, data, ajax=False, follow=True):
         """POST to the release feedback page."""
