@@ -6,19 +6,19 @@
 <div class="col left">
   <form id="filters" class="filters segments block" method="get"
         action="{{ url('themes') }}">
-    <div class="choice">
+    <div class="choice" id="filter_product">
       <h3>{{ _('Product') }}</h3>
       <div>
         {{ filter_list(products) }}
       </div>
     </div>
-    <div class="choice">
+    <div class="choice" id="filter_type">
       <h3>{{ _('Type of Feedback') }}</h3>
       <div>
         {{ filter_list(sentiments) }}
       </div>
     </div>
-    <div class="choice">
+    <div class="choice" id="filter_platform">
       <h3>{{ _('Platform') }}</h3>
       <div>
         {{ filter_list(platforms) }}
