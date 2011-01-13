@@ -302,6 +302,10 @@ header, footer, article, section { display: block; }
     display: none;
 }
 
+#dashboard #welcome {
+    display: none;
+}
+
 .messages {
     }
     .message {

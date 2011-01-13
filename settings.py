@@ -186,6 +186,7 @@ MINIFY_BUNDLES = {
         'common': (
             'js/jquery.min.js',
             'js/jquery-ui.min.js',
+            'js/jquery.cookie.js',
             'js/init.js',
             'js/input.js',
             'js/search.js',

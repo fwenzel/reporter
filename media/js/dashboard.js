@@ -1,6 +1,7 @@
 var feedback_chart; // Highcharts wants this to be global.
 
 (function($) {
+    /** Highcharts */
     $(document).ready(function() {
         var chart_id = 'feedback-chart',
             chart_div = $('#'+chart_id);
@@ -60,5 +61,13 @@ var feedback_chart; // Highcharts wants this to be global.
         var options = feedback_chart.options;
         feedback_chart.destroy();
         feedback_chart = new Highcharts.Chart(options);
+    });
+
+    /** Show "welcome" block on first visit */
+    $(document).ready(function() {
+        if (!$.cookie('intro_seen')) {
+            $('#welcome').show();
+            $.cookie('intro_seen', true, {path: '/'});
+        }
     });
 })(jQuery);
