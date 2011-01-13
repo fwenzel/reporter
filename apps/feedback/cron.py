@@ -7,7 +7,8 @@ from django.db import transaction
 import cronjobs
 
 import feedback
-from feedback.models import Opinion
+import input
+from feedback.models import Opinion, Rating
 
 DEFAULT_NUM_OPINIONS = 10000
 TYPES = list(feedback.OPINION_TYPES)
@@ -36,29 +37,41 @@ UA_STRINGS = {'mobile': ['Mozilla/5.0 (Android; Linux armv71; rv:2.0b6pre)'
                          ' Gecko/20100924 Namoroka/4.0b7pre Fennec/2.0b1pre'],
               'desktop': ['Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
                           'fr-FR; rv:2.0b1) Gecko/20100628 Firefox/4.0b1']}
-DEVICES = dict(Samsung = 'Epic Vibrant Transform'.split(),
-               HTC = 'Evo Hero'.split(),
-               Motorola = 'DroidX Droid2'.split())
+DEVICES = dict(Samsung='Epic Vibrant Transform'.split(),
+               HTC='Evo Hero'.split(),
+               Motorola='DroidX Droid2'.split())
 
-# TODO: More than just Fennec.
+
 @cronjobs.register
 @transaction.commit_on_success
-def populate(num_opinions=None, product='mobile'):
+def populate(num_opinions=None, product='mobile', type=None):
     if not num_opinions:
         num_opinions = getattr(settings, 'NUM_FAKE_OPINIONS',
                                DEFAULT_NUM_OPINIONS)
 
     for i in xrange(num_opinions):
-        o = Opinion(type=random.choice(TYPES),
+        if not type:
+            type = random.choice(TYPES)
+        o = Opinion(type=type,
                     url=random.choice(URLS),
-                    description=sample(),
                     user_agent=random.choice(UA_STRINGS[product]))
+
+        if type != feedback.OPINION_RATING:
+            o.description = sample()
+
         if 'mobile':
             manufacturer = random.choice(DEVICES.keys())
             o.manufacturer = manufacturer
             o.device = random.choice(DEVICES[manufacturer])
 
         o.save(terms=False)
+
+        if type == feedback.OPINION_RATING:
+            for question in input.RATING_USAGE:
+                Rating(
+                    opinion=o,
+                    type=question.id,
+                    value=random.randint(1, 5)).save()
         o.created = datetime.datetime.now() - datetime.timedelta(
                 seconds=random.randint(0, 30 * 24 * 3600))
         o.save()

@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-from collections import defaultdict
 import datetime
 import os
 import shutil
 import socket
 import time
-from urlparse import urlparse
 
 from django.contrib.sites.models import Site
 from django.test.client import Client as TestClient
@@ -141,6 +139,21 @@ def search_request(product='firefox', **kwargs):
     return TestClient().get(reverse('search'), kwargs, follow=True)
 
 
+class NoRatingsSearchTest(SphinxTestCase):
+    """Ratings in search results is an abomination. -wenzel"""
+    fixtures = []
+
+    def setUp(self):
+        populate(20, 'desktop', feedback.OPINION_RATING)
+        populate(2, 'desktop', feedback.OPINION_SUGGESTION)
+        super(NoRatingsSearchTest, self).setUp()
+
+    def test_search_page(self):
+        r = search_request()
+        doc = pq(r.content)
+        eq_(len(doc('.message')), 2)
+
+
 class SearchViewTest(SphinxTestCase):
     """Tests relating to the search template rendering."""
 
@@ -271,7 +284,8 @@ class SearchViewTest(SphinxTestCase):
             a = pq(a)
             link = a.attr('href')
             if expect[n]:
-                assert link.find('date_start=%s' % expect[n].strftime('%Y-%m-%d')) >= 0
+                assert link.find('date_start=%s' %
+                                 expect[n].strftime('%Y-%m-%d')) >= 0
             else:
                 assert link.find('date_start') == -1
             assert link.find('date_end') == -1  # Never add end date.
@@ -338,6 +352,8 @@ class FeedTest(SphinxTestCase):
         views.SearchFeed.items = mock_items
 
         r = self.client.get(reverse('search.feed'))
+        eq_(r.status_code, 200)
+
 
 def test_get_sentiment():
     r = views.get_sentiment([{'type': OPINION_ISSUE, 'count': 1}])

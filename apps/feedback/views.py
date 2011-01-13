@@ -36,10 +36,8 @@ def enforce_ua(beta):
         def wrapped(request, *args, **kwargs):
             # Validate User-Agent request header.
             ua = request.META.get('HTTP_USER_AGENT', None)
-            if not settings.ENFORCE_USER_AGENT:
-                return f(request, ua=ua, *args, **kwargs)
-
             parsed = ua_parse(ua)
+
             if not parsed:  # Unknown UA.
                 if request.method == 'GET':
                     return http.HttpResponseRedirect(reverse(
@@ -47,6 +45,9 @@ def enforce_ua(beta):
                 else:
                     return http.HttpResponseBadRequest(
                         _('User-Agent request header must be set.'))
+
+            if not settings.ENFORCE_USER_AGENT:
+                return f(request, ua=ua, *args, **kwargs)
 
             this_ver = Version(parsed['version'])
             # Enforce beta releases.
