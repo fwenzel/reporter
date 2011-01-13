@@ -218,6 +218,7 @@ MINIFY_BUNDLES = {
 }
 JAVA_BIN = '/usr/bin/java'
 
+
 def JINJA_CONFIG():
     import jinja2
     config = {'extensions': ['tower.template.i18n', 'jinja2.ext.loopcontrols',
@@ -269,10 +270,6 @@ INSTALLED_APPS = [
 # Where to store product details
 PROD_DETAILS_DIR = path('lib/product_details_json')
 
-# Setting this to False allows feedback to be collected from any user agent.
-# (good for testing)
-ENFORCE_USER_AGENT = True
-
 # Term filter options
 MIN_TERM_LENGTH = 3
 MAX_TERM_LENGTH = 25
@@ -315,3 +312,8 @@ CLUSTER_SIM_THRESHOLD = 2
 
 import djcelery
 djcelery.setup_loader()
+
+# FEATURE FLAGS:
+# Setting this to False allows feedback to be collected from any user agent.
+# (good for testing)
+ENFORCE_USER_AGENT = True

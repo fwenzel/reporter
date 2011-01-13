@@ -3,7 +3,6 @@ import json
 
 from django import http
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 from django.views.decorators.vary import vary_on_headers
@@ -37,6 +36,9 @@ def enforce_ua(beta):
         def wrapped(request, *args, **kwargs):
             # Validate User-Agent request header.
             ua = request.META.get('HTTP_USER_AGENT', None)
+            if not settings.ENFORCE_USER_AGENT:
+                return f(request, ua=ua, *args, **kwargs)
+
             parsed = ua_parse(ua)
             if not parsed:  # Unknown UA.
                 if request.method == 'GET':
@@ -53,12 +55,14 @@ def enforce_ua(beta):
                     return http.HttpResponseRedirect(
                         reverse('feedback.release_feedback'))
                 elif not this_ver.is_beta:  # Not a beta? Upgrade to beta.
-                    return http.HttpResponseRedirect(reverse('feedback.need_beta'))
+                    return http.HttpResponseRedirect(
+                            reverse('feedback.need_beta'))
 
                 # Check for outdated beta.
                 ref_ver = Version(LATEST_BETAS[parsed['browser']])
-                if settings.ENFORCE_USER_AGENT and this_ver < ref_ver:
-                    return http.HttpResponseRedirect(reverse('feedback.need_beta'))
+                if this_ver < ref_ver:
+                    return http.HttpResponseRedirect(
+                            reverse('feedback.need_beta'))
 
             # Enforce release versions.
             else:
@@ -66,12 +70,14 @@ def enforce_ua(beta):
                     return http.HttpResponseRedirect(
                         reverse('feedback.beta_feedback'))
                 elif not this_ver.is_release:  # Not a release? Upgrade.
-                    return http.HttpResponseRedirect(reverse('feedback.need_beta'))
+                    return http.HttpResponseRedirect(
+                            reverse('feedback.need_beta'))
 
                 # Check for outdated release.
                 ref_ver = Version(LATEST_RELEASE[parsed['browser']])
-                if settings.ENFORCE_USER_AGENT and this_ver < ref_ver:
-                    return http.HttpResponseRedirect(reverse('feedback.need_release'))
+                if this_ver < ref_ver:
+                    return http.HttpResponseRedirect(
+                            reverse('feedback.need_release'))
 
             # If we made it here, it's a valid version.
             return f(request, ua=ua, *args, **kwargs)
