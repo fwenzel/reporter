@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block page_title %}{{ _('About Firefox Input') }}{% endblock %}
+
+{% block content %}
+<div class="block prose">
+  <h2>{{ _('Hello!') }}</h2>
+  <p>
+  {% trans %}
+    <strong>Firefox Input</strong> is Mozilla's primary feedback mechanism. It is
+    set up to be a method of one-way communication about your experiences in using
+    Firefox, the Internet you view it through, and what Mozilla can do to make
+    that experience better. The system is available over a wide-variety of
+    submission mechanisms over all three major channels of builds.
+  {% endtrans %}
+  </p>
+  <p>
+  {% trans feedback_url=url('feedback.release_feedback') %}
+  To submit feedback for your version of Firefox, please go to <a href="{{
+    feedback_url }}">the feedback submission page</a>!
+  {% endtrans %}
+  </p>
+
+  <h2>{{ _('Open Data') }}</h2>
+
+  <p>
+  {% trans data_url='https://wiki.mozilla.org/Firefox/Input#Data_Requests.2FExperiments' %}
+    We'd love to experiment more with this data, but we're only a few people.
+    So, we need requests from you on questions you'd like to see answered!
+    If you would like to experiment with our data, please <a href="{{
+      data_url }}">contact us</a>!
+  {% endtrans %}
+
+  <h2>{{ _('Source Code') }}</h2>
+
+  <p>
+  {% trans source_url='http://github.com/fwenzel/reporter' %}
+    The code for the Firefox Input web application can be found <a href="{{
+      source_url }}">on GitHub</a>!
+  {% endtrans %}
+  </p>
+</div>
+{% endblock %}
+

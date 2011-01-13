@@ -117,7 +117,11 @@ header, footer, article, section { display: block; }
             font-style: italic;
             }
 .block.prose p {
-    margin: 1em 0;
+    line-height: 120%;
+    margin: 0 0 1em 0;
+}
+.block.prose strong {
+    font-weight: bold;
 }
 
 
