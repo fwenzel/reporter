@@ -2,7 +2,8 @@
   <ul class="messages">
     {% for theme in themes %}
     {% with opinion=theme.pivot %}
-    <li class="message theme">
+    <li class="message theme"
+        data-platform="{{ theme.platform or 'aggregate' }}">
       {% if opinion|is_praise  %}
         <p class="type praise" title="{{ _('Praise') }}"><span>{{ _('Praise') }}</span></p>
       {% elif opinion|is_suggestion  %}

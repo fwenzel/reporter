@@ -6,6 +6,7 @@ from nose.tools import eq_
 from input.urlresolvers import reverse
 from feedback import LATEST_BETAS, FIREFOX
 from feedback.models import Opinion
+from pyquery import PyQuery as pq
 
 from themes.models import Theme
 
@@ -46,12 +47,15 @@ class TestViews(test_utils.TestCase):
 
     def test_theme_count(self):
         """Make sure the right number of themes has been generated."""
-        eq_(Theme.objects.count(), 2)
-        pass
+        eq_(Theme.objects.count(), 6)
+        eq_(Theme.objects.filter(platform='').count(), 3)
 
     def test_index(self):
         r = self.client.get(reverse('themes'))
         eq_(r.status_code, 200)
+        doc = pq(r.content)
+        for theme in doc('.theme'):
+            eq_(theme.attrib.get('data-platform'), 'aggregate')
 
     def test_filters(self):
         r = self.client.get(reverse('themes') + '?s=sad')
@@ -63,13 +67,6 @@ class TestViews(test_utils.TestCase):
         """Handle invalid params gracefully."""
         r = self.client.get(reverse('themes') + '?a=somethinginvalid')
         eq_(r.status_code, 404)
-
-    def test_invalid_theme(self):
-        """Try to get an individual theme, and its opinions."""
-        # need to get all first, to grab the id
-        theme_id = Theme.objects.all()[0].id
-        r = self.client.get(reverse('theme', kwargs={"theme_id": id}))
-        eq_(r.status_code, 200)
 
     def test_invalid_theme(self):
         """Try to get a theme using a nonexistent ID (bug 617439)."""

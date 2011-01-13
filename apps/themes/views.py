@@ -56,6 +56,8 @@ def _get_platforms(request, platform):
                          .distinct().order_by('platform'))
 
     for p in platforms_from_db:
+        if not p:
+            continue
         f = Filter(urlparams(url, p=p), p, OSES[p].pretty,
                    (platform == p))
         platforms.append(f)
@@ -92,10 +94,10 @@ def index(request):
     if sentiment:
         qs = qs.filter(feeling=sentiment)
 
-    platform = request.GET.get('p')
+    platform = request.GET.get('p', '')
     platforms = _get_platforms(request, platform)
-    if platform:
-        qs = qs.filter(platform=platform)
+    # platform = '' indicates ALL
+    qs = qs.filter(platform=platform)
 
     args = dict(sentiments=sentiments, platforms=platforms, products=products)
     page = request.GET.get('page', 1)

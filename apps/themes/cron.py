@@ -72,30 +72,15 @@ def cluster_by_feeling(qs, app):
 def cluster_by_platform(qs, app, feeling):
     # We need to create corpii for each platform and manually inspect each
     # opinion and put it in the right platform bucket.
+
+    result = cluster_queryset(qs)
+    dimensions = dict(product=app.id, feeling=feeling)
+    save_result(result, dimensions)
+
     for platform in OS_USAGE:
-
         result = cluster_queryset(qs.filter(os=platform.short))
-
-        if result:
-            dimensions = {
-                    'product': app.id,
-                    'feeling': feeling,
-                    'platform': platform.short,
-                    }
-
-            # Store the clusters into groups
-            for group in result:
-                if len(group.similars) < 5:
-                    continue
-
-                topic = Theme(**dimensions)
-                topic.num_opinions = len(group.similars) + 1
-                topic.pivot = group.primary
-                topic.save()
-
-                for s in group.similars:
-                    Item(theme=topic, opinion=s['object'],
-                                score=s['similarity']).save()
+        dimensions['platform'] = platform.short
+        save_result(result, dimensions)
 
 
 def cluster_queryset(qs):
@@ -115,3 +100,19 @@ def cluster_queryset(qs):
         c.add(op, str=op.description, key=op.id)
 
     return c.cluster()
+
+
+def save_result(result, dimensions):
+    if result:
+        for group in result:
+            if (group.similars) < 5:
+                continue
+
+            topic = Theme(**dimensions)
+            topic.num_opinions = len(group.similars) + 1
+            topic.pivot = group.primary
+            topic.save()
+
+            for s in group.similars:
+                Item(theme=topic, opinion=s['object'],
+                     score=s['similarity']).save()
