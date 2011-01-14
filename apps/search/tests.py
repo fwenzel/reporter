@@ -159,8 +159,8 @@ class SearchViewTest(SphinxTestCase):
 
     def setUp(self):
         # add more opinions so we can test things.
-        populate(1000, 'desktop')
-        populate(100)
+        populate(1000, 'desktop', feedback.OPINION_SUGGESTION)
+        populate(100, 'mobile', feedback.OPINION_SUGGESTION)
         super(SearchViewTest, self).setUp()
 
     def test_pagination_max(self):
