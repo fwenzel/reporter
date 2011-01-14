@@ -18,8 +18,10 @@ TEMPLATE_DEBUG = DEBUG
 
 ## Log settings
 LOG_LEVEL = logging.DEBUG
+HAS_SYSLOG = True
 SYSLOG_TAG = "http_app_reporter"
-logging.basicConfig()
+LOGGING_CONFIG = None
+
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),

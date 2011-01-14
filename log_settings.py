@@ -3,32 +3,67 @@ import logging.handlers
 
 from django.conf import settings
 
+import commonware.log
+import dictconfig
 
-# Loggers created under the "reporter" namespace, e.g. "reporter.caching", will
-# inherit the configuration from the base logger.
-log = logging.getLogger('reporter')
 
-level = settings.LOG_LEVEL
+class NullHandler(logging.Handler):
 
-if settings.DEBUG:
-    fmt = ('%(asctime)s %(name)s:%(levelname)s %(message)s '
-           ':%(pathname)s:%(lineno)s')
-    fmt = getattr(settings, 'LOG_FORMAT', fmt)
-    handler = logging.StreamHandler()
-    formatter = logging.Formatter(fmt, datefmt='%H:%M:%S')
-else:
-    fmt = '%s: %s' % (settings.SYSLOG_TAG,
-              '%(name)s:%(levelname)s %(message)s :%(pathname)s:%(lineno)s')
-    fmt = getattr(settings, 'SYSLOG_FORMAT', fmt)
-    SysLogger = logging.handlers.SysLogHandler
-    handler = SysLogger(facility=SysLogger.LOG_LOCAL7)
-    formatter = logging.Formatter(fmt)
+    def emit(self, record):
+        pass
 
-log.setLevel(level)
-handler.setLevel(level)
-handler.setFormatter(formatter)
 
-for f in getattr(settings, 'LOG_FILTERS', []):
-    handler.addFilter(logging.Filter(f))
+base_fmt = ('%(name)s:%(levelname)s %(message)s '
+            ':%(pathname)s:%(lineno)s')
 
-log.addHandler(handler)
+cfg = {
+    'version': 1,
+    'filters': {},
+    'formatters': {
+        'debug': {
+            '()': commonware.log.Formatter,
+            'datefmt': '%H:%M:%s',
+            'format': '%(asctime)s ' + base_fmt,
+        },
+        'prod': {
+            '()': commonware.log.Formatter,
+            'datefmt': '%H:%M:%s',
+            'format': '%s: [%%(REMOTE_ADDR)s] %s' % (settings.SYSLOG_TAG,
+                                                     base_fmt),
+        },
+    },
+    'handlers': {
+        'console': {
+            '()': logging.StreamHandler,
+            'formatter': 'debug',
+        },
+        'syslog': {
+            '()': logging.handlers.SysLogHandler,
+            'facility': logging.handlers.SysLogHandler.LOG_LOCAL7,
+            'formatter': 'prod',
+        },
+        'null': {
+            '()': NullHandler,
+        }
+    },
+    'loggers': {
+        'i': {},
+    },
+    'root': {},
+}
+
+for key, value in settings.LOGGING.items():
+    cfg[key].update(value)
+
+# Set the level and handlers for all loggers.
+for logger in cfg['loggers'].values() + [cfg['root']]:
+    syslog = settings.HAS_SYSLOG and not settings.DEBUG
+    if 'handlers' not in logger:
+        logger['handlers'] = ['syslog' if syslog else 'console']
+    if 'level' not in logger:
+        logger['level'] = settings.LOG_LEVEL
+    if logger is not cfg['root'] and 'propagate' not in logger:
+        logger['propagate'] = False
+
+dictconfig.dictConfig(cfg)
+
