@@ -174,6 +174,15 @@ class BetaViewTests(ViewTestCase):
         eq_(latest.manufacturer, 'FancyBrand')
         eq_(latest.device, 'FancyPhone 2.0')
 
+    def test_feedback_index(self):
+        """Test feedback index page for Betas."""
+        r = self.client.get(reverse('feedback.beta_feedback'), HTTP_USER_AGENT=(
+            self.FX_UA % '20.0b2'), follow=True)
+        eq_(r.status_code, 200)
+        doc = pyquery.PyQuery(r.content)
+        for link in ('feedback.happy', 'feedback.sad'):
+            eq_(doc('a[href$="%s"]' % reverse(link)).length, 1)
+
 
 class ReleaseViewTests(ViewTestCase):
     """Test feedback for Firefox release versions."""

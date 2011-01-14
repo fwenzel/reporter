@@ -9,13 +9,13 @@
 <h4>{{ _('Please choose one of the following types of feedback that you would like to submit to us:') }}</h4>
 
 <div class="feedback_index happy">
-   <a href="happy"><div
+    <a href="{{ url('feedback.happy') }}"><div
        title="{{ _('Firefox makes me happy because ...') }}"
        class="smiley happy feedback_index">&#9786;</div></a>
    <p>{{ _('Firefox makes me happy because ...') }}</p>
 </div>
 <div class="feedback_index sad">
-   <a href="sad"><div
+    <a href="{{ url('feedback.sad') }}"><div
        title="{{ _('Firefox makes me sad because ...') }}"
        class="smiley sad feedback_index">&#9786;</div></a>
    <p>{{ _('Firefox makes me sad because ...') }}</p>
