@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 import jingo
 from tower import ugettext as _
 
-from feedback import APPS, OSES, FIREFOX, APP_USAGE, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
+from feedback import APPS, OSES, FIREFOX, APP_USAGE
 from input.decorators import cache_page
 from input.helpers import urlparams
 from input.urlresolvers import reverse
@@ -44,15 +44,15 @@ def _get_sentiments(request, sentiment):
     return sentiments
 
 
-def _get_platforms(request, platform):
+def _get_platforms(request, product, platform):
     platforms = []
     url = request.get_full_path()
 
     f = Filter(urlparams(url, p=None), _('All'), _('All Platforms'),
                (not platform))
     platforms.append(f)
-
-    platforms_from_db = (Theme.objects.values_list('platform', flat=True)
+    platforms_from_db = (Theme.objects.filter(product=APPS[product].id)
+                         .values_list('platform', flat=True)
                          .distinct().order_by('platform'))
 
     for p in platforms_from_db:
@@ -95,7 +95,7 @@ def index(request):
         qs = qs.filter(feeling=sentiment)
 
     platform = request.GET.get('p', '')
-    platforms = _get_platforms(request, platform)
+    platforms = _get_platforms(request, product, platform)
     # platform = '' indicates ALL
     qs = qs.filter(platform=platform)
 

@@ -18,12 +18,15 @@
         {{ filter_list(sentiments) }}
       </div>
     </div>
+    {# No need to show platforms if there is only one non-All platform #}
+    {% if platforms|length > 2 %}
     <div class="choice" id="filter_platform">
       <h3>{{ _('Platform') }}</h3>
       <div>
         {{ filter_list(platforms) }}
       </div>
     </div>
+    {% endif %}
   </form>
 </div>
 
