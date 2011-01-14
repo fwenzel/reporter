@@ -21,7 +21,11 @@ LOG_LEVEL = logging.DEBUG
 HAS_SYSLOG = True
 SYSLOG_TAG = "http_app_reporter"
 LOGGING_CONFIG = None
-
+LOGGING = {
+    'loggers': {
+        'i.sphinx': {'level': logging.INFO},
+    },
+}
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
