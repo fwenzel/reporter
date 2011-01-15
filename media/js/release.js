@@ -46,6 +46,7 @@
             var newTextAttr = (state == 'waiting') ? 'data-waittext' : 'data-text';
 
             this.toggleClass('waiting', state == 'waiting');
+            this.toggleClass('disabled', state == 'disabled');
             textElem.html( this.attr(newTextAttr) );
 
             if (state == 'waiting') this.attr('data-text', oldHTML);
@@ -92,6 +93,10 @@
                 button = form.find('.submit a');
 
             e.preventDefault();
+
+            // If button disabled, do nothing.
+            if (button.hasClass('disabled'))
+                return;
 
             form.find('.errorlist').remove();  // Wipe out previous errors.
 
@@ -141,14 +146,14 @@
     });
 
     $(document).ready(function() {
-
         $(':input.countable').each(function() {
-            var counter_id = '#count-'+$(this).attr('id');
+            var counter_id = '#count-'+$(this).attr('id'),
+                input = $(this);
 
-            $(this).focus(function() {
+            input.focus(function() {
                 // Need to trigger keydown on focus, because placeholder
                 // confuses NobleCount.
-                $(this).trigger('keydown');
+                input.trigger('keydown');
             })
             .NobleCount(counter_id, {
                 max_chars: $(counter_id).attr('data-max'),
@@ -159,6 +164,12 @@
                         char_area.addClass('low').removeClass('verylow');
                     else
                         char_area.removeClass('low').removeClass('verylow');
+
+                    var button = input.closest('form').find('.submit a');
+                    if (char_rem < 0)
+                        button.submitButton('disabled');
+                    else
+                        button.submitButton('default');
                 }
             });
         });

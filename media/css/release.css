@@ -173,12 +173,16 @@ article .content {
                              inset 0 1000px 0 rgba(255,255,255,.25);
             -moz-transition: none;
         }
-        article .content .submit a.waiting {
+        article .content .submit a.waiting,
+        article .content .submit a.disabled {
             top: 2px;
             background: -moz-linear-gradient(#d6d6d6, #c3c3c3);
             -moz-box-shadow: 0px 3px 0 #bababa;
             box-shadow: 0px 3px 0 #bababa;
             text-shadow: 0 -1px 0 #c4c4c4;
+        }
+        article .content .submit a.disabled {
+            cursor: default;
         }
         article .content .submit a.waiting + span {
             content: " ";
@@ -460,7 +464,7 @@ footer:hover {
                 background-image: url(../img/ratings.png);
                 background-repeat: no-repeat 0 0;
                 overflow: hidden;
-                 cursor: pointer;
+                cursor: pointer;
              }
              #rate table tbody td input:focus + label {
                  border-radius: 20px;
