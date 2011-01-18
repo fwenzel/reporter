@@ -1,13 +1,15 @@
 @font-face {
     font-family: MetaBold;
     font-weight: bold;
-    src: local("Meta Bold-Roman"), local("MetaBold-Roman");
-    }
+    src: url('//www.mozilla.com/img/fonts/MetaWebPro-Bold.eot');
+    src: local('☺'), url('//www.mozilla.com/img/fonts/MetaWebPro-Bold.woff') format('woff');
+}
 
 @font-face {
     font-family: MetaRoman;
-    src: local("Meta Book-Roman"), local("MetaBook-Roman");
-    }
+    src: url('//www.mozilla.com/img/fonts/MetaWebPro-Book.eot');
+    src: local('☺'), url('//www.mozilla.com/img/fonts/MetaWebPro-Book.woff') format('woff');
+}
 
 /* {{{ Clearfix */
 .clearfix:after {
