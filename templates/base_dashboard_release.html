@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block site_header %}
+  <div id="header"><div class="funnel">
+    <h1><a href="{{ url('dashboard.release') }}">
+      {% trans %}
+      <strong>Firefox Release</strong> Input Dashboard
+      {% endtrans %}
+    </a></h1>
+
+    <ul>
+      <li><a class="dashboard" href="{{ url('dashboard.release') }}"><span>{{ _('Experience') }}</span></a></li>
+      <li><a class="issues" href="{{ url('website_issues.release') }}"><span>{{ _('Broken Sites') }}</span></a></li>
+      <li><a class="themes" href="{{ url('themes.release') }}"> <span>{{ _('Ideas') }}</span>
+        </a>
+      </li>
+    </ul>
+  </div></div>
+{% endblock %}
