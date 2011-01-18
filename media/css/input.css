@@ -1090,6 +1090,7 @@ header, footer, article, section { display: block; }
 #footer #copyright {
 	clear: both;
 	background: url(../img/footer-logo.png) top left no-repeat;
+    line-height: 140%;
 	padding-left: 60px;
 }
 
