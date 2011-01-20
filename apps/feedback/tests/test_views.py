@@ -39,29 +39,30 @@ class BetaViewTests(ViewTestCase):
     def _get_page(self, ver=None):
         """Request beta feedback page."""
         extra = dict(HTTP_USER_AGENT=self.FX_UA % ver) if ver else {}
-        return self.client.get(reverse('feedback.sad'),
-                               **extra)
+        return self.client.get(reverse('feedback.sad'), **extra)
 
     @enforce_ua
     def test_no_ua(self):
         """No UA: Redirect to beta download."""
         r = self._get_page()
         eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback.need_beta'))
+        assert r['Location'].endswith(
+                reverse('feedback.download', channel='beta'))
 
     @enforce_ua
     def test_release(self):
         """Release version on beta page: redirect."""
         r = self._get_page('3.6')
         eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback.release_feedback'))
+        assert r['Location'].endswith(reverse('feedback', channel='release'))
 
     @enforce_ua
     def test_old_beta(self):
         """Old beta: redirect."""
         r = self._get_page('3.6b2')
         eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback.need_beta'))
+        assert r['Location'].endswith(
+                reverse('feedback.download', channel='beta'))
 
     @enforce_ua
     def test_latest_beta(self):
@@ -80,7 +81,8 @@ class BetaViewTests(ViewTestCase):
         """Nightly version: redirect."""
         r = self._get_page('20.0b2pre')
         eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback.need_beta'))
+        assert r['Location'].endswith(
+                reverse('feedback.download', channel='beta'))
 
     def test_give_feedback(self):
         r = self.client.post(reverse('feedback.sad'))
@@ -152,7 +154,6 @@ class BetaViewTests(ViewTestCase):
 
             assert form
             eq_(form.attr('autocomplete'), 'off')
-            print r
 
         autocomplete_check(settings.DESKTOP_SITE_ID)
         autocomplete_check(settings.MOBILE_SITE_ID)
@@ -176,8 +177,10 @@ class BetaViewTests(ViewTestCase):
 
     def test_feedback_index(self):
         """Test feedback index page for Betas."""
-        r = self.client.get(reverse('feedback.beta_feedback'), HTTP_USER_AGENT=(
-            self.FX_UA % '20.0b2'), follow=True)
+
+        r = self.client.get(reverse('feedback', channel='beta'),
+                            HTTP_USER_AGENT=(self.FX_UA % '20.0b2'),
+                            follow=True)
         eq_(r.status_code, 200)
         doc = pyquery.PyQuery(r.content)
         for link in ('feedback.happy', 'feedback.sad'):
@@ -193,29 +196,30 @@ class ReleaseViewTests(ViewTestCase):
     def _get_page(self, ver=None):
         """Request release feedback page."""
         extra = dict(HTTP_USER_AGENT=self.FX_UA % ver) if ver else {}
-        return self.client.get(reverse('feedback.release_feedback'),
-                               **extra)
+
+        return self.client.get(reverse('feedback', channel='release'), **extra)
 
     @enforce_ua
     def test_no_ua(self):
         """No UA: redirect."""
         r = self._get_page()
         eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback.need_release'))
+        assert r['Location'].endswith(reverse('feedback.download',
+                                              channel='release'))
 
     @enforce_ua
     def test_beta(self):
         """Beta version on release page: redirect."""
         r = self._get_page('3.6b2')
-        eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback.beta_feedback'))
+        self.assertRedirects(r, reverse('feedback', channel='beta'), 302, 302)
 
     @enforce_ua
     def test_old_release(self):
         """Old release: redirect."""
         r = self._get_page('3.5')
         eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback.need_release'))
+        assert r['Location'].endswith(reverse('feedback.download',
+                                              channel='release'))
 
     @enforce_ua
     def test_latest_release(self):
@@ -234,7 +238,8 @@ class ReleaseViewTests(ViewTestCase):
         """Nightly version: redirect."""
         r = self._get_page('20.0b2pre')
         eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback.need_beta'))
+        assert r['Location'].endswith(reverse('feedback.download',
+                                              channel='beta'))
 
     def post_feedback(self, data, ajax=False, follow=True):
         """POST to the release feedback page."""
@@ -242,12 +247,12 @@ class ReleaseViewTests(ViewTestCase):
         if ajax:
             options['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
 
-        return self.client.post(reverse('feedback.release_feedback'), data,
+        return self.client.post(reverse('feedback', channel='release'), data,
                                 **options)
 
     def test_feedback_loads(self):
         """No general errors on release feedback page."""
-        r = self.client.get(reverse('feedback.release_feedback'),
+        r = self.client.get(reverse('feedback', channel='release'),
                             HTTP_USER_AGENT=(self.FX_UA % '20.0'),
                             follow=True)
         eq_(r.status_code, 200)
@@ -263,7 +268,8 @@ class ReleaseViewTests(ViewTestCase):
             r = self.post_feedback({'type': OPINION_RATING}, ajax=ajax)
             if not ajax:
                 doc = pyquery.PyQuery(r.content)
-                eq_(doc('article#rate form .errorlist').length, len(RATING_USAGE))
+                eq_(len(doc('article#rate form .errorlist')),
+                    len(RATING_USAGE))
             else:
                 eq_(r.status_code, 400)
                 errors = json.loads(r.content)
@@ -281,7 +287,7 @@ class ReleaseViewTests(ViewTestCase):
             if not ajax:
                 eq_(r.status_code, 302)
                 assert r['Location'].endswith(
-                    reverse('feedback.release_feedback') + '#thanks')
+                        reverse('feedback', channel='release') + '#thanks')
             else:
                 eq_(r.status_code, 200)
                 eq_(r['Content-Type'], 'application/json')
@@ -317,7 +323,7 @@ class ReleaseViewTests(ViewTestCase):
             if not ajax:
                 eq_(r.status_code, 302)
                 assert r['Location'].endswith(
-                    reverse('feedback.release_feedback') + '#thanks')
+                        reverse('feedback', channel='release') + '#thanks')
             else:
                 eq_(r.status_code, 200)
                 eq_(r['Content-Type'], 'application/json')
@@ -352,7 +358,7 @@ class ReleaseViewTests(ViewTestCase):
             if not ajax:
                 eq_(r.status_code, 302)
                 assert r['Location'].endswith(
-                    reverse('feedback.release_feedback') + '#thanks')
+                        reverse('feedback', channel='release') + '#thanks')
             else:
                 eq_(r.status_code, 200)
                 eq_(r['Content-Type'], 'application/json')
@@ -361,4 +367,3 @@ class ReleaseViewTests(ViewTestCase):
             latest = Opinion.objects.no_cache().order_by('-id')[0]
             eq_(latest.description, data['description'])
             latest.delete()
-
