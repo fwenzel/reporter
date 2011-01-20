@@ -6,7 +6,6 @@ import socket
 import time
 
 from django.contrib.sites.models import Site
-from django.conf import settings
 from django.test.client import Client as TestClient
 
 from mock import patch, Mock
@@ -40,6 +39,7 @@ class SphinxTestCase(test_utils.TransactionTestCase):
     def setUp(self):
         super(SphinxTestCase, self).setUp()
 
+        from django.conf import settings
         settings.SITE_ID = settings.DESKTOP_SITE_ID
 
         if not SphinxTestCase.sphinx_is_running:
@@ -322,10 +322,9 @@ class FeedTest(SphinxTestCase):
                                  date_end='01/01/2011'))
         doc = self._pq(r)
         s = Site.objects.all()[0]
-        url_base = 'http://%s/%s/%s/' % (s.domain, 'en-US',
-                                        settings.DEFAULT_CHANNEL)
+        url_base = 'http://%s/' % s.domain
         eq_(doc('entry link').attr['href'],
-            '%s%s' % (url_base, 'opinion/29'))
+            '%s%s' % (url_base, 'en-US/opinion/29'))
 
     def test_item_title(self):
         """

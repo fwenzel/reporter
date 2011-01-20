@@ -79,7 +79,7 @@ USE_L10N = True
 INPUT_LANGUAGES = ('ar', 'bg', 'ca', 'cs', 'da', 'de', 'el', 'en-US', 'es',
                    'fr', 'fy-NL', 'gl', 'he', 'hu', 'id', 'it', 'ko', 'nb-NO',
                    'nl', 'pl', 'pt-PT', 'ro', 'ru', 'sk', 'sq', 'uk', 'vi',
-                   'zh-TW', 'zh-CN')
+                   'zh-CN', 'zh-TW')
 RTL_LANGUAGES = ('ar', 'he',)  # ('fa', 'fa-IR')
 # Fallbacks for locales that are not recognized by Babel. Bug 596981.
 BABEL_FALLBACK = {'fy-nl': 'nl'}
@@ -93,15 +93,10 @@ class LazyLangs(dict):
                      for lang in INPUT_LANGUAGES])
 LANGUAGES = lazy(LazyLangs, dict)()
 
-LANGUAGE_URL_MAP = dict((i[:2], i) for i in INPUT_LANGUAGES if '-' in i)
-LANGUAGE_URL_MAP.update((i.lower(), i) for i in INPUT_LANGUAGES)
+LANGUAGE_URL_MAP = dict([(i.lower(), i) for i in INPUT_LANGUAGES])
 
 # Paths that don't require a locale prefix.
 SUPPORTED_NONLOCALES = ('media', 'admin')
-
-# TODO: These will be ported to /feeedback/beta
-SUPPORTED_NONCHANNELS = ('media', 'admin', 'happy', 'sad', 'about')
-DEFAULT_CHANNEL = 'beta'
 
 TEXT_DOMAIN = 'messages'
 STANDALONE_DOMAINS = []
@@ -157,12 +152,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.media',
     'django.core.context_processors.request',
-    'django.core.context_processors.csrf',
 
+    'django.core.context_processors.csrf',
     'input.context_processors.i18n',
     'input.context_processors.input',
     'input.context_processors.mobile',
-
     'search.context_processors.product_versions',
     'jingo_minify.helpers.build_ids',
 )
@@ -242,7 +236,7 @@ def JINJA_CONFIG():
 
 MIDDLEWARE_CLASSES = (
     'input.middleware.MobileSiteMiddleware',
-    'input.middleware.LocaleAndChannelURLMiddleware',
+    'input.middleware.LocaleURLMiddleware',
 
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

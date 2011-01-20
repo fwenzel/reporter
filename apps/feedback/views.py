@@ -11,7 +11,7 @@ import jingo
 from tower import ugettext as _
 
 from input import RATING_USAGE, RATING_CHOICES
-from input.decorators import cache_page, forward_mobile, negotiate
+from input.decorators import cache_page, forward_mobile
 from input.urlresolvers import reverse
 
 from feedback import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
@@ -41,8 +41,7 @@ def enforce_ua(beta):
             if not parsed:  # Unknown UA.
                 if request.method == 'GET':
                     return http.HttpResponseRedirect(reverse(
-                        'feedback.download',
-                        channel='beta' if beta else 'release'))
+                        'feedback.need_%s' % ('beta' if beta else 'release')))
                 else:
                     return http.HttpResponseBadRequest(
                         _('User-Agent request header must be set.'))
@@ -55,31 +54,31 @@ def enforce_ua(beta):
             if beta:
                 if this_ver.is_release:  # Forward release to release feedback.
                     return http.HttpResponseRedirect(
-                        reverse('feedback', channel='release'))
+                        reverse('feedback.release_feedback'))
                 elif not this_ver.is_beta:  # Not a beta? Upgrade to beta.
                     return http.HttpResponseRedirect(
-                            reverse('feedback.download', channel='beta'))
+                            reverse('feedback.need_beta'))
 
                 # Check for outdated beta.
                 ref_ver = Version(LATEST_BETAS[parsed['browser']])
                 if this_ver < ref_ver:
                     return http.HttpResponseRedirect(
-                            reverse('feedback.download', channel='beta'))
+                            reverse('feedback.need_beta'))
 
             # Enforce release versions.
             else:
                 if this_ver.is_beta:  # Forward betas to beta feedback.
                     return http.HttpResponseRedirect(
-                        reverse('feedback', channel='beta'))
+                        reverse('feedback.beta_feedback'))
                 elif not this_ver.is_release:  # Not a release? Upgrade.
                     return http.HttpResponseRedirect(
-                            reverse('feedback.download', channel='beta'))
+                            reverse('feedback.need_beta'))
 
                 # Check for outdated release.
                 ref_ver = Version(LATEST_RELEASE[parsed['browser']])
                 if this_ver < ref_ver:
                     return http.HttpResponseRedirect(
-                            reverse('feedback.download', channel='release'))
+                            reverse('feedback.need_release'))
 
             # If we made it here, it's a valid version.
             return f(request, ua=ua, *args, **kwargs)
@@ -182,7 +181,7 @@ def release_feedback(request, ua):
                                          mimetype='application/json')
             else:
                 return http.HttpResponseRedirect(
-                    reverse('feedback', channel='release') + '#thanks')
+                    reverse('feedback.release_feedback') + '#thanks')
 
         elif request.is_ajax():
             # For AJAX request, return errors only.
@@ -207,8 +206,6 @@ def release_feedback(request, ua):
     template = 'feedback/release_index.html'
     return jingo.render(request, template, data)
 
-feedback = negotiate(beta=beta_feedback, release=release_feedback)
-
 
 @cache_page
 def need_beta(request):
@@ -225,8 +222,6 @@ def need_release(request):
 
     template = 'feedback/need_release.html'
     return jingo.render(request, template)
-
-download = negotiate(release=need_release, beta=need_beta)
 
 
 @cache_page

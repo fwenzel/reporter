@@ -1,11 +1,9 @@
 from django.conf import settings
 from django.utils import translation
 
-from input import get_channel
-
 
 def input(request):
-    return dict(settings=settings, CHANNEL=get_channel())
+    return dict(settings=settings)
 
 
 def i18n(request):

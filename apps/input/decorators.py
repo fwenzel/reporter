@@ -12,8 +12,7 @@ from view_cache_utils import cache_page_with_prefix
 
 # Known mobile device patterns. Excludes iPad because it's big enough to show
 # the desktop dashboard.
-MOBILE_DEVICE_PATTERN = re.compile(
-    r'^Mozilla.*(Fennec|Android|Maemo|iPhone|iPod)')
+MOBILE_DEVICE_PATTERN = re.compile('^Mozilla.*(Fennec|Android|Maemo|iPhone|iPod)')
 
 
 def cache_page(cache_timeout=None, use_get=False, **kwargs):
@@ -66,29 +65,3 @@ def forward_mobile(f):
         return f(request, *args, **kwargs)
 
     return wrapped
-
-
-# Not quite a decorator:
-def negotiate(release, beta, nightly=None):
-    """
-    If
-        /beta/foo
-        /release/foo
-        /nightly/foo
-    exist
-
-    you can create a urls.py that points 'foo' to views.foo
-    in views.py:
-
-        foo = negotate(beta=beta_foo, release=release_foo, nightly=nightly_foo)
-
-    Will then serve up the correct view based on your request.
-    """
-    def negotiated(request, *args, **kwargs):
-        if request.channel == 'nightly' and nightly:
-            return nightly(request, *args, **kwargs)
-        elif request.channel == 'beta':
-            return beta(request, *args, **kwargs)
-        else:
-            return release(request, *args, **kwargs)
-    return negotiated

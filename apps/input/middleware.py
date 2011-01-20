@@ -13,7 +13,7 @@ from . import urlresolvers
 from .helpers import urlparams
 
 
-class LocaleAndChannelURLMiddleware(object):
+class LocaleURLMiddleware(object):
     """
     1. Search for the locale.
     2. Save it in the request.
@@ -45,7 +45,7 @@ class LocaleAndChannelURLMiddleware(object):
 
             # Vary on Accept-Language if we changed the locale
             old_locale = prefixer.locale
-            new_locale, new_channel, _ = prefixer.split_path(full_path)
+            new_locale, _ = prefixer.split_path(full_path)
             if old_locale != new_locale:
                 response['Vary'] = 'Accept-Language'
 
@@ -53,7 +53,6 @@ class LocaleAndChannelURLMiddleware(object):
 
         request.path_info = '/' + prefixer.shortened_path
         request.locale = prefixer.locale
-        request.channel = prefixer.channel
         tower.activate(prefixer.locale)
 
 

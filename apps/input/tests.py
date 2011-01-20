@@ -3,10 +3,9 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.http import HttpRequest
-from django.test.client import Client
 
 import jingo
-from mock import patch, Mock
+from mock import patch
 from nose.tools import eq_
 import test_utils
 
@@ -19,17 +18,6 @@ def render(s, context={}):
     """Render a Jinja2 template fragment."""
     t = jingo.env.from_string(s)
     return t.render(**context)
-
-
-FX_UA = ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
-         'en-US; rv:1.9.2.3) Gecko/20100401 Firefox/%s')
-
-
-class TestCase(test_utils.TestCase):
-
-    def setUp(self):
-        super(TestCase, self).setUp()
-        self.fxclient = Client(False, HTTP_USER_AGENT=(FX_UA % '4.0'))
 
 
 class ViewTestCase(test_utils.TestCase):
@@ -48,7 +36,6 @@ class DecoratorTests(ViewTestCase):
         users to mobile site.
         """
         fake_mobile_domain = 'mymobiledomain.example.com'
-
         def side_effect(*args, **kwargs):
             class FakeSite(object):
                 id = settings.MOBILE_SITE_ID
@@ -62,7 +49,7 @@ class DecoratorTests(ViewTestCase):
             reverse('feedback.happy'),
             reverse('feedback.sad'),
             reverse('feedback.suggestion'),
-            reverse('feedback'),
+            reverse('feedback.release_feedback'),
         )
 
         # User Agent Patterns: (UA, forward: true/false?)
@@ -100,7 +87,7 @@ class HelperTests(test_utils.TestCase):
 
         # Evil unicode
         url = u'/xx?evil=reco\ufffd\ufffd\ufffd\u02f5'
-        urlparams(url)  # No error, please
+        urlparams(url) # No error, please
 
         # Russian string (bug 580629)
         res = urlparams(u'/xx?russian=быстро')
@@ -144,18 +131,15 @@ class MiddlewareTests(test_utils.TestCase):
         patterns = (
             ('en-us,en;q=0.7,de;q=0.8', 'en-US'),
             ('fr-FR,de-DE;q=0.5', 'fr'),
-            ('zh, en-us;q=0.8, en;q=0.6', 'zh-CN'),
+            ('zh, en-us;q=0.8, en;q=0.6', 'en-US'), # TODO should match forward?
             ('xx-YY,es-ES;q=0.7,de-DE;q=0.5', 'es'),
-            ('German', 'en-US'),  # invalid
-            ('nb,no;q=0.8,nn;q=0.6,en-us;q=0.4,en;q=0.2', 'nb-NO'),
+            ('German', 'en-US'), # invalid
         )
 
         for pattern in patterns:
-            r = self.client.get('/', HTTP_ACCEPT_LANGUAGE=pattern[0])
-            eq_(r.status_code, 301)
-            did_it_work = r['Location'].rstrip('/').endswith(
-                    pattern[1] + '/' + settings.DEFAULT_CHANNEL)
-            self.assertTrue(did_it_work, "%s didn't match %s" % pattern)
+            res = self.client.get('/', HTTP_ACCEPT_LANGUAGE=pattern[0])
+            eq_(res.status_code, 301)
+            self.assertTrue(res['Location'].rstrip('/').endswith(pattern[1]))
 
     def test_mobilesite_nohost(self):
         """Make sure we serve the desktop site if there's no HTTP_HOST set."""
@@ -181,45 +165,3 @@ class MiddlewareTests(test_utils.TestCase):
         """Ensure X-Frame-Options middleware works as expected."""
         r = self.client.get('/')
         eq_(r['x-frame-options'], 'DENY')
-
-    def test_no_prefixer(self):
-        urlresolvers.clean_url_prefixes()
-        eq_(urlresolvers.reverse('feedback.sad'), '/sad')
-
-    def test_no_locale(self):
-        request = Mock()
-        request.path_info = '/beta'
-        p = urlresolvers.Prefixer(request)
-        eq_(p.channel, 'beta')
-
-    def test_almost_locale(self):
-        request = Mock()
-        request.path_info = '/en/'
-        p = urlresolvers.Prefixer(request)
-        eq_(p.locale, 'en-US')
-
-    def test_almost_locale_with_channel(self):
-        request = Mock()
-        request.path_info = '/en/release'
-        p = urlresolvers.Prefixer(request)
-        eq_(p.locale, 'en-US')
-        eq_(p.channel, 'release')
-
-    def test_locale_in_get(self):
-        request = Mock()
-        request.path_info = '/'
-        request.GET = dict(lang='en-US')
-        p = urlresolvers.Prefixer(request)
-        eq_(p.get_language(), 'en-US')
-
-
-class RedirectTests(TestCase):
-    def test_redirects(self):
-        redirs = {
-                '/feedback': '/en-US/%s/feedback' % settings.DEFAULT_CHANNEL,
-                '/thanks': '/en-US/%s/thanks' % settings.DEFAULT_CHANNEL,
-                '/themes': '/en-US/%s/themes' % settings.DEFAULT_CHANNEL,
-                }
-        for link, redir in redirs.iteritems():
-            self.assertRedirects(self.fxclient.get(link, follow=True), redir,
-                                 301)

@@ -1,13 +1,5 @@
 from tower import ugettext_lazy as _
 
-from input import urlresolvers
-
-
-def get_channel():
-    return urlresolvers.get_url_prefix().channel
-
-
-CHANNELS = ('release', 'beta', 'nightly')
 
 # Known manufacturers and devices for mobile feedback.
 KNOWN_MANUFACTURERS = (
@@ -26,7 +18,6 @@ KNOWN_DEVICES = (
     'X10i',
 )
 
-
 # Release Feedback: Rating Types
 class RATING_STARTUP:
     id = 1
@@ -34,13 +25,11 @@ class RATING_STARTUP:
     pretty = _(u'Start-Up Time')
     help = _(u'How long Firefox takes to start running')
 
-
 class RATING_PAGELOAD:
     id = 2
     short = 'pageload'
     pretty = _(u'Page Load Time')
     help = _(u'How long it takes for web pages to load')
-
 
 class RATING_RESPONSIVE:
     id = 3
@@ -48,13 +37,11 @@ class RATING_RESPONSIVE:
     pretty = _(u'Responsiveness')
     help = _(u'How quickly web pages respond once they have loaded')
 
-
 class RATING_CRASHY:
     id = 4
     short = 'crashy'
     pretty = _(u'Stability')
     help = _(u'How frequently Firefox crashes or loses data')
-
 
 class RATING_FEATURES:
     id = 5
