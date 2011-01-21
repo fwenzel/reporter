@@ -472,11 +472,14 @@ footer:hover {
             }
             #rate table tbody td input {
                 position: absolute;
-                 left: -1000em;
-                 top: -1000em;
-                 width: 0;
-                 height: 0;
+                left: -1000em;
+                width: 0;
+                height: 0;
                 opacity: 0;
+            }
+            [dir="rtl"] #rate table tbody td input {
+                left: auto;
+                right: -1000em;
             }
 
             #rate table input[value="1"] + label { background-position: 0px 0; }
