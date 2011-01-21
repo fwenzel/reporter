@@ -6,25 +6,25 @@
 
 {% block content %}
 
-{% if type == OPINION_SUGGESTION: %}
+{% if type == OPINION_SUGGESTION.id: %}
   <div id="{{ div_id }}_mobile">
 {% else %}
   <div id="{{ div_id }}">
 {% endif %}
 
   <h2>
-    {% if type == OPINION_PRAISE: %}
+    {% if type == OPINION_PRAISE.id: %}
       {{ smiley("happy", "feedback_index_mobile") }}
-    {% elif type == OPINION_ISSUE: %}
+    {% elif type == OPINION_ISSUE.id: %}
       {{ smiley("sad", "feedback_index_mobile") }}
-    {% elif type == OPINION_SUGGESTION: %}
-    <span title="{{ _('Suggestion') }}" class="feedback_submit suggestion"></span>
+    {% elif type == OPINION_SUGGESTION.id: %}
+    <span title="{{ OPINION_SUGGESTION.pretty }}" class="feedback_submit suggestion"></span>
     {% endif %}
-    {% if type == OPINION_PRAISE: %}
+    {% if type == OPINION_PRAISE.id: %}
       {{ _('Super! Please tell us more!') }}
-    {% elif type == OPINION_ISSUE: %}
+    {% elif type == OPINION_ISSUE.id: %}
       {{ _('Ack! Please tell us what to fix!') }}
-    {% elif type == OPINION_SUGGESTION: %}
+    {% elif type == OPINION_SUGGESTION.id: %}
       {{ _('Awesome! Please make your suggestion below:') }}
     {% endif %}
   </h2>
@@ -33,7 +33,7 @@
     {{ form.description.errors|safe }}
     <p>{{ form.description|safe }}</p>
 
-    {% if type in (OPINION_PRAISE, OPINION_ISSUE): %}
+    {% if type in (OPINION_PRAISE.id, OPINION_ISSUE.id): %}
       {{ form.url.errors|safe }}
       <p>
         <label>{{ form.add_url|safe }}
@@ -62,7 +62,7 @@
   </form>
 </div>
 
-{% if type in (OPINION_PRAISE, OPINION_ISSUE): %}
+{% if type in (OPINION_PRAISE.id, OPINION_ISSUE.id): %}
   <p class="feedback_suggestion_mobile">
   <img src="{{ MEDIA_URL }}img/suggestion-box-idea-medium.png" />
   {% trans %}

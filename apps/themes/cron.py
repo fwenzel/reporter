@@ -7,9 +7,9 @@ from django.db import transaction
 import cronjobs
 from textcluster import Corpus, search
 
-from feedback import (APP_USAGE, OS_USAGE, LATEST_BETAS, OPINION_PRAISE,
-                      OPINION_ISSUE, OPINION_SUGGESTION)
+from feedback import APP_USAGE, OS_USAGE, LATEST_BETAS
 from feedback.models import Opinion
+from input import OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
 from themes.models import Theme, Item
 
 SIM_THRESHOLD = settings.CLUSTER_SIM_THRESHOLD
@@ -61,9 +61,9 @@ def cluster_by_product(qs):
 
 
 def cluster_by_feeling(qs, app):
-    happy = qs.filter(type=OPINION_PRAISE)
-    sad = qs.filter(type=OPINION_ISSUE)
-    suggestions = qs.filter(type=OPINION_SUGGESTION)
+    happy = qs.filter(type=OPINION_PRAISE.id)
+    sad = qs.filter(type=OPINION_ISSUE.id)
+    suggestions = qs.filter(type=OPINION_SUGGESTION.id)
     cluster_by_platform(happy, app, 'happy')
     cluster_by_platform(sad, app, 'sad')
     cluster_by_platform(suggestions, app, 'suggestions')

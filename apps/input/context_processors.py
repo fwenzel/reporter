@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.utils import translation
 
-from input import get_channel
+from input import get_channel, op_types
 
 
 def input(request):
@@ -18,3 +18,7 @@ def i18n(request):
 
 def mobile(request):
     return {'MOBILE': getattr(request, 'mobile_site', False)}
+
+
+def opinion_types(request):
+    return op_types

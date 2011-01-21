@@ -9,10 +9,10 @@ from django.utils.feedgenerator import Atom1Feed
 import jingo
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from feedback import (APPS, APP_IDS, FIREFOX, MOBILE, LATEST_BETAS,
-                      OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
-                      OPINION_SHORT)
+from feedback import APPS, APP_IDS, FIREFOX, MOBILE, LATEST_BETAS
 from feedback.version_compare import simplify_version
+from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
+                   OPINION_TYPES)
 from input.decorators import cache_page
 from input.urlresolvers import reverse
 
@@ -51,11 +51,11 @@ def _get_results_opts(request, form, product, meta=[]):
 
     sentiment = form.cleaned_data.get('sentiment', '')
     if sentiment == 'happy':
-        search_opts['type'] = OPINION_PRAISE
+        search_opts['type'] = OPINION_PRAISE.id
     elif sentiment == 'sad':
-        search_opts['type'] = OPINION_ISSUE
+        search_opts['type'] = OPINION_ISSUE.id
     elif sentiment == 'suggestions':
-        search_opts['type'] = OPINION_SUGGESTION
+        search_opts['type'] = OPINION_SUGGESTION.id
 
     return search_opts
 
@@ -64,11 +64,11 @@ def get_sentiment(data=[]):
     r = dict(happy=0, sad=0, suggestions=0, sentiment='happy')
 
     for el in data:
-        if el['type'] == OPINION_PRAISE:
+        if el['type'] == OPINION_PRAISE.id:
             r['happy'] = el['count']
-        elif el['type'] == OPINION_ISSUE:
+        elif el['type'] == OPINION_ISSUE.id:
             r['sad'] = el['count']
-        elif el['type'] == OPINION_SUGGESTION:
+        elif el['type'] == OPINION_SUGGESTION.id:
             r['suggestions'] = el['count']
 
     r['total'] = r['sad'] + r['happy'] + r['suggestions']
@@ -114,7 +114,7 @@ class SearchFeed(Feed):
             'version': item.version,
             'os': item.os,
             'locale': item.locale,
-            'sentiment': OPINION_SHORT.get(item.type, '')
+            'sentiment': OPINION_TYPES[item.type].short
         }
 
         return (':'.join(i) for i in categories.items())

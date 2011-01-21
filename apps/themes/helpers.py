@@ -1,17 +1,17 @@
 import jinja2
 from jingo import register
 
-from feedback import OPINION_PRAISE, OPINION_SUGGESTION
+from input import OPINION_PRAISE, OPINION_SUGGESTION
 
 
 @register.filter
 def is_praise(opinion):
-    return opinion.type == OPINION_PRAISE
+    return opinion.type == OPINION_PRAISE.id
 
 
 @register.filter
 def is_suggestion(opinion):
-    return opinion.type == OPINION_SUGGESTION
+    return opinion.type == OPINION_SUGGESTION.id
 
 
 def new_context(context, **kw):

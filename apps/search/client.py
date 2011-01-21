@@ -11,9 +11,9 @@ from django.conf import settings
 from product_details import product_details
 from tower import ugettext as _
 
-from input import KNOWN_DEVICES, KNOWN_MANUFACTURERS
+from input import KNOWN_DEVICES, KNOWN_MANUFACTURERS, OPINION_PRAISE, OPINION_SUGGESTION
 from input.utils import crc32, manual_order
-from feedback import OS_USAGE, OPINION_PRAISE, OPINION_SUGGESTION
+from feedback import OS_USAGE
 from feedback.models import Opinion
 
 from . import sphinxapi as sphinx
@@ -234,10 +234,10 @@ class Client():
             type = day_sentiment % 10
             count = i['attrs']['count']
 
-            if type == OPINION_PRAISE:
+            if type == OPINION_PRAISE.id:
                 # Take the type out of the timestamp.  c.f. sphinx.conf.
                 pos.append((day_sentiment - type, count))
-            elif type == OPINION_SUGGESTION:
+            elif type == OPINION_SUGGESTION.id:
                 sug.append((day_sentiment - type, count))
             else:
                 neg.append((day_sentiment - type, count))

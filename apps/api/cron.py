@@ -8,9 +8,9 @@ from django.conf import settings
 
 import cronjobs
 
-from feedback import APP_IDS, OPINION_RATING, OPINION_SHORT
+from feedback import APP_IDS
 from feedback.models import Opinion, Rating
-from input import RATING_IDS
+from input import OPINION_RATING, OPINION_TYPES, RATING_IDS
 
 
 BUCKET_SIZE = 10000  # Bucket size to split query set into.
@@ -69,7 +69,7 @@ def export_tsv():
                 tsv.writerow(_fix_row([
                     opinion.id,
                     int(mktime(opinion.created.timetuple())),
-                    OPINION_SHORT.get(opinion.type),
+                    OPINION_TYPES.get(opinion.type).short,
                     getattr(APP_IDS.get(opinion.product), 'short', None),
                     opinion.version,
                     opinion.os,

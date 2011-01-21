@@ -9,10 +9,10 @@ from django.core.validators import URLValidator
 from annoying.decorators import autostrip
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from input import RATING_USAGE, RATING_CHOICES
-from feedback import (FIREFOX, MOBILE, LATEST_BETAS, OPINION_PRAISE,
-                      OPINION_ISSUE, OPINION_SUGGESTION, OPINION_RATING,
-                      OPINION_BROKEN, fields)
+from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
+                   OPINION_RATING, OPINION_BROKEN, RATING_USAGE,
+                   RATING_CHOICES)
+from feedback import (FIREFOX, MOBILE, LATEST_BETAS, fields)
 from feedback.models import Opinion
 from feedback.validators import (validate_swearwords, validate_no_html,
                                  validate_no_email, validate_no_urls,
@@ -104,26 +104,24 @@ class FeedbackForm(forms.Form):
 @autostrip
 class PraiseForm(FeedbackForm):
     """Form for praise."""
-    max_length = settings.MAX_FEEDBACK_LENGTH
     description = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _lazy('Enter your feedback here.')}),
-        max_length=max_length,
+        max_length=OPINION_PRAISE.max_length,
         validators=[validate_swearwords, validate_no_html,
                     validate_no_email, validate_no_urls])
-    type = forms.CharField(initial=OPINION_PRAISE,
+    type = forms.CharField(initial=OPINION_PRAISE.id,
                            widget=forms.HiddenInput(),
                            required=True)
 
 @autostrip
 class IssueForm(FeedbackForm):
     """Form for negative feedback."""
-    max_length = settings.MAX_FEEDBACK_LENGTH
     description = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _lazy('Enter your feedback here.')}),
-        max_length=max_length,
+        max_length=OPINION_ISSUE.max_length,
         validators=[validate_swearwords, validate_no_html,
                     validate_no_email, validate_no_urls])
-    type = forms.CharField(initial=OPINION_ISSUE,
+    type = forms.CharField(initial=OPINION_ISSUE.id,
                            widget=forms.HiddenInput(),
                            required=True)
 
@@ -131,13 +129,12 @@ class IssueForm(FeedbackForm):
 @autostrip
 class SuggestionForm(FeedbackForm):
     """Form for submitting ideas and suggestions."""
-    max_length = settings.MAX_SUGGESTION_LENGTH
     description = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _lazy('Enter your suggestions here.')}),
-        max_length=max_length,
+        max_length=OPINION_SUGGESTION.max_length,
         validators=[validate_swearwords, validate_no_html,
                     validate_no_email, validate_no_urls])
-    type = forms.CharField(initial=OPINION_SUGGESTION,
+    type = forms.CharField(initial=OPINION_SUGGESTION.id,
                            widget=forms.HiddenInput(),
                            required=True)
 
@@ -145,7 +142,7 @@ class SuggestionForm(FeedbackForm):
 @autostrip
 class RatingForm(forms.Form):
     """Form for rating-type feedback."""
-    type = forms.CharField(initial=OPINION_RATING,
+    type = forms.CharField(initial=OPINION_RATING.id,
                            widget=forms.HiddenInput(),
                            required=True)
 
@@ -161,7 +158,6 @@ class RatingForm(forms.Form):
 @autostrip
 class BrokenWebsiteForm(FeedbackForm):
     """'Report Broken Website' form."""
-    max_length = settings.MAX_FEEDBACK_LENGTH
     # NB: The class 'url' is hard-coded in the Testpilot extension to
     # accommodate pre-filling the field client-side.
     # Do not change unless you know what you are doing.
@@ -173,10 +169,10 @@ class BrokenWebsiteForm(FeedbackForm):
                                     'the rest of the page was.'),
                'id': 'broken-desc', 'cols': 55, 'rows': 3,
                'class': 'countable'}),
-        max_length=max_length,
+        max_length=OPINION_BROKEN.max_length,
         validators=[validate_swearwords, validate_no_html,
                     validate_no_email, validate_no_urls])
-    type = forms.CharField(initial=OPINION_BROKEN,
+    type = forms.CharField(initial=OPINION_BROKEN.id,
                            widget=forms.HiddenInput(),
                            required=True)
 
@@ -184,11 +180,10 @@ class BrokenWebsiteForm(FeedbackForm):
 @autostrip
 class IdeaForm(SuggestionForm):
     """Flavor of SuggestionForm to be used for release feedback."""
-    max_length = settings.MAX_SUGGESTION_LENGTH
     description = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': _lazy('Enter your suggestions here.'),
                'id': 'idea-desc', 'cols': 55, 'rows': 5,
                'class': 'countable'}),
-        max_length=max_length,
+        max_length=OPINION_SUGGESTION.max_length,
         validators=[validate_swearwords, validate_no_html,
                     validate_no_email, validate_no_urls])

@@ -1,6 +1,7 @@
 from tower import ugettext_lazy as _
 
 from input import urlresolvers
+from settings import MAX_FEEDBACK_LENGTH, MAX_SUGGESTION_LENGTH
 
 
 def get_channel():
@@ -25,6 +26,44 @@ KNOWN_DEVICES = (
     'SPH-P100', 'T-Mobile G2', 'TOSHIBA_FOLIO_AND_A', 'VEGAn-TAB-v1.0.0b4',
     'X10i',
 )
+
+
+# Opinion Types
+class OPINION_PRAISE:
+    id = 1
+    short = 'praise'
+    pretty = _(u'Praise')
+    max_length = MAX_FEEDBACK_LENGTH
+class OPINION_ISSUE:
+    id = 2
+    short = 'issue'
+    pretty = _(u'Issue')
+    max_length = MAX_FEEDBACK_LENGTH
+class OPINION_SUGGESTION:
+    id = 3
+    short = 'suggestion'
+    pretty = _(u'Suggestion')
+    max_length = MAX_SUGGESTION_LENGTH
+class OPINION_RATING:
+    id = 4
+    short = 'rating'
+    pretty =  _(u'Rating')
+    max_length = MAX_FEEDBACK_LENGTH
+class OPINION_BROKEN:
+    id = 5
+    short = 'brokenwebsite'
+    pretty = _(u'Broken Website')
+    max_length = MAX_FEEDBACK_LENGTH
+
+op_types = { 'OPINION_PRAISE': OPINION_PRAISE,
+             'OPINION_ISSUE': OPINION_ISSUE,
+             'OPINION_SUGGESTION': OPINION_SUGGESTION,
+             'OPINION_RATING': OPINION_RATING,
+             'OPINION_BROKEN': OPINION_BROKEN }
+
+OPINION_TYPES = ( OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
+                  OPINION_RATING, OPINION_BROKEN )
+OPINION_TYPES_IDS = dict((type.id, type) for type in OPINION_TYPES)
 
 
 # Release Feedback: Rating Types

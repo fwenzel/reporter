@@ -7,12 +7,12 @@ from django.conf import settings
 from nose.tools import eq_
 from pyquery import pyquery
 
-from input import RATING_USAGE, RATING_CHOICES
+from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
+                   OPINION_RATING, OPINION_BROKEN, RATING_USAGE,
+                   RATING_CHOICES)
 from input.tests import ViewTestCase
 from input.urlresolvers import reverse
-from feedback import (FIREFOX, OPINION_PRAISE, OPINION_ISSUE,
-                      OPINION_SUGGESTION, OPINION_RATING, OPINION_BROKEN,
-                      LATEST_BETAS, LATEST_RELEASE)
+from feedback import FIREFOX, LATEST_BETAS, LATEST_RELEASE
 from feedback.models import Opinion
 
 
@@ -99,7 +99,7 @@ class BetaViewTests(ViewTestCase):
                 # Need to vary text so we don't cause duplicates warnings.
                 'description': 'Hello %d' % datetime.now().microsecond,
                 'add_url': 'on',
-                'type': OPINION_PRAISE,
+                'type': OPINION_PRAISE.id,
             }
 
             if url:
@@ -135,7 +135,7 @@ class BetaViewTests(ViewTestCase):
         r = self.client.post(
             reverse('feedback.sad'), {
                 'description': 'Hello!',
-                'type': OPINION_ISSUE,
+                'type': OPINION_ISSUE.id,
             }, HTTP_USER_AGENT=(self.FX_UA % '20.0b2'), follow=True)
         # No matter what you submit in the URL field, there must be a 200
         # response code.
@@ -163,7 +163,7 @@ class BetaViewTests(ViewTestCase):
         r = self.client.post(
             reverse('feedback.sad'), {
                 'description': 'Hello!',
-                'type': OPINION_ISSUE,
+                'type': OPINION_ISSUE.id,
                 'manufacturer': 'FancyBrand',
                 'device': 'FancyPhone 2.0',
             }, HTTP_USER_AGENT=(self.FX_UA % '20.0b2'), follow=True)
@@ -265,7 +265,7 @@ class ReleaseViewTests(ViewTestCase):
 
         # Empty POST: Count errors
         for ajax in True, False:
-            r = self.post_feedback({'type': OPINION_RATING}, ajax=ajax)
+            r = self.post_feedback({'type': OPINION_RATING.id}, ajax=ajax)
             if not ajax:
                 doc = pyquery.PyQuery(r.content)
                 eq_(len(doc('article#rate form .errorlist')),
@@ -278,7 +278,7 @@ class ReleaseViewTests(ViewTestCase):
                     assert question.short in errors
 
         # Submit actual rating
-        data = {'type': OPINION_RATING}
+        data = {'type': OPINION_RATING.id}
         for type in RATING_USAGE:
             data[type.short] = RATING_CHOICES[type.id % len(RATING_CHOICES)][0]
 
@@ -301,7 +301,7 @@ class ReleaseViewTests(ViewTestCase):
         """Submit broken website report with and without AJAX."""
         # Empty POST: Count errors
         for ajax in True, False:
-            r = self.post_feedback({'type': OPINION_BROKEN}, ajax=ajax)
+            r = self.post_feedback({'type': OPINION_BROKEN.id}, ajax=ajax)
             if not ajax:
                 doc = pyquery.PyQuery(r.content)
                 eq_(doc('article#broken form .errorlist').length, 2)
@@ -313,7 +313,7 @@ class ReleaseViewTests(ViewTestCase):
 
         # Submit actual form
         data = {
-            'type': OPINION_BROKEN,
+            'type': OPINION_BROKEN.id,
             'url': 'http://example.com/broken',
             'description': 'This does not work.',
         }
@@ -338,7 +338,7 @@ class ReleaseViewTests(ViewTestCase):
         """Submit suggestion with and without AJAX."""
         # Empty POST: Count errors
         for ajax in True, False:
-            r = self.post_feedback({'type': OPINION_SUGGESTION}, ajax=ajax)
+            r = self.post_feedback({'type': OPINION_SUGGESTION.id}, ajax=ajax)
             if not ajax:
                 doc = pyquery.PyQuery(r.content)
                 eq_(doc('article#idea form .errorlist').length, 1)
@@ -349,7 +349,7 @@ class ReleaseViewTests(ViewTestCase):
 
         # Submit actual form
         data = {
-            'type': OPINION_SUGGESTION,
+            'type': OPINION_SUGGESTION.id,
             'description': 'This is a suggestion.',
         }
 

@@ -17,8 +17,10 @@ import test_utils
 
 from input.urlresolvers import reverse
 import feedback
-from feedback import (FIREFOX, OPINION_PRAISE, OPINION_ISSUE,
-                      OPINION_SUGGESTION, OPINION_TYPES)
+from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
+                   OPINION_RATING, OPINION_BROKEN, OPINION_TYPES_IDS)
+
+from feedback import FIREFOX
 from feedback.cron import populate
 from feedback.models import Opinion
 from search import forms, views
@@ -103,9 +105,9 @@ class SearchTest(SphinxTestCase):
         eq_(num_results(version='3.6.4'), 16)
 
     def test_type_filter(self):
-        eq_(num_results(type=OPINION_PRAISE), 17)
-        eq_(num_results(type=OPINION_ISSUE), 11)
-        eq_(num_results(type=OPINION_SUGGESTION), 3)
+        eq_(num_results(type=OPINION_PRAISE.id), 17)
+        eq_(num_results(type=OPINION_ISSUE.id), 11)
+        eq_(num_results(type=OPINION_SUGGESTION.id), 3)
 
     def test_os_filter(self):
         eq_(num_results(os='mac'), 31)
@@ -144,8 +146,8 @@ class NoRatingsSearchTest(SphinxTestCase):
     fixtures = []
 
     def setUp(self):
-        populate(20, 'desktop', feedback.OPINION_RATING)
-        populate(2, 'desktop', feedback.OPINION_SUGGESTION)
+        populate(20, 'desktop', OPINION_RATING.id)
+        populate(2, 'desktop', OPINION_SUGGESTION.id)
         super(NoRatingsSearchTest, self).setUp()
 
     def test_search_page(self):
@@ -159,8 +161,8 @@ class SearchViewTest(SphinxTestCase):
 
     def setUp(self):
         # add more opinions so we can test things.
-        populate(1000, 'desktop', feedback.OPINION_SUGGESTION)
-        populate(100, 'mobile', feedback.OPINION_SUGGESTION)
+        populate(1000, 'desktop', OPINION_SUGGESTION.id)
+        populate(100, 'mobile', OPINION_SUGGESTION.id)
         super(SearchViewTest, self).setUp()
 
     def test_pagination_max(self):
@@ -360,7 +362,7 @@ class FeedTest(SphinxTestCase):
 
         def mock_items(self, obj):
             return [Opinion(id=n, type=type, product=FIREFOX.id) for n, type in
-                    enumerate(OPINION_TYPES)]
+                    enumerate(OPINION_TYPES_IDS)]
         views.SearchFeed.items = mock_items
 
         r = self.client.get(reverse('search.feed'))
@@ -368,7 +370,7 @@ class FeedTest(SphinxTestCase):
 
 
 def test_get_sentiment():
-    r = views.get_sentiment([{'type': OPINION_ISSUE, 'count': 1}])
+    r = views.get_sentiment([{'type': OPINION_ISSUE.id, 'count': 1}])
     eq_(r['sentiment'], 'sad')
 
 

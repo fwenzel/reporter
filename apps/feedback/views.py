@@ -13,10 +13,11 @@ from tower import ugettext as _
 from input import RATING_USAGE, RATING_CHOICES
 from input.decorators import cache_page, forward_mobile, negotiate
 from input.urlresolvers import reverse
+from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
+                   OPINION_RATING, OPINION_BROKEN, OPINION_TYPES,
+                   OPINION_TYPES_IDS)
 
-from feedback import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
-                      OPINION_RATING, OPINION_BROKEN, OPINION_TYPES,
-                      LATEST_BETAS, LATEST_RELEASE)
+from feedback import LATEST_BETAS, LATEST_RELEASE
 from feedback.forms import (PraiseForm, IssueForm, SuggestionForm,
                             BrokenWebsiteForm, RatingForm, IdeaForm)
 from feedback.models import Opinion, Rating
@@ -96,9 +97,9 @@ def give_feedback(request, ua, type):
 
     try:
         FormType = {
-            OPINION_PRAISE: PraiseForm,
-            OPINION_ISSUE: IssueForm,
-            OPINION_SUGGESTION: SuggestionForm
+            OPINION_PRAISE.id: PraiseForm,
+            OPINION_ISSUE.id: IssueForm,
+            OPINION_SUGGESTION.id: SuggestionForm
         }.get(type)
     except KeyError:
         return http.HttpResponseBadRequest(_('Invalid feedback type'))
@@ -118,7 +119,7 @@ def give_feedback(request, ua, type):
 
     # Set the div id for css styling
     div_id = 'feedbackform'
-    if type == OPINION_SUGGESTION:
+    if type == OPINION_SUGGESTION.id:
         div_id = 'suggestionform'
 
     url_suggestion = request.GET.get('url', 'suggestion')
@@ -163,9 +164,9 @@ def release_feedback(request, ua):
         try:
             type = int(request.POST.get('type'))
             FormType = {
-                OPINION_RATING: RatingForm,
-                OPINION_BROKEN: BrokenWebsiteForm,
-                OPINION_SUGGESTION: IdeaForm,
+                OPINION_RATING.id: RatingForm,
+                OPINION_BROKEN.id: BrokenWebsiteForm,
+                OPINION_SUGGESTION.id: IdeaForm,
             }[type]
         except (ValueError, KeyError):
             return http.HttpResponseBadRequest(_('Invalid feedback type'))
@@ -190,11 +191,11 @@ def release_feedback(request, ua):
             # For non-AJAX, return form with errors, and blank other feedback
             # forms.
             data.update(
-                rating_form=(form if type == OPINION_RATING else
+                rating_form=(form if type == OPINION_RATING.id else
                              RatingForm()),
-                website_form=(form if type == OPINION_BROKEN else
+                website_form=(form if type == OPINION_BROKEN.id else
                               BrokenWebsiteForm()),
-                suggestion_form=(form if type == OPINION_SUGGESTION else
+                suggestion_form=(form if type == OPINION_SUGGESTION.id else
                                  IdeaForm()))
 
     else:
@@ -246,15 +247,15 @@ def save_opinion_from_form(request, type, ua, form):
 
     # Remove URL if checkbox disabled or no URL submitted. Broken Website
     # report does not have the option to disable URL submission.
-    if (type != OPINION_BROKEN and
+    if (type != OPINION_BROKEN.id and
         not (form.cleaned_data.get('add_url', False) and
              form.cleaned_data.get('url'))):
         form.cleaned_data['url'] = ''
 
-    if type not in OPINION_TYPES:
+    if type not in OPINION_TYPES_IDS:
         raise ValueError('Unknown type %s' % type)
 
-    if type != OPINION_RATING:
+    if type != OPINION_RATING.id:
         return Opinion(
             type=type,
             url=form.cleaned_data.get('url', ''),

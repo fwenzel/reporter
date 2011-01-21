@@ -11,7 +11,7 @@ import input
 from feedback.models import Opinion, Rating
 
 DEFAULT_NUM_OPINIONS = 10000
-TYPES = list(feedback.OPINION_TYPES)
+TYPES = list(input.OPINION_TYPES)
 URLS = ['http://google.com', 'http://mozilla.com', 'http://bit.ly', '', '']
 text = """
     To Sherlock Holmes she is always the woman. I have seldom heard him mention
@@ -51,12 +51,12 @@ def populate(num_opinions=None, product='mobile', type=None):
 
     for i in xrange(num_opinions):
         if not type:
-            type = random.choice(TYPES)
+            type = random.choice(TYPES).id
         o = Opinion(type=type,
                     url=random.choice(URLS),
                     user_agent=random.choice(UA_STRINGS[product]))
 
-        if type != feedback.OPINION_RATING:
+        if type != input.OPINION_RATING.id:
             o.description = sample()
 
         if 'mobile':
@@ -66,7 +66,7 @@ def populate(num_opinions=None, product='mobile', type=None):
 
         o.save(terms=False)
 
-        if type == feedback.OPINION_RATING:
+        if type == input.OPINION_RATING.id:
             for question in input.RATING_USAGE:
                 Rating(
                     opinion=o,

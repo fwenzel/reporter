@@ -5,27 +5,27 @@
 
 {% block content %}
 
-{% if type == OPINION_PRAISE: %}
+{% if type == OPINION_PRAISE.id: %}
   {{ smiley("happy", "feedback_submit") }}
-{% elif type == OPINION_ISSUE: %}
+{% elif type == OPINION_ISSUE.id: %}
   {{ smiley("sad", "feedback_submit") }}
-{% elif type == OPINION_SUGGESTION: %}
-<span title="{{ _('Suggestion') }}" class="feedback_submit suggestion"></span>
+{% elif type == OPINION_SUGGESTION.id %}
+<span title="{{ OPINION_SUGGESTION.pretty }}" class="feedback_submit suggestion"></span>
 {% endif %}
 
 <div id="{{ div_id }}">
   <h2>
-  {% if type == OPINION_PRAISE: %}
+  {% if type == OPINION_PRAISE.id: %}
     {% trans %}
     Super! It's great to hear that you like our pre-released browser.
     Please explain what you specifically like!
     {% endtrans %}
-  {% elif type == OPINION_ISSUE: %}
+  {% elif type == OPINION_ISSUE.id: %}
     {% trans %}
     We are sorry that you have not had a good experience with our browser.
     Please tell us why, so we can fix it!
     {% endtrans %}
-  {% elif type == OPINION_SUGGESTION: %}
+  {% elif type == OPINION_SUGGESTION.id: %}
     {% trans %}
     So, you'd like to make a suggestion on how to enhance Firefox? Awesome!
     Please make your suggestion below:
@@ -40,10 +40,10 @@
     <p>{{ form.description|safe }} <span id="count" data-max="{{
       form.max_length }}">{{ form.max_length }}</span></p>
 
-    {% if type in (OPINION_PRAISE, OPINION_ISSUE): %}
+    {% if type in (OPINION_PRAISE.id, OPINION_ISSUE.id): %}
       {{ form.url.errors|safe }}
       <p>
-        {% if type == OPINION_PRAISE: %}
+        {% if type == OPINION_PRAISE.id: %}
           <label>{{ form.add_url|safe }}
             {% trans %}
             Know of a website that works better in this beta than it did in
@@ -51,7 +51,7 @@
             track!
             {% endtrans %}
           </label>
-        {% elif type == OPINION_ISSUE: %}
+        {% elif type == OPINION_ISSUE.id: %}
           <label>{{ form.add_url|safe }}
             {% trans %}
             Had an issue with a specific website? Please add the URL, so we can
@@ -80,7 +80,7 @@
   </form>
 </div>
 
-{% if type in (OPINION_PRAISE, OPINION_ISSUE): %}
+{% if type in (OPINION_PRAISE.id, OPINION_ISSUE.id): %}
   <p class="feedback_suggestion">
     <img src="{{ MEDIA_URL }}img/suggestion-box-idea-medium.png" />
     {% trans %}

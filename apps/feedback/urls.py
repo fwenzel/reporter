@@ -1,16 +1,16 @@
 from django.conf.urls.defaults import patterns, url
 
-from feedback import OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
+from input import OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
 
 
 urlpatterns = patterns('feedback.views',
     # TODO: combine all beta feedback submissions into beta/feedback.
     # Bug 623364.
-    url(r'^happy/?', 'give_feedback', {'type': OPINION_PRAISE},
+    url(r'^happy/?', 'give_feedback', {'type': OPINION_PRAISE.id},
         name='feedback.happy'),
-    url(r'^sad/?', 'give_feedback', {'type': OPINION_ISSUE},
+    url(r'^sad/?', 'give_feedback', {'type': OPINION_ISSUE.id},
         name='feedback.sad'),
-    url(r'^suggestion/?', 'give_feedback', {'type': OPINION_SUGGESTION},
+    url(r'^suggestion/?', 'give_feedback', {'type': OPINION_SUGGESTION.id},
         name='feedback.suggestion'),
 
     url(r'^thanks/?', 'thanks', name='feedback.thanks'),

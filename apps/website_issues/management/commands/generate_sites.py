@@ -12,7 +12,8 @@ from textcluster.cluster import Corpus
 
 from feedback import LATEST_BETAS, FIREFOX, MOBILE, APP_IDS
 from feedback.models import Opinion
-from feedback import OPINION_PRAISE, OPINION_SUGGESTION
+
+from input import OPINION_PRAISE, OPINION_SUGGESTION
 
 from website_issues.models import Comment, Cluster, SiteSummary
 from website_issues.management.utils import normalize_url
@@ -21,7 +22,7 @@ from website_issues.helpers import without_protocol
 DB_ALIAS = "website_issues"
 
 def is_positive(opinion):
-    return opinion.type == OPINION_PRAISE
+    return opinion.type == OPINION_PRAISE.id
 
 class Command(BaseCommand):
     """
@@ -143,7 +144,7 @@ class Command(BaseCommand):
         seven_days_ago = now - timedelta(days=7)
         one_day_ago = now - timedelta(days=1)
         queryset = Opinion.objects.filter(
-                       ~Q(url__exact="") & ~Q(type__exact=OPINION_SUGGESTION) & (
+                       ~Q(url__exact="") & ~Q(type__exact=OPINION_SUGGESTION.id) & (
                            Q(created__range=(seven_days_ago, now))
                            | Q(product__exact=FIREFOX.id)
                            | Q(product__exact=MOBILE.id)

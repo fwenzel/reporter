@@ -1,4 +1,5 @@
 from product_details import product_details
+from settings import MAX_FEEDBACK_LENGTH, MAX_SUGGESTION_LENGTH
 from tower import ugettext_lazy as _
 
 
@@ -96,27 +97,3 @@ OS_USAGE = _oses = (WINDOWS_XP, WINDOWS_VISTA, WINDOWS_7, OSX, MAEMO, ANDROID,
                     LINUX)
 OS_PATTERNS = [(o.ua_pattern, o.short) for o in OS_USAGE]
 OSES = dict((os.short, os) for os in _oses)
-
-# Opinion Types
-OPINION_PRAISE = 1
-OPINION_ISSUE = 2
-OPINION_SUGGESTION = 3
-OPINION_RATING = 4
-OPINION_BROKEN = 5
-
-OPINION_TYPES = {
-    OPINION_PRAISE: _(u'Praise'),
-    OPINION_ISSUE: _(u'Issue'),
-    OPINION_SUGGESTION: _(u'Suggestion'),
-    OPINION_RATING: _(u'Rating'),
-    OPINION_BROKEN: _(u'Broken Website'),
-}
-
-# TODO: Represent opinions as classes, like all other constants we have.
-OPINION_SHORT = {
-    OPINION_PRAISE: 'praise',
-    OPINION_ISSUE: 'issue',
-    OPINION_SUGGESTION: 'suggestion',
-    OPINION_RATING: 'rating',
-    OPINION_BROKEN: 'brokenwebsite',
-}

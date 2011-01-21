@@ -6,11 +6,11 @@ from django.db.models import Count
 
 import caching.base
 
-from input import RATING_USAGE
+from input import OPINION_TYPES, OPINION_PRAISE, RATING_USAGE
 from input.models import ModelBase
 from input.urlresolvers import reverse
 
-from feedback import APP_IDS, OSES, OPINION_TYPES, OPINION_PRAISE, query
+from feedback import APP_IDS, OSES, query
 from feedback.utils import ua_parse, extract_terms, smart_truncate
 
 
@@ -40,7 +40,7 @@ class OpinionManager(caching.base.CachingManager):
 
 class Opinion(ModelBase):
     """A single feedback item."""
-    type = models.PositiveSmallIntegerField(blank=True, default=OPINION_PRAISE,
+    type = models.PositiveSmallIntegerField(blank=True, default=OPINION_PRAISE.id,
                                             db_index=True)
     url = models.URLField(verify_exists=False, blank=True)
     description = models.TextField(blank=True)
@@ -66,9 +66,12 @@ class Opinion(ModelBase):
         ordering = ('-created',)
 
     def __unicode__(self):
-        return u'(%s) %s' % (
-            unicode(OPINION_TYPES[self.type]),
-            self.truncated_description)
+        try:
+            return u'(%s) %s' % (
+                unicode(OPINION_TYPES[self.type].pretty),
+                self.truncated_description)
+        except KeyError:
+            return self.type
 
     @property
     def truncated_description(self):
