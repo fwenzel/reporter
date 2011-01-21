@@ -4,7 +4,7 @@ $(document).ready(function() {
 
     $('#id_add_url').change(function() {
         if (this.checked) {
-            $('#id_url').removeAttr('disabled');
+            $('#id_url').removeAttr('disabled').val('http://').focus();
         } else {
             $('#id_url').attr('disabled', true);
         }
@@ -26,7 +26,7 @@ $(document).ready(function() {
                 else
                     char_area.removeClass('low').removeClass('verylow');
 
-                if (char_rem < 0) 
+                if (char_rem < 0)
                     $("#submit_button").attr('disabled','disabled');
                 else
                     $("#submit_button").removeAttr('disabled');
