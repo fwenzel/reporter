@@ -5,7 +5,7 @@ from django.conf import settings
 import jingo
 from tower import ugettext as _
 
-from feedback import stats, LATEST_BETAS, OPINION_TYPES, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
+from feedback import stats, LATEST_BETAS, OPINION_TYPES
 from feedback.models import Opinion, Term
 from feedback.version_compare import simplify_version
 from input.decorators import cache_page, forward_mobile
@@ -65,9 +65,6 @@ def dashboard(request):
     data = {'opinions': latest_opinions.all()[:settings.MESSAGES_COUNT],
             'opinion_count': total,
             'opinion_types': OPINION_TYPES,
-            'OPINION_PRAISE': OPINION_PRAISE,
-            'OPINION_ISSUE': OPINION_ISSUE,
-            'OPINION_SUGGESTION': OPINION_SUGGESTION,
             'product': app,
             'products': PROD_CHOICES,
             'sentiments': get_sentiment(metas.get('type', [])),

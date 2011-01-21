@@ -160,10 +160,7 @@ def index(request):
         'product': product,
         'products': PROD_CHOICES,
         'version': version,
-        'versions': VERSION_CHOICES[product],
-        'OPINION_PRAISE': OPINION_PRAISE,
-        'OPINION_ISSUE': OPINION_ISSUE,
-        'OPINION_SUGGESTION': OPINION_SUGGESTION,
+        'versions': VERSION_CHOICES[product]
     }
 
     days = 0

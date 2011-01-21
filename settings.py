@@ -163,6 +163,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'input.context_processors.input',
     'input.context_processors.mobile',
 
+    'feedback.context_processors.opinion_types',
+
     'search.context_processors.product_versions',
     'jingo_minify.helpers.build_ids',
 )

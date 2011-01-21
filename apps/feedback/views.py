@@ -127,9 +127,6 @@ def give_feedback(request, ua, type):
         'type': type,
         'div_id': div_id,
         'MAX_FEEDBACK_LENGTH': settings.MAX_FEEDBACK_LENGTH,
-        'OPINION_PRAISE': OPINION_PRAISE,
-        'OPINION_ISSUE': OPINION_ISSUE,
-        'OPINION_SUGGESTION': OPINION_SUGGESTION,
         'url_suggestion': url_suggestion
     }
     template = ('feedback/mobile/feedback.html' if request.mobile_site else
@@ -241,12 +238,7 @@ def thanks(request):
 @cache_page
 def opinion_detail(request, id):
     o = get_object_or_404(Opinion, pk=id)
-    return jingo.render(request, 'feedback/opinion.html', {
-        'opinion': o,
-        'OPINION_PRAISE': OPINION_PRAISE,
-        'OPINION_ISSUE': OPINION_ISSUE,
-        'OPINION_SUGGESTION': OPINION_SUGGESTION})
-
+    return jingo.render(request, 'feedback/opinion.html', {'opinion': o})
 
 def save_opinion_from_form(request, type, ua, form):
     """Given a (valid) form and feedback type, save it to the DB."""
