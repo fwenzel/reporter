@@ -10,9 +10,9 @@ from mock import patch, Mock
 from nose.tools import eq_
 import test_utils
 
-from input import urlresolvers
+from input import urlresolvers, CHANNELS
 from input.urlresolvers import reverse
-from input.helpers import babel_date, timesince, urlparams
+from input.helpers import babel_date, timesince, urlparams, url
 
 
 def render(s, context={}):
@@ -133,6 +133,12 @@ class HelperTests(test_utils.TestCase):
         ts(dict(hours=47, minutes=59), '1 day ago')
         ts(dict(days=7), '7 days ago')
         ts(dict(days=8), babel_date(datetime.now() - timedelta(days=8)))
+
+    def test_channel_switch(self):
+        """Ensure URL reversal allows us to switch channels."""
+        for ch in CHANNELS:
+            eq_(render("{{ url('dashboard', channel='%s') }}" % ch),
+                '/en-US/%s/' % ch)
 
 
 class MiddlewareTests(test_utils.TestCase):

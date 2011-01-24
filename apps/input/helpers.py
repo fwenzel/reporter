@@ -93,9 +93,9 @@ def absolute_url(context, relative):
     return context['request'].build_absolute_uri(relative)
 
 @register.function
-def url(viewname, *args, **kwargs):
+def url(viewname, channel=None, *args, **kwargs):
     """Helper for Django's ``reverse`` in templates."""
-    return reverse(viewname, args=args, kwargs=kwargs)
+    return reverse(viewname, args=args, kwargs=kwargs, channel=channel)
 
 
 @register.filter
