@@ -33,9 +33,9 @@
       </a></h1>
 
       <ul>
-        <li><a class="dashboard" href="{{ url('dashboard') }}"><span>{{ _('Feedback') }}</span></a></li>
-        <li><a class="themes" href="{{ url('themes') }}"><span>{{ _('Themes') }}</span></a></li>
-        <li><a class="issues" href="{{ url('website_issues') }}"><span>{{ _('Sites') }}</span></a></li>
+        <li><a class="dashboard" href="{{ url('dashboard', channel='beta') }}"><span>{{ _('Feedback') }}</span></a></li>
+        <li><a class="themes" href="{{ url('themes', channel='beta') }}"><span>{{ _('Themes') }}</span></a></li>
+        <li><a class="issues" href="{{ url('website_issues', channel='beta') }}"><span>{{ _('Sites') }}</span></a></li>
       </ul>
     </div></div>
     {% endblock site_header %}
