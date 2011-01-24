@@ -225,7 +225,7 @@ def index(request):
     # Keep form data as default options for further searches, but remove page
     # from defaults so that every parameter change returns to page 1.
     data['defaults'] = dict((k, v) for k, v in form.data.items()
-                            if k != 'page' and k in form.cleaned_data)
+                            if k != 'page' and k in form.fields)
 
     template = 'search/%ssearch.html' % (
         'mobile/' if request.mobile_site else '')
