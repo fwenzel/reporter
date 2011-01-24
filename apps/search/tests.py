@@ -290,6 +290,17 @@ class SearchViewTest(SphinxTestCase):
                 assert link.find('date_start') == -1
             assert link.find('date_end') == -1  # Never add end date.
 
+    def test_bogus_parameters(self):
+        """
+        Bogus GET parameters must neither break the page nor persist through
+        subsequent searches.
+        """
+        r = search_request(hello='world')
+        doc = pq(r.content)
+
+        eq_(r.status_code, 200)
+        eq_(doc('input[name="hello"]').length, 0)
+
 
 class FeedTest(SphinxTestCase):
     def _pq(self, response):
