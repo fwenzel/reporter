@@ -1,4 +1,4 @@
-from calendar import timegm
+from time import mktime
 import bz2
 import csv
 import os.path
@@ -68,7 +68,7 @@ def export_tsv():
             for opinion in bucket:
                 tsv.writerow(_fix_row([
                     opinion.id,
-                    timegm(opinion.created.timetuple()),
+                    int(mktime(opinion.created.timetuple())),
                     OPINION_SHORT.get(opinion.type),
                     getattr(APP_IDS.get(opinion.product), 'short', None),
                     opinion.version,
