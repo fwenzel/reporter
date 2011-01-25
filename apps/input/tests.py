@@ -227,5 +227,4 @@ class RedirectTests(TestCase):
                 '/themes': '/en-US/%s/themes' % settings.DEFAULT_CHANNEL,
                 }
         for link, redir in redirs.iteritems():
-            self.assertRedirects(self.fxclient.get(link, follow=True), redir,
-                                 301)
+            self.assertRedirects(self.fxclient.get(link), redir, 301)
