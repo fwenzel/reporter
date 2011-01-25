@@ -11,7 +11,7 @@ import input
 from feedback.models import Opinion, Rating
 
 DEFAULT_NUM_OPINIONS = 10000
-TYPES = list(input.OPINION_TYPES)
+TYPES = list(input.OPINION_TYPES_USAGE)
 URLS = ['http://google.com', 'http://mozilla.com', 'http://bit.ly', '', '']
 text = """
     To Sherlock Holmes she is always the woman. I have seldom heard him mention

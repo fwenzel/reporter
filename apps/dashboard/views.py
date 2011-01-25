@@ -9,7 +9,6 @@ from feedback import stats, LATEST_BETAS
 from feedback.models import Opinion, Term
 from feedback.version_compare import simplify_version
 from input.decorators import cache_page, forward_mobile
-from input import OPINION_TYPES
 from search.client import Client, SearchError
 from search.forms import ReporterSearchForm, PROD_CHOICES, VERSION_CHOICES
 from search.views import get_sentiment

@@ -14,8 +14,7 @@ from input import RATING_USAGE, RATING_CHOICES
 from input.decorators import cache_page, forward_mobile, negotiate
 from input.urlresolvers import reverse
 from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
-                   OPINION_RATING, OPINION_BROKEN, OPINION_TYPES,
-                   OPINION_TYPES_IDS)
+                   OPINION_RATING, OPINION_BROKEN, OPINION_TYPES)
 
 from feedback import LATEST_BETAS, LATEST_RELEASE
 from feedback.forms import (PraiseForm, IssueForm, SuggestionForm,
@@ -252,7 +251,7 @@ def save_opinion_from_form(request, type, ua, form):
              form.cleaned_data.get('url'))):
         form.cleaned_data['url'] = ''
 
-    if type not in OPINION_TYPES_IDS:
+    if type not in OPINION_TYPES:
         raise ValueError('Unknown type %s' % type)
 
     if type != OPINION_RATING.id:

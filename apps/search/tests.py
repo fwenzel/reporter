@@ -18,7 +18,7 @@ import test_utils
 from input.urlresolvers import reverse
 import feedback
 from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
-                   OPINION_RATING, OPINION_BROKEN, OPINION_TYPES_IDS)
+                   OPINION_RATING, OPINION_BROKEN, OPINION_TYPES_USAGE)
 
 from feedback import FIREFOX
 from feedback.cron import populate
@@ -361,8 +361,8 @@ class FeedTest(SphinxTestCase):
         views.SearchFeed.get_object = mock_get_object
 
         def mock_items(self, obj):
-            return [Opinion(id=n, type=type, product=FIREFOX.id) for n, type in
-                    enumerate(OPINION_TYPES_IDS)]
+            return [Opinion(id=n, type=type.id, product=FIREFOX.id) for
+                    n, type in enumerate(OPINION_TYPES_USAGE)]
         views.SearchFeed.items = mock_items
 
         r = self.client.get(reverse('search.feed'))

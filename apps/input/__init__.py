@@ -1,7 +1,7 @@
 from tower import ugettext_lazy as _
 
 from input import urlresolvers
-from settings import MAX_FEEDBACK_LENGTH, MAX_SUGGESTION_LENGTH
+from django.conf import settings
 
 
 def get_channel():
@@ -33,37 +33,43 @@ class OPINION_PRAISE:
     id = 1
     short = 'praise'
     pretty = _(u'Praise')
-    max_length = MAX_FEEDBACK_LENGTH
+    max_length = settings.MAX_FEEDBACK_LENGTH
+
 class OPINION_ISSUE:
     id = 2
     short = 'issue'
     pretty = _(u'Issue')
-    max_length = MAX_FEEDBACK_LENGTH
+    max_length = settings.MAX_FEEDBACK_LENGTH
+
 class OPINION_SUGGESTION:
     id = 3
     short = 'suggestion'
     pretty = _(u'Suggestion')
-    max_length = MAX_SUGGESTION_LENGTH
+    max_length = settings.MAX_SUGGESTION_LENGTH
+
 class OPINION_RATING:
     id = 4
     short = 'rating'
     pretty =  _(u'Rating')
-    max_length = MAX_FEEDBACK_LENGTH
+    max_length = settings.MAX_FEEDBACK_LENGTH
+
 class OPINION_BROKEN:
     id = 5
     short = 'brokenwebsite'
     pretty = _(u'Broken Website')
-    max_length = MAX_FEEDBACK_LENGTH
+    max_length = settings.MAX_FEEDBACK_LENGTH
 
-op_types = { 'OPINION_PRAISE': OPINION_PRAISE,
-             'OPINION_ISSUE': OPINION_ISSUE,
-             'OPINION_SUGGESTION': OPINION_SUGGESTION,
-             'OPINION_RATING': OPINION_RATING,
-             'OPINION_BROKEN': OPINION_BROKEN }
+op_types = {
+    'OPINION_PRAISE': OPINION_PRAISE,
+    'OPINION_ISSUE': OPINION_ISSUE,
+    'OPINION_SUGGESTION': OPINION_SUGGESTION,
+    'OPINION_RATING': OPINION_RATING,
+    'OPINION_BROKEN': OPINION_BROKEN,
+}
 
-OPINION_TYPES = ( OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
-                  OPINION_RATING, OPINION_BROKEN )
-OPINION_TYPES_IDS = dict((type.id, type) for type in OPINION_TYPES)
+OPINION_TYPES_USAGE = (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
+                       OPINION_RATING, OPINION_BROKEN)
+OPINION_TYPES = dict((type.id, type) for type in OPINION_TYPES_USAGE)
 
 
 # Release Feedback: Rating Types

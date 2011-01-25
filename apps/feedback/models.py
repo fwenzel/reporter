@@ -71,7 +71,7 @@ class Opinion(ModelBase):
                 unicode(OPINION_TYPES[self.type].pretty),
                 self.truncated_description)
         except KeyError:
-            return self.type
+            return unicode(self.type)
 
     @property
     def truncated_description(self):
