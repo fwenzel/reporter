@@ -177,7 +177,6 @@ class BetaViewTests(ViewTestCase):
 
     def test_feedback_index(self):
         """Test feedback index page for Betas."""
-
         r = self.client.get(reverse('feedback', channel='beta'),
                             HTTP_USER_AGENT=(self.FX_UA % '20.0b2'),
                             follow=True)
@@ -185,6 +184,20 @@ class BetaViewTests(ViewTestCase):
         doc = pyquery.PyQuery(r.content)
         for link in ('feedback.happy', 'feedback.sad'):
             eq_(doc('a[href$="%s"]' % reverse(link)).length, 1)
+
+    def test_max_length(self):
+        """
+        Ensure description's max_length attribute is propagated correctly for
+        JS to pick up.
+        """
+        for link in ('feedback.happy', 'feedback.sad'):
+            r = self.client.get(reverse(link, channel='beta'),
+                                HTTP_USER_AGENT=(self.FX_UA % '20.0b2'),
+                                follow=True)
+            doc = pyquery.PyQuery(r.content)
+            eq_(doc('#count').attr('data-max'),
+                str(settings.MAX_FEEDBACK_LENGTH))
+
 
 
 class ReleaseViewTests(ViewTestCase):
@@ -367,3 +380,17 @@ class ReleaseViewTests(ViewTestCase):
             latest = Opinion.objects.no_cache().order_by('-id')[0]
             eq_(latest.description, data['description'])
             latest.delete()
+
+    def test_max_length(self):
+        """
+        Ensure description's max_length attribute is propagated correctly for
+        JS to pick up.
+        """
+        r = self.client.get(reverse('feedback', channel='release'),
+                            HTTP_USER_AGENT=(self.FX_UA % '20.0'),
+                            follow=True)
+        doc = pyquery.PyQuery(r.content)
+        eq_(doc('#count-broken-desc').attr('data-max'),
+            str(settings.MAX_FEEDBACK_LENGTH))
+        eq_(doc('#count-idea-desc').attr('data-max'),
+            str(settings.MAX_SUGGESTION_LENGTH))

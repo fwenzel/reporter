@@ -131,8 +131,8 @@
           <p>{{ website_form.description|safe }}</p>
           {{ website_form.description.errors|safe }}
           <span id="count-broken-desc" class="count" data-max="{{
-            website_form.max_length }}">{{
-            website_form.max_length }}</span>
+            website_form.fields.description.max_length }}">{{
+            website_form.fields.description.max_length }}</span>
           <p class="privacy"><span>
             {% trans %}
             To protect your privacy, please ensure that no personally identifiable
@@ -182,8 +182,8 @@
           <p>{{ suggestion_form.description|safe }}</p>
           {{ suggestion_form.description.errors|safe }}
           <span id="count-idea-desc" class="count" data-max="{{
-            suggestion_form.max_length }}">{{
-            suggestion_form.max_length }}</span>
+            suggestion_form.fields.description.max_length }}">{{
+            suggestion_form.fields.description.max_length }}</span>
           <p class="privacy"><span>
             {% trans %}
             To protect your privacy, please ensure that no personally
