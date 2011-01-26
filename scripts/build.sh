@@ -38,6 +38,17 @@ DATABASES = {
         'TEST_NAME': 'test_input_$1',
         'TEST_CHARSET': 'utf8',
         'TEST_COLLATION': 'utf8_general_ci',
+    },
+    'website_issues': {
+        'ENGINE': 'mysql',
+        'HOST': 'sm-hudson01',
+        'NAME': 'input_$1',
+        'USER': 'hudson',
+        'PASSWORD': '',
+        'OPTIONS': {'init_command': 'SET storage_engine=InnoDB'},
+        'TEST_NAME': 'test_input_$1',
+        'TEST_CHARSET': 'utf8',
+        'TEST_COLLATION': 'utf8_general_ci',
     }
 }
 
