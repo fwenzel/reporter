@@ -244,3 +244,7 @@ class RedirectTests(TestCase):
         for link, redir in redirs.iteritems():
             self.assertRedirects(self.fxclient.get(link, follow=True), redir,
                                  301)
+
+    def test_search(self):
+        r = self.fxclient.get('/search', follow=True)
+        assert r.status_code != 404
