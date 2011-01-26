@@ -246,7 +246,7 @@ class Client():
 
     def _type_meta(self, results, **kwargs):
         result = results[self.queries['type']]
-        return [(f['attrs']) for f in result['matches']]
+        return [(f['attrs']) for f in result.get('matches', [])]
 
     def _os_meta(self, results, **kwargs):
         result = results[self.queries['os']]
