@@ -1,5 +1,4 @@
 from datetime import datetime
-from functools import wraps
 import json
 
 from django.conf import settings
@@ -10,23 +9,10 @@ from pyquery import pyquery
 from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
                    OPINION_RATING, OPINION_BROKEN, RATING_USAGE,
                    RATING_CHOICES)
-from input.tests import ViewTestCase
+from input.tests import ViewTestCase, enforce_ua
 from input.urlresolvers import reverse
 from feedback import FIREFOX, LATEST_BETAS, LATEST_RELEASE
 from feedback.models import Opinion
-
-
-def enforce_ua(f):
-    """Decorator to switch on UA enforcement for the duration of a test."""
-    @wraps(f)
-    def wrapped(*args, **kwargs):
-        old_enforce_setting = settings.ENFORCE_USER_AGENT
-        try:
-            settings.ENFORCE_USER_AGENT = True
-            f(*args, **kwargs)
-        finally:
-            settings.ENFORCE_USER_AGENT = old_enforce_setting
-    return wrapped
 
 
 class BetaViewTests(ViewTestCase):
@@ -197,7 +183,6 @@ class BetaViewTests(ViewTestCase):
             doc = pyquery.PyQuery(r.content)
             eq_(doc('#count').attr('data-max'),
                 str(settings.MAX_FEEDBACK_LENGTH))
-
 
 
 class ReleaseViewTests(ViewTestCase):

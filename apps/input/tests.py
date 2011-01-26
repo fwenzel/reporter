@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
+from functools import wraps
 
 from django.conf import settings
 from django.http import HttpRequest
@@ -12,7 +13,20 @@ import test_utils
 
 from input import urlresolvers, CHANNELS
 from input.urlresolvers import reverse
-from input.helpers import babel_date, timesince, urlparams, url
+from input.helpers import babel_date, timesince, urlparams
+
+
+def enforce_ua(f):
+    """Decorator to switch on UA enforcement for the duration of a test."""
+    @wraps(f)
+    def wrapped(*args, **kwargs):
+        old_enforce_setting = settings.ENFORCE_USER_AGENT
+        try:
+            settings.ENFORCE_USER_AGENT = True
+            f(*args, **kwargs)
+        finally:
+            settings.ENFORCE_USER_AGENT = old_enforce_setting
+    return wrapped
 
 
 def render(s, context={}):
@@ -220,9 +234,10 @@ class MiddlewareTests(test_utils.TestCase):
 
 
 class RedirectTests(TestCase):
+    @enforce_ua
     def test_redirects(self):
         redirs = {
-                '/feedback': '/en-US/%s/feedback' % settings.DEFAULT_CHANNEL,
+                '/feedback': '/en-US/release/feedback',
                 '/thanks': '/en-US/%s/thanks' % settings.DEFAULT_CHANNEL,
                 '/themes': '/en-US/%s/themes' % settings.DEFAULT_CHANNEL,
                 }
