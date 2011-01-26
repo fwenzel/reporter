@@ -23,7 +23,7 @@ urlpatterns = patterns('',
 
     (r'^admin/', include('myadmin.urls')),
 
-    url(r'about/?$', jingo.render, {'template': 'about.html'},
+    url(r'^about/?$', jingo.render, {'template': 'about.html'},
         name='about'),
     (r'^robots\.txt$', jingo.render, {'template': 'robots.txt',
                                       'mimetype': 'text/plain'}),
