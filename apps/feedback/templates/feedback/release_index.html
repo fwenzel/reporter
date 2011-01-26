@@ -14,7 +14,7 @@
   <section class="content">
     <ul id="feedback-types">
       <li><a id="intro-rate" href="#rate"><span><strong></strong></span> {{ _('Rate Your Experience') }}</a></li>
-      <li><a id="intro-broken" href="#broken"><span><strong></strong></span> {{ _('Report a Broken Website') }}</span></a></li>
+      <li><a id="intro-broken" href="#broken"><span><strong></strong></span> {{ _('Report a Site Issue') }}</span></a></li>
       <li><a id="intro-idea" href="#idea"><span><strong></strong></span> {{ _('Share an Idea') }}</span></a></li>
     </ul>
   </section>
@@ -105,7 +105,7 @@
 
 <article id="broken">
   <header>
-  <h1>{{ _('Report a Broken Website') }}</h1>
+  <h1>{{ _('Report a Site Issue') }}</h1>
     <p>
     <span>{{ _('Does a website look or behave incorrectly in Firefox?') }}</span>
     <span>{{ _("Provide us some details about the problem and we'll try to fix it.") }}</span>
@@ -121,13 +121,13 @@
 
       <div class="fields">
         <div>
-          <label for="broken-url">{{ _('What is the URL of the broken site?') }}</label>
+          <label for="broken-url">{{ _('What is the URL of the site?') }}</label>
           <p>{{ website_form.url|safe }}</p>
           {{ website_form.url.errors|safe }}
         </div>
 
         <div>
-          <label for="broken-desc">{{ _('Describe the problem with the website.') }}</label>
+          <label for="broken-desc">{{ _('Describe the problem with the site.') }}</label>
           <p>{{ website_form.description|safe }}</p>
           {{ website_form.description.errors|safe }}
           <span id="count-broken-desc" class="count" data-max="{{
