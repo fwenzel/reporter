@@ -80,7 +80,8 @@ def negotiate(release, beta, nightly=None):
     you can create a urls.py that points 'foo' to views.foo
     in views.py:
 
-        foo = negotate(beta=beta_foo, release=release_foo, nightly=nightly_foo)
+        foo = negotiate(beta=beta_foo, release=release_foo,
+                        nightly=nightly_foo)
 
     Will then serve up the correct view based on your request.
     """
