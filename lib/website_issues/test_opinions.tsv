@@ -1,0 +1,500 @@
+1	1277268743	praise	firefox	3.6.4	mac	en-US				This new way to give feedback is fantastic.
+2	1277463859	praise	firefox	3.6.4	linux	en-US				Because of it's awesome feedback mechanism!
+3	1277810720	praise	firefox	4.0b1	mac	en-US				more cleaner interface
+4	1277810821	issue	firefox	4.0b1	mac	en-US				Either at the login page or the main page, if the page is zoomed out the images get a square border around them which looks bad.
+5	1277811004	issue	firefox	4.0b1	mac	en-US				[UI] Two bookmarks menus one on top of other when you show bookmarks toolbar and enable icon. Remove text menu?
+6	1277811026	praise	firefox	4.0b1	mac	en-US				I really like Beta 1, but where is promised "Tabs on Top"?
+7	1277811029	issue	firefox	4.0b1	mac	en-US			http://boio.ro/	my Web site is broken in ff 4
+8	1277811172	issue	firefox	4.0b1	mac	en-US				sad this page wasnt here 15 minutes ago.
+9	1277811182	praise	firefox	4.0b1	mac	en-US				happy this page is now working!
+10	1277811209	praise	firefox	4.0b1	mac	en-US				This new way to give feedback is fantastic.
+11	1277811263	praise	firefox	4.0b1	mac	en-US				blabbbbr
+12	1277811683	praise	firefox	4.0b1	linux	en-US				Great to have the option to put tabs on top. Are you working on porting aero style canvasa for linux?(Transparent border)
+13	1277811871	issue	firefox	4.0b1	mac	en-US				Flash doesn't work, 1Password either
+14	1277811940	issue	firefox	4.0b1	mac	en-US				tabs on top is ugly on OSX and don't save any vertical space.  They should be integrated with the title bar and not upside down.
+15	1277811943	praise	firefox	4.0b1	linux	en-US				It's faster!
+16	1277812027	praise	firefox	4.0b1	linux	en-US				I like the progress pie chart on the tabs when loading a page!
+17	1277812502	praise	firefox	4.0b1	winxp	en-US				of the JS speedups over the last version, Gmail and Facebook are snappier than ever!
+18	1277812550	issue	firefox	4.0b1	winxp	en-US				The menu was visible by default and isn't the goal to move away from that?
+19	1277812620	praise	firefox	4.0b1	mac	en-US				A proper bookmarks dropdown. I've been using extensions for the same effect for as long as I've used Firefox.
+20	1277812706	issue	firefox	4.0b1	mac	en-US				There is no good reason to have a separate search bar instead of a unified location/search bar like the "OmniBar" extension.
+21	1277812836	issue	firefox	4.0b1	mac	en-US				The new UI looks TERRIBLE with Windows Classic skin. When I use XP this puts me off from using Firefox at all.
+22	1277813165	issue	firefox	4.0b1	mac	en-US				I think we can all agree the Gecko rendering engine is lagging behind Webkit. Dragging Gecko along at this point is counterproductive.
+23	1277813526	praise	firefox	4.0b1	mac	en-US				I see that pages are graphically loading faster than before.
+24	1277813686	issue	firefox	4.0b1	mac	en-US				I don't like having a "Bookmarks" drop-down in the Bookmarks Toolbar, it takes up valuable real-estate.  Make it an option to show/hide.
+25	1277813836	praise	firefox	4.0b1	mac	en-US				So far, this is a ton faster than 3.6!
+26	1277814054	issue	firefox	4.0b1	linux	en-US				I have noted switching tabs takes slightly more time than in Firefox 3.
+27	1277814130	praise	firefox	4.0b1	mac	en-US				awesome bar "Switch to tab"
+28	1277814177	praise	firefox	4.0b1	mac	en-US				looks good !
+29	1277814250	issue	firefox	4.0b1	mac	en-US				It broke all of my addons.  I hope your plans for addons that don't break between updates come to fruition!
+30	1277814284	issue	firefox	4.0b1	linux	en-US				Still have to restart the browser when an addon is added
+31	1277815061	issue	firefox	4.0b1	mac	en-US				Adobe Flash is showing up as another instance of Firefox in the dock?  This is causing the dock to remain visible during fullscreen video.
+32	1277815101	praise	firefox	4.0b1	mac	en-US				Looks a lot more Aqua-like!
+33	1277815130	issue	firefox	4.0b1	linux	en-US				I was disapointed to see that firefox4 b1 doesn't have top tabs (per chrome style.)
+34	1277815172	praise	firefox	4.0b1	mac	en-US				Faster and more organized.    I loved the addons in a window.   Great job! I hope the addons become compatible ASAP.
+35	1277815203	issue	firefox	4.0b1	mac	en-US				tool tips appear on top of popup menus from items in the toolbar
+36	1277815305	praise	firefox	4.0b1	mac	en-US				The new user interface seems more compact and streamlined
+37	1277815322	praise	firefox	4.0b1	linux	en-US				I really like all new minimal stuff, it's also faster and light.
+38	1277815356	issue	firefox	4.0b1	mac	en-US				On my Mac I had to delete the ~/Library/Application Support/Firefox Folder to get a working FF4 beta. Before: UI a mess!
+39	1277815399	praise	firefox	4.0b1	mac	en-US				Even this pre-beta build feels a lot more snappy than my current stable release.
+40	1277815537	issue	firefox	4.0b1	mac	en-US				The close buttons on the tabs are still on the wrong side
+41	1277815589	issue	firefox	4.0b1	mac	en-US				Tabs on top looks incredibly ugly
+42	1277815609	issue	firefox	4.0b1	mac	en-US				The Status Bar should hide automatically
+43	1277815807	praise	firefox	4.0b1	linux	en-US				innovation efforts!
+44	1277816789	issue	firefox	4.0b1	linux	en-US				Some kind of odd coloration of text in regions in fine fonts. (On vertical strokes only).  Relieved by zooming in.  Anti-aliasing off?
+45	1277817011	praise	firefox	4.0b1	mac	en-US				the new ui is very consistent and the browser feels faster
+46	1277817122	issue	firefox	4.0b1	linux	en-US				No improvements in linux UI - the "one button" menu is missing.
+47	1277817172	praise	firefox	4.0b1	mac	en-US				When you open a link to a site that is already open on another tab it switches to that open tab
+48	1277817351	praise	firefox	4.0b1	mac	en-US				It doesn't support flash :D
+49	1277817626	praise	firefox	4.0b1	linux	en-US				It is fast.
+50	1277817955	issue	firefox	4.0b1	linux					The happy/sad faces are creepy.
+51	1277817969	praise	firefox	4.0b1	linux					It reminds me of your mom.
+52	1277818205	praise	firefox	4.0b1	mac	en-US				We're no strangers to love, Firefox knows the rules and so do I!
+53	1277818510	praise	firefox	4.0b1	linux	en-US				worked out of the box on linux
+54	1277818669	praise	firefox	4.0b1	mac	en-US				I absolutely LOVE the new addon manager
+55	1277818838	praise	firefox	4.0b1	mac	en-US				I like the add-ons manager in a tab. Far better than the small window
+56	1277818969	praise	firefox	4.0b1	mac	en-US				I like the little progress circle in each individiual tab!
+57	1277819107	praise	firefox	4.0b1	mac	en-US				it is very fast on my mac os x 10.5.8
+58	1277819114	issue	firefox	4.0b1	linux	en-US				Download speed does not reflect current speed. eg: If the DL starts at 500kb/s and than 100b/s, the speed shown will still be fast for long.
+59	1277819385	issue	firefox	4.0b1	linux	en-US				New load icon is to "heavy" and the "pulse" to distracting, some pages don't load complete for a long time.
+60	1277819566	issue	firefox	4.0b1	mac	en-US				Have to re-download flash.
+61	1277819895	issue	firefox	4.0b1	mac	en-US				4.0 beta 1 candidate tabs on top implementation in Mac OSX is refined, need to be more akin to the original 4.0 mockup screens from the wiki
+62	1277819908	issue	firefox	4.0b1	mac	en-US			http://img293.imageshack.us/f/submitfeedbackfirefoxin.png/	Screenshot   mac osx 10.5.8
+63	1277819954	praise	firefox	4.0b1	mac	en-US				4.0 Beta 1 Candidate for Mac OSX (64-bit version) is much faster to start up
+64	1277820081	praise	firefox	4.0b1	mac	en-US				Like the "pie chart" page load indicator
+65	1277820422	praise	firefox	4.0b1	mac	en-US				Improvements in the Mac's toolbar appearance.
+66	1277820444	issue	firefox	4.0b1	mac	en-US				It had no flash supprot on the mac :(
+67	1277820734	praise	firefox	4.0b1	linux	en-US				Because World Cup is full of crybabies, and firefox actually works!
+68	1277820886	issue	firefox	4.0b1	mac	en-US				IE8 and Chrome come with elegant developer tools. FF4 doesn't. And Firebug isn't current yet.
+69	1277820935	praise	firefox	4.0b1	mac	en-US				It increase customization options, and I feel it faster. In Mac, it need a better "look&feel" when it's set "tabs on top".
+70	1277820983	praise	firefox	4.0b1	mac	en-US				the ui is great~~~
+71	1277821385	praise	firefox	4.0b1	mac	en-US				The Browser Is Fast and the start is fast
+72	1277821548	issue	firefox	4.0b1	mac	en-US				Adobe FLASH does not install & therefore any flash site does not work.
+73	1277821761	praise	firefox	4.0b1	mac	en-US				User studies built into a browser is a great idea. This makes it easy to contribute!
+74	1277822373	issue	firefox	4.0b1	linux	en-US				I was expecting to see the tabs in the top of the window, but didn't happened (using archlinux width gnome).
+75	1277822445	issue	firefox	4.0b1	linux	en-US				If I go to the theme selection menu, the Firefox 4b1 theme says its incompatible with firefox 4b1! hehe
+76	1277822490	issue	firefox	4.0b1	linux	en-US				I expected all the menus and dialogs (for expample preferences) to be in a tab instead of an ugly popup :(
+77	1277822507	praise	firefox	4.0b1	mac	en-US				4.0 looks amazing! keep up the excellent work!
+78	1277822566	praise	firefox	4.0b1	mac	en-US				That I was able to access Beta 1 before anyone else.
+79	1277822668	issue	firefox	4.0b1	mac	en-US				Adobe Flash will not install - & it is working on safari.
+80	1277822795	praise	firefox	4.0b1	mac	en-US				It is a fast and clean browser.
+81	1277822874	issue	firefox	4.0b1	mac	en-US				i get confused in changing the fonts...As you know, the fonts in Mac OS is so small that i feel tired to view the webpages.
+82	1277823134	praise	firefox	4.0b1	linux	en-US				javascript is much faster :)
+83	1277823322	praise	firefox	4.0b1	mac	en-US				firefox 4 beta 1 was announced to have tabs on top
+84	1277823504	issue	firefox	4.0b1	mac	en-US			http://www.macrumors.com/	Firefox wanted to install the Adobe Plug-ins, but they are already installed. It keeps asking, even though they have already been installed.
+85	1277823662	issue	firefox	4.0b1	mac	en-US				As usual, neglecting Mac - Tabs On Top is STILL broken. Get off your PC's already!
+86	1277823663	issue	firefox	4.0b1	mac	en-US				there is no 64 bit flash support
+87	1277823939	praise	firefox	4.0b1	mac	en-US				The tab animations are really nice, and the graphics are a lot more natural now.
+88	1277823989	issue	firefox	4.0b1	linux	en-US				Testing 4.0 Beta 1 on linux x64 right now and still don't see any good user interface improvements being made. I'd love to see Fx risk sth.
+89	1277824196	issue	firefox	4.0b1	linux	pt-BR				In Bookmarks, folder icons don't appear.
+90	1277824489	issue	firefox	4.0b1	mac	en-US			http://www.macrumors.com/	Formatting issues
+91	1277824599	praise	firefox	4.0b1	mac	en-US				testing the beta
+92	1277824688	issue	firefox	4.0b1	linux	en-US				When firefox loads fox example 10 pages at once, the interface becomes unresponsive. This is the only thing to fix! PLEASE for 4.0!
+93	1277824889	issue	firefox	4.0b1	linux	en-US				firebug wouldn't work!!!
+94	1277825671	praise	firefox	4.0b1	mac	en-US				the navigation tool bar can be made thinner
+95	1277825703	praise	firefox	4.0b1	mac	en-US				opening a new tab is animated on osx
+96	1277825741	praise	firefox	4.0b1	linux	en-US				fastt
+97	1277825850	issue	firefox	4.0b1	mac	en-US				there is 'private window', like chrome's incognito.
+98	1277826027	issue	firefox	4.0b1	mac	en-US				I like having tabs on top, it makes more sense. This implementation looks ridiculous.
+99	1277826388	praise	firefox	4.0b1	linux	en-US				first access to the awesomebar after startup didn't grind for 20seconds before responding!
+100	1277826600	issue	firefox	4.0b1	linux	en-US				it still doesn't comply with some standard CSS3 properties without the '-moz' prefix.
+101	1277826673	praise	firefox	4.0b1	linux	en-US				it's really faster now! the UI looks better as well.
+102	1277826969	issue	firefox	4.0b1	linux	en-US				it still doesn't include Firebug out of the box.
+103	1277827022	issue	firefox	4.0b1	mac	en-US			https://intranet.mozilla.org/All_Hands/2Q2009/Schedule	viewing allhands schedule and testing sad face page
+104	1277827129	praise	firefox	4.0b1	linux	en-US				It's fast and sweet.
+105	1277827369	praise	firefox	4.0b1	mac	en-US				I like the way Firefox 4.0b1 degrades flash when it isn't installed. It looks pretty…
+106	1277827538	praise	firefox	4.0b1	mac	en-US				The Add-ons it gave me full control on the web
+107	1277828063	issue	firefox	4.0b1	linux	en-US				Well not exactly sad just was annoying to install. I'm using linux mint.
+108	1277828250	praise	firefox	4.0b1	mac	en-US				It just works. In all the ways you want it too.
+109	1277828919	issue	firefox	4.0b1	linux	en-US				as a linux user i'd rather have less integration and more attention paid to giving firefox its own unique look and feel, like windows builds
+110	1277829190	issue	firefox	4.0b1	linux	en-US				menu performance is still extremely poor compared to that of native gtk apps, i shouldn't need a core2duo for highlighted items not to lag.
+111	1277829350	praise	firefox	4.0b1	mac	en-US				It's nice, the new!
+112	1277829581	issue	firefox	4.0b1	mac	en-US				I'd like to have the tab close button on the left-hand side of tabs, as a Mac user that's where I expect it to be and where I go intuitively
+113	1277829638	praise	firefox	4.0b1	mac	en-US				Its incredibly customizable, its simple without being overly simple, and its attractive
+114	1277829985	issue	firefox	4.0b1	mac	en-US				It loads much slower than Chrome, and doesn't have tab issolation when things crash
+115	1277830197	praise	firefox	4.0b1	linux	en-US				The progress circles for tabs look very nice.
+116	1277830277	issue	firefox	4.0b1	mac	en-US				Did not allow me to type in a Java-enabled window
+117	1277830410	issue	firefox	4.0b1	mac	en-US			http://www.facebook.com/	Resizing comment boxes grew to the left so you can't see the beginning anymore.
+118	1277830614	issue	firefox	4.0b1	mac	en-US				because the tab close button is still on the right side on mac
+119	1277830854	praise	firefox	4.0b1	linux	en-US				It's faster than previous versions
+120	1277830877	praise	firefox	4.0b1	linux	en-US				Seems to load and render pages faster on ubuntu 10.04 i686 Eee1008ha
+121	1277830947	issue	firefox	4.0b1	linux	en-US				Linux appearance isn't as nice as other operating systems'
+122	1277831055	issue	firefox	4.0b1	linux	en-US				The "bookmarks" menue located on my bookmark toolbar isn't removable. The icon for this menue is ugly and the menue itsself redundant.
+123	1277831071	issue	firefox	4.0b1	linux					the voices are getting louder and funnier
+124	1277831835	issue	firefox	4.0b1	mac	en-US				An addon caused crashes with 4.0b1, but I had no way to find out other than by trial-and-error.
+125	1277831839	praise	firefox	4.0b1	mac	en-US				Very nice. Clear, soft look... nice work.
+126	1277832273	issue	firefox	4.0b1	mac	en-US			http://www.mozilla.com/en-US/firefox/4.0b1/whatsnew/	I was looking forward to the new tabs on the 4 beta release for Mac, but it's the exact same as before. Other than that I love Firefox =)
+127	1277832685	issue	firefox	4.0b1	mac	en-US				Flash Not Working,  just reinstalled Flash 10.1
+128	1277832788	issue	firefox	4.0b1	mac	en-US			http://www.facebook.com/home.php	On the facebook main user page, when trying to adjust the box for the status update area, it dosnt display properly
+129	1277832849	issue	firefox	4.0b1	mac	en-US				When I'm using the Inspect feature and then "accidentally" selected the html node, I just can't click on anything else, anywhere.
+130	1277832878	issue	firefox	4.0b1	mac	en-US			https://mail.google.com/	The certificate notifier by the address bar, shows the website the cert is registered for, would look better if it said the Title of the sit
+131	1277833039	issue	firefox	4.0b1	mac	en-US				When I select "View bookmarks in toolbar" from the bookmrks menu, it should become a default.with the toolbar the bookmarks menu should hid
+132	1277833064	issue	firefox	4.0b1	mac	en-US				Popup tooltips do not respect Spaces on OS X
+133	1277833169	issue	firefox	4.0b1	mac	en-US				on mac, whenever I open a new tab, it is zoomed in 1 click, to where i have to pinch out once to see the whole page
+134	1277833172	praise	firefox	4.0b1	linux	en-US				The developers made it really fast. This was my first impression. And for now it's the most stable beta I've ever seen comming out from FF!!
+135	1277833301	praise	firefox	4.0b1	mac	en-US				Great version!
+136	1277833712	praise	firefox	4.0b1	mac	en-US				Happy to see the new Beta! lookin good!
+137	1277833814	issue	firefox	4.0b1	mac	en-US			http://www.mozilla.com/en-US/firefox/4.0b1/whatsnew/	Landing page doesn't exist
+138	1277834268	praise	firefox	4.0b1	linux	en-US				Pages seem to load faster than before. Add-on menu offers more control. Looks cleaner.
+139	1277834674	issue	firefox	4.0b1	mac	en-US				On mac 0s x, putting the tab bar on top doesn't look right, like it does on windows 7. On windows it fill like a stack of folder
+140	1277834750	issue	firefox	4.0b1	linux	en-US				The font rendering on Linux doesn't respect either gconf settings or fonts.conf hinting settings
+141	1277835934	issue	firefox	4.0b1	mac	en-US				The tabs on top in firefox 4.0 for mac os x (10.6.4) looks terrible. Please make it look like the mockups for firefox4 or like chrome/opera.
+142	1277836454	issue	firefox	4.0b1	mac	en-US				The default theme on mac says it's incompatible with the browser (4.0b1). Really?
+143	1277836571	issue	firefox	4.0b1	mac	en-US				Invisible bookmark toolbar
+144	1277837111	praise	firefox	4.0b1	mac	en-US				My site just worked out of the box. :)
+145	1277838740	issue	firefox	4.0b1	mac	en-US				The tabs are in the wrong place. Chrome and Opera do that better.
+146	1277838746	issue	firefox	4.0b1	mac	en-US			http://perezhilton.com/	the flash plugin does not work
+147	1277839563	praise	firefox	4.0b1	mac	en-US				it's the highest scoring html5 firefox browser yet!
+148	1277840641	issue	firefox	4.0b1	mac	en-US			http://reba.com/	Flash Plugin didn't work!
+149	1277841222	issue	firefox	4.0b1	winxp	en-US				On Classic Mode XP with tabs-on-top, tabs don't look tall enough and they feel too close the menu items.
+150	1277841249	issue	firefox	4.0b1	winxp	en-US				Please put the stop button back in by default.
+151	1277841505	praise	firefox	4.0b1	mac	en-US				you guys updated the toolbar icon
+152	1277841554	issue	firefox	4.0b1	mac	en-US				asthetically, the tab looks weird (just like the old version), especially the new tab button at the tab bar.
+153	1277841654	issue	firefox	4.0b1	mac	en-US				I'm expected to see an integrated download manager into the browser because the mini pop up window thing is cluttering my desktop
+154	1277841738	issue	firefox	4.0b1	mac	en-US			http://maps.google.com/	location for google map is not working
+155	1277841984	praise	firefox	4.0b1	mac	en-US				Great Capatibility, Powerful Extensions
+156	1277842021	issue	firefox	4.0b1	mac	en-US				Slow, ugly UI (especially the LOGO)
+157	1277842225	praise	firefox	4.0b1	mac	en-US				It launched very very quickly!
+158	1277842374	issue	firefox	4.0b1	mac	en-US			http://9elements.com/io/projects/html5/canvas/	It was not able to play html5 demos
+159	1277843242	praise	firefox	4.0b1	mac	en-US				I do like the new icons; they look sharper. Also, the new "loading" wheels are clever.
+160	1277843312	issue	firefox	4.0b1	mac	en-US				When customizing the toolbar, I can no longer drag buttons off the toolbar to remove them. Not sure how to remove them now.
+161	1277843545	praise	firefox	4.0b1	linux	en-US				Its robustness!
+162	1277843582	issue	firefox	4.0b1	linux	en-US				It is getting slower in comparison to other browsers...
+163	1277844066	issue	firefox	4.0b1	mac	en-US			http://www.noisetrade.com/	the flash plugin won't install or work at all if installed externally
+164	1277844078	issue	firefox	4.0b1	mac	en-US				It cannot recognize the flash plugin which has been installed in my system (OSX 10.6)
+165	1277844404	issue	firefox	4.0b1	linux	en-US				Theme dosen't change in Linux (using beta 1)
+166	1277844620	issue	firefox	4.0b1	mac	en-US				Tabs on top for mac looks awkward compared to Chrome. Otherwise, love the browser.
+167	1277844969	issue	firefox	4.0b2pre	mac				http://locators.bankofamerica.com/locator/locator/LocatorAction.do	This BofA "Locator tool" does not show any results in Minefield when I enter a zip code.
+168	1277845500	issue	firefox	4.0b1	mac	en-US				Java script / Flash dont work.
+169	1277845519	issue	firefox	4.0b1	mac	en-US				None of my plugins work with version 4.0. About 80% didn't work with 3.7 either.
+170	1277846603	praise	firefox	4.0b1	mac	en-US				The new interface looks really nice
+171	1277846642	issue	firefox	4.0b1	mac	en-US				No retrocompatibility with my current add-ons
+172	1277846955	issue	firefox	4.0b1	linux	en-US				It is too slow to start the browser. On Ubuntu x64 10.04 for more than 6 seceonds
+173	1277846980	praise	firefox	4.0b1	linux	en-US				I like the experience.
+174	1277847243	issue	firefox	4.0b1	mac	en-US				flash installation fails.
+175	1277847649	praise	firefox	4.0b1	mac	en-US				It's super fast and streamlined! It fits right into OSX!
+176	1277848073	praise	firefox	4.0b1	linux	en-US				IT FASTER!!!! WOOT!
+177	1277848102	praise	firefox	4.0b1	mac	en-US				Happy =)
+178	1277848312	praise	firefox	4.0b1	mac	en-US				FF4 has better UI, which makes me happy most. Also, cheer for higher speed.
+179	1277848776	issue	firefox	4.0b1	mac	en-US			http://www.palidino.com/forum.php	Scrolling isn't smooth
+180	1277849192	issue	firefox	4.0b1	mac	en-US				Merge address bar with web seach in just one
+181	1277849303	issue	firefox	4.0b1	mac	en-US				It looks a lot like Google Chrome. :-(
+182	1277849480	praise	firefox	4.0b1	mac	en-US				More faster than the last version. in tabs navigatin.
+183	1277850594	issue	firefox	4.0b1	mac	en-US			http://www.netflix.com/WiMessage	Site says it works with Firefox 2 or higher. Works in 3.6, not in 4.0
+184	1277850616	issue	firefox	4.0b1	mac	en-US				I don't like the icon of "Display your Bookmarks"
+185	1277851239	praise	firefox	4.0b1	mac	en-US				It just works, Plus its freakin Awesome!
+186	1277851875	praise	firefox	4.0b1	mac	en-US				Love the look and feel. Great work. Thanks
+187	1277852508	issue	firefox	4.0b1	linux	en-US				Um, the title bar is still there.
+188	1277853009	issue	firefox	4.0b1	mac	en-US				Adobe Flash does not work on Youtube and presumably with other flash videos.
+189	1277853370	praise	firefox	4.0b1	linux	en-US				It's pretty fast!
+190	1277853608	issue	firefox	4.0b1	mac	en-US				Flash player 10.1 does not install correctly.
+191	1277853815	issue	firefox	4.0b1	mac	en-US				Every new Firefox tab creates a entry in the dock.
+192	1277853893	issue	firefox	4.0b1	mac	en-US			http://www.jigzone.com/puzzles/2010-06-29	Java plugin seem to be broken
+193	1277854535	praise	firefox	4.0b1	mac	en-US				A better theme for the mac version, and more visually polished than the other version. Good job !
+194	1277854970	praise	firefox	4.0b1	mac	en-US				It's fast! :)
+195	1277855165	issue	firefox	4.0b1	mac	en-US				I can't remove the bookmarks icon (next to the search bar).
+196	1277856164	issue	firefox	4.0b1	mac	en-US				too slow, I need a web browser that had lots of add-ons like ff and also fast like Chrome. Plz fix this!
+197	1277856345	praise	firefox	4.0b1	mac	en-US				new UI, speed
+198	1277858287	issue	firefox	4.0b1	mac	en-US				I don't like the pulsating loader, really annoying and just looks bad.
+199	1277858506	praise	firefox	4.0b1	win7	en-US				good
+200	1277858603	issue	firefox	4.0b1	linux	en-US				Taskfox is supposed to be integrated, right? If it is, I don't know how to activate it.
+201	1277858843	issue	firefox	4.0b1	mac	en-US				Firefox has two icons in my dock on Mac OS X 10.6.4.
+202	1277858877	praise	firefox	4.0b1	mac	en-US				I really like the new streamlined interface on OS X. Boot times are really fast too and overall stability is nice.
+203	1277858998	praise	firefox	4.0b1	mac	en-US				It seems very quick!
+204	1277859335	issue	firefox	4.0b1	mac	en-US				make tabs snap into existing tabs andeasily and clearly snap out of a window into a new window.
+205	1277859393	praise	firefox	4.0b1	linux	en-US				I like that typing something into awesome-bar makes a Google search and takes me to the first result, ie. it's making me feel lucky :)
+206	1277859830	praise	firefox	4.0b1	mac	en-US				The new UI on Mac OS is looking very good
+207	1277859940	issue	firefox	4.0b1	mac	en-US				When enabling the bookmark toolbar it is impossible to turn off the "Bookmarks" dropdown menu on the far right.
+208	1277859943	issue	firefox	4.0b1	mac	en-US				remove the title of the current page from the top move the address bar and nav buttons up there. leave the tab to tell the page title.
+209	1277859994	issue	firefox	4.0b1	mac	en-US				Videos on YouTube, which use Flash, I know that Firefox creates a separate process for it, but that process appears on the dock on Mac OS X.
+210	1277860041	issue	firefox	4.0b1	linux	en-US			http://www.theaustralian.com.au/	firefox did not render this site correctly (other browsers ff3.6.x and chrome do)
+211	1277860098	issue	firefox	4.0b1	mac	en-US				when something is typed into the address bar that isnt a domain. use the user defined search engine to search for the terms
+212	1277860211	issue	firefox	4.0b1	mac	en-US				I cannot remove the bookmarks button through "customize toolbar" on Mac.
+213	1277860361	issue	firefox	4.0b1	mac	en-US				the page status at the bottom. get rid of it or make it more stream lined. i know when the page is done loading when the pie chart fills
+214	1277860632	issue	firefox	4.0b1	mac	en-US				Tab bar is not on top like Chrome. I want more space for me to surf the web!
+215	1277861306	issue	firefox	4.0b1	mac	en-US				The new version adds a Bookmarks menu on the toolbar, can you switch it off, I don't want it there. Thanks.
+216	1277861616	issue	firefox	4.0b1	mac	en-US			http://get.adobe.com/flashplayer/	wasn't be able to download flash plug in
+217	1277862098	praise	firefox	4.0b1	mac	en-US				It's very fast and, until now, I haven't encountered any problems.
+218	1277862321	praise	firefox	4.0b1	mac	en-US				It's the fastest web browser
+219	1277863741	issue	firefox	4.0b1	mac	en-US				The program launch could be much quickier.
+220	1277863783	praise	firefox	4.0b1	mac	en-US				all my plugins worked under 4.0b
+221	1277863833	issue	firefox	4.0b1	linux	en-US				Unable to remove bookmark button on toolbar.
+222	1277864063	praise	firefox	4.0b1	mac	en-US				good browser
+223	1277864171	praise	firefox	4.0b1	linux	en-US				It renders pages *very* fast, quicker than Chrome 5.
+224	1277865021	praise	firefox	4.0b1	mac	en-US				is faster
+225	1277865711	issue	firefox	4.0b1	mac	en-US				The add'on Compatibility Reporter isn't available for the moment for Firefox 4.0b1 :(
+226	1277865759	praise	firefox	4.0b1	mac	en-US				Hi,all
+227	1277866094	issue	firefox	4.0b1	mac	en-US				The status bar has only two modes ON / OFF, it would be more helpful if it had a Autohide mode where it's visible only when you need it
+228	1277866145	praise	firefox	4.0b1	mac	en-US				64-bit runs faster! And scrolling is much smooter than in 3.6.6 version.
+229	1277866283	praise	firefox	4.0b1	mac	en-US				works on YouTube for video playback in firefox 4b, 3.6.6not:(
+230	1277866675	issue	firefox	4.0b1	mac	en-US				I liked the modal window more than this new integrated page with addons
+231	1277866786	issue	firefox	4.0b1	mac	en-US				flash doesn't work in 64-bit version on mac :(
+232	1277867152	issue	firefox	4.0b1	linux	en-US				seems you guys didn't care about firefox 4 beta 1 on linux, where is the new ui? all I can see is u guys changed the bookmarks...
+233	1277867195	issue	firefox	4.0b1	mac	en-US				Tabs on top are not yet integrated in the window handle in Mac OS X
+234	1277867284	praise	firefox	4.0b1	mac	en-US				HTML 5, the new graphics in the adress bar
+235	1277867341	issue	firefox	4.0b1	mac	en-US				could have natively a search history like safari
+236	1277867354	issue	firefox	4.0b1	mac	en-US				Firefox needs too long to start on Os X
+237	1277867523	praise	firefox	4.0b1	mac	en-US				is fast, secure and perfect for developers
+238	1277867583	issue	firefox	4.0b1	mac	en-US				i don´t like the integration with OS
+239	1277868445	praise	firefox	4.0b1	mac	en-US				Looks better and feels faster than before!
+240	1277868545	praise	firefox	4.0b1	mac	en-US				The interface is much cleaner and more crisp looking than before. It feels like a native app that belongs on the OS
+241	1277868691	issue	firefox	4.0b1	mac	en-US				The "Heads up display" menu item in the "Tools" menu does not show a checkbox when enabled like "Inspect" does.
+242	1277868917	issue	firefox	4.0b1	mac	en-US				On a mac the "tabs on top" function isn't like in chrome, beauce the title-bar still exists. Please integrate tabs into titlebar
+243	1277869231	praise	firefox	4.0b1	mac	en-US				it looks faster
+244	1277869258	issue	firefox	4.0b1	mac	en-US				the extensions doesn't work
+245	1277869264	praise	firefox	4.0b1	mac	en-US				das ist bombastisch
+246	1277869475	issue	firefox	4.0b1	mac	en-US			http://fishki.net/comment.php	i can't see flash video and this is after installing flash player. please make it work
+247	1277869688	praise	firefox	4.0b1	mac	en-US				It's ultra-super-stra-fast!!!!
+248	1277869717	praise	firefox	4.0b1	mac	en-US				i like the new look of firefox 4 beta!
+249	1277871833	praise	firefox	4.0b1	mac	en-US				:-)
+250	1277871840	issue	firefox	4.0b1	linux					The Exchange 2010 Outlook Web App stops responding after a few minutes.
+251	1277872121	issue	firefox	4.0b1	linux	en-US				there are no pretty new design for linux : (
+252	1277872670	praise	firefox	4.0b1	linux					It start faster.
+253	1277872858	issue	firefox	4.0b1	linux	en-US				Can't beat Chrome. Eats too much memory. Can't reload tabs properly when they are taken off or put back. Etc. Guys, Firefox WAS amazing.
+254	1277873184	issue	firefox	4.0b1	linux	en-US				be ause it had this feedback button, maybe this will be removed after beta :)
+255	1277873372	issue	firefox	4.0b1	mac	en-US				Had to restart firefox to use/enable/install plugins.
+256	1277873405	praise	firefox	4.0b1	mac	en-US				Plugin manager is now in a browser tab, and no longer in a popup!
+257	1277873414	issue	firefox	4.0b1	mac	en-US				flash doesn't work
+258	1277873447	praise	firefox	4.0b1	linux	pt-BR				Really fast!
+259	1277873538	praise	firefox	4.0b1	mac	en-US				wow, fast!
+260	1277874006	praise	firefox	4.0b1	linux	en-US				because it's safe and gets many add-ons
+261	1277874098	issue	firefox	4.0b1	mac	en-US				Just to say that the selected tab isn't different enough from the other tabs in OSX. It's difficult to see which tab is selected.
+262	1277874113	praise	firefox	4.0b1	mac	en-US				It looks more Mac Like
+263	1277874128	praise	firefox	4.0b1	mac	en-US				The refined UI is great! Of course the bookmarks organization tool could be done the same way that the Add-ons window is done..
+264	1277874563	praise	firefox	4.0b1	mac	en-US				Great UI and smooth operation(like when a new tab is created)
+265	1277874569	praise	firefox	4.0b1	linux	en-US				More fast than ever
+266	1277874578	issue	firefox	4.0b1	mac	en-US				Chậm vãi lềnh. Toàn Crash :(( huhu
+267	1277874646	issue	firefox	4.0b1	linux	en-US				Bulky menubar
+268	1277875471	issue	firefox	4.0b1	mac	en-US				Flash Player is not working on Mac OSx Beta 1
+269	1277875804	praise	firefox	4.0b1	mac	en-US				html5test com 189 point, is the hiest I have seen so far :)
+270	1277875911	issue	firefox	4.0b1	mac	en-US				It still goes to the first google result when typing a seach term into the awesome bar, even though there is no longer a search bar
+271	1277876088	issue	firefox	4.0b1	linux	en-US				Firefox is still many times slower than chrome on Linux env
+272	1277876203	praise	firefox	4.0b1	mac	en-US				works great on my imac, beter than safari 5 I'm happy. THNX
+273	1277876845	issue	firefox	4.0b1	mac	en-US				Downloading Flash Player always fails
+274	1277876960	praise	firefox	4.0b1	linux	en-US				I love the speed
+275	1277877003	issue	firefox	4.0b1	linux	en-US			http://29a.ch/2010/3/24/normal-mapping-with-javascript-and-canvas-tag	javascript engine is still way behind chrome in here
+276	1277877060	issue	firefox	4.0b1	mac	en-US				MAC: tabs on top are not right. The top of the tab is facing down.
+277	1277877238	praise	firefox	4.0b1	linux					Quick Response Tabs while opening
+278	1277877282	issue	firefox	4.0b1	linux					The Windows interface is better to be honest. Linux interface should be improved
+279	1277877660	issue	firefox	4.0b1	mac	en-US				The cursor changes to a hand while hovering over a link while selecting a text
+280	1277877745	issue	firefox	4.0b1	mac	en-US				Restarted my computer & flash still will not work.
+281	1277878296	praise	firefox	4.0b1	mac	en-US				Very Nice!
+282	1277878979	praise	firefox	4.0b1	mac					New design is awesome
+283	1277879320	praise	firefox	4.0b1	mac	en-US				it seems to be much faster on mac =D
+284	1277879370	praise	firefox	4.0b1	mac	en-US				helylopes
+285	1277879872	praise	firefox	4.0b1	mac	en-US				It's cleaner than before...a pleasure for my eyes!
+286	1277879966	issue	firefox	4.0b1	mac	en-US				It's slower than Chrome! A lot slower.... =(
+287	1277880474	praise	firefox	4.0b1	mac	en-US				very nice
+288	1277880889	issue	firefox	4.0b1	mac	en-US				sometimes firefox crashes, don't know why… 7-8 tabs opened, CPU and RAM free… on macbook white 13" intel core 2 duo, 2 Gb RAM, osx 10.5.8
+289	1277880927	issue	firefox	4.0b1	mac	en-US				Tabs-on-top looks ridiculous with tabs not being the the very top, like on Chrome. And this beta broke Flash completely…
+290	1277880981	praise	firefox	4.0b1	mac	en-US				Faster startup time!
+291	1277881038	issue	firefox	4.0b1	mac	en-US				I don’t like the timers replacing a favicon on a tab. It makes identifying loading tabs much harder. I wish the timers were less noticeable.
+292	1277881164	issue	firefox	4.0b1	mac	en-US				Why is there no way to remove the “Bookmarks” dropdown from the toolbar menu? It’s taking up too much space and is redundant.
+293	1277881187	issue	firefox	4.0b1	mac	en-US				Why even bother with the status bar? I would rather see information floating in place than have a dedicated strip that eats up pixels.
+294	1277881210	praise	firefox	4.0b1	mac	en-US				I see a drastic improvement in page load time. The speed is AWESOME!
+295	1277881266	issue	firefox	4.0b1	mac	en-US				I noticed that Mozilla’s Favicon looks kind of bad now on any background besides white. You guys deserve better!
+296	1277881320	praise	firefox	4.0b1	mac	en-US				The animation/opening of a new tab is soooo smooth, I love it. Feels a whole lot better.
+297	1277881403	praise	firefox	4.0b1	mac	en-US				Absolutely love the new interface graphics—now if only the Search bar can match with the new rounded corners…
+298	1277881698	praise	firefox	4.0b1	mac	en-US				better skin on os x than 3.6. But with tabs on top it looks awful...
+299	1277881740	praise	firefox	4.0b1	mac	en-US				FireBug. Its the tool that is absolutely essential and to which all other developer toolboxes are compared.
+300	1277881767	praise	firefox	4.0b1	mac	en-US				nice new interface! and personas are finally working :D
+301	1277881771	issue	firefox	4.0b1	linux	pt-BR				In Tools -> Addons, Languages doesn't appear along with everything else (gets my attention for nothing, I have lots of addons).
+302	1277881789	issue	firefox	4.0b1	mac	en-US				all the development focus is on windows :( mac/linux users are left out in the cold
+303	1277882068	issue	firefox	4.0b1	linux	en-US				On Centos, when the focus changes to another window, Firefox4 turns gray. Can't work.
+304	1277882510	issue	firefox	4.0b1	linux	pt-BR				Here, I have FFv4 and there, an other person has FFv3, but the default theme here is v3.6's and there is v4.0's! My profile is from v3.
+305	1277882676	praise	firefox	4.0b1	mac	en-US				I like , very easy  ....  I love Firefox ...
+306	1277882778	issue	firefox	4.0b1	linux	pt-BR				In Tools -> Addons -> Themes, Default 4.0b1 is Incompatible with Firefox 4.0b1!
+307	1277883252	issue	firefox	4.0b1	mac	en-US				Tabs on top doesn't look as nice on OSX as it does on Windows 7 :(
+308	1277883503	praise	firefox	4.0b1	mac	en-US				The toolbars and general UI take up less space, so i can see more of the web pages I visit :)
+309	1277884603	praise	firefox	4.0b1	mac	en-US				It feels very smooth and responsive
+310	1277884682	praise	firefox	4.0b1	vista	en-US				new interface is great !
+311	1277884838	issue	firefox	4.0b1	mac	en-US				Tabs on tops look horrendous at the moment...I trust that they won't stay like this.
+312	1277885468	praise	firefox	4.0b1	mac	en-US				It's faster than Firefox 3.6, that's for sure
+313	1277885481	praise	firefox	4.0b1	linux	en-US				It's faster. It almost passes acid3 (Make 4.0 stable pass please?)
+314	1277886245	praise	firefox	4.0b1	linux	en-US				The user experience is more snappy on my common web pages.
+315	1277886923	issue	firefox	4.0b1	linux	en-US				UI is still the same old ugly one...  I was kinda hoping that Firefox Person and the new UI would be working on Linux.  Meh.
+316	1277886969	praise	firefox	4.0b1	linux	en-US				It is faster than 3.X which is good.
+317	1277887696	praise	firefox	4.0b1	mac	en-US				Firefox 4.0 Beta 1 is fast!  I wish there was flash support so I can view more website content, but the speed is making up for it so far...
+318	1277888489	issue	firefox	4.0b1	mac	en-US				I can't view any flash content currently and I can't notice many new features iether, but the new look isn't bad, I like it
+319	1277889253	issue	firefox	4.0b1	mac	en-US			http://abdoc.net/	Hi, I have a problem with information icon in this site. Other browsers also older firefox show correctly. Thanx for remedy...
+320	1277889465	issue	firefox	4.0b1	linux	en-US				It is slow and doesent look good, opera is much better
+321	1277889868	praise	firefox	4.0b1	mac	en-US				the new firefox 4 beta is really fast
+322	1277889940	issue	firefox	4.0b1	mac	en-US				when i open a link from my twitter client and firefox is closed, it opens two new windows for some reason which is annoying
+323	1277890518	praise	firefox	4.0b1	linux	en-US				tabs on top
+324	1277891008	issue	firefox	4.0b1	mac	en-US				Tabs-on-top on Mac OS X looks abhorrently hideous. I would never, ever use that setting on OSX in its current state.
+325	1277891085	issue	firefox	4.0b1	linux	en-US				Firefox is slow on Linux compared to the Windows version. 4.0 Beta 1 still has old and imposing interface.
+326	1277892232	praise	firefox	4.0b1	mac	en-US				GREAT DESIGN
+327	1277892633	praise	firefox	4.0b1	mac	en-US				new GUI is fantastic on windows and mac. much more compact and usable. <3
+328	1277892673	issue	firefox	4.0b1	linux	en-US				Linux version has the old UI.
+329	1277892741	issue	firefox	4.0b1	mac	en-US				Why are the new top tabs attached to the menu bar (up) instead of the browser frame (down)? Seems antithetical to your tabs-on-top argument.
+330	1277893143	praise	firefox	4.0b1	linux	en-US				Fast
+331	1277893206	issue	firefox	4.0b1	mac	en-US				Hotmail problems. Most checkboxes and sliders are not selectable/draggable.
+332	1277893243	issue	firefox	4.0b1	mac	en-US			http://get.adobe.com/flashplayer/	It says continuously that I need to install flashplayer
+333	1277893440	praise	firefox	4.0b1	mac	en-US				The new ability to strech text forms is very hand.
+334	1277893809	issue	firefox	4.0b1	mac	en-US				Tabs on top should stick out of the address bar upwards ala Opera, not out of the title bar downwards (Mac OSX)
+335	1277894004	issue	firefox	4.0b1	mac	en-US				The Yahoo and Google toolbars don't work with Firefox 4.0 beta 1
+336	1277894498	praise	firefox	4.0b1	linux	en-US				It's very fast and use low-memory, almost appaer me!! I use firefox  in a Linux machine.
+337	1277894767	issue	firefox	4.0b1	mac	en-US				installed flash player, but firefox is not detecting it.
+338	1277894898	issue	firefox	4.0b1	linux	en-US				The feedback button is huge on Ubuntu 10.04 (actually made the whole line grow a little)
+339	1277895297	issue	firefox	4.0b1	linux	en-US				Can't figure it out how to remove the bookmarks button from the bookmarks toolbar
+340	1277895493	issue	firefox	4.0b1	mac	en-US				UI on MacOS, something still missing
+341	1277896203	praise	firefox	4.0b1	mac	en-US				It is buttloads faster than the old firefox.
+342	1277896461	praise	firefox	4.0b1	mac	en-US				is free, safe, secure, and faster?
+343	1277896524	issue	firefox	4.0b1	mac	en-US				Change the theme. I hate chrome ...
+344	1277896987	issue	firefox	4.0b1	mac	en-US				test
+345	1277897222	praise	firefox	4.0b1	mac	en-US				sdfsdfs
+346	1277897323	issue	firefox	4.0b1	mac	en-US				no tabs on top for OS X?
+347	1277897876	praise	firefox	4.0b1	mac	en-US				I love firefox
+348	1277898079	issue	firefox	4.0b1	linux	en-US				I can't reposition the bookmark drop down button you just added to my browser, nor can i just remove it.
+349	1277898159	issue	firefox	4.0b1	linux	en-US				With Tabs on Top, shouldn't Hide/Show toolbars be Tab specific? "Build your own App Tab" - Maybe I'm jumping ahead =D.
+350	1277899210	issue	firefox	4.0b1	mac	en-US				Because it is slow opening websites compared to Safari…
+351	1277899529	issue	firefox	4.0b1	linux	en-US				A UI design problem is amplified by Tabs on Top - the "New Tab" [Plus] Button is a moving target!!
+352	1277899586	praise	firefox	4.0b1	linux	en-US				I've got the NEED for SPEED & I'm feelin' it!!
+353	1277900207	praise	firefox	4.0b1	mac	en-US				liked the new bookmarks button
+354	1277900312	issue	firefox	4.0b1	mac	en-US				the feedback bubble pops up on the wrong space in mac-os-x
+355	1277900464	issue	firefox	4.0b1	mac	en-US				firefox consumes way too much resources compared to chrome 4% cpu compared to 0% cpu with same pages loaded
+356	1277900507	praise	firefox	4.0b1	mac	en-US				the awesomebar is awesome!
+357	1277900612	issue	firefox	4.0b1	mac	en-US				it consumes way too much memory compared to chrome
+358	1277900702	praise	firefox	4.0b1	mac	en-US				it fixes tabbing issues with cmd+number to jump to a tab
+359	1277900815	praise	firefox	4.0b1	mac	en-US				it seems to load pages way much faster
+360	1277901039	issue	firefox	4.0b1	mac	en-US				Eliminating Status Bar is good, not having any indication where a link goes BAD.  Chrome's status bar pops up only when needed, this is idea
+361	1277901116	issue	firefox	4.0b1	mac	en-US				Wierd.  I love tabs on top with Chrome, but it looks bad in FF OS X
+362	1277901253	issue	firefox	4.0b1	mac	en-US				Still no FAVICONS in the bookmarks bar?  WTF?
+363	1277901439	praise	firefox	4.0b1	mac	en-US				it's fast on mac ;)
+364	1277902511	praise	firefox	4.0b1	mac	en-US				Pages load very fast
+365	1277903144	praise	firefox	4.0b1	mac	en-US				The addon manager is moved to a sleek looking page in a browser tab.  Awesome!
+366	1277903191	praise	firefox	4.0b1	mac	en-US				This new way to give feedback is totally awesome!
+367	1277903988	praise	firefox	4.0b1	linux	en-US				speedy!
+368	1277904088	praise	firefox	4.0b1	mac	en-US				It's fast, cleanly designed, and very stable!
+369	1277904751	issue	firefox	4.0b1	mac	en-US			http://www.globalgiving.org/projects2/hungary-historic-castle-rebuilding/	This page did not load correctly
+370	1277905529	praise	firefox	4.0b1	mac	en-US				I really like the new UI and redesigned buttons!
+371	1277905618	issue	firefox	4.0b1	mac	en-US				I wish the 'Tabs on Top' option made the tabs face upwards like Chrome!
+372	1277905665	issue	firefox	4.0b1	mac	en-US				It has terrible look
+373	1277905995	issue	firefox	4.0b1	mac	en-US			http://speedtest.net/	flash 10.1 running in a separate process shows up as an icon in my dock. It's confusing to say the least...
+374	1277906150	praise	firefox	4.0b1	mac	en-US				It looks good, loads fast and just seems to "work" smoothly...
+375	1277906366	issue	firefox	4.0b1	mac	en-US			http://www.mysteryquest.org/weblog/	Margins and sizes are not calculated properly here, Safari 2+, Chrome 1+, IE 7+ do that correctly and I think FF < 3.5 too
+376	1277906419	praise	firefox	4.0b1	mac	en-US				Quick startup, FINALLY. As a Mac user I had to wait 4 versions for it!
+377	1277907556	praise	firefox	4.0b1	mac	en-US				it's uber fast!
+378	1277908066	issue	firefox	4.0b1	mac	en-US				can't load plugins
+379	1277908120	issue	firefox	4.0b1	mac	en-US				Je ne peux pas lire des vidéos sur dailymotion.com
+380	1277908152	issue	firefox	4.0b1	mac	en-US				If i open a website with flash plugin firefox open a new icon for the external process
+381	1277908419	praise	firefox	4.0b1	mac	en-US				It's really quick!
+382	1277908899	praise	firefox	4.0b1	linux	en-US				it works on Kubuntu64
+383	1277908987	issue	firefox	4.0b1	linux	en-US				Tab display in x86_64 version is not the pattern of win32 version.
+384	1277909172	praise	firefox	4.0b1	mac	en-US				just because it rocks
+385	1277909328	issue	firefox	4.0b1	linux	en-US				Firefox 4 does not have the tabs above the menu in gnu/linux, and the menu bar is still there.
+386	1277910191	issue	firefox	4.0b1	mac	en-US				No AdBlock!
+387	1277911723	issue	firefox	4.0b1	mac	en-US				look at "Tabs on Top"-View at the mac-version
+388	1277911926	issue	firefox	4.0b1	mac	en-US				if flash player is fixed in 64bit for mac, firefox would be my favourite mac browser
+389	1277912786	issue	firefox	4.0b1	mac	en-US				It doesn't work with Mac OS X 10.5
+390	1277912925	praise	firefox	4.0b1	mac	en-US				it works - fast, secure and most of all: lots of addons (A)
+391	1277913009	praise	firefox	4.0b1	mac	en-US				the alpha releases are so stable, and much better than any other's BETA/RC's :)
+392	1277914879	issue	firefox	4.0b1	winxp	en-US				the dimension of tabs are longer than Firefox 3.6...and so less tabs in a page...
+393	1277916925	praise	firefox	4.0b1	win7	en-US				I'm fully nude right now.
+394	1277917177	praise	firefox	4.0b1	linux	en-US				Hyper fast and stable! The only thing that's still bugging me is youtube.com movies-a bit overloading my cpu but there is a big difference!
+395	1277917474	issue	firefox	4.0b1	win7	en-US				I don't like not having the page title in the title bar
+396	1277917577	issue	firefox	4.0b1	win7	en-US				the big Firefox button doesn't fit with any established standards of the OS, not even matching the Win 7/Office 2010 ribbon rectangle thing
+397	1277917671	praise	firefox	4.0b1	win7	en-US				I like the new gui
+398	1277917817	praise	firefox	4.0b1	win7	en-US				New GUI is perfect, I lite it.
+399	1277918496	issue	firefox	4.0b1	mac	en-US			http://www.macrumors.com/iphone/2010/06/29/short-film-shot-and-edited-entirely-on-iphone-4/	Flash Player will not install. I have installed it several times, and I still cannot see flash content. It still wants to install the player
+400	1277918789	issue	firefox	4.0b1	mac	en-US				It keeps poping up surveys that I have already taken!
+401	1277918929	praise	firefox	4.0b1	win7	en-US				i like the new clearly theme but i think some users want the old back so you can import both^^
+402	1277919318	praise	firefox	4.0b1	mac	en-US				I dont know
+403	1277919493	issue	firefox	4.0b1	linux					I can't find a easy way to install my firefox (I want a .deb!)
+404	1277920544	praise	firefox	4.0b1	win7	en-US				New theme!
+405	1277921359	praise	firefox	4.0b1	win7	en-US				It's better than webkit
+406	1277922091	praise	firefox	4.0b1	mac	en-US				Very Fast
+407	1277922112	issue	firefox	4.0b1	mac	en-US				Cannot install flash player in macos
+408	1277922249	issue	firefox	4.0b1	linux	en-US				I dislike the bookmarks button that seems lodged in my shortcuts toolbar (on the far right). It's ugly, useless to me, and takes up space.
+409	1277922631	praise	firefox	4.0b1	mac	en-US				faster, tabs on top
+410	1277922669	issue	firefox	4.0b1	mac	en-US				not fast enough
+411	1277923179	praise	firefox	4.0b1	win7	en-US				The new theme, the Addon's Manager Tab, the Firefox button are all great, it's very fast and it looks really beautifull in XP and  7
+412	1277923680	issue	firefox	4.0b1	win7	en-US				pop-up windows that spawn with just a title bar (no other toolbars etc.) have glitchy window controls that don't always work when clicked
+413	1277923708	praise	firefox	4.0b1	win7	en-US				It's Design is Perfect! I really don't wanna see again the title bar! Tottaly useless! Perfect Design!
+414	1277924397	issue	firefox	4.0b1	mac	en-US				no adobe flash support
+415	1277924572	praise	firefox	4.0b1	win7	en-US				Very Good
+416	1277926718	praise	firefox	4.0b1	linux	en-US				firefox starts faster now, it has a more usable interface, it has great features like firefox sync, it's open source, it's getting better!
+417	1277927081	issue	firefox	4.0b1	win7	en-US				Why not tabs next to menu at very top like Opera. Gain alittle more screen space. Or use a firefox logo as a menu globe (like office 2007)
+418	1277927316	issue	firefox	4.0b2pre	win7	en-US				1px row at the top of the screen is not draggable while window is maximized (Win7)
+419	1277927555	praise	firefox	4.0b1	winxp	en-US				it's cool!
+420	1277928648	issue	firefox	4.0b1	win7	en-US				Bing was not an option in the search dropdown
+421	1277928825	praise	firefox	4.0b1	winxp	en-US				because it's simple to access
+422	1277928836	praise	firefox	4.0b1	win7	en-US				i very like it.
+423	1277929222	issue	firefox	4.0b1	mac	en-US			http://android-developers.blogspot.com/2009/01/avoiding-memory-leaks.html	I can't scroll on this page without zooming in/out first.
+424	1277929684	issue	firefox	4.0b1	win7	en-US				there's a pour personalise options... the GUI must be more flexible, by colors and choose where to put everything... thats firefox
+425	1277931128	praise	firefox	4.0b1	win7	en-US				i like new UI.
+426	1277931333	issue	firefox	4.0b1	win7	en-US				memory leak... after .pdf file loading it takes my memory to 848 MB and hang my browswer
+427	1277931393	issue	firefox	4.0b1	win7	en-US				there is no way currently with the Menu Bar turned off on windows to update firefox manually.
+428	1277931909	issue	firefox	4.0b2pre	win7	en-US			http://skydrive.live.com/home.aspx	it lacks the ability to use microsofts in browser word, exccel, one not, and powerpoint editer
+429	1277932261	praise	firefox	4.0b1	vista	en-US				Love the transparency
+430	1277932369	issue	firefox	4.0b2pre	win7	fr				Detach tab does not show content of the tab
+431	1277932767	praise	firefox	4.0b1	mac	en-US				html5 compatibility, mathml compatibility, stable
+432	1277932907	praise	firefox	4.0b1	win7	en-US				Translate To    am now with the version 4 very up to peace in the taskbar, only the nerves of each tab is displayed.
+433	1277933017	issue	firefox	4.0b1	win7	en-US				right click, open in new tab, from bookmark bar stopped working.
+434	1277933435	issue	firefox	4.0b1	win7	en-US				I'm not sure if this is because of the browser or not, but whenever I mouse over text in any menu the background turns black.
+435	1277933515	praise	firefox	4.0b1	win7	en-US				I love the feedback button.
+436	1277933567	praise	firefox	4.0b1	mac	en-US				The persona covers the top bar on my Mac. Thanks, hopefully this Firefox keeps getting better and God bless.
+437	1277937586	praise	firefox	4.0b2pre	linux	en-US				更快，更新，更强大！
+438	1277937676	praise	firefox	4.0b2pre	linux	en-US				开源，自由，定制性高！
+439	1277938332	praise	firefox	4.0b2pre	win7	en-US				because give me customization to level like no one other offer, I literraly making endorphin a lot every time to use this browser.
+440	1277939114	praise	firefox	4.0b1	mac	en-US				Firefox is back in the competition of the world's best browser again!
+441	1277939124	issue	firefox	4.0b2pre	linux	en-US				The new feedback button doesn't match the applied persona
+442	1277939133	praise	firefox	3.6.6	winxp	en-US				compact, simple to use and customizable
+443	1277939208	praise	firefox	4.0b2pre	linux	en-US				Because it's the greatest browser ever
+444	1277939225	praise	firefox	4.0b1	win7	en-US				i like the new design :)
+445	1277939447	praise	firefox	4.0b1	mac	en-US				I love the new streamlined look. Very ergonomic, without sacrificing raw power.
+446	1277939499	issue	firefox	4.0b1	mac	en-US				On windows 7 there is no minimize, maximize, or close function on the upper left corner of the browser. =[
+447	1277939679	issue	firefox	4.0b2pre	winxp	en-US				no improvements to download manager
+448	1277941228	praise	firefox	4.0b1	winxp	en-US				The new design looks really great!!!
+449	1277942149	issue	firefox	4.0b1	mac	en-US			http://madbello.nl/	page won't scroll with mousewheel when pointer hovers over an object.
+450	1277942534	praise	firefox	4.0b2pre	win	en-US				launch and shut down speed much improved :) Now installing and removing addons or themes is much easier and faster.
+451	1277942554	praise	firefox	4.0b2pre	win7	en-US				fast javascript and page rendering
+452	1277942575	praise	firefox	4.0b2pre	win7	en-US				focus on performance!
+453	1277942711	issue	firefox	4.0b1	mac	en-US				Ugly loading icon
+454	1277942919	praise	firefox	4.0b1	mac	en-US				it's just fast. The interface is more minimal and i like this.
+455	1277942967	praise	firefox	4.0b1	linux	en-US				so happy , but i am seeing that in linux not the attractive firefox like windows
+456	1277943057	issue	firefox	4.0b1	mac	en-US				the loading pie chart on the tab blinking during the load is just too much. A simple pie chart would be enough
+457	1277943092	issue	firefox	4.0b1	linux	en-US				becuse not attractive onlinux like windows
+458	1277943696	issue	firefox	4.0b1	mac					Hi, I'm on mac, using Adobe Flash Player 10.1 "Gala" Prerelease. Firefox 4.0 b1 doesn't recognize it, says I need to install Flash Player
+459	1277944058	praise	firefox	4.0b1	win7	en-US				It's simply fast ...
+460	1277944452	praise	firefox	4.0b1	linux	en-US				the minimal style user interface is very nce
+461	1277944773	praise	firefox	4.0b1	win7	en-US				the new layout
+462	1277945069	praise	firefox	4.0b2pre	win7	en-US				User interface greatly improved on the way to Version 4, excellent useful bookmarking system
+463	1277945474	praise	firefox	4.0b2pre	vista	cs				New design.
+464	1277945827	issue	firefox	4.0b1	vista	en-US				in firefox 3.6.x I hid the caption bar and the menu. I can't hide the menubar under 4.0. I'd really like to. I open it using the ALT key.
+465	1277945901	issue	firefox	4.0b1	winxp	en-US				I found only like 5% of the promised features in the first beta. No app tabs, no Firefox button, etc.
+466	1277945973	praise	firefox	4.0b1	winxp	en-US				Most of my essential add-ons are working out-of-the-box. Just had to enable them in the compatibility reporter
+467	1277946064	issue	firefox	4.0b1	mac	en-US				the video player isn't displayed
+468	1277946429	praise	firefox	4.0b1	mac	en-US				ITS WAY FASTER
+469	1277946488	issue	firefox	4.0b1	mac	en-US			http://www.google.ch/	The flash player does not work with FF 4
+470	1277946599	issue	firefox	4.0b1	mac	en-US				The favicons in the bookmark toolbar is not shown
+471	1277947000	issue	firefox	4.0b1	win7	en-US				True Fullscreen F11 function does not work - please remove the persistent FireFox menu tab
+472	1277947195	issue	firefox	4.0b1	linux	en-US				I moved the Bookmark Toolbar. When I clicked View Bookmark Toolbar it removed navigation toolbar
+473	1277947338	issue	firefox	4.0b1	vista	en-US				Feedback button is not removeable =(
+474	1277947442	praise	firefox	4.0b1	mac	en-US				it's design is cleaner and easier to use, and it's faster than the one I used before
+475	1277947592	praise	firefox	4.0b1	mac	en-US				I can protect my saved passwords!
+476	1277947835	praise	firefox	4.0b1	winxp	en-US				Better GUI, faster page rendering.
+477	1277947925	issue	firefox	4.0b1	mac	en-US			http://www.mozilla.com/en-US/firefox/4.0b1/whatsnew/	whatsnew is dead
+478	1277948166	praise	firefox	4.0b1	mac	en-US				it asked me in a cool way to submit "feedback data"
+479	1277948166	praise	firefox	4.0b1	linux	en-US				because i belive to opensource software
+480	1277948332	issue	firefox	4.0b1	mac	en-US				Firefox bookmarks are hard to sync with my apple iDevices. And I hate xMarks.
+481	1277948525	praise	firefox	4.0b1	mac	en-US				Look, feel, stability, speed, sexiness - And how!, my friends. This code is dank.
+482	1277948742	praise	firefox	4.0b2pre	win7	en-US				Its the best browser
+483	1277949966	praise	firefox	4.0b2pre	win7	en-US				tabs on top, aero interface, cool bookmark button, cool feedback button, cool app button, Cool Firefox!
+484	1277950275	issue	firefox	4.0b2pre	win7	en-US				flash doesn't work.. :(
+485	1277950515	issue	firefox	4.0b2pre	win7	en-US				has no home tab..
+486	1277950812	issue	firefox	4.0b2pre	win7	en-US			https://jetpack.mozillalabs.com/	jetpack "Developing With Jetpack" it's not work in firefox 4.0b2(minefield)
+487	1277950948	praise	firefox	4.0b1	mac	en-US				I love firefox sync.
+488	1277951288	praise	firefox	4.0b2pre	winxp	en-US				just beacause it's firefox
+489	1277951313	issue	firefox	4.0b2pre	win7	en-US				when menubar is hidden, aero theme is activated, firefox window is maximized, i can't restore firefox window by dragging its titlebar
+490	1277951716	issue	firefox	4.0b1	win7	en-US			http://crash-stats.mozilla.com/query/query	mozilla-labs test pilot popup window crashes whole firefox 4.0beta1(build2), see crashreporter website for crash feedback
+491	1277951744	issue	firefox	4.0b1	linux	en-US				i love firefox , but its GUI must becom better ,google Chrome is running better !
+492	1277951817	issue	firefox	4.0b1	win7	en-US			https://input.mozilla.com/search/	crash signature: PresShell::DispatchSynthMouseMove(nsGUIEvent*, int)
+493	1277952060	praise	firefox	4.0b1	mac	en-US				Though it's still in early beta you instantly feel how the browser is quicker in response and page load times. 64bit finally. Very nice. THX
+494	1277952134	issue	firefox	4.0b1	vista	en-US				The tab i am using right now is not highlighted, so it gets really confusing what tab i am on (to close) when a lot of tabs are open
+495	1277952300	praise	firefox	4.0b1	winxp	en-US				ok
+496	1277952310	issue	firefox	4.0b2pre	winxp	en-US				Upon updating from 4.1 beta to 4.2 a lot of my extensions have become incompatible.
+497	1277952353	praise	firefox	4.0b1	winxp	en-US				new style is awesome :)
+498	1277952617	praise	firefox	4.0b1	mac	en-US				Really liking the bookmarks dropdown.  Would be good to have an option to display the the browser history as a dropdown menu as well.
+499	1277952743	issue	firefox	4.0b1	win7	en-US				the UI (with no menu bar) gets broken with Persona skins
+500	1277952877	issue	firefox	4.0b1	win7	en-US				the default theme was not enabled by default

@@ -1,4 +1,5 @@
 import urlparse as urlparse_
+from itertools import chain
 
 from nose.tools import eq_
 import test_utils
@@ -30,7 +31,23 @@ class TestUtils(test_utils.TestCase):
         url = 'http://example.com/something'
         p = utils.urlparse(url)
         eq_(p, urlparse_.urlparse(url))
-
+    
+    def test_normalize_url(self):
+        """Test normalization from urls to sites."""
+        def test_without_protocol(self):
+            """Test domain extraction from URLs, for HTTP, about:, chrome."""
+            test_urls = (
+                ('http://example.com', 'http://example.com'),
+                ('http://example.com/the/place/to/be', 'http://example.com'),
+                ('https://example.net:8080', 'https://example.net:8080'),
+                ('https://example.net:8080/abc', 'https://example.net:8080'),
+                ('https://me@example.com:8080/xyz', 'https://example.com:8080'),
+                ('about:config', 'about:config'),
+                ('chrome://something/exciting', 'chrome://something/exciting'),
+            )
+            for url, expected in test_domains:
+                eq_(utils.normalize_url(url), expected)
+        
 
 class TestHelpers(test_utils.TestCase):
     def test_without_protocol(self):
@@ -43,3 +60,4 @@ class TestHelpers(test_utils.TestCase):
         )
         for domain, expected in test_domains:
             eq_(helpers.without_protocol(domain), expected)
+
