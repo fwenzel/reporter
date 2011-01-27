@@ -167,7 +167,8 @@ class MiddlewareTests(test_utils.TestCase):
             ('zh, en-us;q=0.8, en;q=0.6', 'zh-CN'),
             ('xx-YY,es-ES;q=0.7,de-DE;q=0.5', 'es'),
             ('German', 'en-US'),  # invalid
-            ('nb,no;q=0.8,nn;q=0.6,en-us;q=0.4,en;q=0.2', 'nb-NO'),
+            ('nb,no;q=0.8,nn;q=0.6,en-us;q=0.4,en;q=0.2', 'nb-NO'),  # bug 582075
+            ('en-US,en;q=0.9,ro;q=0.8,ja;q=0.7,fr;q=0.6', 'en-US'),  # bug 629115
         )
 
         for pattern in patterns:
