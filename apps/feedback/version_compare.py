@@ -5,6 +5,8 @@ import re
 
 from django.utils.functional import memoize
 
+from input.utils import uniquifier
+
 
 version_re = re.compile(r"""(?P<major>\d+)      # major (x in x.y)
                             \.(?P<minor1>\d+)   # minor1 (y in x.y)
@@ -61,6 +63,10 @@ class Version(object):
     @property
     def is_release(self):
         return not (self.is_beta or self.is_nightly)
+
+    @property
+    def simplified(self):
+        return simplify_version(self._version)
 
 
 def dict_from_int(version_int):
@@ -152,3 +158,23 @@ def simplify_version(version):
 
     # build version number
     return '.'.join(pieces) + ''.join(suffixes)
+
+
+def version_list(releases, key=None, reverse=True, hide_below='0.0'):
+    """
+    Build a sorted list of simplified versions.
+
+    ``releases`` is expected to be a dictionary like:
+        {'1.0': '2000-01-01'}
+    """
+    if not key:
+        key = lambda x: x[1]  # Default: Sort by release date.
+
+    lowest = Version(hide_below)
+    versions = []
+    for v, released in sorted(releases.items(), key=key, reverse=reverse):
+        ver = Version(v)
+        if ver < lowest:
+            continue
+        versions.append(ver.simplified)
+    return uniquifier(versions)

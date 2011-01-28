@@ -51,20 +51,21 @@ def cached_property(*args, **kw):
 
 
 class CachedProperty(object):
-    """A decorator that converts a function into a lazy property. The
-function wrapped is called the first time to retrieve the result
-and than that calculated result is used the next time you access
-the value::
+    """
+    A decorator that converts a function into a lazy property. The
+    function wrapped is called the first time to retrieve the result
+    and than that calculated result is used the next time you access
+    the value::
 
-class Foo(object):
+    class Foo(object):
 
-@cached_property
-def foo(self):
-# calculate something important here
-return 42
+    @cached_property
+    def foo(self):
+    # calculate something important here
+    return 42
 
-Lifted from werkzeug.
-"""
+    Lifted from werkzeug.
+    """
 
     def __init__(self, func, name=None, doc=None, writable=False):
         self.func = func

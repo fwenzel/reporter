@@ -3,23 +3,40 @@ from django.conf import settings
 from product_details import product_details
 from tower import ugettext_lazy as _
 
+from feedback.version_compare import version_list
 import input
 
-# Applications, shamelessly snagged from AMO
+
+## Applications
 class FIREFOX:
     id = 1
     short = 'firefox'
     pretty = _(u'Firefox')
     guid = '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}'
-    hide_below = '4.0b1'
-
+    beta_versions = version_list(
+        product_details.firefox_history_development_releases,
+        hide_below='4.0b1'
+    )
+    release_versions = version_list(
+        dict(product_details.firefox_history_major_releases,
+             **product_details.firefox_history_stability_releases),
+        hide_below='3.6'  # TODO bump this once Firefox 4 ships.
+    )
 
 class MOBILE:
     id = 60
     short = 'mobile'
     pretty = _(u'Mobile')
     guid = '{a23983c0-fd0e-11dc-95ff-0800200c9a66}'
-    hide_below = '4.0b1'
+    beta_versions = version_list(
+        product_details.mobile_history_development_releases,
+        hide_below='4.0b1'
+    )
+    release_versions = version_list(
+        dict(product_details.mobile_history_major_releases,
+             **product_details.mobile_history_stability_releases),
+        hide_below='4.0'
+    )
 
 APP_USAGE = _apps = (FIREFOX, MOBILE)
 APPS = dict((app.short, app) for app in _apps)

@@ -23,7 +23,7 @@ from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
 from feedback import FIREFOX
 from feedback.cron import populate
 from feedback.models import Opinion
-from search import forms, views
+from search import views
 from search.client import Client, SearchError, extract_filters
 from search.utils import start_sphinx, stop_sphinx, reindex
 
@@ -382,27 +382,6 @@ def test_get_results(is_valid):
     request.default_app = FIREFOX
     r = views._get_results(request)
     eq_(r[2], request.default_app)
-
-
-def test_version_filter():
-    """Test if version lists are generated properly."""
-    class fake_app:
-        hide_below = '4.0b1'
-
-    my_versions = {
-        '4.0b2build8': '2010-12-06',
-        '3.0': '2010-12-01',
-        '4.0b1': '2010-11-24',
-        '4.0b2build7': '2010-12-05',
-    }
-    expected = ('4.0b2', '4.0b1')
-
-    test_list = forms._version_list(fake_app, my_versions)
-
-    # Check if the generated version list is the same as we expect.
-    eq_(len(expected), len(test_list))
-    for n, v in enumerate(test_list):
-        eq_(v[0], expected[n])
 
 
 def test_date_filter_timezone():
