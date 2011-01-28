@@ -1,20 +1,25 @@
+from django.conf import settings
+
 from tower import ugettext_lazy as _
 
 from input import urlresolvers
-from django.conf import settings
 
 
 def get_channel():
-    return urlresolvers.get_url_prefix().channel
+    prefix = urlresolvers.get_url_prefix()
+    return prefix.channel if prefix else settings.DEFAULT_CHANNEL
+
 
 ## Channels
 class CHANNEL_RELEASE:
     short = 'release'
     pretty = _(u'Release Channel')
 
+
 class CHANNEL_BETA:
     short = 'beta'
     pretty = _(u'Beta Channel')
+
 
 class CHANNEL_NIGHTLY:
     short = 'nightly'
@@ -49,11 +54,13 @@ class OPINION_PRAISE:
     pretty = _(u'Praise')
     max_length = settings.MAX_FEEDBACK_LENGTH
 
+
 class OPINION_ISSUE:
     id = 2
     short = 'issue'
     pretty = _(u'Issue')
     max_length = settings.MAX_FEEDBACK_LENGTH
+
 
 class OPINION_SUGGESTION:
     id = 3
@@ -61,11 +68,13 @@ class OPINION_SUGGESTION:
     pretty = _(u'Suggestion')
     max_length = settings.MAX_SUGGESTION_LENGTH
 
+
 class OPINION_RATING:
     id = 4
     short = 'rating'
-    pretty =  _(u'Rating')
+    pretty = _(u'Rating')
     max_length = settings.MAX_FEEDBACK_LENGTH
+
 
 class OPINION_BROKEN:
     id = 5

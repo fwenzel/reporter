@@ -29,6 +29,7 @@ def reverse(viewname, urlconf=None, args=None, kwargs=None, prefix=None,
             channel=None):
     """Wraps Django's reverse to prepend the correct locale."""
     prefixer = get_url_prefix()
+    current_channel = prefixer.channel if prefixer else None
 
     if channel:
         prefixer.channel = channel
@@ -37,7 +38,9 @@ def reverse(viewname, urlconf=None, args=None, kwargs=None, prefix=None,
         prefix = prefix or '/'
     url = django_reverse(viewname, urlconf, args, kwargs, prefix)
     if prefixer:
-        return prefixer.fix(url)
+        new_url = prefixer.fix(url)
+        prefixer.channel = current_channel
+        return new_url
     else:
         return url
 
@@ -81,11 +84,7 @@ class Prefixer(object):
         elif first in input.CHANNELS:
             return '', first, first_rest
         else:
-            supported = find_supported(first)
-            if len(supported):
-                lang = supported[0]
-            else:
-                lang = ''
+            lang = ''
 
             if second in input.CHANNELS:
                 return lang, second, rest

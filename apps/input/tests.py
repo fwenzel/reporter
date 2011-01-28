@@ -44,6 +44,7 @@ class TestCase(test_utils.TestCase):
     def setUp(self):
         super(TestCase, self).setUp()
         self.fxclient = Client(False, HTTP_USER_AGENT=(FX_UA % '4.0'))
+        self.factory = test_utils.RequestFactory()
 
 
 class ViewTestCase(test_utils.TestCase):
@@ -155,7 +156,7 @@ class HelperTests(test_utils.TestCase):
                 '/en-US/%s/' % ch)
 
 
-class MiddlewareTests(test_utils.TestCase):
+class MiddlewareTests(TestCase):
     def test_locale_fallback(self):
         """
         Any specific flavor of a language (xx-YY) should return its generic
@@ -225,6 +226,13 @@ class MiddlewareTests(test_utils.TestCase):
         p = urlresolvers.Prefixer(request)
         eq_(p.locale, 'en-US')
         eq_(p.channel, 'release')
+
+    def test_fake_locale(self):
+        r = self.factory.get('/zf/beta')
+        p = urlresolvers.Prefixer(r)
+        eq_(p.locale, '')
+        eq_(p.channel, 'beta')
+
 
     def test_locale_in_get(self):
         request = Mock()
