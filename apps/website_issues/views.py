@@ -6,12 +6,17 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 import jingo
 
 from input.decorators import cache_page
-from feedback import LATEST_BETAS, FIREFOX, MOBILE, OSES, APPS
+from feedback import FIREFOX, MOBILE, OSES, APPS
 from feedback.models import Opinion
 from search.forms import PROD_CHOICES
 
 from .forms import WebsiteIssuesSearchForm, VERSION_CHOICES
 from .models import Comment, Cluster, SiteSummary
+
+
+def _template(request, name):
+    prefix = 'release_' if request.channel == 'release' else ''
+    return 'website_issues/%s%s.html' % (prefix, name)
 
 
 def _fetch_summaries(form, url=None, count=None, one_offs=False):
@@ -73,7 +78,6 @@ def _common_data(form):
         oses = [os for os in oses if product in os.apps]
     return {"form": form,
             "oses": oses,
-            "latest_betas": LATEST_BETAS,
             "products": PROD_CHOICES,
             "product": product,
             "versions": VERSION_CHOICES[product],
@@ -95,7 +99,7 @@ def website_issues(request):
                                            one_offs=True)
     data = dict(_common_data(form))
     data.update({"page": page, "sites": sites, "one_offs": one_offs})
-    return jingo.render(request, 'website_issues/website_issues.html', data)
+    return jingo.render(request, _template(request, 'sites'), data)
 
 
 @cache_page(use_get=True)
@@ -126,7 +130,7 @@ def single_site(request, protocol, url_):
 
     data = dict(_common_data(form))
     data.update({"page": page, "site": site})
-    return jingo.render(request, 'website_issues/website_issues.html', data)
+    return jingo.render(request, _template(request, 'sites'), data)
 
 
 @cache_page(use_get=True)
@@ -155,4 +159,4 @@ def site_theme(request, theme_id):
             "opinion_count": pager.count,
             "opinions": opinions,
             "site": cluster.site_summary,}
-    return jingo.render(request, 'website_issues/theme.html', data)
+    return jingo.render(request, _template(request, 'theme'), data)

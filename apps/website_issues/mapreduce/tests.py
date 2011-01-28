@@ -10,6 +10,7 @@ from django.utils.functional import memoize
 from django.core.management import call_command
 
 from website_issues.mapreduce import tasks
+from website_issues.mapreduce import generate_sites
 
 
 TEST_FILE = "lib/website_issues/test_opinions.tsv"
@@ -142,3 +143,29 @@ class TestTasks(test_utils.TestCase):
     def test_denormalizing_reducer(self):
         pairs = self._denormalized()
         eq_(len(pairs), 222)
+
+
+class TestJob(object):
+    # So we can unit-test dumbo command invocation, here is a monkey patch for
+    # http://code.google.com/p/python-nose/issues/detail?id=290
+    from nose.ext.dtcompat import _SpoofOut
+    class SpoofFile(_SpoofOut):
+        def fileno(self):
+            return 0
+    
+    class SpoofContext(object):
+        def __enter__(self):
+            self._true_stdout = sys.stdout
+            self._true_stderr = sys.stderr
+            sys.stdout = TestJob.SpoofFile(sys.stdout)
+            sys.stderr = TestJob.SpoofFile(sys.stderr)
+            
+        def __exit__(self, exc_type, exc_value, exc_tb):
+            sys.stdout = self._true_stdout
+            sys.stderr = self._true_stderr
+    
+    def test_generate_job(self):
+        with TestJob.SpoofContext():
+            generate_sites(TEST_FILE, skip_load=True)
+            generate_sites(TEST_FILE, skip_load=True)
+            generate_sites(TEST_FILE, skip_load=True, only_clean=True)

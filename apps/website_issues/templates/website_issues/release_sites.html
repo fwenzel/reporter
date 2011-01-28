@@ -1,0 +1,12 @@
+{% extends "base_dashboard_release.html" %}
+
+{% block page_title -%}
+{% if site %}{{ site.domain }} :: {% endif %}{{ _('Broken Sites') }}
+{%- endblock %}
+{% block body_id %}website_issues{% endblock %}
+
+{% block content %}
+
+{% include "website_issues/includes/sites_content.html" %}
+
+{% endblock %}

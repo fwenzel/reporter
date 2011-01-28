@@ -1,0 +1,68 @@
+{% from 'website_issues/includes/macros.html' import button %}
+
+<div class="col left">
+  <form method="get" action="{{ url('website_issues') }}" id="filters" class="filters segments block">
+
+    <div class="choice">
+      <h3>{{ _('Product') }}</h3>
+      <div>
+          {{ products_block(products, product) }}
+          {{ versions_block(versions, version) }}
+        </ul>
+      </div>
+    </div>
+
+    {% if request.channel != "release" %}
+    <div class="choice" id="filter_type">
+      <h3>{{ _('Type of Feedback') }}</h3>
+      <div>
+        <ul>
+          <li>{{ button(form, 'sentiment', '', label=_('All', 'sites_search_all_feedback'), title=_('All feedback')) }}</li>
+          <li>{{ button(form, 'sentiment', 'happy', label=_('Praise'), title=_('Praise only')) }}</li>
+          <li>{{ button(form, 'sentiment', 'sad', label=_('Issues'), title=_('Issues only')) }}</li>
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="choice" id="filter_platform">
+      <h3>{{ _('Platforms') }}</h3>
+      <div>
+        <ul>
+          <li>{{ button(form, 'os', '', label=_('All', 'sites_search_all_platforms'), title=_('All platforms')) }}</li>
+          {% for os in oses %}
+          <li>{{ button(form, 'os', os.short, label=os.short, title=os.pretty) }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+{# TODO add minimum feedback count choice
+    <div class="choice">
+      <h3>Min Related</h3>
+
+      <div>
+        <ul>
+          <!--
+          --><li><a class="selected" href="search.html" title="No minimum">Any</a></li><!--
+          --><li><a class="" href="search.html" title="25+ messages">25</a></li><!--
+          --><li><a class="" href="search.html" title="50+ messages">50</a></li><!--
+          --><li><a class="" href="search.html" title="100+ messages">100</a></li><!--
+          --><li><a class="" href="search.html" title="250+ messages">250</a></li>
+        </ul>
+      </div>
+    </div>
+#}
+
+  </form>
+</div><!--
+
+--><div class="col middle wide">
+  <div id="themes" class="block">
+    {% if not site %}
+      {% include "website_issues/includes/sites_list.html" %}
+    {% else %}
+      {% include "website_issues/includes/single_site.html" %}
+    {% endif %}
+  </div>
+</div>

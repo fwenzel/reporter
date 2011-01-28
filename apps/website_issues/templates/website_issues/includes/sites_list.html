@@ -46,7 +46,7 @@
             {{ count }} messages
           {% endtrans %}
         </a></li>
-        {% if site.positive is none %}
+        {% if request.channel == 'beta' and site.positive is none %}
           {% with praise_perc=(site.praise_count/site.size*100)|int %}
           <li><a href="{{ sites_url(form, sentiment='happy', url=site.url) }}">{{
             _('{percentage}% praise')|f(percentage=praise_perc) }}</a></li>
@@ -79,4 +79,4 @@
   {% endfor %}
 </ul>
 
-{% include "website_issues/paginate_sites.html" %}
+{% include "website_issues/includes/paginate_sites.html" %}

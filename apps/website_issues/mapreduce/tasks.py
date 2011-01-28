@@ -4,6 +4,7 @@ from textcluster.cluster import Corpus
 
 from website_issues.utils import normalize_url
 
+from input import OPINION_PRAISE, OPINION_ISSUE, OPINION_BROKEN
 
 """Map/Reduce clustering for sites.
 
@@ -45,11 +46,14 @@ class SiteSummaryMapper(object):
         self.comments_out = self.counters["comments used"]
 
     def __call__(self, data):
+        supported_types = set([OPINION_BROKEN.short,
+                               OPINION_ISSUE.short,
+                               OPINION_PRAISE.short])
         for key, value in recombined(data):
             self.comments_in += 1
             m_id, ts, type, product, version, os, locale, \
                 manufacturer, device, url, message = value.split('\t', 10)
-            if url == "" or type not in ("praise", "issue"): continue
+            if url == "" or type not in supported_types: continue
             app = '<%s>' % product
             site = normalize_url(url)
             out_keys = cartesian((version,), (site,), (app, os, None), (type,))
@@ -197,8 +201,8 @@ class DenormalizingReducer(object):
         values = list(values_gen)
         s_sad_size, s_happy_size = 0, 0
         for type, _, s_size, _, _, _, _, _, _, _ in values:
-            if type == "praise": s_happy_size = s_size
-            elif type == "issue": s_sad_size = s_size
+            if type == OPINION_PRAISE.short: s_happy_size = s_size
+            elif type == OPINION_ISSUE.short: s_sad_size = s_size
         for type, s_id, s_size, c_id, c_type, c_size, m_refid, m_id, message, \
                                                                score in values:
             yield \
