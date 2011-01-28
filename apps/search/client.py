@@ -11,7 +11,8 @@ from django.conf import settings
 from product_details import product_details
 from tower import ugettext as _
 
-from input import KNOWN_DEVICES, KNOWN_MANUFACTURERS, OPINION_PRAISE, OPINION_SUGGESTION
+from input import (KNOWN_DEVICES, KNOWN_MANUFACTURERS, RATING_USAGE,
+                   OPINION_PRAISE, OPINION_SUGGESTION)
 from input.utils import crc32, manual_order
 from feedback import OS_USAGE
 from feedback.models import Opinion
@@ -85,7 +86,7 @@ class SearchError(Exception):
     pass
 
 
-class Client():
+class Client(object):
 
     def __init__(self):
         self.sphinx = sphinx.SphinxClient()
@@ -96,6 +97,7 @@ class Client():
         else:  # pragma: nocover
             self.sphinx.SetServer(settings.SPHINX_HOST, settings.SPHINX_PORT)
 
+        self.index = 'opinions'
         self.meta = {}
         self.queries = {}
         self.query_index = 0
@@ -110,46 +112,49 @@ class Client():
         E.g. if we can add back category filters to see what tags exist in
         that data set.
         """
+        orig_field = field
+
+        if '__' in field:
+            (field, method, over) = field.split('__')
+            select = '%s, %s(%s) as aggregate' % (field, method, over)
+        else:
+            select = '%s, SUM(1) as count' % field
 
         # We only need to select a single field for aggregate queries.
-        self.sphinx.SetSelect('%s, SUM(1) as count' % field)
+        self.sphinx.SetSelect(select)
         self.sphinx.SetLimits(0, SPHINX_HARD_LIMIT)
 
         self.sphinx.SetGroupBy(field, sphinx.SPH_GROUPBY_ATTR, '@count DESC')
 
-        # We are adding back all the other meta filters.  This way we can find
-        # out all of the possible values of this particular field after we
-        # filter down the search.
-        filters = self.apply_meta_filters(exclude=field)
-        self.sphinx.AddQuery(term, 'opinions')
+        self.sphinx.AddQuery(term, self.index)
 
-        # We roll back our client and store a pointer to this filter.
-        self.remove_filters(len(filters))
-        self.queries[field] = self.query_index
+        self.queries[orig_field] = self.query_index
         self.query_index += 1
         self.sphinx.ResetGroupBy()
 
-    def apply_meta_filters(self, exclude=None):
-        """Apply any meta filters, excluding the filter listed in `exclude`."""
 
-        filters = [f for field, f in self.meta_filters.iteritems()
-                   if field != exclude]
-        self.sphinx._filters.extend(filters)
-        return filters
-
-    def remove_filters(self, num):
-        """Remove the `num` last filters from the sphinx query."""
-        if num:
-            self.sphinx._filters = self.sphinx._filters[:-num]
+    def handle_metas(self, results, metas, kwargs):
+        # Handle any meta data we have.
+        if 'type' in metas:
+            self.meta['type'] = self._type_meta(results, **kwargs)
+        if 'locale' in metas:
+            self.meta['locale'] = self._locale_meta(results, **kwargs)
+        if 'os' in metas:
+            self.meta['os'] = self._os_meta(results, **kwargs)
+        if 'manufacturer' in metas:
+            self.meta['manufacturer'] = self._manufacturer_meta(results,
+                                                                **kwargs)
+        if 'device' in metas:
+            self.meta['device'] = self._device_meta(results, **kwargs)
+        if 'day_sentiment' in metas:
+            self.meta['day_sentiment'] = self._day_sentiment(results,
+                                                                 **kwargs)
 
     def add_filter(self, field, values, meta=False):
         if not isinstance(values, (tuple, list)):
             values = (values,)
 
         self.sphinx.SetFilter(field, values)
-
-        if meta:
-            self.meta_filters[field] = self.sphinx._filters.pop()
 
     def query(self, term, limit=20, offset=0, **kwargs):
         """Submits formatted query, retrieves ids, returns Opinions."""
@@ -180,14 +185,12 @@ class Client():
                 self.add_meta_query(meta, term)
 
         sc.SetLimits(min(SPHINX_HARD_LIMIT - limit, offset), limit)
-        self.apply_meta_filters()
 
         # Always sort in reverse chronological order.
         sc.SetSortMode(sphinx.SPH_SORT_ATTR_DESC, 'created')
-        sc.AddQuery(term, 'opinions')
+        sc.AddQuery(term, self.index)
         self.queries['primary'] = self.query_index
         self.query_index += 1
-
         try:
             results = sc.RunQueries()
         except socket.timeout:
@@ -199,27 +202,14 @@ class Client():
         if sc.GetLastError():
             raise SearchError(sc.GetLastError())
 
-        # Handle any meta data we have.
-        if 'meta' in kwargs:
-            if 'type' in kwargs['meta']:
-                self.meta['type'] = self._type_meta(results, **kwargs)
-            if 'locale' in kwargs['meta']:
-                self.meta['locale'] = self._locale_meta(results, **kwargs)
-            if 'os' in kwargs['meta']:
-                self.meta['os'] = self._os_meta(results, **kwargs)
-            if 'manufacturer' in kwargs['meta']:
-                self.meta['manufacturer'] = self._manufacturer_meta(results,
-                                                                    **kwargs)
-            if 'device' in kwargs['meta']:
-                self.meta['device'] = self._device_meta(results, **kwargs)
-            if 'day_sentiment' in kwargs['meta']:
-                self.meta['day_sentiment'] = self._day_sentiment(results,
-                                                                 **kwargs)
-
+        self.handle_metas(results, kwargs.get('meta', {}), kwargs)
         result = results[self.queries['primary']]
         self.total_found = result.get('total_found', 0) if result else 0
 
-        if result.get('total'):
+        if result['error']:
+            raise SearchError(result['error'])
+
+        if result and 'total' in result:
             return self.get_result_set(term, result, offset, limit)
         else:
             return []
@@ -308,3 +298,36 @@ class ResultSet(object):
             k -= self.offset
 
         return self.queryset.__getitem__(k)
+
+
+class RatingsClient(Client):
+    """Queries the ratings index instead."""
+
+    def __init__(self):
+        super(RatingsClient, self).__init__()
+        self.index = 'ratings'
+
+    def handle_metas(self, results, metas, kwargs):
+        super(RatingsClient, self).handle_metas(results, metas, kwargs)
+        if 'startup' in metas:
+            self.meta['ratings'] = self._ratings_meta(results, **kwargs)
+            self.meta['ratings_avg'] = self._ratings_avg_meta(results,
+                                                              **kwargs)
+
+    def _ratings_meta(self, results, **kwargs):
+        agg = {}
+        for rating in RATING_USAGE:
+            d = defaultdict(int)
+            d.update((m['attrs'][rating.short], m['attrs']['count'])
+                     for m in results[self.queries[rating.short]]['matches'])
+            agg[rating.id] = d
+        return agg
+
+    def _ratings_avg_meta(self, results, **kwargs):
+        agg = {}
+        for rating in RATING_USAGE:
+            result = results[self.queries['day__avg__%s' % rating.short]]
+            value = lambda m: round(m['attrs']['aggregate'], 1)
+            agg[rating.id] = [(m['attrs']['day'], value(m)) for m
+                              in result['matches']]
+        return agg

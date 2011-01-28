@@ -9,26 +9,26 @@ from django.utils.feedgenerator import Atom1Feed
 import jingo
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from feedback import APPS, APP_IDS, FIREFOX, MOBILE, LATEST_BETAS
+import input
+from feedback import (APPS, APP_IDS, FIREFOX, MOBILE, LATEST_RELEASE,
+                      LATEST_BETAS)
 from feedback.version_compare import simplify_version
 from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
                    OPINION_TYPES)
 from input.decorators import cache_page
 from input.urlresolvers import reverse
+from search.client import Client, RatingsClient, SearchError
+from search.forms import ReporterSearchForm, PROD_CHOICES, VERSION_CHOICES
 
-from .client import Client, SearchError
-from .forms import ReporterSearchForm, PROD_CHOICES, VERSION_CHOICES
 
-
-def _get_results(request, meta=[]):
+def _get_results(request, meta=[], client=None):
     form = ReporterSearchForm(request.GET)
     if form.is_valid():
         query = form.cleaned_data.get('q', '')
         product = form.cleaned_data['product'] or FIREFOX.short
         version = form.cleaned_data['version']
         search_opts = _get_results_opts(request, form, product, meta)
-
-        c = Client()
+        c = client or Client()
         opinions = c.query(query, **search_opts)
         metas = c.meta
     else:
@@ -37,6 +37,8 @@ def _get_results(request, meta=[]):
         product = request.default_app
         version = simplify_version(LATEST_BETAS[product])
         metas = {}
+
+    product = APPS.get(product, FIREFOX)
 
     return (opinions, form, product, version, metas)
 
@@ -92,7 +94,8 @@ class SearchFeed(Feed):
 
     def link(self, obj):
         """Global feed link. Also used as GUID."""
-        return u'%s?%s' % (reverse('search'), obj['request'].META['QUERY_STRING'])
+        return u'%s?%s' % (reverse('search'),
+                           obj['request'].META['QUERY_STRING'])
 
     def title(self, obj):
         """Global feed title."""
@@ -137,6 +140,40 @@ class SearchFeed(Feed):
         return unicode(item)
 
 
+# TODO(davedash): use a bound form for defaults in views and get rid of this.
+def get_defaults(form):
+    """
+    Keep form data as default options for further searches, but remove page
+    from defaults so that every parameter change returns to page 1.
+    """
+    return dict((k, v) for k, v in form.data.items()
+                if k != 'page' and k in form.fields)
+
+
+def get_period(form):
+    """Determine date period chosen."""
+    days = 0
+
+    if not getattr(form, 'cleaned_data', None):
+        return None, days
+
+    d = form.cleaned_data
+    if not (d.get('date_start') and d.get('date_end')):
+        return 'infin', days
+
+    end = d.get('date_end')
+    start = d.get('date_start')
+    _ago = lambda x: datetime.date.today() - datetime.timedelta(days=x)
+    days = (end - start).days
+
+    if (end == datetime.date.today() and start):
+        return {_ago(1): '1d',
+                _ago(7): '7d',
+                _ago(30): '30d'}.get(start, 'custom'), days
+
+    return 'custom', days
+
+
 @cache_page(use_get=True)
 def index(request):
     try:
@@ -150,41 +187,15 @@ def index(request):
 
     page = form.data.get('page', 1)
 
-    if product == 'mobile':
-        product = MOBILE
-    else:
-        product = FIREFOX
+    data = dict(
+        form=form,
+        product=product,
+        products=PROD_CHOICES,
+        version=dict(form.fields['version'].choices).get(version or '--'),
+        versions=VERSION_CHOICES['beta'][product],
+    )
 
-    data = {
-        'form': form,
-        'product': product,
-        'products': PROD_CHOICES,
-        'version': version,
-        'versions': VERSION_CHOICES['beta'][product]
-    }
-
-    days = 0
-
-    # Determine date period chosen
-    if not getattr(form, 'cleaned_data', None):
-        period = None
-    else:
-        if not (form.cleaned_data.get('date_start') and
-                form.cleaned_data.get('date_end')):
-            period = 'infin'
-        else:
-            end = form.cleaned_data.get('date_end')
-            start = form.cleaned_data.get('date_start')
-            _ago = lambda x: datetime.date.today() - datetime.timedelta(days=x)
-            days = (end - start).days
-            if (end == datetime.date.today() and start):
-                period = {_ago(1): '1d',
-                          _ago(7): '7d',
-                          _ago(30): '30d'}.get(
-                              form.cleaned_data.get('date_start'), 'custom')
-            else:
-                period = 'custom'
-    data['period'] = period
+    data['period'], days = get_period(form)
 
     if results:
         pager = Paginator(results, settings.SEARCH_PERPAGE)
@@ -201,7 +212,7 @@ def index(request):
         data['demo'] = dict(locale=metas.get('locale'), os=metas.get('os'),
                             manufacturer=metas.get('manufacturer'),
                             device=metas.get('device'))
-        if days >= 7 or period == 'infin':
+        if days >= 7 or data['period'] == 'infin':
             daily = metas.get('day_sentiment', {})
             chart_data = dict(series=[
                 dict(name=_('Praise'), data=daily['praise']),
@@ -210,7 +221,6 @@ def index(request):
                 ],
                 )
             data['chart_data_json'] = json.dumps(chart_data)
-
     else:
         data.update({
             'opinion_count': 0,
@@ -219,11 +229,59 @@ def index(request):
             'demo': {},
         })
 
-    # Keep form data as default options for further searches, but remove page
-    # from defaults so that every parameter change returns to page 1.
-    data['defaults'] = dict((k, v) for k, v in form.data.items()
-                            if k != 'page' and k in form.fields)
-
+    data['defaults'] = get_defaults(form)
     template = 'search/%ssearch.html' % (
         'mobile/' if request.mobile_site else '')
+    return jingo.render(request, template, data)
+
+
+@cache_page
+def release(request):
+    """Front page and search view for the release channel."""
+    c = RatingsClient()
+    metas = ['os', 'locale']
+
+    for dimension in input.RATING_TYPES.keys():
+        metas.append(dimension)
+        metas.append('day__avg__%s' % dimension)
+
+    (_, form, product, version, metas) = _get_results(request, metas, client=c)
+
+    rating_values = dict((k, unicode(v)) for k, v in input.RATING_CHOICES)
+
+    series = []
+    categories = []
+
+    if 'ratings' in metas:
+        for rating_value in rating_values:
+            data = [v[rating_value] for k, v in metas['ratings'].items() if v]
+            series.append(dict(name=rating_values[rating_value], data=data))
+
+    ratings_chart = dict(series=series)
+    categories = []
+    charts = []
+
+    if 'ratings_avg' in metas:
+        for r in input.RATING_USAGE:
+            categories.append(unicode(r.pretty))
+            charts.append(dict(rating=r, json=json.dumps(dict(series=[dict(
+                data=metas['ratings_avg'][r.id])]))))
+
+    data = dict(
+        product=product,
+        products=PROD_CHOICES,
+        version=dict(form.fields['version'].choices).get(version or '--'),
+        versions=VERSION_CHOICES['release'][product],
+        platforms=metas.get('os'),
+        locales=metas.get('locale'),
+        chart_json=json.dumps(ratings_chart),
+        chart_categories=json.dumps(categories),
+        avg_charts=charts,
+        defaults=get_defaults(form),
+        period=get_period(form)[0],
+        search_form=form,
+        total=c.total_found,
+    )
+
+    template = 'search/release.html'
     return jingo.render(request, template, data)

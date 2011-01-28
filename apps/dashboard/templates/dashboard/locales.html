@@ -1,5 +1,6 @@
 {% macro locale_item(locale, count=0, selected=False) %}
 <li>
+  {% if locale %}
   <input id="loc_{{ locale }}" name="locale" type="checkbox"
          title="{{ locale_name(locale, native=True, default='') }}"
          value="{{ locale|default('unknown', True) }}"
@@ -7,6 +8,7 @@
   <label for="loc_{{ locale }}" class="bar {{ 'selected' if selected else '' }}" data-value="{{ count }}">
     <strong>{{ locale_name(locale) }}</strong>
   </label>
+  {% endif %}
 </li>
 {% endmacro %}
 

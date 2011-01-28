@@ -73,7 +73,7 @@ class DecoratorTests(ViewTestCase):
 
         # URLs that should allow Mobile detection
         urls = (
-            reverse('dashboard'),
+            reverse('dashboard', channel='beta'),
             reverse('feedback.happy'),
             reverse('feedback.sad'),
             reverse('feedback.suggestion'),

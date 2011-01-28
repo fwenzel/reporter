@@ -137,8 +137,9 @@ class SearchTest(SphinxTestCase):
 
 def search_request(product='firefox', **kwargs):
     kwargs['product'] = product
-    kwargs['date_start'] = '2010-01-01'
-    return TestClient().get(reverse('search'), kwargs, follow=True)
+    kwargs['version'] = '--'
+    return TestClient().get(reverse('search', channel='beta'),
+                            kwargs, follow=True)
 
 
 class NoRatingsSearchTest(SphinxTestCase):
@@ -331,8 +332,9 @@ class FeedTest(SphinxTestCase):
     def test_query(self):
         r = self.client.get(reverse('search.feed'),
                             dict(product='firefox',
+                                 version='--',
                                  date_start='01/01/2000',
-                                 date_end='01/01/2011'))
+                                 date_end='01/01/2031'))
         doc = self._pq(r)
         s = Site.objects.all()[0]
         url_base = 'http://%s/%s/%s/' % (s.domain, 'en-US',
@@ -345,10 +347,8 @@ class FeedTest(SphinxTestCase):
         If we don't convert opinion type names to unicode, the world will end.
         Bug 617204.
         """
-        r = self.client.get(
-            reverse('search.feed'), dict(
-                product='firefox', date_start='01/01/2000',
-                date_end='01/01/2011'))
+        r = self.client.get(reverse('search.feed', channel='beta'),
+                            dict(product='firefox', version='--'))
         doc = self._pq(r)
         # If we get a memory address, this is not a unicode string.
         eq_(doc('entry title').text().find('object at 0x'), -1)

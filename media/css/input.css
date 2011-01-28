@@ -74,6 +74,9 @@ h2 {
         .col.wide {
             width: 52.53%; /* = 500 / 940 */
             }
+        .col.doublewide {
+            width: 74.47%;
+        }
 
 
 a {
@@ -870,13 +873,31 @@ header, footer, article, section { display: block; }
 
 
 /* Time-based feedback chart. */
-#feedback-chart {
+.large-chart {
     height: 250px;
     padding: 0;
 }
-#feedback-chart p {
+
+.large-chart p {
     padding: 2em 0;
     text-align: center;
+}
+
+.charts-dashboard h3 {
+    margin-top: 2em;
+    color: #000;
+    text-align: center;
+}
+
+.charts-dashboard .chart {
+    height: 190px;
+    width: 100%;
+
+}
+
+.charts-dashboard .chart-outer {
+    display: inline-block;
+    width: 33%;
 }
 
 #opinion #sharing {

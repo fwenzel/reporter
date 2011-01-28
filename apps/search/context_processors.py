@@ -2,7 +2,7 @@ import json
 
 from input import get_channel
 from feedback import APP_USAGE
-from .forms import VERSION_CHOICES
+from .forms import VERSION_CHOICES, ReporterSearchForm
 
 
 def product_versions(request):

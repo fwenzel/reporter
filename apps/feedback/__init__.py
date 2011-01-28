@@ -1,7 +1,9 @@
+from django.conf import settings
+
 from product_details import product_details
-from settings import MAX_FEEDBACK_LENGTH, MAX_SUGGESTION_LENGTH
 from tower import ugettext_lazy as _
 
+import input
 
 # Applications, shamelessly snagged from AMO
 class FIREFOX:
@@ -10,6 +12,7 @@ class FIREFOX:
     pretty = _(u'Firefox')
     guid = '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}'
     hide_below = '4.0b1'
+
 
 class MOBILE:
     id = 60
@@ -35,7 +38,8 @@ BROWSERS = (
 )
 
 LATEST_BETAS = {
-    FIREFOX: product_details.firefox_versions['LATEST_FIREFOX_RELEASED_DEVEL_VERSION'],
+    FIREFOX: product_details.firefox_versions[
+        'LATEST_FIREFOX_RELEASED_DEVEL_VERSION'],
     MOBILE: product_details.mobile_details['beta_version'],
 }
 
@@ -43,6 +47,10 @@ LATEST_RELEASE = {
     FIREFOX: product_details.firefox_versions['LATEST_FIREFOX_VERSION'],
     MOBILE: product_details.mobile_details['version'],
 }
+
+
+def LATEST_VERSION():
+    return LATEST_BETAS if input.get_channel() == 'beta' else LATEST_RELEASE
 
 # Operating Systems
 class WINDOWS_XP:

@@ -1,0 +1,41 @@
+{% extends "base_3col.html" %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block col1 %}
+  {% include "includes/filters.html" %}
+{% endblock col1 %}
+
+{% block col2 %}
+  {% include "includes/welcome.html" %}
+  {% include "dashboard/includes/feedback_chart.html" %}
+
+  <div id="messages" class="block">
+    <h2>{{ _('Latest Feedback') }}</h2>
+
+    <form id="kw-search" method="get" action="{{ url('search') }}">
+      <input type="hidden" name="product" value="{{ request.default_app.short }}" />
+      {{ search_form.q|safe }}
+    </form>
+
+    {{ message_list(opinions) }}
+
+    <div class="pager">
+      <span class="prev inactive">{{ _('&laquo; Newer Messages')|safe }}</span>
+      <a class="next" href="{{ search_url() }}">{{ _('Older Messages &raquo;')|safe }}</a>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block col3 %}
+  {{ big_count_block(opinion_count) }}
+
+  <div id="trends" class="trends segments block">
+
+    {{ themes_block(terms) }}
+
+    {{ sites_block(sites) }}
+
+  </div>
+{% endblock %}

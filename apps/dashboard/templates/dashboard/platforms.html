@@ -12,7 +12,6 @@
   {{ filter_box_toggle(_('Platform')) }}
 
   <ul class="bars" data-total="{{ total }}">
-
     {% if defaults['os'] %}
       {{ os_item(defaults['os'], selected=True) }}
     {% else %}

@@ -1,11 +1,14 @@
-{% if chart_data_json and chart_data_json != 'null' %}
-<div id="feedback-chart" class="block large-chart"
+{% if chart_json and chart_json != 'null' %}
+{# TODO: make this localize better. #}
+<div id="ratings-chart" class="large-chart"
   data-tooltip="{{ _('{num} opinions on {day}') }}"
   {# L10n: A quasi strftime string for a full date. #}
   data-timeformat="{{ _('%e %B %Y') }}"
   {# L10n: A quasi strftime string for a short date (no year). #}
   data-timeformat-short="{{ _('%e %b') }}"
-  data-chart-config="{{ chart_data_json }}">
-  <p>{{ _('Loading feedback history...') }}</p>
+  data-chart-config="{{ chart_json }}"
+  data-categories="{{ chart_categories }}"
+  >
+  <p>{{ _('Loading ratings history...') }}</p>
 </div>
 {% endif %}

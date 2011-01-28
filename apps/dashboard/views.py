@@ -8,22 +8,22 @@ from tower import ugettext as _
 from feedback import stats, LATEST_BETAS
 from feedback.models import Opinion, Term
 from feedback.version_compare import simplify_version
-from input.decorators import cache_page, forward_mobile
+from input.decorators import cache_page, forward_mobile, negotiate
 from search.client import Client, SearchError
-from search.forms import ReporterSearchForm, PROD_CHOICES, VERSION_CHOICES
-from search.views import get_sentiment
+from search.forms import PROD_CHOICES, VERSION_CHOICES, ReporterSearchForm
+from search.views import get_sentiment, release, get_defaults
 from website_issues.models import SiteSummary
 
 
 @forward_mobile
 @cache_page
-def dashboard(request):
-    """Front page view."""
-
+def beta(request):
+    """Beta dashboard."""
     # Defaults
     app = request.default_app
     version = simplify_version(LATEST_BETAS[app])
 
+    search_form = ReporterSearchForm()
     # Frequent terms
     term_params = {
         'product': app.id,
@@ -40,9 +40,6 @@ def dashboard(request):
     # Sites clusters
     sites = SiteSummary.objects.filter(version__exact=version).filter(
         positive__exact=None).filter(os__exact=None)[:settings.TRENDS_COUNT]
-
-    # search form to generate various form elements.
-    search_form = ReporterSearchForm()
 
     try:
         c = Client()
@@ -69,16 +66,21 @@ def dashboard(request):
             'products': PROD_CHOICES,
             'sentiments': get_sentiment(metas.get('type', [])),
             'terms': stats.frequent_terms(qs=frequent_terms),
-            'demo': dict(locale=metas.get('locale'), os=metas.get('os')),
+            'locales': metas.get('locale'),
+            'platforms': metas.get('os'),
             'sites': sites,
             'version': version,
             'versions': VERSION_CHOICES['beta'][app],
-            'search_form': search_form,
             'chart_data_json': json.dumps(chart_data),
+            'defaults': get_defaults(search_form),
+            'search_form': search_form,
            }
 
     if not request.mobile_site:
-        template = 'dashboard/dashboard.html'
+        template = 'dashboard/beta.html'
     else:
-        template = 'dashboard/mobile/dashboard.html'
+        template = 'dashboard/mobile/beta.html'
     return jingo.render(request, template, data)
+
+
+dashboard = negotiate(beta=beta, release=release)

@@ -6,7 +6,7 @@ from django import forms
 from product_details import product_details
 from tower import ugettext_lazy as _lazy
 
-from feedback import FIREFOX, MOBILE, OS_USAGE
+from feedback import FIREFOX, MOBILE, OS_USAGE, LATEST_VERSION
 from feedback.version_compare import simplify_version, version_int
 from input import KNOWN_DEVICES, KNOWN_MANUFACTURERS, get_channel
 from input.fields import DateInput, SearchInput
@@ -29,9 +29,9 @@ def _version_list(app, releases):
 
 VERSION_CHOICES = {}
 VERSION_CHOICES['beta'] = {
-    FIREFOX: [('', _lazy('-- all --', 'version_choice'))] + _version_list(
+    FIREFOX: [('--', _lazy('-- all --', 'version_choice'))] + _version_list(
         FIREFOX, product_details.firefox_history_development_releases),
-    MOBILE: [('', _lazy('-- all --', 'version_choice'))] + _version_list(
+    MOBILE: [('--', _lazy('-- all --', 'version_choice'))] + _version_list(
         MOBILE, product_details.mobile_history_development_releases),
 }
 
@@ -90,9 +90,12 @@ class ReporterSearchForm(forms.Form):
         attrs={'class': 'datepicker'}), label=_lazy('to'))
     page = forms.IntegerField(widget=forms.HiddenInput, required=False)
 
+    # TODO(davedash): Make this prettier.
     def __init__(self, *args, **kwargs):
         """Pick version choices and initial product based on site ID."""
         super(ReporterSearchForm, self).__init__(*args, **kwargs)
+        self.fields['version'].choices = (
+                VERSION_CHOICES[get_channel()][FIREFOX])
 
         # Show Mobile versions if that was picked by the user.
         picked = None
@@ -134,5 +137,10 @@ class ReporterSearchForm(forms.Form):
             assert cleaned['page'] > 0
         except (TypeError, AssertionError):
             cleaned['page'] = 1
+
+        if not cleaned.get('version'):
+            cleaned['version'] = simplify_version(LATEST_VERSION()[FIREFOX])
+        elif cleaned['version'] == '--':
+            cleaned['version'] = ''
 
         return cleaned

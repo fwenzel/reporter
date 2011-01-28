@@ -1,14 +1,10 @@
 <span class="selectbox" id="filter_versions">
   <span class="text">
-    {% for val, name in versions %}
-      {% if val == version: %}
-        {{ name }}
-      {% endif %} 
-    {% endfor %}
+    {{ version }}
   </span>
   <select id="version" name="version">
     {% for val, name in versions %}
-      <option value="{{ val }}" {{ 'selected' if version == val else '' }}>{{ name }}</option>
+      <option value="{{ val }}">{{ name }}</option>
     {% endfor %}
   </select>
 </span>

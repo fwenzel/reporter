@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col left">
+  {% block col1 %}
+  {% endblock %}
+</div>
+
+<div class="col middle wide">
+  {% block col2 %}
+  {% endblock %}
+</div>
+
+<div class="col right">
+  {% block col3 %}
+  {% endblock %}
+</div>
+
+{% include "includes/ua_overlay.html" %}
+
+{% endblock %}
+
+

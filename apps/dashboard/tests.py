@@ -28,7 +28,7 @@ class TestDashboard(SphinxTestCase):
 
 class TestMobileDashboard(test_utils.TestCase):
     def test_dashboard(self):
-        r = self.client.get(reverse('dashboard'), follow=True,
+        r = self.client.get(reverse('dashboard', channel='beta'), follow=True,
                             SITE_ID=settings.MOBILE_SITE_ID)
         eq_(r.status_code, 200)
 

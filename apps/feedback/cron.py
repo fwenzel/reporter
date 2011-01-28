@@ -37,12 +37,12 @@ UA_STRINGS = {'mobile': ['Mozilla/5.0 (Android; Linux armv71; rv:2.0b6pre)'
               'desktop': ['Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
                           'fr-FR; rv:2.0b1) Gecko/20100628 Firefox/4.0b1',
 
-                          'Mozilla/5.0 (Windows; U; Windows NT 5.1; '
-                          'en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.13 '
-                          '(.NET CLR 3.5.30729)',
+                          # 'Mozilla/5.0 (Windows; U; Windows NT 5.1; '
+                          # 'en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.13 '
+                          # '(.NET CLR 3.5.30729)',
 
-                          'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
-                          'fr-FR; rv:2.0b1) Gecko/20100628 Firefox/3.6.13',
+                          # 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
+                          # 'fr-FR; rv:2.0b1) Gecko/20100628 Firefox/3.6.13',
 
                           ]}
 DEVICES = dict(Samsung='Epic Vibrant Transform'.split(),

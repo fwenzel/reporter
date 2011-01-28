@@ -101,7 +101,7 @@ SUPPORTED_NONLOCALES = ('media', 'admin')
 
 # TODO: These will be ported to /feeedback/beta
 SUPPORTED_NONCHANNELS = ('media', 'admin', 'happy', 'sad', 'about')
-DEFAULT_CHANNEL = 'beta'
+DEFAULT_CHANNEL = 'release'
 
 TEXT_DOMAIN = 'messages'
 STANDALONE_DOMAINS = []

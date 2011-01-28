@@ -4,7 +4,8 @@ from urllib import urlencode
 from jingo import register
 import jinja2
 
-from feedback import LATEST_BETAS
+import input
+from feedback import LATEST_RELEASE
 from feedback.version_compare import simplify_version
 from input.urlresolvers import reverse
 from .forms import ReporterSearchForm
@@ -14,8 +15,10 @@ from .forms import ReporterSearchForm
 @jinja2.contextfunction
 def search_url(context, defaults=None, extra=None, feed=False, **kwargs):
     """Build a search URL with default values unless specified otherwise."""
-
-    if feed:
+    channel = input.get_channel()
+    if channel == 'release':
+        search = reverse('dashboard')
+    elif feed:
         search = reverse('search.feed')
     else:
         search = reverse('search')
@@ -28,7 +31,7 @@ def search_url(context, defaults=None, extra=None, feed=False, **kwargs):
     if not 'product' in defaults and not 'product' in kwargs:
         app = context['request'].default_app
         fallbacks['product'] = app.short
-        fallbacks['version'] = simplify_version(LATEST_BETAS[app])
+        fallbacks['version'] = simplify_version(LATEST_RELEASE[app])
 
     # get field data from keyword args or defaults
     for field in ReporterSearchForm.base_fields:
