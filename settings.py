@@ -196,6 +196,10 @@ MINIFY_BUNDLES = {
             'css/reset-min.css',
             'css/release.css',
         ),
+        'release-mobile': (
+            'css/reset-min.css',
+            'css/release-mobile.css',
+        ),
     },
     'js': {
         'common': (

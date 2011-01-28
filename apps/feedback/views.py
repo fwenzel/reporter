@@ -201,7 +201,8 @@ def release_feedback(request, ua):
         data.update(rating_form=RatingForm(), website_form=BrokenWebsiteForm(),
                     suggestion_form=IdeaForm())
 
-    template = 'feedback/release_index.html'
+    template = 'feedback/%srelease_index.html' % (
+        'mobile/' if request.mobile_site else '')
     return jingo.render(request, template, data)
 
 feedback = negotiate(beta=beta_feedback, release=release_feedback)

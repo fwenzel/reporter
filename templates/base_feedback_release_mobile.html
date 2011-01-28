@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="{{ LANG }}" dir="{{ DIR }}">
+<head>
+  <link rel="shortcut icon" type="image/png" href="{{ MEDIA_URL }}img/favicon.png"/>
+  {% block site_css %}
+  {{ css('release-mobile') }}
+  {% endblock %}
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="viewport" content="initial-scale=1" />
+  <script type="text/javascript">
+    (function(root) {
+      root.className = root.className.replace(' no-js', ' js');
+    })(document.documentElement);
+  </script>
+  <title>{% block page_title %}{{ _('Submit Feedback') }}{% endblock %} :: Firefox Input</title>
+</head>
+<body>
+  <div id="dev-wrap">
+    <div id="dev-mask1"></div>
+    <div id="dev-mask2"></div>
+    {% block content %}{% endblock %}
+  </div>
+  {% block footer %}{% endblock %}
+
+  {% block site_js %}
+  {{ js('release') }}
+  {% endblock %}
+  {% block js %}{% endblock %}
+
+  {% include "includes/webtrends_mobile.html" %}
+</body>
+</html>
