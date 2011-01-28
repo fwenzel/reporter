@@ -9,8 +9,8 @@ from caching.base import cached
 import tower
 
 from feedback import FIREFOX, MOBILE
-from . import urlresolvers
-from .helpers import urlparams
+from input import urlresolvers
+from input.helpers import urlparams
 
 
 class LocaleAndChannelURLMiddleware(object):
@@ -25,14 +25,22 @@ class LocaleAndChannelURLMiddleware(object):
         urlresolvers.set_url_prefix(prefixer)
         full_path = prefixer.fix(prefixer.shortened_path)
 
-        if 'lang' in request.GET:
-            # Blank out the locale so that we can set a new one. Remove lang
-            # from the query params so we don't have an infinite loop.
-            prefixer.locale = ''
-            new_path = prefixer.fix(prefixer.shortened_path)
-            query = dict((smart_str(k), request.GET[k]) for k in request.GET)
-            query.pop('lang')
-            return HttpResponsePermanentRedirect(urlparams(new_path, **query))
+        # Lang and channel are changeable by GET request.
+        # Note that some paths might not exist across all channels, so handle
+        # with care.
+        # Format is (GET parameter, prefixer attribute)
+        for param, attr in (('lang', 'locale'), ('channel', 'channel')):
+            if param in request.GET:
+                # Blank out the prefixer attribute so that we can set a new
+                # one. Remove the parameter from the query params so we don't
+                # have an infinite loop.
+                setattr(prefixer, attr, '')
+                new_path = prefixer.fix(prefixer.shortened_path)
+                query = dict((smart_str(k), request.GET[k]) for k in
+                             request.GET)
+                query.pop(param)
+                return HttpResponsePermanentRedirect(urlparams(new_path,
+                                                               **query))
 
         if full_path != request.path:
             query_string = request.META.get('QUERY_STRING', '')

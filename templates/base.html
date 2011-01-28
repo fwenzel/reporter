@@ -37,6 +37,8 @@
         <li><a class="themes" href="{{ url('themes', channel='beta') }}"><span>{{ _('Themes') }}</span></a></li>
         <li><a class="issues" href="{{ url('website_issues', channel='beta') }}"><span>{{ _('Sites') }}</span></a></li>
       </ul>
+
+      {% include "includes/channel_switcher.html" %}
     </div></div>
     {% endblock site_header %}
 

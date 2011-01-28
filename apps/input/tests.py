@@ -233,6 +233,21 @@ class MiddlewareTests(test_utils.TestCase):
         p = urlresolvers.Prefixer(request)
         eq_(p.get_language(), 'en-US')
 
+    def test_channel_in_get(self):
+        for ch in CHANNELS:
+            request = Mock()
+            request.path_info = '/'
+            request.GET = dict(channel=ch)
+            p = urlresolvers.Prefixer(request)
+            eq_(p.get_channel(), ch)
+
+        # Invalid channel
+        request = Mock()
+        request.path_info = '/'
+        request.GET = dict(channel='bogus')
+        p = urlresolvers.Prefixer(request)
+        eq_(p.get_channel(), settings.DEFAULT_CHANNEL)
+
 
 class RedirectTests(TestCase):
     @enforce_ua

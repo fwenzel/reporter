@@ -54,8 +54,8 @@ $(document).ready(function(){
         });
     }
 
-    // Submit on locale choice
-    $('form.languages')
+    // Submit on locale/channel choice
+    $('form.languages,form.channels')
         .find('select').change(function(){
             this.form.submit();
         }).end()

@@ -93,6 +93,10 @@ class Prefixer(object):
                 return lang, '', path
 
     def get_channel(self):
+        if 'channel' in self.request.GET:
+            channel = self.request.GET['channel'].lower()
+            if channel in input.CHANNELS:
+                return channel
         return settings.DEFAULT_CHANNEL
 
     def get_language(self):

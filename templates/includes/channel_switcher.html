@@ -1,0 +1,13 @@
+<form class="channels go" method="get" action="{{ url('dashboard') }}">
+  <span class="selectbox">
+    <span>{{ CHANNELS[CHANNEL].pretty }}</span>
+    <select id="channel" name="channel" dir="ltr">
+      {% for ch in CHANNEL_USAGE -%}
+        <option value="{{ ch.short }}" {{ ch.short|ifeq(CHANNEL, "selected") }}>
+          {{ ch.pretty }}
+        </option>
+      {%- endfor %}
+    </select>
+  </span>
+  <button type="submit">{{ _('Go') }}</button>
+</form>

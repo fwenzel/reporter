@@ -773,6 +773,20 @@ header, footer, article, section { display: block; }
                 #header li a > span {
                     vertical-align: middle;
                     }
+    #header form.channels {
+        color: #c8e0f6;
+        display: block;
+        float: right;
+        line-height: 60px;
+        margin: 0 1em;
+    }
+    #header form.channels .selectbox {
+        background: transparent;
+        padding: .22em .66em;
+    }
+    #header form.channels .selectbox:hover {
+        background: #2a5b86;
+    }
 
 #body {
         padding: 30px 0 80px 0;

@@ -7,10 +7,24 @@ from django.conf import settings
 def get_channel():
     return urlresolvers.get_url_prefix().channel
 
+## Channels
+class CHANNEL_RELEASE:
+    short = 'release'
+    pretty = _(u'Release Channel')
 
-CHANNELS = ('release', 'beta', 'nightly')
+class CHANNEL_BETA:
+    short = 'beta'
+    pretty = _(u'Beta Channel')
 
-# Known manufacturers and devices for mobile feedback.
+class CHANNEL_NIGHTLY:
+    short = 'nightly'
+    pretty = _(u'Nightly Channel')
+
+CHANNEL_USAGE = (CHANNEL_BETA, CHANNEL_RELEASE)  # TODO add nightly
+CHANNELS = dict((ch.short, ch) for ch in CHANNEL_USAGE)
+
+
+## Known manufacturers and devices for mobile feedback.
 KNOWN_MANUFACTURERS = (
     'Dell Inc.', 'HTC', 'LogicPD', 'Motorola', 'Nokia', 'Nokia', 'samsung',
     'SHARP', 'Sony Ericsson', 'TOSHIBA',
@@ -28,7 +42,7 @@ KNOWN_DEVICES = (
 )
 
 
-# Opinion Types
+## Opinion Types
 class OPINION_PRAISE:
     id = 1
     short = 'praise'
@@ -72,7 +86,7 @@ OPINION_TYPES_USAGE = (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
 OPINION_TYPES = dict((type.id, type) for type in OPINION_TYPES_USAGE)
 
 
-# Release Feedback: Rating Types
+## Release Feedback: Rating Types
 class RATING_STARTUP:
     id = 1
     short = 'startup'
