@@ -15,10 +15,10 @@
     <h2>{{ _('Theme') }}</h2>
 
     <a class="exit" href="{{ site.get_absolute_url() }}">
-      {{ _('Back to {domain} &raquo;')|f(domain=site.domain)|safe }}</a>
+      {{ _('Back to {domain} &raquo;')|fe(domain=site.domain) }}</a>
 
     <div id="theme-callout">
-      {{ _('Theme for {domain}')|f(domain=site.domain)|safe }}
+      {{ _('Theme for {domain}')|fe(domain=site.domain) }}
     </div>
 
     {{ message_list(opinions, show_notfound=False) }}
