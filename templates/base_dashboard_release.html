@@ -2,7 +2,7 @@
 
 {% block site_header %}
   <div id="header"><div class="funnel">
-    <h1><a href="{{ url('dashboard.release') }}">
+    <h1><a href="{{ url('dashboard', channel='release') }}">
       {% trans %}
       <strong>Firefox Release</strong> Input Dashboard
       {% endtrans %}
