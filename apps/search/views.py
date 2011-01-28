@@ -160,7 +160,7 @@ def index(request):
         'product': product,
         'products': PROD_CHOICES,
         'version': version,
-        'versions': VERSION_CHOICES[product]
+        'versions': VERSION_CHOICES['beta'][product]
     }
 
     days = 0

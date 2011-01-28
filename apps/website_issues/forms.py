@@ -1,27 +1,26 @@
-from datetime import timedelta
-
 from collections import namedtuple
 
 from django import forms
-from django.forms import CharField, ChoiceField, BooleanField, HiddenInput, \
-                         IntegerField
-from django.utils.encoding import force_unicode
+from django.forms import (CharField, ChoiceField, BooleanField, HiddenInput,
+                          IntegerField)
 
 from tower import ugettext_lazy as _lazy
 
-from product_details import product_details
+from input import get_channel
 from input.fields import SearchInput
-from feedback import OSES, APPS, FIREFOX, MOBILE, LATEST_BETAS
-from search.forms import SENTIMENT_CHOICES, SENTIMENTS, OS_CHOICES, \
-                         PROD_CHOICES, VERSION_CHOICES
+from feedback import OSES, APPS, FIREFOX
+from search.forms import (SENTIMENT_CHOICES, OS_CHOICES, PROD_CHOICES,
+                          VERSION_CHOICES)
 
 
-VERSION_CHOICES = VERSION_CHOICES.copy()
+VERSION_CHOICES = VERSION_CHOICES[get_channel()].copy()
 for app in APPS.values():
     VERSION_CHOICES[app] = VERSION_CHOICES[app][1:]
 
 
 FieldDef = namedtuple("FieldDef", "default field keys")
+
+
 def field_def(FieldType, default, widget=HiddenInput, choices=None):
     field_args = {"required": False, "label": "", "widget": widget}
     keys = None

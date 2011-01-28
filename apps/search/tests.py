@@ -146,8 +146,8 @@ class NoRatingsSearchTest(SphinxTestCase):
     fixtures = []
 
     def setUp(self):
-        populate(20, 'desktop', OPINION_RATING.id)
-        populate(2, 'desktop', OPINION_SUGGESTION.id)
+        populate(20, 'desktop', OPINION_RATING)
+        populate(2, 'desktop', OPINION_SUGGESTION)
         super(NoRatingsSearchTest, self).setUp()
 
     def test_search_page(self):
@@ -161,8 +161,8 @@ class SearchViewTest(SphinxTestCase):
 
     def setUp(self):
         # add more opinions so we can test things.
-        populate(1000, 'desktop', OPINION_SUGGESTION.id)
-        populate(100, 'mobile', OPINION_SUGGESTION.id)
+        populate(1000, 'desktop', OPINION_SUGGESTION)
+        populate(100, 'mobile', OPINION_SUGGESTION)
         super(SearchViewTest, self).setUp()
 
     def test_pagination_max(self):

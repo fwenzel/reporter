@@ -6,6 +6,7 @@ from django.conf import settings
 from jingo import register
 import jinja2
 
+from input import get_channel
 from feedback import LATEST_BETAS
 from feedback.version_compare import simplify_version
 from search.forms import VERSION_CHOICES
@@ -116,11 +117,12 @@ def products_block(context, products, product):
     latest_betas = dict((a.short, simplify_version(LATEST_BETAS[a])) for a in
                         LATEST_BETAS)
     version_choices = {}
-    for app in VERSION_CHOICES:
+    for app in VERSION_CHOICES[get_channel()]:
         version_choices = json.dumps(
             dict((app.short,
-                  [map(unicode, v) for v in VERSION_CHOICES[app]]) for app in
-                 VERSION_CHOICES))
+                  [map(unicode, v) for v
+                   in VERSION_CHOICES[get_channel()][app]]) for app in
+                 VERSION_CHOICES[get_channel()]))
     return new_context(**locals())
 
 

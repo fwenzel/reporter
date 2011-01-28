@@ -8,7 +8,7 @@ from tower import ugettext_lazy as _lazy
 
 from feedback import FIREFOX, MOBILE, OS_USAGE
 from feedback.version_compare import simplify_version, version_int
-from input import KNOWN_DEVICES, KNOWN_MANUFACTURERS
+from input import KNOWN_DEVICES, KNOWN_MANUFACTURERS, get_channel
 from input.fields import DateInput, SearchInput
 from input.utils import uniquifier
 
@@ -18,6 +18,7 @@ PROD_CHOICES = (
     (MOBILE.short, MOBILE.pretty),
 )
 
+
 def _version_list(app, releases):
     """Build a list of simplified versions for a given app."""
     versions = [
@@ -26,11 +27,21 @@ def _version_list(app, releases):
         version_int(v[0]) >= version_int(getattr(app, 'hide_below', '0.0'))]
     return uniquifier(versions, key=lambda x: x[0])
 
-VERSION_CHOICES = {
+VERSION_CHOICES = {}
+VERSION_CHOICES['beta'] = {
     FIREFOX: [('', _lazy('-- all --', 'version_choice'))] + _version_list(
         FIREFOX, product_details.firefox_history_development_releases),
     MOBILE: [('', _lazy('-- all --', 'version_choice'))] + _version_list(
         MOBILE, product_details.mobile_history_development_releases),
+}
+
+# TODO(davedash): Remove this once FF4 ships
+FIREFOX.hide_below = '3.0'
+VERSION_CHOICES['release'] = {
+    FIREFOX: [('--', _lazy('-- all --', 'version_choice'))] + _version_list(
+        FIREFOX, product_details.firefox_history_stability_releases),
+    MOBILE: [('--', _lazy('-- all --', 'version_choice'))] + _version_list(
+        MOBILE, product_details.mobile_history_stability_releases),
 }
 
 SENTIMENT_CHOICES = [('', _lazy('-- all --', 'sentiment_choice')),
@@ -62,7 +73,7 @@ class ReporterSearchForm(forms.Form):
     product = forms.ChoiceField(choices=PROD_CHOICES, label=_lazy('Product:'),
                                 initial=FIREFOX.short, required=False)
     version = forms.ChoiceField(required=False, label=_lazy('Version:'),
-                                choices=VERSION_CHOICES[FIREFOX])
+            choices=VERSION_CHOICES[get_channel()][FIREFOX])
     sentiment = forms.ChoiceField(required=False, label=_lazy('Sentiment:'),
                                   choices=SENTIMENT_CHOICES)
     locale = forms.ChoiceField(required=False, label=_lazy('Locale:'),
@@ -94,7 +105,8 @@ class ReporterSearchForm(forms.Form):
             settings.SITE_ID == settings.MOBILE_SITE_ID):
             # We default to Firefox. Only change if this is the mobile site.
             self.fields['product'].initial = MOBILE.short
-            self.fields['version'].choices = VERSION_CHOICES[MOBILE]
+            self.fields['version'].choices = \
+                    VERSION_CHOICES[get_channel()][MOBILE]
 
     def clean(self):
         cleaned = super(ReporterSearchForm, self).clean()

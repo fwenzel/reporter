@@ -168,8 +168,10 @@ class MiddlewareTests(TestCase):
             ('zh, en-us;q=0.8, en;q=0.6', 'zh-CN'),
             ('xx-YY,es-ES;q=0.7,de-DE;q=0.5', 'es'),
             ('German', 'en-US'),  # invalid
-            ('nb,no;q=0.8,nn;q=0.6,en-us;q=0.4,en;q=0.2', 'nb-NO'),  # bug 582075
-            ('en-US,en;q=0.9,ro;q=0.8,ja;q=0.7,fr;q=0.6', 'en-US'),  # bug 629115
+            # bug 582075
+            ('nb,no;q=0.8,nn;q=0.6,en-us;q=0.4,en;q=0.2', 'nb-NO'),
+            # bug 629115
+            ('en-US,en;q=0.9,ro;q=0.8,ja;q=0.7,fr;q=0.6', 'en-US'),
         )
 
         for pattern in patterns:
@@ -232,7 +234,6 @@ class MiddlewareTests(TestCase):
         p = urlresolvers.Prefixer(r)
         eq_(p.locale, '')
         eq_(p.channel, 'beta')
-
 
     def test_locale_in_get(self):
         request = Mock()

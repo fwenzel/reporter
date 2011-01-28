@@ -7,7 +7,9 @@ from input import urlresolvers
 
 def get_channel():
     prefix = urlresolvers.get_url_prefix()
-    return prefix.channel if prefix else settings.DEFAULT_CHANNEL
+    if prefix and prefix.channel:
+        return prefix.channel
+    return settings.DEFAULT_CHANNEL
 
 
 ## Channels
