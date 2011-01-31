@@ -219,7 +219,7 @@ class Client():
         result = results[self.queries['primary']]
         self.total_found = result.get('total_found', 0) if result else 0
 
-        if result and result['total']:
+        if result.get('total'):
             return self.get_result_set(term, result, offset, limit)
         else:
             return []
