@@ -10,6 +10,7 @@ def _error_page(request, status):
     return jingo.render(request, '%d.html' % status, status=status)
 handler404 = lambda r: _error_page(r, 404)
 handler500 = lambda r: _error_page(r, 500)
+handler_csrf = lambda r, reason: jingo.render(r, 'csrf_error.html')
 
 
 admin.autodiscover()

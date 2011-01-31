@@ -141,6 +141,8 @@ SECRET_KEY = '^e*0du@u83$de+==+x$5k%x#+4v7&nm-_sggrr(t!&@kufz87n'
 
 # Templates
 
+CSRF_FAILURE_VIEW = '%s.urls.handler_csrf' % ROOT_PACKAGE
+
 TEMPLATE_DIRS = (
     path('templates'),
 )
@@ -258,7 +260,7 @@ MIDDLEWARE_CLASSES = (
     'commonware.middleware.FrameOptionsHeader',
 )
 
-ROOT_URLCONF = 'reporter.urls'
+ROOT_URLCONF = '%s.urls' % ROOT_PACKAGE
 
 INSTALLED_APPS = [
     'input',  # comes first so it always takes precedence.
