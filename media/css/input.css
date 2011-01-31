@@ -837,7 +837,8 @@ header, footer, article, section { display: block; }
 #messages,
 #themes,
 #sites {
-    }
+    overflow-x: hidden;
+}
     #messages h2,
     #themes h2,
     #sites h2 {
@@ -845,22 +846,18 @@ header, footer, article, section { display: block; }
         padding-bottom: 15px;
         border-bottom: 1px dotted #b6bcc0;
         margin-bottom: 0;
-        padding-right: 38%;
-        }
+    }
     #messages .exit,
     #themes .exit,
     #sites .exit {
-        position: absolute;
-        right: 15px;
-        top: 15px;
+        float: right;
         font-size: 11px;
         line-height: 21px;
-        }
+    }
     [dir="rtl"] #messages .exit,
     [dir="rtl"] #themes .exit,
     [dir="rtl"] #sites .exit {
-        right: auto;
-        left: 15px;
+        float: left;
     }
     #message-warning,
     #theme-callout,
