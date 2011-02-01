@@ -25,6 +25,7 @@
     </nav>
 
     {% block site_header %}
+    {% if CHANNEL=='beta' %}
     <div id="header"><div class="funnel">
       <h1><a href="{{ url('dashboard') }}">
         {% trans %}
@@ -40,6 +41,26 @@
 
       {% include "includes/channel_switcher.html" %}
     </div></div>
+    {% else %}
+      <div id="header"><div class="funnel">
+        <h1><a href="{{ url('dashboard', channel='release') }}">
+          {% trans %}
+          <strong>Firefox Release</strong> Input Dashboard
+          {% endtrans %}
+        </a></h1>
+
+        <ul>
+          <li><a class="dashboard" href="{{ url('dashboard', channel='release') }}"><span>{{ _('Experience') }}</span></a></li>
+          <li><a class="issues" href="{{ url('website_issues', channel='release') }}"><span>{{ _('Broken Sites') }}</span></a></li>
+          <li><a class="themes" href="{{ url('themes', channel='release') }}"> <span>{{ _('Ideas') }}</span>
+            </a>
+          </li>
+        </ul>
+
+        {% include "includes/channel_switcher.html" %}
+      </div></div>
+
+    {% endif %}
     {% endblock site_header %}
 
     <div id="body"><div class="funnel">
