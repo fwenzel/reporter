@@ -156,7 +156,7 @@ def filter_box_toggle(context, label=''):
 
 @register.inclusion_tag('dashboard/mobile/bar.html')
 @jinja2.contextfunction
-def mobile_bar(context, name, label, value=None, id=None, count=None,
+def mobile_bar(context, name, label, value=None, id=None, count=0,
                total=None, selected=False):
     """Filter / stats bars for mobile site."""
     if total:
