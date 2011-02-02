@@ -18,9 +18,16 @@ if [ ! -d "$VENV/bin" ]; then
   virtualenv $VENV
 fi
 
+if [ ! -d "$VENV/vendor"]; then
+    echo "No /vendor... crap."
+    git clone git://github.com/fwenzel/reporter-lib vendor
+fi
+
+pushd vendor && git pull && git submodule update --init && popd
+
 source $VENV/bin/activate
 
-pip install -q -r requirements/dev.txt -r requirements/compiled.txt
+pip install -q -r requirements/compiled.txt
 
 cat > settings_local.py <<SETTINGS
 from settings import *
