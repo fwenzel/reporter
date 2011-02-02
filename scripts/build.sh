@@ -18,7 +18,7 @@ if [ ! -d "$VENV/bin" ]; then
   virtualenv $VENV
 fi
 
-if [ ! -d "$VENV/vendor"]; then
+if [ ! -d "$VENV/vendor" ]; then
     echo "No /vendor... crap."
     git clone git://github.com/fwenzel/reporter-lib vendor
 fi
