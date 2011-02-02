@@ -23,9 +23,34 @@ from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
 from feedback import FIREFOX
 from feedback.cron import populate
 from feedback.models import Opinion
-from search import views
-from search.client import Client, SearchError, extract_filters
+from search import views, forms
+from search.client import Client, RatingsClient, SearchError, extract_filters
 from search.utils import start_sphinx, stop_sphinx, reindex
+
+
+def test_extract_filters_unknown():
+    """
+    Test that we return the proper value of unknown that sphinx is expecting.
+    """
+    _, _, metas = extract_filters(dict(os='unknown'))
+    eq_(metas['os'], 0)
+
+
+def test_forms_product_chooser():
+    """We should assume firefox by default in our forms."""
+    f = forms.ReporterSearchForm(dict(product='dasdsad'))
+    eq_(f.fields['product'].initial, 'firefox')
+    f = forms.ReporterSearchForm(dict(product='mobile'))
+    eq_(f.fields['product'].initial, 'mobile')
+
+
+def test_get_period():
+    """Let's make sure we can get the right number of days."""
+    yesterday = (datetime.date.today() - datetime.timedelta(1)).strftime(
+            '%Y-%m-%d')
+    f = forms.ReporterSearchForm(dict(date_start=yesterday))
+    assert f.is_valid()
+    eq_(views.get_period(f), ('1d', 1))
 
 
 # TODO(davedash): liberate from Zamboni
@@ -75,6 +100,30 @@ num_results = lambda x='', **kwargs: len(query(x, **kwargs))
 
 
 class SearchTest(SphinxTestCase):
+    @patch('search.client.sphinx.SphinxClient.RunQueries')
+    def test_result_empty(self, rq):
+        """
+        If sphinx has no results, but gives us a weird result, let's return an
+        empty list.
+        """
+        rq.return_value = [dict(error=None)]
+        eq_(query(), [])
+
+    @patch('search.client.sphinx.SphinxClient.RunQueries')
+    def test_result_errors(self, rq):
+        """
+        If sphinx tells us there's an error, make sure we raise a
+        SearchError.
+        This is unexpected, so we mock the behavior.
+        """
+        rq.return_value = [dict(error='you lose')]
+        self.assertRaises(SearchError, query)
+
+    def test_meta_query(self):
+        """Test that we can store complicated filter queries."""
+        c = RatingsClient()
+        c.query('', meta=['day__avg__startup', 'startup'])
+        assert 'day__avg__startup' in c.queries
 
     def test_query(self):
         eq_(num_results(), 31)
@@ -157,18 +206,21 @@ class NoRatingsSearchTest(SphinxTestCase):
         eq_(len(doc('.message')), 2)
 
 
-class SearchViewTest(SphinxTestCase):
-    """Tests relating to the search template rendering."""
+class PaginationTest(SphinxTestCase):
+    fixtures = []
 
     def setUp(self):
         # add more opinions so we can test things.
         populate(1000, 'desktop', OPINION_SUGGESTION)
-        populate(100, 'mobile', OPINION_SUGGESTION)
-        super(SearchViewTest, self).setUp()
+        super(PaginationTest, self).setUp()
 
-    def test_pagination_max(self):
-        r = search_request(page=700)
-        self.failUnlessEqual(r.status_code, 200)
+    def compare_2_pages(self, page1, page2):
+        r = search_request(page=page1)
+        doc = pq(r.content)
+        firstmsg = doc('.message').eq(1).text()
+        r = search_request(page=page2)
+        doc = pq(r.content)
+        self.assertNotEqual(firstmsg, doc('.message').eq(1).text())
 
     def test_next_page(self):
         r = search_request()
@@ -180,6 +232,55 @@ class SearchViewTest(SphinxTestCase):
             r = search_request(page=page)
             doc = pq(r.content)
             assert not doc('.pager a.next')
+
+    def test_page_0(self):
+        """In bug 620296, page 0 led to an AssertionError."""
+        for page in (-1, 0):
+            r = search_request(page=page)
+            eq_(r.status_code, 200)
+            eq_(r.context['form'].cleaned_data['page'], 1)
+
+    def test_page_2(self):
+        self.compare_2_pages(1, 2)
+
+    def test_pages_4_and_5(self):
+        """
+        There was a bug where we kept showing the same page, after page 4.
+        """
+        self.compare_2_pages(4, 5)
+
+    def test_pagination_max(self):
+        r = search_request(page=700)
+        self.failUnlessEqual(r.status_code, 200)
+
+
+class SearchViewTest(SphinxTestCase):
+    """Tests relating to the search template rendering."""
+
+    fixtures = []
+
+    def setUp(self):
+        # add more opinions so we can test things.
+        populate(21, 'desktop', OPINION_SUGGESTION)
+        populate(100, 'mobile', OPINION_SUGGESTION)
+        populate(5, 'desktop', OPINION_PRAISE)
+        populate(10, 'desktop', OPINION_ISSUE)
+        super(SearchViewTest, self).setUp()
+
+    def test_filter_happy(self):
+        r = search_request(sentiment='happy')
+        doc = pq(r.content)
+        eq_(len(doc('.message')), 5)
+
+    def test_filter_suggestions(self):
+        r = search_request(sentiment='suggestions')
+        doc = pq(r.content)
+        eq_(len(doc('.message')), 20)
+
+    def test_filter_issues(self):
+        r = search_request(sentiment='sad')
+        doc = pq(r.content)
+        eq_(len(doc('.message')), 10)
 
     def test_filters(self):
         """
@@ -196,30 +297,6 @@ class SearchViewTest(SphinxTestCase):
         filters = doc('.filter h3 a')
         assert any(['Manufacturer' in f.text_content() for f in filters])
         assert any(['Device' in f.text_content() for f in filters])
-
-    def compare_2_pages(self, page1, page2):
-        r = search_request(page=page1)
-        doc = pq(r.content)
-        firstmsg = doc('.message').eq(1).text()
-        r = search_request(page=page2)
-        doc = pq(r.content)
-        self.assertNotEqual(firstmsg, doc('.message').eq(1).text())
-
-    def test_page_2(self):
-        self.compare_2_pages(1, 2)
-
-    def test_pages_4_and_5(self):
-        """
-        There was a bug where we kept showing the same page, after page 4.
-        """
-        self.compare_2_pages(4, 5)
-
-    def test_page_0(self):
-        """In bug 620296, page 0 led to an AssertionError."""
-        for page in (-1, 0):
-            r = search_request(page=page)
-            eq_(r.status_code, 200)
-            eq_(r.context['form'].cleaned_data['page'], 1)
 
     @patch('search.views._get_results')
     def test_error(self, get_results):
@@ -395,7 +472,19 @@ def test_date_filter_timezone():
 
 
 class ReleaseDashboardTestCase(SphinxTestCase):
+    def get_request(self, **kw):
+        data = dict(product='firefox')
+        data.update(kw)
+        return self.client.get(reverse('dashboard', channel='release'), data)
+
     def test_version_filter_high(self):
-        r = self.client.get(reverse('dashboard', channel='release'),
-                            dict(version='14.0', product='firefox'))
+        r = self.get_request(product='firefox')
         eq_(r.status_code, 200)
+
+    @patch('search.views._get_results')
+    def test_error(self, get_results):
+        get_results.side_effect = SearchError()
+        r = self.get_request()
+        eq_(r.status_code, 500)
+
+

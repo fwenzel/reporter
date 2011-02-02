@@ -99,18 +99,7 @@ class ReporterSearchForm(forms.Form):
                     VERSION_CHOICES[get_channel()][MOBILE]
 
     def clean(self):
-        cleaned = super(ReporterSearchForm, self).clean()
-
-        # Set "type" value according to sentiment choice.
-        if isinstance(cleaned.get('sentiment'), int):
-            cleaned['type'] = cleaned.get('sentiment')
-        else:
-            cleaned['type'] = 0
-
-        if cleaned.get('date_start') and not cleaned.get('date_end'):
-            cleaned['date_end'] = date.today()
-        elif cleaned.get('date_end') and not cleaned.get('date_start'):
-            cleaned['date_start'] = (cleaned['date_end'] - timedelta(days=30))
+        cleaned = self.cleaned_data
 
         # Flip start and end if necessary.
         if (cleaned.get('date_start') and cleaned.get('date_end') and

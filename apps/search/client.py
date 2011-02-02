@@ -320,6 +320,8 @@ class RatingsClient(Client):
     def _ratings_meta(self, results, **kwargs):
         agg = {}
         for rating in RATING_USAGE:
+            if rating.short not in self.queries:
+                continue
             d = defaultdict(int)
             d.update((m['attrs'][rating.short], m['attrs']['count'])
                      for m in results[self.queries[rating.short]]['matches'])
@@ -329,7 +331,10 @@ class RatingsClient(Client):
     def _ratings_avg_meta(self, results, **kwargs):
         agg = {}
         for rating in RATING_USAGE:
-            result = results[self.queries['day__avg__%s' % rating.short]]
+            key = 'day__avg__%s' % rating.short
+            if key not in self.queries:
+                continue
+            result = results[self.queries[key]]
             value = lambda m: round(m['attrs']['aggregate'], 1)
             agg[rating.id] = [(m['attrs']['day'], value(m)) for m
                               in result['matches']]
