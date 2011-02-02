@@ -245,7 +245,13 @@ def release(request):
         metas.append(dimension)
         metas.append('day__avg__%s' % dimension)
 
-    (_, form, product, version, metas) = _get_results(request, metas, client=c)
+    try:
+        (_, form, product, version, metas) = _get_results(request, metas,
+                                                          client=c)
+    except SearchError, e:
+        return jingo.render(request, 'search/unavailable.html',
+                           {'search_error': e}, status=500)
+
 
     rating_values = dict((k, unicode(v)) for k, v in input.RATING_CHOICES)
 
