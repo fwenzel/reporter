@@ -256,10 +256,11 @@ class Client(object):
 
     def _locale_meta(self, results, **kwargs):
         result = results[self.queries['locale']]
-        t = dict(((crc32(f), f) for f in product_details.languages))
-        return [dict(count=f['attrs']['count'],
-                     locale=t.get(f['attrs']['locale']))
-                for f in result['matches']]
+        if 'matches' in result:
+            t = dict(((crc32(f), f) for f in product_details.languages))
+            return [dict(count=f['attrs']['count'],
+                         locale=t.get(f['attrs']['locale']))
+                    for f in result['matches']]
 
     def get_result_set(self, term, result, offset, limit):
         # Return results as a ResultSet of opinions
