@@ -1,12 +1,23 @@
 from django.conf import settings
 
-from jingo import register
+import jingo
 import jinja2
-from nose.tools import eq_
 import test_utils
+from jingo import register
+from mock import Mock
+from nose.tools import eq_
+from pyquery import PyQuery as pq
 
+import feedback
+from dashboard import helpers
+from input.tests import TestCase
 from input.urlresolvers import reverse
 from search.tests import SphinxTestCase
+
+
+def render(s, context={}):
+    t = jingo.env.from_string(s)
+    return t.render(**context)
 
 
 def render_template(template, context):
@@ -25,6 +36,10 @@ class TestDashboard(SphinxTestCase):
         r = self.client.get(reverse('dashboard'), follow=True)
         eq_(r.status_code, 200)
 
+    def test_beta_dashboard(self):
+        r = self.client.get(reverse('dashboard', channel='beta'))
+        eq_(r.status_code, 200)
+
 
 class TestMobileDashboard(test_utils.TestCase):
     def test_dashboard(self):
@@ -33,7 +48,7 @@ class TestMobileDashboard(test_utils.TestCase):
         eq_(r.status_code, 200)
 
 
-class TestHelpers(test_utils.TestCase):
+class TestHelpers(TestCase):
     def test_os_none(self):
         """Test that OS with no name does not crash platform helper."""
 
@@ -69,3 +84,43 @@ class TestHelpers(test_utils.TestCase):
         # No error, please.
         tpl = render_template('dashboard/mobile/locales.html', ctx)
         assert tpl.find('id="loc_None"') >= 0
+
+    def test_manufacturer_block(self):
+        item = Mock()
+        item.count = 50
+        item.manufacturer = "RySny"
+        ms = [item]
+        r = render('{{ manufacturer_block(ms, 100) }}', dict(ms=ms))
+        doc = pq(r)
+        eq_(doc('input').attr('id'), 'brand_RySny')
+
+    def test_device_block(self):
+        item = Mock()
+        item.count = 50
+        item.device = "TacoTruck"
+        ms = [item]
+        r = render('{{ device_block(ms, 100) }}', dict(ms=ms))
+        doc = pq(r)
+        eq_(doc('input').attr('id'), 'device_TacoTruck')
+
+    def test_sites_block(self):
+        site = Mock()
+        site.url = 'http://youtube.com'
+        ms = [site]
+        req = self.factory.get('/')
+        req.mobile_site = False
+        r = render('{{ sites_block(ms, 100) }}', dict(ms=ms, request=req))
+        doc = pq(r)
+        eq_(doc('strong').text(), 'youtube.com')
+
+    def test_sites_block_mobile(self):
+        site = Mock()
+        site.url = 'http://youtube.com'
+        site.size = 5
+        ms = [site]
+        req = self.factory.get('/')
+        req.mobile_site = True
+        req.default_app = feedback.FIREFOX
+        r = render('{{ sites_block(ms) }}', dict(ms=ms, request=req))
+        doc = pq(r)
+        eq_(doc('label').text(), 'youtube.com')
