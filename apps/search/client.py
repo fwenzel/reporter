@@ -202,12 +202,13 @@ class Client(object):
         if sc.GetLastError():
             raise SearchError(sc.GetLastError())
 
-        self.handle_metas(results, kwargs.get('meta', {}), kwargs)
         result = results[self.queries['primary']]
         self.total_found = result.get('total_found', 0) if result else 0
 
         if result['error']:
             raise SearchError(result['error'])
+
+        self.handle_metas(results, kwargs.get('meta', {}), kwargs)
 
         if result and 'total' in result:
             return self.get_result_set(term, result, offset, limit)
