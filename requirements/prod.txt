@@ -38,3 +38,6 @@ django-celery
 
 # jbalogh's nuggets
 -e git://github.com/mozilla/nuggets.git#egg=nuggets
+
+# Sphinx API
+-e git://github.com/jsocol/sphinxapi.git#egg=sphinxapi

@@ -17,7 +17,7 @@ from input.utils import crc32, manual_order
 from feedback import OS_USAGE
 from feedback.models import Opinion
 
-from . import sphinxapi as sphinx
+import sphinxapi as sphinx
 
 
 SPHINX_HARD_LIMIT = 1000  # A hard limit that sphinx imposes.
