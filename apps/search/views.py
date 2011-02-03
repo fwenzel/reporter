@@ -6,6 +6,7 @@ from django.contrib.syndication.views import Feed
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.feedgenerator import Atom1Feed
 
+import commonware.log
 import jingo
 from tower import ugettext as _, ugettext_lazy as _lazy
 
@@ -20,22 +21,27 @@ from input.urlresolvers import reverse
 from search.client import Client, RatingsClient, SearchError
 from search.forms import ReporterSearchForm, PROD_CHOICES, VERSION_CHOICES
 
+log = commonware.log.getLogger('i.search')
+
 
 def _get_results(request, meta=[], client=None):
     form = ReporterSearchForm(request.GET)
     if form.is_valid():
-        query = form.cleaned_data.get('q', '')
-        product = form.cleaned_data['product'] or FIREFOX.short
-        version = form.cleaned_data['version']
-        search_opts = _get_results_opts(request, form, product, meta)
-        c = client or Client()
+        data = form.cleaned_data
+    else:
+        data = dict((str(k), v) for k, v in form.data.items())
+
+    query = data.get('q', '')
+    product = data.get('product') or FIREFOX.short
+    version = data.get('version')
+    search_opts = _get_results_opts(request, data, product, meta)
+    c = client or Client()
+    try:
         opinions = c.query(query, **search_opts)
         metas = c.meta
-    else:
-        query = ''
+    except SearchError as e:
+        log.error('Something happened: %s' % e)
         opinions = []
-        product = request.default_app
-        version = simplify_version(LATEST_BETAS[product])
         metas = {}
 
     product = APPS.get(product, FIREFOX)
@@ -43,15 +49,15 @@ def _get_results(request, meta=[], client=None):
     return (opinions, form, product, version, metas)
 
 
-def _get_results_opts(request, form, product, meta=[]):
+def _get_results_opts(request, data, product, meta=[]):
     """Prepare the search options for the Sphinx query"""
-    search_opts = form.cleaned_data
+    search_opts = data
     search_opts['product'] = APPS[product].id
     search_opts['meta'] = meta
-    search_opts['offset'] = ((form.cleaned_data['page'] - 1) *
+    search_opts['offset'] = ((data.get('page', 1) - 1) *
                              settings.SEARCH_PERPAGE)
 
-    sentiment = form.cleaned_data.get('sentiment', '')
+    sentiment = data.get('sentiment', '')
     if sentiment == 'happy':
         search_opts['type'] = OPINION_PRAISE.id
     elif sentiment == 'sad':

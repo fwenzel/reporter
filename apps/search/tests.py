@@ -392,3 +392,10 @@ def test_date_filter_timezone():
     eq_(ranges['created'][0], 1262332800)  # 8:00 UTC on 1/1/2010
     # 8:00 UTC on 2/1/2010 (sic, to include all of the last day)
     eq_(ranges['created'][1], 1265011200)
+
+
+class ReleaseDashboardTestCase(SphinxTestCase):
+    def test_version_filter_high(self):
+        r = self.client.get(reverse('dashboard', channel='release'),
+                            dict(version='14.0', product='firefox'))
+        eq_(r.status_code, 200)
