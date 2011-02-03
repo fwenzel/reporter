@@ -102,6 +102,7 @@ class Client(object):
         self.queries = {}
         self.query_index = 0
         self.meta_filters = {}
+        self.total_found = 0
 
     def add_meta_query(self, field, term):
         """Adds a 'meta' query to the client, this is an aggregate of some
