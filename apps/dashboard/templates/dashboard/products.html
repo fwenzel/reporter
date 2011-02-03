@@ -3,7 +3,7 @@
   <select id="product" name="product" data-selected="{{ product.short }}" data-versions="{{ version_choices }}">
     {% for val, name in products %}
       <option value="{{ val }}" {{ 'selected' if product.short == val else ''
-      }} data-latest="{{ latest_betas[val] }}">{{ name }}</option>
+        }} data-latest="{{ latest_versions[val] }}">{{ name }}</option>
     {% endfor %}
   </select>
 </span>

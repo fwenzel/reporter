@@ -7,7 +7,7 @@ from jingo import register
 import jinja2
 
 from input import get_channel
-from feedback import LATEST_BETAS
+from feedback import LATEST_VERSION
 from feedback.version_compare import simplify_version
 from search.forms import VERSION_CHOICES
 
@@ -114,8 +114,8 @@ def themes_block(context, themes, defaults=None):
 @register.inclusion_tag('dashboard/products.html')
 @jinja2.contextfunction
 def products_block(context, products, product):
-    latest_betas = dict((a.short, simplify_version(LATEST_BETAS[a])) for a in
-                        LATEST_BETAS)
+    latest_versions = dict((app.short, simplify_version(v)) for app, v in
+                            LATEST_VERSION().items())
     version_choices = {}
     for app in VERSION_CHOICES[get_channel()]:
         version_choices = json.dumps(
