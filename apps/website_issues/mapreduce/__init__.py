@@ -18,13 +18,13 @@ def _system(args, more_env={}):
                                env=env,
                                stdout=sys.stdout, 
                                stderr=sys.stderr)
-    os.waitpid(process.pid, 0)
+    exit_code = os.waitpid(process.pid, 0)[1] & 0xff
+    if 0 != exit_code:
+        raise Exception("System call '%s' failed!" % " ".join(args))
 
 
 def generate_sites(source, skip_load=False, only_clean=False):
-    dest_dir = os.path.join(settings.TSV_EXPORT_DIR, "sites")
-    if not os.path.exists(dest_dir):
-        os.mkdir(dest_dir)
+    dest_dir = mkdtemp()
     if only_clean:
         print "Removing output at %s" % dest_dir
         rmtree(dest_dir)
@@ -51,7 +51,6 @@ def generate_sites(source, skip_load=False, only_clean=False):
     dumbo_job_file = os.path.join(mapreduce_dir, "job.py")
     show_counters = os.path.join(mapreduce_dir, "show_counters.py")
 
-    if dest_dir is None: dest_dir = mkdtemp()
     dest = os.path.join(dest_dir, "clustered_comments.tsv.coded")
     if os.path.exists(dest): os.remove(dest)
 
