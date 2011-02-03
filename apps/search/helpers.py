@@ -5,7 +5,7 @@ from jingo import register
 import jinja2
 
 import input
-from feedback import LATEST_RELEASE
+from feedback import LATEST_VERSION
 from feedback.version_compare import simplify_version
 from input.urlresolvers import reverse
 from .forms import ReporterSearchForm
@@ -31,7 +31,7 @@ def search_url(context, defaults=None, extra=None, feed=False, **kwargs):
     if not 'product' in defaults and not 'product' in kwargs:
         app = context['request'].default_app
         fallbacks['product'] = app.short
-        fallbacks['version'] = simplify_version(LATEST_RELEASE[app])
+        fallbacks['version'] = simplify_version(LATEST_VERSION()[app])
 
     # get field data from keyword args or defaults
     for field in ReporterSearchForm.base_fields:

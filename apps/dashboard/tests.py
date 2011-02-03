@@ -40,6 +40,16 @@ class TestDashboard(SphinxTestCase):
         r = self.client.get(reverse('dashboard', channel='beta'))
         eq_(r.status_code, 200)
 
+    def test_beta_pagination_link(self):
+        r = self.client.get(reverse('dashboard', channel='beta'))
+        doc = pq(r.content)
+
+        pag_link = doc('.pager a.next')
+        eq_(len(pag_link), 1)
+        assert pag_link.attr('href').endswith(
+            '?product=firefox&version=%s' % (
+                feedback.LATEST_BETAS[feedback.FIREFOX]))
+
 
 class TestMobileDashboard(test_utils.TestCase):
     def test_dashboard(self):
