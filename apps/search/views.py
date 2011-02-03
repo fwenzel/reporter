@@ -241,7 +241,7 @@ def index(request):
     return jingo.render(request, template, data)
 
 
-@cache_page
+@cache_page(use_get=True)
 def release(request):
     """Front page and search view for the release channel."""
     c = RatingsClient()
