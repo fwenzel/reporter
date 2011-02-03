@@ -146,10 +146,13 @@ class TestTasks(test_utils.TestCase):
 
 
 class TestJob(object):
-    # So we can unit-test dumbo command invocation, here is a monkey patch for
-    # http://code.google.com/p/python-nose/issues/detail?id=290
     from nose.ext.dtcompat import _SpoofOut
     class SpoofFile(_SpoofOut):
+        """Mockup output stream
+         
+           So we can unit-test dumbo command invocation, we monkey patch for
+           http://code.google.com/p/python-nose/issues/detail?id=290
+        """
         def fileno(self):
             return 0
     

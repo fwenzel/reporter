@@ -18,7 +18,7 @@ def _system(args, more_env={}):
                                env=env,
                                stdout=sys.stdout, 
                                stderr=sys.stderr)
-    return os.waitpid(process.pid, 0)[1] / 256
+    os.waitpid(process.pid, 0)
 
 
 def generate_sites(source, skip_load=False, only_clean=False):
@@ -66,9 +66,6 @@ def generate_sites(source, skip_load=False, only_clean=False):
 
     print "Exporting result to %s" % dest_dir
     normalize_unix(open(dest, "r"), dest_dir)
-
-    database = settings.DATABASES["website_issues"]["NAME"]
-    print "Loading results into sites database: %s" % database
     if skip_load: return
 
     print "Loading results into sites database."
@@ -77,6 +74,6 @@ def generate_sites(source, skip_load=False, only_clean=False):
                  q(dest_dir).replace('/', '\\/')
     _system(["cat", q(sql_load),
              "|" , sql_filter,
-             "| python ./manage.py dbshell --database=%s" % database],
+             "| python ./manage.py dbshell --database=website_issues"],
             more_env=python_env)
     normalize_unix(open(dest, "r"), dest_dir)

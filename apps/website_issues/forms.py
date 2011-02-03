@@ -8,15 +8,22 @@ from tower import ugettext_lazy as _lazy
 
 from input import get_channel
 from input.fields import SearchInput
-from feedback import OSES, APPS, FIREFOX
+from feedback import OSES, APPS, FIREFOX, MOBILE
+from feedback.version_compare import simplify_version
 from search.forms import (SENTIMENT_CHOICES, OS_CHOICES, PROD_CHOICES,
                           VERSION_CHOICES)
 
 
-VERSION_CHOICES = VERSION_CHOICES[get_channel()].copy()
-for app in APPS.values():
-    VERSION_CHOICES[app] = VERSION_CHOICES[app][1:]
-
+VERSION_CHOICES = {
+    'beta': {
+        FIREFOX: [(v, v) for v in FIREFOX.beta_versions],
+        MOBILE: [(v, v) for v in MOBILE.beta_versions],
+    },
+    'release': {
+        FIREFOX: [(v, v) for v in FIREFOX.release_versions],
+        MOBILE: [(v, v) for v in MOBILE.release_versions],
+    },
+}
 
 FieldDef = namedtuple("FieldDef", "default field keys")
 
@@ -39,9 +46,10 @@ FIELD_DEFS = {
         )
     ),
     "sentiment": field_def(ChoiceField, "", choices=SENTIMENT_CHOICES),
-    "version": field_def(ChoiceField, VERSION_CHOICES[FIREFOX][0][0],
-                         choices=VERSION_CHOICES[FIREFOX]),
-    "product": field_def(ChoiceField, "firefox", choices=PROD_CHOICES),
+    "version": field_def(ChoiceField, 
+                         VERSION_CHOICES[get_channel()][FIREFOX][0][0], 
+                         choices=VERSION_CHOICES[get_channel()][FIREFOX]),
+    "product": field_def(ChoiceField, FIREFOX.short, choices=PROD_CHOICES),
     "os": field_def(ChoiceField, "", choices=OS_CHOICES),
     "show_one_offs": field_def(BooleanField, False),
     "page": field_def(IntegerField, 1),
@@ -65,6 +73,30 @@ class WebsiteIssuesSearchForm(forms.Form):
     site = FIELD_DEFS['site'].field
     cluster = FIELD_DEFS['cluster'].field
 
+    # TODO(michaelk) This is similar, but not identical to what happens with
+    #                themes and search. During refactoring we probably want to
+    #                unify this somewhat.
+    def __init__(self, *args, **kwargs):
+        """Set available products/versions based on selected channel/product"""
+        super(WebsiteIssuesSearchForm, self).__init__(*args, **kwargs)
+        choices = VERSION_CHOICES[get_channel()]
+        product_choices = \
+            [(p.short, p.pretty) for p in (FIREFOX, MOBILE) if choices[p]]
+        self.fields['product'].choices = product_choices
+        FIELD_DEFS['product'] = field_def(ChoiceField, product_choices[0][0],
+                                          choices=product_choices)
+        product = self.data.get('product', FIREFOX)
+        try: 
+            if not choices[product]: product = FIREFOX
+        except KeyError: 
+            product = FIREFOX
+        version_choices = choices[product]
+        self.fields['version'].choices = version_choices
+        self.fields['version'].initial = version_choices[0][0]
+        FIELD_DEFS['version'] = field_def(ChoiceField, 
+                                          version_choices[0][0], 
+                                          choices=version_choices)
+
     def clean(self):
         cleaned = super(WebsiteIssuesSearchForm, self).clean()
 
@@ -81,6 +113,10 @@ class WebsiteIssuesSearchForm(forms.Form):
             possible_oses = [os for os in OSES.values() if product in os.apps]
             if OSES[cleaned.get('os')] not in possible_oses:
                 cleaned['os'] = FIELD_DEFS['os'].default
+
+        if not cleaned.get('version'):
+            product = cleaned.get('product', FIREFOX)
+            cleaned['version'] = VERSION_CHOICES[get_channel()][product][0][0]
 
         if cleaned.get('page') is not None:
             cleaned['page'] = max(1, int(cleaned['page']))

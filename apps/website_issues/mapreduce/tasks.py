@@ -53,7 +53,7 @@ class SiteSummaryMapper(object):
             self.comments_in += 1
             m_id, ts, type, product, version, os, locale, \
                 manufacturer, device, url, message = value.split('\t', 10)
-            if url == "" or type not in supported_types: continue
+            if not url or type not in supported_types: continue
             app = '<%s>' % product
             site = normalize_url(url)
             out_keys = cartesian((version,), (site,), (app, os, None), (type,))
