@@ -130,3 +130,22 @@ class TestHelpers(TestCase):
         doc = pq(r)
         eq_(doc('label').text(), 'bar 100%')
         eq_(doc('label').attr('for'), 'candy')
+
+    def test_versions_block(self):
+        versions = [
+            ('--', '-- all --'),
+            ('3.0', '3.0'),
+            ('3.6', '3.6'),
+        ]
+        version = '3.0'
+
+        r = render('{{ versions_block(vs, v) }}', dict(vs=versions, v=version))
+        doc = pq(r)
+
+        eq_(doc('span.text').text(), version)
+        eq_(len(doc('option')), len(versions))
+
+        # Chosen version must have selected attribute
+        sel = doc('option[selected]')
+        eq_(len(sel), 1)
+        eq_(sel.val(), version)

@@ -4,7 +4,7 @@
   </span>
   <select id="version" name="version">
     {% for val, name in versions %}
-      <option value="{{ val }}">{{ name }}</option>
+      <option value="{{ val }}" {{ 'selected' if version == val else '' }}>{{ name }}</option>
     {% endfor %}
   </select>
 </span>
