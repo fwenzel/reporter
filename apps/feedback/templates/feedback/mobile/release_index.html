@@ -23,48 +23,48 @@
 
 
 <article id="rate">
-	
-	<nav>
-		<a href="#intro">Go Back</a>
-	</nav>
 
-	<header>
-		<h1>{{ _('Rate Your Experience') }}</h1>
-		<p>{{ _('How would you rate these aspects of Firefox for Mobile?') }}</p>
-	</header>
+  <nav>
+    <a href="#intro">Go Back</a>
+  </nav>
 
-    <section class="inset"><form action="#thanks" method="post">
-        {{ csrf() }}
-        
-        {% for question in RATING_USAGE %}    		    
-    	<div class="aspects">
-    		<div class="aspect">
-    			<h2 title="{{ question.help }}">{{ question.pretty }}</h2>
-    			{{ rating_form[question.short].errors|safe }}
-    			<ul>
-    			    {% for cid, choice in RATING_CHOICES %}
-    			    <li><input id="a{{ question.id }}-{{ cid }}" name="{{ question.short }}" value="{{ cid }}" type="radio" /> 
-    				    <label title="{{ choice }}" for="a{{ question.id }}-{{ cid }}"><b></b> {{ choice }}</label></li>
-    				{% endfor %}
-    			</ul>
-    		</div>
-    	</div>
-    	{% endfor %}
+  <header>
+    <h1>{{ _('Rate Your Experience') }}</h1>
+    <p>{{ _('How would you rate these aspects of Firefox for Mobile?') }}</p>
+  </header>
 
-        {% for hidden in rating_form.hidden_fields() %}
-          {{ hidden|safe }}
-          {% if hidden.errors %}
-            {{ hidden.name }}:
-            {{ hidden.errors|safe }}
-          {% endif %}
-        {% endfor %}
-
-        {{ rating_form.errors['__all__']|safe }}
+  <section class="inset"><form action="#thanks" method="post">
+    {{ csrf() }}
     
-    	<div class="submit">
-    		<button type="submit">{{ _('Submit Feedback') }}</button>
-    	</div>
-	</form></section>
+    {% for question in RATING_USAGE %}
+    <div class="aspects">
+      <div class="aspect">
+        <h2 title="{{ question.help }}">{{ question.pretty }}</h2>
+        {{ rating_form[question.short].errors|safe }}
+        <ul>
+          {% for cid, choice in RATING_CHOICES %}
+          <li><input id="a{{ question.id }}-{{ cid }}" name="{{ question.short }}" value="{{ cid }}" type="radio" />
+          <label title="{{ choice }}" for="a{{ question.id }}-{{ cid }}"><b></b> {{ choice }}</label></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endfor %}
+  
+    {% for hidden in rating_form.hidden_fields() %}
+      {{ hidden|safe }}
+      {% if hidden.errors %}
+        {{ hidden.name }}:
+        {{ hidden.errors|safe }}
+      {% endif %}
+    {% endfor %}
+    
+    {{ rating_form.errors['__all__']|safe }}
+  
+    <div class="submit">
+      <button type="submit">{{ _('Submit Feedback') }}</button>
+    </div>
+  </form></section>
 
 </article>
 
@@ -72,45 +72,45 @@
 
 <article id="broken">
 
-	<nav>
-		<a href="#intro">{{ _('Go Back') }}</a>
-	</nav>
+  <nav>
+    <a href="#intro">{{ _('Go Back') }}</a>
+  </nav>
 
-	<header>
-		<h1>{{ _('Report a Site Issue') }}</h1>
-		<p>{{ _("Does a website look or behave incorrectly in Firefox for Mobile? Provide us some details about the problem and we'll try to fix it.") }}</p>
-	</header>
+  <header>
+    <h1>{{ _('Report a Site Issue') }}</h1>
+    <p>{{ _("Does a website look or behave incorrectly in Firefox for Mobile? Provide us some details about the problem and we'll try to fix it.") }}</p>
+  </header>
 
-	<section id="broken" class="inset"><form action="#thanks" method="post">
+  <section id="broken" class="inset"><form action="#thanks" method="post">
         {{ csrf() }}
-        
-		<div class="field">
-			<label>{{ _('What is the URL of the broken site?') }}</label>
-			<p>{{ website_form.url|safe }}</p>
-            {{ website_form.url.errors|safe }}			
-		</div>
 
-		<div class="field">
-			<label>{{ _('Describe the problem with the website.') }}</label>
-			<p>{{ website_form.description|safe }}</p>
-			<p class="warning">{{ _('For your privacy, please ensure that no personally identifiable information is included in your feedback.') }}</p>
-            {{ website_form.description.errors|safe }}			
-		</div>
+    <div class="field">
+      <label>{{ _('What is the URL of the broken site?') }}</label>
+      <p>{{ website_form.url|safe }}</p>
+      {{ website_form.url.errors|safe }}
+    </div>
 
-        {% for hidden in website_form.hidden_fields() %}
-          {{ hidden|safe }}
-          {% if hidden.errors %}
-            {{ hidden.name }}:
-            {{ hidden.errors|safe }}
-          {% endif %}
-        {% endfor %}
+    <div class="field">
+      <label>{{ _('Describe the problem with the website.') }}</label>
+      <p>{{ website_form.description|safe }}</p>
+      <p class="warning">{{ _('For your privacy, please ensure that no personally identifiable information is included in your feedback.') }}</p>
+      {{ website_form.description.errors|safe }}
+    </div>
 
-        {{ website_form.errors['__all__']|safe }}
-	
-		<div class="submit">
-			<button type="submit">{{ _('Submit Feedback') }}</button>
-		</div>
-	</form></section>
+    {% for hidden in website_form.hidden_fields() %}
+      {{ hidden|safe }}
+      {% if hidden.errors %}
+        {{ hidden.name }}:
+        {{ hidden.errors|safe }}
+      {% endif %}
+    {% endfor %}
+    
+    {{ website_form.errors['__all__']|safe }}
+
+    <div class="submit">
+      <button type="submit">{{ _('Submit Feedback') }}</button>
+    </div>
+  </form></section>
 
 </article>
 
@@ -118,99 +118,91 @@
 <!-- -->
 
 <article id="idea">
-	
-	<nav>
-		<a href="#intro">{{ _('Go Back') }}</a>
-	</nav>
-	
-	<header>
-		<h1>{{ _('Share an Idea') }}</h1>
-		<p>{{ _('Have an idea how Firefox for Mobile could be better? Let us know!') }}</p>
-	</header>
 
-	<section id="idea" class="inset"><form action="#thanks" method="post">
-		<div class="field">
-			<label>{{ _('Describe your idea below.') }}</label>
-			<span id="count-idea-desc" class="char-count" data-max="{{
+  <nav>
+    <a href="#intro">{{ _('Go Back') }}</a>
+  </nav>
+
+  <header>
+    <h1>{{ _('Share an Idea') }}</h1>
+    <p>{{ _('Have an idea how Firefox for Mobile could be better? Let us know!') }}</p>
+  </header>
+
+  <section id="idea" class="inset"><form action="#thanks" method="post">
+    <div class="field">
+      <label>{{ _('Describe your idea below.') }}</label>
+      <span id="count-idea-desc" class="char-count" data-max="{{
                 suggestion_form.fields.description.max_length }}">{{
                 suggestion_form.fields.description.max_length }}</span>
-			<textarea id="idea-desc" name="description" rows="5"></textarea>
-			<p class="warning">{{ _('For your privacy, please ensure that no personally identifiable information is included in your feedback.') }}</p>
-            {{ suggestion_form.description.errors|safe }}			
-		</div>
+      <textarea id="idea-desc" name="description" rows="5"></textarea>
+      <p class="warning">{{ _('For your privacy, please ensure that no personally identifiable information is included in your feedback.') }}</p>
+      {{ suggestion_form.description.errors|safe }}
+    </div>
 
-        {% for hidden in suggestion_form.hidden_fields() %}
-          {{ hidden|safe }}
-          {% if hidden.errors %}
-            {{ hidden.name }}:
-            {{ hidden.errors|safe }}
-          {% endif %}
-        {% endfor %}
-	
-		<div class="submit">
-			<button type="submit">{{ _('Submit Feedback') }}</button>
-		</div>
-	</form></section>
-	
+    {% for hidden in suggestion_form.hidden_fields() %}
+      {{ hidden|safe }}
+      {% if hidden.errors %}
+        {{ hidden.name }}:
+        {{ hidden.errors|safe }}
+      {% endif %}
+    {% endfor %}
+
+    <div class="submit">
+      <button type="submit">{{ _('Submit Feedback') }}</button>
+    </div>
+  </form></section>
+
 </article>
 
 <!-- -->
 
 <article id="thanks">
-	
-	<header>
-		<h1>{{ _('Thanks for Your Feedback') }}</h1>
-		<p>
-		  {% trans %}
-          Your feedback will be used to create a better experience in future
-          releases of Firefox.
-          {% endtrans %}
-        </p>
-	</header>
 
-	<section class="inset">
-		<ul class="blocks">
-			<li><a id="thanks-feedback" href="#intro">
-				<em class="icon"></em>
-				<span>
-					<small>{{ _('Have more to say?') }}</small>
-					<strong>{{ _('Submit More Feedback') }}</strong>
-				</span>
-			</a></li>
+  <header>
+    <h1>{{ _('Thanks for Your Feedback') }}</h1>
+    <p>
+      {% trans %}
+      Your feedback will be used to create a better experience in future
+      releases of Firefox.
+      {% endtrans %}
+    </p>
+  </header>
 
-			<li><a id="thanks-dashboard" href="{{ dashboard_url }}">
-				<em class="icon"></em>
-				<span>
-					<small>{{ _('See where your feedback goes.') }}</small>
-					<strong>{{ _('Feedback Dashboard') }}</strong>
-				</span>
-			</a></li>
-
-			<li><a id="thanks-twitter" href="http://twitter.com/MozMobile">
-				<em class="icon"></em>
-				<span>
-					<small>{{ _('Follow us on Twitter.') }}</small>
-					<strong>{{ _('@MozMobile') }}</strong>
-				</span>
-			</a></li>
-		
-			<li><a id="thanks-facebook" href="http://www.facebook.com/firefoxformobile">
-				<em class="icon"></em>
-				<span>
-					<small>{{ _("Let's be friends!") }}</small>
-					<strong>{{ _('Firefox on Facebook') }}</strong>
-				</span>
-			</a></li>
-
-			<li><a id="thanks-planet" href="http://planet.mozilla.org">
-				<em class="icon"></em>
-				<span>
-					<small>{{ _('Get the latest news on Firefox.') }}</small>
-					<strong>{{ _('Planet Mozilla') }}</strong>
-				</span>
-			</a></li>
-		</ul>
-	</section>
+  <section class="inset">
+   <ul class="blocks">
+     <li><a id="thanks-dashboard" href="{{ dashboard_url }}">
+       <em class="icon"></em>
+       <span>
+         <small>{{ _('See where your feedback goes.') }}</small>
+         <strong>{{ _('Feedback Dashboard') }}</strong>
+       </span>
+     </a></li>
+   
+     <li><a id="thanks-twitter" href="http://twitter.com/MozMobile">
+       <em class="icon"></em>
+       <span>
+         <small>{{ _('Follow us on Twitter.') }}</small>
+         <strong>{{ _('@MozMobile') }}</strong>
+       </span>
+     </a></li>
+   
+     <li><a id="thanks-facebook" href="http://www.facebook.com/firefoxformobile">
+       <em class="icon"></em>
+       <span>
+         <small>{{ _("Let's be friends!") }}</small>
+         <strong>{{ _('Firefox on Facebook') }}</strong>
+       </span>
+     </a></li>
+   
+     <li><a id="thanks-planet" href="http://planet.mozilla.org">
+       <em class="icon"></em>
+       <span>
+         <small>{{ _('Get the latest news on Firefox.') }}</small>
+         <strong>{{ _('Planet Mozilla') }}</strong>
+       </span>
+     </a></li>
+   </ul>
+  </section>
 </article>
 
 
