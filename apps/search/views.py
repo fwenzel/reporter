@@ -162,11 +162,12 @@ def get_period(form):
         return None, days
 
     d = form.cleaned_data
-    if not (d.get('date_start') and d.get('date_end')):
+    start = d.get('date_start')
+    end = d.get('date_end') or datetime.date.today()
+
+    if not (start and end):
         return 'infin', days
 
-    end = d.get('date_end')
-    start = d.get('date_start')
     _ago = lambda x: datetime.date.today() - datetime.timedelta(days=x)
     days = (end - start).days
 
@@ -255,7 +256,6 @@ def release(request):
     except SearchError, e:
         return jingo.render(request, 'search/unavailable.html',
                            {'search_error': e}, status=500)
-
 
     rating_values = dict((k, unicode(v)) for k, v in input.RATING_CHOICES)
 
