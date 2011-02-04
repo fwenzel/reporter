@@ -20,8 +20,11 @@
     <div id="dev-mask2"></div>
     {% block content %}{% endblock %}
   </div>
-  {% block footer %}{% endblock %}
-
+  
+  {% block site_footer %}
+  {% include "includes/footer_release.html" %}
+  {% endblock %}
+  
   {% block site_js %}
   {{ js('release') }}
   {% endblock %}
