@@ -40,8 +40,8 @@ class OpinionManager(caching.base.CachingManager):
 
 class Opinion(ModelBase):
     """A single feedback item."""
-    type = models.PositiveSmallIntegerField(blank=True, default=OPINION_PRAISE.id,
-                                            db_index=True)
+    type = models.PositiveSmallIntegerField(
+            blank=True, default=OPINION_PRAISE.id, db_index=True)
     url = models.URLField(verify_exists=False, blank=True)
     description = models.TextField(blank=True)
     terms = models.ManyToManyField('Term', related_name='used_in')
@@ -170,4 +170,4 @@ class Rating(ModelBase):
     opinion = models.ForeignKey(Opinion, related_name='ratings')
     type = models.PositiveSmallIntegerField(default=RATING_USAGE[0],
                                             db_index=True)
-    value = models.PositiveSmallIntegerField(null=True)
+    value = models.PositiveSmallIntegerField()

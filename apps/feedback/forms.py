@@ -2,7 +2,6 @@ import datetime
 import urlparse
 
 from django import forms
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 
@@ -12,12 +11,10 @@ from tower import ugettext as _, ugettext_lazy as _lazy
 from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
                    OPINION_RATING, OPINION_BROKEN, RATING_USAGE,
                    RATING_CHOICES)
-from feedback import (FIREFOX, MOBILE, LATEST_BETAS, fields)
 from feedback.models import Opinion
 from feedback.validators import (validate_swearwords, validate_no_html,
                                  validate_no_email, validate_no_urls,
                                  ExtendedURLValidator)
-from feedback.version_compare import version_int
 
 
 # TODO: liberate
@@ -96,7 +93,8 @@ class FeedbackForm(forms.Form):
                 created__gte=(datetime.datetime.now() -
                               datetime.timedelta(minutes=5)))[:1]
             if dupes:
-                raise ValidationError(_('We already got your feedback! Thanks.'))
+                raise ValidationError(
+                        _('We already got your feedback! Thanks.'))
 
         return super(FeedbackForm, self).clean()
 
@@ -112,6 +110,7 @@ class PraiseForm(FeedbackForm):
     type = forms.CharField(initial=OPINION_PRAISE.id,
                            widget=forms.HiddenInput(),
                            required=True)
+
 
 @autostrip
 class IssueForm(FeedbackForm):
@@ -152,7 +151,13 @@ class RatingForm(forms.Form):
         for question in RATING_USAGE:
             self.fields[question.short] = forms.TypedChoiceField(
                 choices=RATING_CHOICES, coerce=lambda x: int(x),
-                empty_value=None)
+                empty_value=None, required=False)
+
+    def clean(self):
+        data = self.cleaned_data
+        if not any([data[r.short] for r in RATING_USAGE]):
+            raise ValidationError(_('Please rate at least one item.'))
+        return data
 
 
 @autostrip

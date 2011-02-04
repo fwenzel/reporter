@@ -185,7 +185,7 @@ class BetaViewTests(ViewTestCase):
                 str(settings.MAX_FEEDBACK_LENGTH))
 
 
-class ReleaseViewTests(ViewTestCase):
+class ReleaseTests(ViewTestCase):
     """Test feedback for Firefox release versions."""
 
     FX_UA = ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
@@ -258,24 +258,13 @@ class ReleaseViewTests(ViewTestCase):
         # Find all three forms
         eq_(doc('article form').length, 3)
 
+    def test_feedback_wrongtype(self):
+        """Test that giving a wrong type generates a 400."""
+        r = self.post_feedback(dict(type=99, follow=False, ajax=True))
+        eq_(r.status_code, 400)
+
     def test_rating(self):
         """Submit rating form with and without AJAX."""
-
-        # Empty POST: Count errors
-        for ajax in True, False:
-            r = self.post_feedback({'type': OPINION_RATING.id}, ajax=ajax)
-            if not ajax:
-                doc = pyquery.PyQuery(r.content)
-                eq_(len(doc('article#rate form .errorlist')),
-                    len(RATING_USAGE))
-            else:
-                eq_(r.status_code, 400)
-                errors = json.loads(r.content)
-                eq_(len(errors), len(RATING_USAGE))
-                for question in RATING_USAGE:
-                    assert question.short in errors
-
-        # Submit actual rating
         data = {'type': OPINION_RATING.id}
         for type in RATING_USAGE:
             data[type.short] = RATING_CHOICES[type.id % len(RATING_CHOICES)][0]
@@ -294,6 +283,28 @@ class ReleaseViewTests(ViewTestCase):
             latest = Opinion.objects.no_cache().order_by('-id')[0]
             eq_(latest.ratings.count(), len(RATING_USAGE))
             latest.delete()
+
+    def test_rating_errors(self):
+        # Empty POST: Count errors
+        for ajax in True, False:
+            r = self.post_feedback({'type': OPINION_RATING.id}, ajax=ajax)
+            if not ajax:
+                doc = pyquery.PyQuery(r.content)
+                eq_(doc('article#rate form .errorlist').text(),
+                    'Please rate at least one item.')
+            else:
+                eq_(r.status_code, 400)
+                errors = json.loads(r.content)
+                eq_(len(errors), 1)
+
+    def test_rating_one_item(self):
+        data = {'type': OPINION_RATING.id}
+        type = RATING_USAGE[0]
+        data[type.short] = 1
+        r = self.post_feedback(data, ajax=True)
+        eq_(r.status_code, 200)
+        latest = Opinion.objects.no_cache().order_by('-id')[0]
+        eq_(latest.ratings.count(), 1)
 
     def test_broken(self):
         """Submit broken website report with and without AJAX."""

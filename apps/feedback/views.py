@@ -241,6 +241,7 @@ def opinion_detail(request, id):
     o = get_object_or_404(Opinion, pk=id)
     return jingo.render(request, 'feedback/opinion.html', {'opinion': o})
 
+
 def save_opinion_from_form(request, type, ua, form):
     """Given a (valid) form and feedback type, save it to the DB."""
     locale = detect_language(request)
@@ -270,8 +271,8 @@ def save_opinion_from_form(request, type, ua, form):
             user_agent=ua, locale=locale)
         opinion.save()
         for question in RATING_USAGE:
-            Rating(
-                opinion=opinion,
-                type=question.id,
-                value=form.cleaned_data.get(question.short)).save()
+            value = form.cleaned_data.get(question.short)
+            if not value:
+                continue
+            Rating(opinion=opinion, type=question.id, value=value).save()
         return opinion
