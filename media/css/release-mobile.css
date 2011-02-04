@@ -338,7 +338,8 @@ footer {
 		}
 		#rate .aspect li {
 			display: inline-block;
-			width: 19%;
+			margin: 0 -.15em;
+			width: 20%;
 			vertical-align: top;
 			text-align: center;
 		}
