@@ -415,3 +415,20 @@ footer {
     font-weight: bold;
     margin-top: .5em;
 }
+
+html.js article { display: none; }
+
+html.transitioning {
+    overflow: hidden;
+}
+
+html.transitioning article {
+    position: absolute;
+    -moz-transition: top .6s ease-in, bottom .6s ease-in-out;
+}
+
+html.transitioning article.entering {
+    -moz-transition-delay: .3s;
+    -moz-transition-timing-function: ease-in-out;
+}
+
