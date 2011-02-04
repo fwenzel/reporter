@@ -12,7 +12,7 @@ from tower import ugettext as _, ugettext_lazy as _lazy
 
 import input
 from feedback import (APPS, APP_IDS, FIREFOX, MOBILE, LATEST_RELEASE,
-                      LATEST_BETAS)
+                      LATEST_BETAS, LATEST_VERSION)
 from feedback.version_compare import simplify_version
 from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
                    OPINION_TYPES)
@@ -28,20 +28,18 @@ def _get_results(request, meta=[], client=None):
     form = ReporterSearchForm(request.GET)
     if form.is_valid():
         data = form.cleaned_data
-    else:
-        data = dict((str(k), v) for k, v in form.data.items())
-
-    query = data.get('q', '')
-    product = data.get('product') or FIREFOX.short
-    version = data.get('version')
-    search_opts = _get_results_opts(request, data, product, meta)
-    c = client or Client()
-    try:
+        query = data.get('q', '')
+        product = data.get('product') or FIREFOX.short
+        version = data.get('version')
+        search_opts = _get_results_opts(request, data, product, meta)
+        c = client or Client()
         opinions = c.query(query, **search_opts)
         metas = c.meta
-    except SearchError as e:
-        log.error('Something happened: %s' % e)
+    else:
         opinions = []
+        product = request.default_app
+        query = ''
+        version = simplify_version(LATEST_VERSION()[product])
         metas = {}
 
     product = APPS.get(product, FIREFOX)
