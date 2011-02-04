@@ -25,7 +25,7 @@
 <article id="rate">
 
   <nav>
-    <a href="#intro">Go Back</a>
+    <a href="#intro" title="{{ _('Go Back') }}">Go Back</a>
   </nav>
 
   <header>
@@ -62,8 +62,10 @@
     {{ rating_form.errors['__all__']|safe }}
   
     <div class="submit">
-      <button type="submit">{{ _('Submit Feedback') }}</button>
+      <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>
+      <noscript><button type="submit">{{ _('Submit Feedback') }}</button></noscript>
     </div>
+
   </form></section>
 
 </article>
@@ -73,7 +75,7 @@
 <article id="broken">
 
   <nav>
-    <a href="#intro">{{ _('Go Back') }}</a>
+    <a href="#intro" title="{{ _('Go Back') }}">{{ _('Go Back') }}</a>
   </nav>
 
   <header>
@@ -92,8 +94,11 @@
 
     <div class="field">
       <label>{{ _('Describe the problem with the website.') }}</label>
+      <span id="count-broken-desc" class="char-count" data-max="{{
+        website_form.fields.description.max_length }}">{{
+        website_form.fields.description.max_length }}</span>
       <p>{{ website_form.description|safe }}</p>
-      <p class="warning">{{ _('For your privacy, please ensure that no personally identifiable information is included in your feedback.') }}</p>
+      <p class="warning"><span>{{ _('For your privacy, please ensure that no personally identifiable information is included in your feedback.') }}</span></p>
       {{ website_form.description.errors|safe }}
     </div>
 
@@ -108,8 +113,10 @@
     {{ website_form.errors['__all__']|safe }}
 
     <div class="submit">
-      <button type="submit">{{ _('Submit Feedback') }}</button>
+      <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>
+      <noscript><button type="submit">{{ _('Submit Feedback') }}</button></noscript>
     </div>
+
   </form></section>
 
 </article>
@@ -120,7 +127,7 @@
 <article id="idea">
 
   <nav>
-    <a href="#intro">{{ _('Go Back') }}</a>
+    <a href="#intro" title="{{ _('Go Back') }}">{{ _('Go Back') }}</a>
   </nav>
 
   <header>
@@ -134,8 +141,8 @@
       <span id="count-idea-desc" class="char-count" data-max="{{
                 suggestion_form.fields.description.max_length }}">{{
                 suggestion_form.fields.description.max_length }}</span>
-      <textarea id="idea-desc" name="description" rows="5"></textarea>
-      <p class="warning">{{ _('For your privacy, please ensure that no personally identifiable information is included in your feedback.') }}</p>
+      {{ suggestion_form.description|safe }}
+      <p class="warning"><span>{{ _('For your privacy, please ensure that no personally identifiable information is included in your feedback.') }}</span></p>
       {{ suggestion_form.description.errors|safe }}
     </div>
 
@@ -148,8 +155,10 @@
     {% endfor %}
 
     <div class="submit">
-      <button type="submit">{{ _('Submit Feedback') }}</button>
+      <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>
+      <noscript><button type="submit">{{ _('Submit Feedback') }}</button></noscript>
     </div>
+
   </form></section>
 
 </article>
