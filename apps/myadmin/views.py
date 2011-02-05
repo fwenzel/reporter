@@ -8,6 +8,7 @@ import api.tasks
 import themes.tasks
 
 
+# TODO(davedash): remove when metrics.json is in place
 @admin.site.admin_view
 def recluster(request):
     if request.method == 'POST':
