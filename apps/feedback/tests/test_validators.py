@@ -7,6 +7,18 @@ from feedback.validators import validate_no_urls, ExtendedURLValidator
 
 
 class ValidatorTests(test_utils.TestCase):
+    def test_chrome_url(self):
+        """Make sure URL validator allows chrome and about URLs."""
+        v = ExtendedURLValidator()
+
+        # These will fail if validation error is raised.
+        v('about:blank')
+        v('chrome://mozapps/content/downloads/downloads.xul')
+
+        # These should fail.
+        self.assertRaises(ValidationError, v, 'about:')
+        self.assertRaises(ValidationError, v, 'chrome:bogus')
+
     def test_url_in_text(self):
         """Find URLs in text."""
         patterns = (
@@ -23,16 +35,3 @@ class ValidatorTests(test_utils.TestCase):
                                   pattern[0])
             else:
                 validate_no_urls(pattern[0]) # Will fail if exception raised.
-
-    def test_chrome_url(self):
-        """Make sure URL validator allows chrome and about URLs."""
-        v = ExtendedURLValidator()
-
-        # These will fail if validation error is raised.
-        v('about:blank')
-        v('chrome://mozapps/content/downloads/downloads.xul')
-
-        # These should fail.
-        self.assertRaises(ValidationError, v, 'about:')
-        self.assertRaises(ValidationError, v, 'chrome:bogus')
-
