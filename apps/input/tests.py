@@ -3,15 +3,18 @@ from datetime import datetime, timedelta
 from functools import wraps
 
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.http import HttpRequest
 from django.test.client import Client
 
 import jingo
+import test_utils
+from babel import UnknownLocaleError
 from mock import patch, Mock
 from nose.tools import eq_
-import test_utils
+from pyquery import PyQuery as pq
 
-from input import urlresolvers, CHANNELS
+from input import cron, helpers, urlresolvers, utils, CHANNELS
 from input.urlresolvers import reverse
 from input.helpers import babel_date, timesince, urlparams
 
@@ -37,24 +40,43 @@ def render(s, context={}):
 
 FX_UA = ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
          'en-US; rv:1.9.2.3) Gecko/20100401 Firefox/%s')
+FENNEC_UA = ('Mozilla/5.0 (X11; U; Linux armv6l; fr; rv:1.9.1b1pre) Gecko/'
+             '20081005220218 Gecko/2008052201 Fennec/0.9pre')
 
 
 class TestCase(test_utils.TestCase):
-
     def setUp(self):
         super(TestCase, self).setUp()
         self.fxclient = Client(False, HTTP_USER_AGENT=(FX_UA % '4.0'))
+        self.mclient = Client(False, HTTP_USER_AGENT=FENNEC_UA)
         self.factory = test_utils.RequestFactory()
 
 
-class ViewTestCase(test_utils.TestCase):
+class ViewTestCase(TestCase):
     def setUp(self):
         """Set up URL prefixer."""
+        super(ViewTestCase, self).setUp()
         urlresolvers.set_url_prefix(urlresolvers.Prefixer(HttpRequest()))
 
 
 class DecoratorTests(ViewTestCase):
     """Tests for our Input-wide view decorators."""
+
+    @patch('django.contrib.sites.models.Site.objects.get')
+    def test_forward_mobile(self, mock):
+        fake_mobile_domain = 'mymobiledomain.example.com'
+
+        def side_effect(*args, **kwargs):
+            class FakeSite(object):
+                id = settings.MOBILE_SITE_ID
+                domain = fake_mobile_domain
+            return FakeSite()
+        mock.side_effect = side_effect
+
+        r = self.mclient.get(reverse('dashboard', channel='beta') + '?foo=bar')
+        eq_(r.status_code, 301)
+        eq_(r['Location'], 'http://' + fake_mobile_domain +
+            reverse('dashboard', channel='beta') + '?foo=bar')
 
     @patch('django.contrib.sites.models.Site.objects.get')
     def test_mobile_device_detection(self, mock):
@@ -109,7 +131,20 @@ class DecoratorTests(ViewTestCase):
                             r['Location'].find(fake_mobile_domain) == -1)
 
 
-class HelperTests(test_utils.TestCase):
+class HelperTests(TestCase):
+    def test_isotime_fake_time(self):
+        eq_(helpers.isotime(None), None)
+
+    def test_pager(self):
+        page = Mock()
+        page.has_previous.return_value = True
+        page.has_next.return_value = True
+        request = self.factory.get('/')
+        t = render('{{ pager() }}', dict(request=request, page=page))
+        doc = pq(t)
+        assert doc('a.next')
+        assert doc('a.prev')
+
     def test_urlparams_unicode(self):
         """Make sure urlparams handles unicode well."""
 
@@ -201,6 +236,14 @@ class MiddlewareTests(TestCase):
         self.client.get('/', HTTP_HOST='m.example.com')
         eq_(settings.SITE_ID, settings.MOBILE_SITE_ID)
 
+    def test_redirect_with_querystring(self):
+        r = self.client.get('/?foo=bar')
+        eq_(r['Location'], 'http://testserver/en-US/release/?foo=bar')
+
+    def test_redirect_with_locale(self):
+        r = self.client.get(reverse('dashboard', channel='beta') + '?lang=fr')
+        eq_(r['Location'], 'http://testserver/fr/beta/')
+
     def test_x_frame_options(self):
         """Ensure X-Frame-Options middleware works as expected."""
         r = self.client.get('/')
@@ -275,3 +318,41 @@ class RedirectTests(TestCase):
     def test_search(self):
         r = self.fxclient.get('/search', follow=True)
         assert r.status_code != 404
+
+
+class TestCron(TestCase):
+    def test_set_domains(self):
+        Site.objects.create(pk=1, domain='hi', name='hi')
+        Site.objects.create(pk=2, domain='there', name='there')
+        cron.set_domains('f', 'u')
+        eq_(Site.objects.get(id=1).domain, 'f')
+        eq_(Site.objects.get(id=2).domain, 'u')
+
+    def test_set_domains_no_args(self):
+        Site.objects.create(pk=1, domain='hi', name='hi')
+        Site.objects.create(pk=2, domain='there', name='there')
+        cron.set_domains(None, None)
+        # Assert NOOP
+        eq_(Site.objects.get(id=1).domain, 'hi')
+        eq_(Site.objects.get(id=2).domain, 'there')
+
+
+class TestUtils(TestCase):
+    def test_cached_property(self):
+        class A(object):
+            _foo = 1
+
+            @utils.cached_property
+            def foo(self):
+                return self._foo
+
+        a = A()
+        eq_(a.foo, 1)
+        a._foo = 2
+        eq_(a.foo, 1)
+
+
+@patch('input.helpers.translation.get_language')
+def test_get_format(get_language):
+    get_language.return_value = 'fuuuuu'
+    eq_(str(helpers._get_format().locale), 'en_US')

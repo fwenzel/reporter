@@ -22,7 +22,7 @@ def default_prefixer(sender, **kwargs):
 # Register Django signals this app listens to.
 try:
     import test_utils.signals
-except ImportError:
+except ImportError:  # pragma: no cover
     pass
 else:
     # Clean up URL prefix cache when a new test is invoked.
