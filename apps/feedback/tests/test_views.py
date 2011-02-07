@@ -118,15 +118,21 @@ class BetaViewTests(ViewTestCase):
 
     def test_submissions_without_url(self):
         """Ensure feedback without URL can be submitted. Bug 610023."""
-        r = self.client.post(
+        req = lambda: self.client.post(
             reverse('feedback.sad'), {
                 'description': 'Hello!',
                 'type': OPINION_ISSUE.id,
             }, HTTP_USER_AGENT=(self.FX_UA % '20.0b2'), follow=True)
         # No matter what you submit in the URL field, there must be a 200
         # response code.
+        r = req()
         eq_(r.status_code, 200)
-        assert r.content.find('Thanks') >= 0
+        assert r.content.find('Thanks for') >= 0
+
+        # Resubmit, should not work due to duplicate submission.
+        r2 = req()
+        eq_(r2.status_code, 200)
+        assert r2.content.find('We already got your feedback') >= 0
 
     def test_submission_autocomplete_off(self):
         """
