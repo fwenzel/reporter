@@ -69,12 +69,11 @@ def forward_mobile(f):
 
 
 # Not quite a decorator:
-def negotiate(release, beta, nightly=None):
+def negotiate(release, beta):
     """
     If
         /beta/foo
         /release/foo
-        /nightly/foo
     exist
 
     you can create a urls.py that points 'foo' to views.foo
@@ -86,9 +85,7 @@ def negotiate(release, beta, nightly=None):
     Will then serve up the correct view based on your request.
     """
     def negotiated(request, *args, **kwargs):
-        if request.channel == 'nightly' and nightly:
-            return nightly(request, *args, **kwargs)
-        elif request.channel == 'beta':
+        if request.channel == 'beta':
             return beta(request, *args, **kwargs)
         else:
             return release(request, *args, **kwargs)

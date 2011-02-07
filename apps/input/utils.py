@@ -41,13 +41,9 @@ def manual_order(qs, pks, pk_name='id'):
 crc32 = lambda x: zlib.crc32(x) & 0xffffffff
 
 
-def cached_property(*args, **kw):
-    # Handles invocation as a direct decorator or
-    # with intermediate keyword arguments.
-    if args: # @cached_property
-        return CachedProperty(args[0])
-    else: # @cached_property(name=..., writable=...)
-        return lambda f: CachedProperty(f, **kw)
+def cached_property(f):
+    """Decorator to return a CachedProperty version of a method."""
+    return CachedProperty(f)
 
 
 class CachedProperty(object):
@@ -67,23 +63,15 @@ class CachedProperty(object):
     Lifted from werkzeug.
     """
 
-    def __init__(self, func, name=None, doc=None, writable=False):
+    def __init__(self, func, name=None, doc=None):
         self.func = func
-        self.writable = writable
         self.__name__ = name or func.__name__
         self.__doc__ = doc or func.__doc__
 
     def __get__(self, obj, type=None):
-        if obj is None:
-            return self
         _missing = object()
         value = obj.__dict__.get(self.__name__, _missing)
         if value is _missing:
             value = self.func(obj)
             obj.__dict__[self.__name__] = value
         return value
-
-    def __set__(self, obj, value):
-        if not self.writable:
-            raise TypeError('read only attribute')
-        obj.__dict__[self.__name__] = value
