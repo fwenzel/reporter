@@ -1,4 +1,4 @@
-from .models import Term
+from feedback.models import Term
 
 
 def frequent_terms(count=10, qs=None):

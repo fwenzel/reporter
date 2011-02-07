@@ -70,7 +70,7 @@ class Opinion(ModelBase):
             return u'(%s) %s' % (
                 unicode(OPINION_TYPES[self.type].pretty),
                 self.truncated_description)
-        except KeyError:
+        except KeyError:  # pragma: no cover
             return unicode(self.type)
 
     @property
