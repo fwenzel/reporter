@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block page_title -%}
-{% if site %}{{ site.domain }} :: {% endif %}{{ _('Sites') }}
+{% if site %}{{ site.domain }} :: {% endif %}
+{% if request.channel == "release" %}{{ _('Broken Sites') }}
+{% else %}{{ _('Sites') }}{% endif %}
 {%- endblock %}
 {% block body_id %}website_issues{% endblock %}
 
