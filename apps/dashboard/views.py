@@ -5,9 +5,10 @@ from django.conf import settings
 import jingo
 from tower import ugettext as _
 
-from feedback import stats, LATEST_BETAS
+from feedback import stats
 from feedback.models import Opinion, Term
 from feedback.version_compare import simplify_version
+from input import LATEST_BETAS
 from input.decorators import cache_page, forward_mobile, negotiate
 from search.client import Client, SearchError
 from search.forms import PROD_CHOICES, VERSION_CHOICES, ReporterSearchForm

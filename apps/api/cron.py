@@ -8,7 +8,7 @@ from django.conf import settings
 
 import cronjobs
 
-from feedback import APP_IDS
+from input import APP_IDS
 from feedback.models import Opinion, Rating
 from input import OPINION_RATING, OPINION_TYPES, RATING_IDS
 

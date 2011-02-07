@@ -6,9 +6,8 @@ from django.forms import (CharField, ChoiceField, BooleanField, HiddenInput,
 
 from tower import ugettext_lazy as _lazy
 
-from input import get_channel
+from input import OSES, APPS, FIREFOX, MOBILE, get_channel
 from input.fields import SearchInput
-from feedback import OSES, APPS, FIREFOX, MOBILE
 from feedback.version_compare import simplify_version
 from search.forms import (SENTIMENT_CHOICES, OS_CHOICES, PROD_CHOICES,
                           VERSION_CHOICES)
@@ -46,8 +45,8 @@ FIELD_DEFS = {
         )
     ),
     "sentiment": field_def(ChoiceField, "", choices=SENTIMENT_CHOICES),
-    "version": field_def(ChoiceField, 
-                         VERSION_CHOICES[get_channel()][FIREFOX][0][0], 
+    "version": field_def(ChoiceField,
+                         VERSION_CHOICES[get_channel()][FIREFOX][0][0],
                          choices=VERSION_CHOICES[get_channel()][FIREFOX]),
     "product": field_def(ChoiceField, FIREFOX.short, choices=PROD_CHOICES),
     "os": field_def(ChoiceField, "", choices=OS_CHOICES),
@@ -86,15 +85,15 @@ class WebsiteIssuesSearchForm(forms.Form):
         FIELD_DEFS['product'] = field_def(ChoiceField, product_choices[0][0],
                                           choices=product_choices)
         product = self.data.get('product', FIREFOX)
-        try: 
+        try:
             if not choices[product]: product = FIREFOX
-        except KeyError: 
+        except KeyError:
             product = FIREFOX
         version_choices = choices[product]
         self.fields['version'].choices = version_choices
         self.fields['version'].initial = version_choices[0][0]
-        FIELD_DEFS['version'] = field_def(ChoiceField, 
-                                          version_choices[0][0], 
+        FIELD_DEFS['version'] = field_def(ChoiceField,
+                                          version_choices[0][0],
                                           choices=version_choices)
 
     def clean(self):

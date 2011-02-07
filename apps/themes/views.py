@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 import jingo
 from tower import ugettext as _
 
-from feedback import APPS, OSES, FIREFOX, APP_USAGE
+from input import APPS, OSES, FIREFOX, APP_USAGE
 from input.decorators import cache_page
 from input.helpers import urlparams
 from input.urlresolvers import reverse

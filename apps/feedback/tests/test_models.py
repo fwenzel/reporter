@@ -3,7 +3,7 @@ from datetime import date
 from mock import patch
 from test_utils import eq_, TestCase
 
-from feedback import FIREFOX, WINDOWS_7
+from input import FIREFOX, WINDOWS_7
 from feedback.models import Opinion, Term
 from feedback.stats import frequent_terms
 

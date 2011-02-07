@@ -6,9 +6,9 @@ from django import forms
 from product_details import product_details
 from tower import ugettext_lazy as _lazy
 
-from feedback import FIREFOX, MOBILE, OS_USAGE, LATEST_VERSION
 from feedback.version_compare import simplify_version, version_int
-from input import KNOWN_DEVICES, KNOWN_MANUFACTURERS, get_channel
+from input import (FIREFOX, MOBILE, OS_USAGE, LATEST_VERSION, KNOWN_DEVICES,
+                   KNOWN_MANUFACTURERS, get_channel)
 from input.fields import DateInput, SearchInput
 
 

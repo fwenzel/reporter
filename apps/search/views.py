@@ -11,11 +11,10 @@ import jingo
 from tower import ugettext as _, ugettext_lazy as _lazy
 
 import input
-from feedback import (APPS, APP_IDS, FIREFOX, MOBILE, LATEST_RELEASE,
-                      LATEST_BETAS, LATEST_VERSION)
 from feedback.version_compare import simplify_version
-from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
-                   OPINION_TYPES)
+from input import (APPS, APP_IDS, FIREFOX, MOBILE, LATEST_RELEASE,
+                   LATEST_BETAS, LATEST_VERSION, OPINION_PRAISE, OPINION_ISSUE,
+                   OPINION_SUGGESTION, OPINION_TYPES)
 from input.decorators import cache_page
 from input.urlresolvers import reverse
 from search.client import Client, RatingsClient, SearchError

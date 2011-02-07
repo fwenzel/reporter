@@ -6,8 +6,7 @@ from django.conf import settings
 from jingo import register
 import jinja2
 
-from input import get_channel
-from feedback import LATEST_VERSION
+from input import LATEST_VERSION, get_channel
 from feedback.version_compare import simplify_version
 from search.forms import VERSION_CHOICES
 

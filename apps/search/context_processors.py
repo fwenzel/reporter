@@ -1,8 +1,7 @@
 import json
 
-from input import get_channel
-from feedback import APP_USAGE
-from .forms import VERSION_CHOICES, ReporterSearchForm
+from input import APP_USAGE, get_channel
+from search.forms import VERSION_CHOICES, ReporterSearchForm
 
 
 def product_versions(request):

@@ -7,9 +7,9 @@ from django.db import transaction
 import cronjobs
 from textcluster import Corpus, search
 
-from feedback import APP_USAGE, OS_USAGE, LATEST_BETAS
 from feedback.models import Opinion
-from input import OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
+from input import (APP_USAGE, LATEST_BETAS, OPINION_PRAISE, OPINION_ISSUE,
+                   OPINION_SUGGESTION, OS_USAGE)
 from themes.models import Theme, Item
 
 SIM_THRESHOLD = settings.CLUSTER_SIM_THRESHOLD

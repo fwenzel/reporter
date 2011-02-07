@@ -6,12 +6,11 @@ from django.conf import settings
 from nose.tools import eq_
 from pyquery import pyquery
 
-from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
-                   OPINION_RATING, OPINION_BROKEN, RATING_USAGE,
-                   RATING_CHOICES)
+from input import (FIREFOX, LATEST_BETAS, LATEST_RELEASE, OPINION_PRAISE,
+                   OPINION_ISSUE, OPINION_SUGGESTION, OPINION_RATING,
+                   OPINION_BROKEN, RATING_USAGE, RATING_CHOICES)
 from input.tests import ViewTestCase, enforce_ua
 from input.urlresolvers import reverse
-from feedback import FIREFOX, LATEST_BETAS, LATEST_RELEASE
 from feedback.models import Opinion
 
 

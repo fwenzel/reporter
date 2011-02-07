@@ -12,9 +12,8 @@ from product_details import product_details
 from tower import ugettext as _
 
 from input import (KNOWN_DEVICES, KNOWN_MANUFACTURERS, RATING_USAGE,
-                   OPINION_PRAISE, OPINION_SUGGESTION)
+                   OPINION_PRAISE, OPINION_SUGGESTION, OS_USAGE)
 from input.utils import crc32, manual_order
-from feedback import OS_USAGE
 from feedback.models import Opinion
 
 import sphinxapi as sphinx

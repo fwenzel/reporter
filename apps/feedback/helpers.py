@@ -3,7 +3,7 @@ import jinja2
 from product_details import product_details
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from feedback import OSES, OS_OTHER
+from input import OSES, OS_OTHER
 
 
 @register.function

@@ -6,12 +6,11 @@ from django.db.models import Count
 
 import caching.base
 
-from input import OPINION_TYPES, OPINION_PRAISE, RATING_USAGE
+from feedback import query
+from feedback.utils import ua_parse, extract_terms, smart_truncate
+from input import APP_IDS, OPINION_TYPES, OPINION_PRAISE, OSES, RATING_USAGE
 from input.models import ModelBase
 from input.urlresolvers import reverse
-
-from feedback import APP_IDS, OSES, query
-from feedback.utils import ua_parse, extract_terms, smart_truncate
 
 
 class OpinionManager(caching.base.CachingManager):

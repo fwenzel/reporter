@@ -10,13 +10,9 @@ from django.views.decorators.vary import vary_on_headers
 import jingo
 from tower import ugettext as _
 
-from input import RATING_USAGE, RATING_CHOICES
+import input
 from input.decorators import cache_page, forward_mobile, negotiate
 from input.urlresolvers import reverse
-from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
-                   OPINION_RATING, OPINION_BROKEN, OPINION_TYPES)
-
-from feedback import LATEST_BETAS, LATEST_RELEASE
 from feedback.forms import (PraiseForm, IssueForm, SuggestionForm,
                             BrokenWebsiteForm, RatingForm, IdeaForm)
 from feedback.models import Opinion, Rating
@@ -61,7 +57,7 @@ def enforce_ua(beta):
                             reverse('feedback.download', channel='beta'))
 
                 # Check for outdated beta.
-                ref_ver = Version(LATEST_BETAS[parsed['browser']])
+                ref_ver = Version(input.LATEST_BETAS[parsed['browser']])
                 if this_ver < ref_ver:
                     return http.HttpResponseRedirect(
                             reverse('feedback.download', channel='beta'))
@@ -76,7 +72,7 @@ def enforce_ua(beta):
                             reverse('feedback.download', channel='beta'))
 
                 # Check for outdated release.
-                ref_ver = Version(LATEST_RELEASE[parsed['browser']])
+                ref_ver = Version(input.LATEST_RELEASE[parsed['browser']])
                 if this_ver < ref_ver:
                     return http.HttpResponseRedirect(
                             reverse('feedback.download', channel='release'))
@@ -96,9 +92,9 @@ def give_feedback(request, ua, type):
 
     try:
         FormType = {
-            OPINION_PRAISE.id: PraiseForm,
-            OPINION_ISSUE.id: IssueForm,
-            OPINION_SUGGESTION.id: SuggestionForm
+            input.OPINION_PRAISE.id: PraiseForm,
+            input.OPINION_ISSUE.id: IssueForm,
+            input.OPINION_SUGGESTION.id: SuggestionForm
         }.get(type)
     except KeyError:
         return http.HttpResponseBadRequest(_('Invalid feedback type'))
@@ -118,7 +114,7 @@ def give_feedback(request, ua, type):
 
     # Set the div id for css styling
     div_id = 'feedbackform'
-    if type == OPINION_SUGGESTION.id:
+    if type == input.OPINION_SUGGESTION.id:
         div_id = 'suggestionform'
 
     url_suggestion = request.GET.get('url', 'suggestion')
@@ -163,9 +159,9 @@ def release_feedback(request, ua):
         try:
             type = int(request.POST.get('type'))
             FormType = {
-                OPINION_RATING.id: RatingForm,
-                OPINION_BROKEN.id: BrokenWebsiteForm,
-                OPINION_SUGGESTION.id: IdeaForm,
+                input.OPINION_RATING.id: RatingForm,
+                input.OPINION_BROKEN.id: BrokenWebsiteForm,
+                input.OPINION_SUGGESTION.id: IdeaForm,
             }[type]
         except (ValueError, KeyError):
             return http.HttpResponseBadRequest(_('Invalid feedback type'))

@@ -5,9 +5,8 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 
 import jingo
 
-from input import get_channel
+from input import FIREFOX, MOBILE, OSES, APPS, get_channel
 from input.decorators import cache_page
-from feedback import FIREFOX, MOBILE, OSES, APPS
 from feedback.models import Opinion
 from search.forms import PROD_CHOICES
 

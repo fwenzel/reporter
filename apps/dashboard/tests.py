@@ -8,7 +8,7 @@ from mock import Mock
 from nose.tools import eq_
 from pyquery import PyQuery as pq
 
-import feedback
+import input
 from dashboard import helpers
 from input.tests import TestCase
 from input.urlresolvers import reverse
@@ -48,7 +48,7 @@ class TestDashboard(SphinxTestCase):
         eq_(len(pag_link), 1)
         assert pag_link.attr('href').endswith(
             '?product=firefox&version=%s' % (
-                feedback.LATEST_BETAS[feedback.FIREFOX]))
+                input.LATEST_BETAS[input.FIREFOX]))
 
 
 class TestMobileDashboard(test_utils.TestCase):
@@ -130,7 +130,7 @@ class TestHelpers(TestCase):
         ms = [site]
         req = self.factory.get('/')
         req.mobile_site = True
-        req.default_app = feedback.FIREFOX
+        req.default_app = input.FIREFOX
         r = render('{{ sites_block(ms) }}', dict(ms=ms, request=req))
         doc = pq(r)
         eq_(doc('label').text(), 'youtube.com')

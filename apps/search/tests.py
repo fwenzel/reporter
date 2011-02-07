@@ -15,12 +15,10 @@ from nose.tools import eq_
 from pyquery import PyQuery as pq
 import test_utils
 
-from input.urlresolvers import reverse
 import feedback
-from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
+from input import (FIREFOX, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
                    OPINION_RATING, OPINION_BROKEN, OPINION_TYPES_USAGE)
-
-from feedback import FIREFOX
+from input.urlresolvers import reverse
 from feedback.cron import populate
 from feedback.models import Opinion
 from search import views, forms

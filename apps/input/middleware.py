@@ -8,7 +8,7 @@ from django.utils.encoding import smart_str
 from caching.base import cached
 import tower
 
-from feedback import FIREFOX, MOBILE
+from input import FIREFOX, MOBILE
 from input import urlresolvers
 from input.helpers import urlparams
 
