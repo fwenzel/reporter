@@ -296,10 +296,6 @@ PROD_DETAILS_DIR = path('lib/product_details_json')
 MIN_TERM_LENGTH = 3
 MAX_TERM_LENGTH = 25
 
-# Feedback length restrictions
-MAX_FEEDBACK_LENGTH = 140
-MAX_SUGGESTION_LENGTH = 250
-
 # Number of items to show in the "Trends" box and Messages box.
 MESSAGES_COUNT = 10
 TRENDS_COUNT = 10

@@ -122,7 +122,7 @@ def give_feedback(request, ua, type):
         'form': form,
         'type': type,
         'div_id': div_id,
-        'MAX_FEEDBACK_LENGTH': settings.MAX_FEEDBACK_LENGTH,
+        'MAX_FEEDBACK_LENGTH': input.MAX_FEEDBACK_LENGTH,
         'url_suggestion': url_suggestion
     }
     template = ('feedback/mobile/feedback.html' if request.mobile_site else

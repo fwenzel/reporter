@@ -8,7 +8,8 @@ from pyquery import pyquery
 
 from input import (FIREFOX, LATEST_BETAS, LATEST_RELEASE, OPINION_PRAISE,
                    OPINION_ISSUE, OPINION_SUGGESTION, OPINION_RATING,
-                   OPINION_BROKEN, RATING_USAGE, RATING_CHOICES)
+                   OPINION_BROKEN, RATING_USAGE, RATING_CHOICES,
+		   MAX_FEEDBACK_LENGTH, MAX_SUGGESTION_LENGTH )
 from input.tests import ViewTestCase, enforce_ua
 from input.urlresolvers import reverse
 from feedback.models import Opinion
@@ -187,7 +188,7 @@ class BetaViewTests(ViewTestCase):
                                 follow=True)
             doc = pyquery.PyQuery(r.content)
             eq_(doc('#count').attr('data-max'),
-                str(settings.MAX_FEEDBACK_LENGTH))
+                str(MAX_FEEDBACK_LENGTH))
 
 
 class ReleaseTests(ViewTestCase):
@@ -392,6 +393,6 @@ class ReleaseTests(ViewTestCase):
                             follow=True)
         doc = pyquery.PyQuery(r.content)
         eq_(doc('#count-broken-desc').attr('data-max'),
-            str(settings.MAX_FEEDBACK_LENGTH))
+            str(MAX_FEEDBACK_LENGTH))
         eq_(doc('#count-idea-desc').attr('data-max'),
-            str(settings.MAX_SUGGESTION_LENGTH))
+            str(MAX_SUGGESTION_LENGTH))

@@ -51,40 +51,45 @@ KNOWN_DEVICES = (
 )
 
 
+## Opinion Type Length Restrictions
+MAX_FEEDBACK_LENGTH = 140
+MAX_SUGGESTION_LENGTH = 250
+
+
 ## Opinion Types
 class OPINION_PRAISE:
     id = 1
     short = 'praise'
     pretty = _(u'Praise')
-    max_length = settings.MAX_FEEDBACK_LENGTH
+    max_length = MAX_FEEDBACK_LENGTH
 
 
 class OPINION_ISSUE:
     id = 2
     short = 'issue'
     pretty = _(u'Issue')
-    max_length = settings.MAX_FEEDBACK_LENGTH
+    max_length = MAX_FEEDBACK_LENGTH
 
 
 class OPINION_SUGGESTION:
     id = 3
     short = 'suggestion'
     pretty = _(u'Suggestion')
-    max_length = settings.MAX_SUGGESTION_LENGTH
+    max_length = MAX_SUGGESTION_LENGTH
 
 
 class OPINION_RATING:
     id = 4
     short = 'rating'
     pretty = _(u'Rating')
-    max_length = settings.MAX_FEEDBACK_LENGTH
+    max_length = MAX_FEEDBACK_LENGTH
 
 
 class OPINION_BROKEN:
     id = 5
     short = 'brokenwebsite'
     pretty = _(u'Broken Website')
-    max_length = settings.MAX_FEEDBACK_LENGTH
+    max_length = MAX_FEEDBACK_LENGTH
 
 op_types = {
     'OPINION_PRAISE': OPINION_PRAISE,
