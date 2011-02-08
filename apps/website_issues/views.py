@@ -83,16 +83,13 @@ def _common_data(form):
 def website_issues(request):
     form = WebsiteIssuesSearchForm(request.GET)
     sites = page = one_offs = None
-    # TODO(davedash): This should be something more useful.
-    if not form.is_valid():
-        return http.HttpResponseBadRequest()
-    else:
-        sites, page = _fetch_summaries(form)
-        # Grab one-off domains for sidebar.
-        if not (form.cleaned_data['show_one_offs'] or
-                form.cleaned_data['site']):
-            one_offs, _ = _fetch_summaries(form, count=settings.TRENDS_COUNT,
-                                           one_offs=True)
+    form.full_clean()
+    sites, page = _fetch_summaries(form)
+    # Grab one-off domains for sidebar.
+    if not (form.cleaned_data['show_one_offs'] or
+            form.cleaned_data['site']):
+        one_offs, _ = _fetch_summaries(form, count=settings.TRENDS_COUNT,
+                                       one_offs=True)
     data = dict(_common_data(form))
     data.update({"page": page, "sites": sites, "one_offs": one_offs})
     return jingo.render(request, 'website_issues/sites.html', data)
