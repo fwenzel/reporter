@@ -202,7 +202,7 @@ class DenormalizingReducer(object):
         s_sad_size, s_happy_size = 0, 0
         for type, _, s_size, _, _, _, _, _, _, _ in values:
             if type == OPINION_PRAISE.short: s_happy_size = s_size
-            elif type == OPINION_ISSUE.short: s_sad_size = s_size
+            else: s_sad_size = s_size
         for type, s_id, s_size, c_id, c_type, c_size, m_refid, m_id, message, \
                                                                score in values:
             yield \
