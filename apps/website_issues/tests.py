@@ -1,8 +1,10 @@
 import urlparse as urlparse_
 from itertools import chain
 
-from nose.tools import eq_
+from nose.tools import eq_, assert_true
 import test_utils
+
+from input.urlresolvers import reverse
 
 from website_issues import helpers
 from website_issues import utils
@@ -60,4 +62,14 @@ class TestHelpers(test_utils.TestCase):
         )
         for domain, expected in test_domains:
             eq_(helpers.without_protocol(domain), expected)
+
+
+class TestViews(test_utils.TestCase):
+
+    def test_invalid_os(self):
+        """Bogus os must not confuse us: we are bogus-compatible."""
+        r = self.client.get(reverse('website_issues', channel='beta'), 
+                            {"os": "bogus"})
+        eq_(r.status_code, 200)
+        assert_true(len(r.content) > 0)
 

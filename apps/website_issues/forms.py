@@ -96,11 +96,15 @@ class WebsiteIssuesSearchForm(forms.Form):
         FIELD_DEFS['version'] = field_def(ChoiceField, 
                                           version_choices[0][0], 
                                           choices=version_choices)
+        self.cleaned_data = {}
 
     def clean(self):
         cleaned = super(WebsiteIssuesSearchForm, self).clean()
 
         for field_name, field_def in FIELD_DEFS.items():
+            if field_name not in cleaned:
+                cleaned[field_name] = field_def.default
+                continue            
             if BooleanField == type(field_def.field) \
                     and cleaned.get(field_name) not in (True, False):
                 cleaned[field_name] = field_def.default
@@ -124,3 +128,13 @@ class WebsiteIssuesSearchForm(forms.Form):
             cleaned['page'] = FIELD_DEFS['page'].default
 
         return cleaned
+
+    def full_clean(self):
+        """Set cleaned data, with defaults for missing/invalid stuff."""
+        super(WebsiteIssuesSearchForm, self).full_clean()
+        try:
+            return self.cleaned_data
+        except AttributeError:
+            self.cleaned_data = {}
+            self.cleaned_data = self.clean()
+            return self.cleaned_data
