@@ -151,8 +151,8 @@ def beta_feedback(request, ua):
 def release_feedback(request, ua):
     """The index page for release version feedback."""
     data = {
-        'RATING_USAGE': RATING_USAGE,
-        'RATING_CHOICES': RATING_CHOICES,
+        'RATING_USAGE': input.RATING_USAGE,
+        'RATING_CHOICES': input.RATING_CHOICES,
     }
 
     if request.method == 'POST':
@@ -186,12 +186,12 @@ def release_feedback(request, ua):
             # For non-AJAX, return form with errors, and blank other feedback
             # forms.
             data.update(
-                rating_form=(form if type == OPINION_RATING.id else
+                rating_form=(form if type == input.OPINION_RATING.id else
                              RatingForm()),
-                website_form=(form if type == OPINION_BROKEN.id else
+                website_form=(form if type == input.OPINION_BROKEN.id else
                               BrokenWebsiteForm()),
-                suggestion_form=(form if type == OPINION_SUGGESTION.id else
-                                 IdeaForm()))
+                suggestion_form=(form if type == input.OPINION_SUGGESTION.id
+                                 else IdeaForm()))
 
     else:
         data.update(rating_form=RatingForm(), website_form=BrokenWebsiteForm(),
@@ -244,15 +244,15 @@ def save_opinion_from_form(request, type, ua, form):
 
     # Remove URL if checkbox disabled or no URL submitted. Broken Website
     # report does not have the option to disable URL submission.
-    if (type != OPINION_BROKEN.id and
+    if (type != input.OPINION_BROKEN.id and
         not (form.cleaned_data.get('add_url', False) and
              form.cleaned_data.get('url'))):
         form.cleaned_data['url'] = ''
 
-    if type not in OPINION_TYPES:
+    if type not in input.OPINION_TYPES:
         raise ValueError('Unknown type %s' % type)
 
-    if type != OPINION_RATING.id:
+    if type != input.OPINION_RATING.id:
         return Opinion(
             type=type,
             url=form.cleaned_data.get('url', ''),
@@ -266,7 +266,7 @@ def save_opinion_from_form(request, type, ua, form):
             type=type,
             user_agent=ua, locale=locale)
         opinion.save()
-        for question in RATING_USAGE:
+        for question in input.RATING_USAGE:
             value = form.cleaned_data.get(question.short)
             if not value:
                 continue

@@ -2,12 +2,11 @@ from django.conf import settings
 
 import test_utils
 from nose.tools import eq_
-
-from input.urlresolvers import reverse
-from feedback import LATEST_BETAS, FIREFOX
-from feedback.models import Opinion
 from pyquery import PyQuery as pq
 
+from feedback.models import Opinion
+from input import LATEST_BETAS, FIREFOX
+from input.urlresolvers import reverse
 from themes.models import Theme
 
 
