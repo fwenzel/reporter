@@ -88,7 +88,7 @@ class TestTasks(test_utils.TestCase):
         all_values = []
         for values in buckets.values():
             all_values.extend(values)
-        eq_(len(all_values), 111)
+        eq_(len(all_values), 129)
 
     # mapreduce iteration 1
     def _clusters(self):
