@@ -1,11 +1,11 @@
 <li><a class="{{ 'selected' if selected == '1d' else ''}}"
-       href="{{ search_url(date_start=date_ago(days=1), date_end='', defaults=defaults) }}"
+       href="{{ search_url(date_start=date_ago(days=1), date_end='', defaults=form.data) }}"
        title="{{ _('Last day') }}">{# L10n: short for 1 day #}{{ _('1d') }}</a></li>
 <li><a class="{{ 'selected' if selected  == '7d' else ''}}"
-        href="{{ search_url(date_start=date_ago(days=7), date_end='', defaults=defaults) }}"
+        href="{{ search_url(date_start=date_ago(days=7), date_end='', defaults=form.data) }}"
         title="{{ _('Last 7 days') }}">{# L10n: short for 7 days #}{{ _('7d') }}</a></li>
 <li><a class="{{ 'selected' if selected == '30d' else ''}}"
-       href="{{ search_url(date_start=date_ago(days=30), date_end='', defaults=defaults) }}"
+       href="{{ search_url(date_start=date_ago(days=30), date_end='', defaults=form.data) }}"
        title="{{ _('Last 30 days') }}">{# L10n: short for 30 days #}{{ _('30d') }}</a></li>
 <li><a class="{{ 'selected' if selected == 'infin' else ''}}"
        href="{{ search_url(defaults=defaults, date_start='', date_end='') }}"

@@ -212,7 +212,7 @@ def index(request):
             data['page'] = pager.page(pager.num_pages)
 
         data['opinions'] = data['page'].object_list
-        data['sent'] = get_sentiment(metas.get('type'))
+        data['sent'] = get_sentiment(metas.get('type', {}))
         data['demo'] = dict(locale=metas.get('locale'), os=metas.get('os'),
                             manufacturer=metas.get('manufacturer'),
                             device=metas.get('device'))
@@ -223,7 +223,7 @@ def index(request):
                 dict(name=_('Issues'), data=daily['issue']),
                 dict(name=_('Suggestion'), data=daily['suggestion']),
                 ],
-                )
+            ) if daily else None
             data['chart_data_json'] = json.dumps(chart_data)
     else:
         data.update({

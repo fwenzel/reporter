@@ -26,7 +26,7 @@ def search_url(context, defaults=None, extra=None, feed=False, **kwargs):
     data = []
 
     # fallbacks other than None
-    fallbacks = {}
+    fallbacks = {'version': '--'}
     if not 'product' in defaults and not 'product' in kwargs:
         app = context['request'].default_app
         fallbacks['product'] = app.short

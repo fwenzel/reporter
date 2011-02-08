@@ -498,3 +498,9 @@
 498	1277952617	praise	firefox	4.0b1	mac	en-US				Really liking the bookmarks dropdown.  Would be good to have an option to display the the browser history as a dropdown menu as well.
 499	1277952743	issue	firefox	4.0b1	win7	en-US				the UI (with no menu bar) gets broken with Persona skins
 500	1277952877	issue	firefox	4.0b1	win7	en-US				the default theme was not enabled by default
+501	1277952901	brokenwebsite	firefox	3.6.13	win7	en-US			http://www.brokensite.example.com/this	Broken site is totally broken
+502	1277952902	brokenwebsite	firefox	3.6.13	win7	en-US			http://www.brokensite.example.com/site	I totally get why it is called broken site
+503	1277952903	brokenwebsite	firefox	3.6.13	win7	en-US			http://www.brokensite.example.com/is	Guys, umm, check this out in the latest Firefox. See how it is broken?
+504	1277952904	brokenwebsite	firefox	3.6.13	win7	en-US			http://brokensite.example.com/broooken	Plz support brokensite. It has been my favorite website for over a minute now.
+505	1277952905	brokenwebsite	firefox	3.6.13	mac	en-US			http://www.brokensite.example.com/	Lol brokensite major fail.
+506	1277952906	brokenwebsite	firefox	3.6.13	mac	en-US			http://www.brokensite.example.com	hai I am the catmaster of brokensite. Itis standardz complient, as it is Web 2.0 and CSS 4.

@@ -83,9 +83,9 @@ def _common_data(form):
 def website_issues(request):
     form = WebsiteIssuesSearchForm(request.GET)
     sites = page = one_offs = None
+    # TODO(davedash): This should be something more useful.
     if not form.is_valid():
-        import sys; sys.stderr.write("\n".join(["\n".join(error for error in field.errors) for field in form]))
-        raise http.Http404
+        return http.HttpResponseBadRequest()
     else:
         sites, page = _fetch_summaries(form)
         # Grab one-off domains for sidebar.

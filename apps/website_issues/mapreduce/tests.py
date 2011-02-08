@@ -84,11 +84,11 @@ class TestTasks(test_utils.TestCase):
 
     def test_sitesummary_mapper(self):
         buckets = self._summaries()
-        eq_(len(buckets.keys()), 93)
+        eq_(len(buckets.keys()), 97)
         all_values = []
         for values in buckets.values():
             all_values.extend(values)
-        eq_(len(all_values), 111)
+        eq_(len(all_values), 129)
 
     # mapreduce iteration 1
     def _clusters(self):
@@ -98,7 +98,7 @@ class TestTasks(test_utils.TestCase):
 
     def test_comment_clustering_reducer(self):
         pairs = self._clusters()
-        eq_(len(pairs), 222)
+        eq_(len(pairs), 258)
 
     # mapreduce iteration 2
     def _clusters_with_ids(self):
@@ -109,7 +109,7 @@ class TestTasks(test_utils.TestCase):
 
     def test_cluster_id_reducer(self):
         pairs = self._clusters_with_ids()
-        eq_(len(pairs), 222)
+        eq_(len(pairs), 258)
 
     # mapreduce iteration 3
     def _summaries_with_sizes(self):
@@ -120,7 +120,7 @@ class TestTasks(test_utils.TestCase):
 
     def test_summary_size_reducer(self):
         pairs = self._summaries_with_sizes()
-        eq_(len(pairs), 222)
+        eq_(len(pairs), 258)
 
     # mapreduce iteration 4
     def _summaries_with_ids(self):
@@ -131,7 +131,7 @@ class TestTasks(test_utils.TestCase):
 
     def test_sitesummary_id_reducer(self):
         pairs = self._summaries_with_ids()
-        eq_(len(pairs), 222)
+        eq_(len(pairs), 258)
 
     # mapreduce iteration 5
     def _denormalized(self):
@@ -142,4 +142,4 @@ class TestTasks(test_utils.TestCase):
 
     def test_denormalizing_reducer(self):
         pairs = self._denormalized()
-        eq_(len(pairs), 222)
+        eq_(len(pairs), 258)

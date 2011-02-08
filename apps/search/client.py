@@ -3,7 +3,7 @@ import re
 import socket
 import time
 from collections import defaultdict
-from datetime import timedelta
+from datetime import timedelta, date
 from operator import itemgetter
 
 from django.conf import settings
@@ -72,9 +72,9 @@ def extract_filters(kwargs):
         else:
             filters['locale'] = crc32(kwargs['locale'])
 
-    if kwargs.get('date_end') and kwargs.get('date_start'):
+    if kwargs.get('date_start'):
         start = int(time.mktime(kwargs['date_start'].timetuple()))
-        end_date = kwargs['date_end'] + timedelta(days=1)
+        end_date = (kwargs.get('date_end') or date.today()) + timedelta(days=1)
         end = int(time.mktime(end_date.timetuple()))
         ranges['created'] = (start, end)
 
@@ -187,7 +187,7 @@ class Client(object):
         sc.SetLimits(min(SPHINX_HARD_LIMIT - limit, offset), limit)
 
         # Always sort in reverse chronological order.
-        sc.SetSortMode(sphinx.SPH_SORT_ATTR_DESC, 'created')
+        sc.SetSortMode(sphinx.SPH_SORT_EXTENDED, '@id DESC')
         sc.AddQuery(term, self.index)
         self.queries['primary'] = self.query_index
         self.query_index += 1

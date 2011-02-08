@@ -432,3 +432,6 @@ html.transitioning article.entering {
     -moz-transition-timing-function: ease-in-out;
 }
 
+html.transitioning footer {
+    display: none;
+}

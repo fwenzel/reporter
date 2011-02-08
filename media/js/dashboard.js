@@ -25,7 +25,7 @@ var input_chart; // Highcharts wants this to be global.
                     defaultSeriesType: options.type || 'line',
                     margin: options.margin || [25, 25, 60, 45]
                 },
-                legend: options.legend || { y: -10 },
+                legend: options.legend || { y: 5 },
                 title: {text: null},
                 tooltip: options.tooltip || {
                     formatter: function() {
