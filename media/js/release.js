@@ -26,16 +26,26 @@
                   .css({ left: toStart, right: -toStart, display: 'block' });
             $('html').addClass('transitioning');
 
-            toElem.one('transitionend', function(e) {
+            // Things to do after CSS transition
+            // This can move back into the "transitionend" event handler once
+            // Fennec decides to fire it.
+            var transitionend = function(e) {
                 fromElem.css({display: 'none'});
                 toElem.removeClass('entering');
                 $('html').removeClass('transitioning');
                 if (callback) callback();
-            });
+            };
+            if (!$('html').hasClass('mobile')) {
+                toElem.one('transitionend', transitionend());
+            }
 
             setTimeout(function() {
                 fromElem.css({ left: fromEnd, right: -fromEnd });
                 toElem.css({ left: 0, right: 0 });
+
+                if ($('html').hasClass('mobile')) {
+                    transitionend();
+                }
             }, 100);
 
             return this;
