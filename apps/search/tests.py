@@ -267,6 +267,21 @@ class SearchViewTest(SphinxTestCase):
         populate(10, 'desktop', OPINION_ISSUE)
         super(SearchViewTest, self).setUp()
 
+    def test_filter_date_no_end(self):
+        """End date should be today."""
+        r = search_request()
+        doc = pq(r.content)
+        count = len(doc('.message'))
+        assert count
+        # make sure when we filter by only start_date that we implicitly
+        # have end_date as today.  We can do this by filtering from today and
+        # asserting that our count is lower, since populate distributes data
+        # over 30 days.
+        today = datetime.date.today().strftime('%Y-%m-%d')
+        r = search_request(date_start=today)
+        doc = pq(r.content)
+        assert count > len(doc('.message'))
+
     def test_filter_happy(self):
         r = search_request(sentiment='happy')
         doc = pq(r.content)
