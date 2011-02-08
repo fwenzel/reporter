@@ -35,16 +35,16 @@
 
   <form method="post" action="" autocomplete="off">
     {{ csrf() }}
-    {{ form.description.errors|safe }}
+    {{ form.description.errors }}
 
-    <p>{{ form.description|safe }} <span id="count" data-max="{{
+    <p>{{ form.description }} <span id="count" data-max="{{
       form.fields.description.max_length }}">{{ form.fields.description.max_length }}</span></p>
 
     {% if type in (OPINION_PRAISE.id, OPINION_ISSUE.id): %}
-      {{ form.url.errors|safe }}
+      {{ form.url.errors }}
       <p>
         {% if type == OPINION_PRAISE.id: %}
-          <label>{{ form.add_url|safe }}
+          <label>{{ form.add_url }}
             {% trans %}
             Know of a website that works better in this beta than it did in
             earlier versions of Firefox? Please add the URL, so we can keep
@@ -52,26 +52,26 @@
             {% endtrans %}
           </label>
         {% elif type == OPINION_ISSUE.id: %}
-          <label>{{ form.add_url|safe }}
+          <label>{{ form.add_url }}
             {% trans %}
             Had an issue with a specific website? Please add the URL, so we can
             find the issue faster!
             {% endtrans %}
           </label>
         {% endif %}
-        {{ form.url|safe }}
+        {{ form.url }}
       </p>
     {% endif %}
 
     {% for hidden in form.hidden_fields() %}
-      {{ hidden|safe }}
+      {{ hidden }}
       {% if hidden.errors %}
         {{ hidden.name }}:
-        {{ hidden.errors|safe }}
+        {{ hidden.errors }}
       {% endif %}
     {% endfor %}
 
-    {{ form.errors['__all__']|safe }}
+    {{ form.errors['__all__'] }}
 
     <aside>
       <span>{{ _('Please ensure that there is no personally identifiable information here.') }}</span>

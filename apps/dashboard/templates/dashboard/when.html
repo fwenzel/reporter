@@ -10,14 +10,14 @@
     </ul>
 
     <div id="custom-date" class="{{ 'hidden' if selected != 'custom' else ''}}">
-      {{ form.date_start|safe }}
+      {{ form.date_start }}
       &ndash;
-      {{ form.date_end|safe }}
+      {{ form.date_end }}
       {# L10n: Button text for setting a custom date range. #}
       <button>{{ _('Set', 'date_range_set') }}</button>
 
-      {{ form.date_start.errors|safe }}
-      {{ form.date_end.errors|safe }}
+      {{ form.date_start.errors }}
+      {{ form.date_end.errors }}
     </div>
   </div>
 </div>

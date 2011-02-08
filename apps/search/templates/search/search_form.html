@@ -1,8 +1,8 @@
 {% macro fieldbox(name, show_errors=True): %}
   {% with field = search_form[name] %}
     <div class="fieldWrapper wrap_{{ field.name }}">
-      {{ field.label_tag()|safe }} {{ field|safe }}
-      {% if show_errors %}{{ field.errors|safe }}{% endif %}
+      {{ field.label_tag() }} {{ field }}
+      {% if show_errors %}{{ field.errors }}{% endif %}
     </div>
   {% endwith %}
 {% endmacro %}
@@ -20,8 +20,8 @@
     </div>
 
     <div>
-      {{ search_form.product.errors|safe }}
-      {{ search_form.version.errors|safe }}
+      {{ search_form.product.errors }}
+      {{ search_form.version.errors }}
     </div>
 
     <div id="show_search_adv" class="active">

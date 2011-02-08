@@ -22,7 +22,7 @@
   <div id="search" class="block">
     <form id="kw-search" method="get" action="{{ url('search') }}">
       <input type="hidden" name="product" value="{{ request.default_app.short }}" />
-      {{ search_form.q|safe }}
+      {{ search_form.q }}
     </form>
   </div>
 

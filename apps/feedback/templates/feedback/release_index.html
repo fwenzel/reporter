@@ -70,7 +70,7 @@
             <tr>
               <th>
                 <span class="help error-target-{{ question.short }}" title="{{ question.help }}">{{ question.pretty }}</span>
-                {{ rating_form[question.short].errors|safe }}
+                {{ rating_form[question.short].errors }}
               </th>
               {% for cid, choice in RATING_CHOICES %}
                 <td><input id="q{{ question.id }}-a{{ cid }}" type="radio" name="{{ question.short }}" value="{{ cid }}" />
@@ -83,14 +83,14 @@
       </table>
 
       {% for hidden in rating_form.hidden_fields() %}
-        {{ hidden|safe }}
+        {{ hidden }}
         {% if hidden.errors %}
           {{ hidden.name }}:
-          {{ hidden.errors|safe }}
+          {{ hidden.errors }}
         {% endif %}
       {% endfor %}
 
-      {{ rating_form.errors['__all__']|safe }}
+      {{ rating_form.errors['__all__'] }}
 
       <div class="submit">
         <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>
@@ -122,14 +122,14 @@
       <div class="fields">
         <div>
           <label for="broken-url">{{ _('What is the URL of the site?') }}</label>
-          <p>{{ website_form.url|safe }}</p>
-          {{ website_form.url.errors|safe }}
+          <p>{{ website_form.url }}</p>
+          {{ website_form.url.errors }}
         </div>
 
         <div>
           <label for="broken-desc">{{ _('Describe the problem with the site.') }}</label>
-          <p>{{ website_form.description|safe }}</p>
-          {{ website_form.description.errors|safe }}
+          <p>{{ website_form.description }}</p>
+          {{ website_form.description.errors }}
           <span id="count-broken-desc" class="count" data-max="{{
             website_form.fields.description.max_length }}">{{
             website_form.fields.description.max_length }}</span>
@@ -143,14 +143,14 @@
       </div>
 
       {% for hidden in website_form.hidden_fields() %}
-        {{ hidden|safe }}
+        {{ hidden }}
         {% if hidden.errors %}
           {{ hidden.name }}:
-          {{ hidden.errors|safe }}
+          {{ hidden.errors }}
         {% endif %}
       {% endfor %}
 
-      {{ website_form.errors['__all__']|safe }}
+      {{ website_form.errors['__all__'] }}
 
       <div class="submit">
         <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>
@@ -179,8 +179,8 @@
       <div class="fields">
         <div>
           <label>{{ _('Describe your idea below.') }}</label>
-          <p>{{ suggestion_form.description|safe }}</p>
-          {{ suggestion_form.description.errors|safe }}
+          <p>{{ suggestion_form.description }}</p>
+          {{ suggestion_form.description.errors }}
           <span id="count-idea-desc" class="count" data-max="{{
             suggestion_form.fields.description.max_length }}">{{
             suggestion_form.fields.description.max_length }}</span>
@@ -194,14 +194,14 @@
       </div>
 
       {% for hidden in suggestion_form.hidden_fields() %}
-        {{ hidden|safe }}
+        {{ hidden }}
         {% if hidden.errors %}
           {{ hidden.name }}:
-          {{ hidden.errors|safe }}
+          {{ hidden.errors }}
         {% endif %}
       {% endfor %}
 
-      {{ suggestion_form.errors['__all__']|safe }}
+      {{ suggestion_form.errors['__all__'] }}
 
       <div class="submit">
         <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>

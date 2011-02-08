@@ -25,7 +25,7 @@
         {% if key == 'q' %}{% continue %}{% endif %}
         <input type="hidden" name="{{ key }}" value="{{ val }}" />
       {% endfor %}
-      {{ form.q|safe }}
+      {{ form.q }}
     </form>
   </div>
 

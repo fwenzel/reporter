@@ -1,8 +1,8 @@
 {% macro fieldbox(name, show_errors=True): %}
   {% with field = form[name] %}
     <div class="fieldWrapper wrap_{{ field.name }}">
-      {{ field|safe }}
-      {% if show_errors %}{{ field.errors|safe }}{% endif %}
+      {{ field }}
+      {% if show_errors %}{{ field.errors }}{% endif %}
     </div>
   {% endwith %}
 {% endmacro %}

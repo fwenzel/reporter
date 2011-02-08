@@ -30,30 +30,30 @@
   </h2>
   <form method="post" action="" autocomplete="off">
     {{ csrf() }}
-    {{ form.description.errors|safe }}
-    <p>{{ form.description|safe }}</p>
+    {{ form.description.errors }}
+    <p>{{ form.description }}</p>
 
     {% if type in (OPINION_PRAISE.id, OPINION_ISSUE.id): %}
-      {{ form.url.errors|safe }}
+      {{ form.url.errors }}
       <p>
-        <label>{{ form.add_url|safe }}
+        <label>{{ form.add_url }}
           {% trans %}
           Add URL of last visited page?
           {% endtrans %}
         </label>
-        {{ form.url|safe }}
+        {{ form.url }}
       </p>
     {% endif %}
 
     {% for hidden in form.hidden_fields() %}
-      {{ hidden|safe }}
+      {{ hidden }}
       {% if hidden.errors %}
         {{ hidden.name }}:
-        {{ hidden.errors|safe }}
+        {{ hidden.errors }}
       {% endif %}
     {% endfor %}
 
-    {{ form.errors['__all__']|safe }}
+    {{ form.errors['__all__'] }}
 
     <aside>
       <span>{{ _('Please ensure that there is no personally identifiable information here.') }}</span>
