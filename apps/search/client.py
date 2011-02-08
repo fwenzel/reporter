@@ -188,7 +188,7 @@ class Client(object):
         sc.SetLimits(min(SPHINX_HARD_LIMIT - limit, offset), limit)
 
         # Always sort in reverse chronological order.
-        sc.SetSortMode(sphinx.SPH_SORT_ATTR_DESC, 'created')
+        sc.SetSortMode(sphinx.SPH_SORT_EXTENDED, '@id DESC')
         sc.AddQuery(term, self.index)
         self.queries['primary'] = self.query_index
         self.query_index += 1

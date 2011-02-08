@@ -432,7 +432,7 @@ class FeedTest(SphinxTestCase):
         url_base = 'http://%s/%s/%s/' % (s.domain, 'en-US',
                                         settings.DEFAULT_CHANNEL)
         eq_(doc('entry link').attr['href'],
-            '%s%s' % (url_base, 'opinion/29'))
+            '%s%s' % (url_base, 'opinion/32'))
 
     def test_item_title(self):
         """
