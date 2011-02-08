@@ -86,7 +86,7 @@ def website_issues(request):
     sites = page = one_offs = None
     # TODO(davedash): This should be something more useful.
     if not form.is_valid():
-        raise http.HttpResponseBadRequest
+        raise http.HttpResponseBadRequest()
     else:
         sites, page = _fetch_summaries(form)
         # Grab one-off domains for sidebar.
