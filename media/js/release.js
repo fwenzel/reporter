@@ -36,16 +36,15 @@
                 if (callback) callback();
             };
             if (!$('html').hasClass('mobile')) {
-                toElem.one('transitionend', transitionend());
+                toElem.one('transitionend', transitionend);
+            } else {
+                transitionend();
+                $.scrollTo(what);
             }
 
             setTimeout(function() {
                 fromElem.css({ left: fromEnd, right: -fromEnd });
                 toElem.css({ left: 0, right: 0 });
-
-                if ($('html').hasClass('mobile')) {
-                    transitionend();
-                }
             }, 100);
 
             return this;

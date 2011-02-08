@@ -232,6 +232,7 @@ MINIFY_BUNDLES = {
         # Release versions feedback
         'release': (
             'js/jquery.min.js',
+            'js/jquery.scrollto.min.js',
             'js/jquery.NobleCount.js',
             'js/release.js',
         ),
