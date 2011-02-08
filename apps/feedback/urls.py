@@ -19,6 +19,5 @@ urlpatterns = patterns('feedback.views',
 
     url(r'^download/?', 'download', name='feedback.download'),
 
-    # TODO Should this be under beta/release/etc.?
     url(r'^opinion/(?P<id>\d+)$', 'opinion_detail', name='opinion.detail'),
 )

@@ -20,7 +20,6 @@
         <li><a href="{{ search_url(os=opinion.os, defaults=defaults) }}">{{ os_name(opinion.os) }}</a></li>
         <li><a href="{{ search_url(locale=opinion.locale, defaults=defaults) }}">{{ locale_name(opinion.locale) }}</a></li>
         {% if opinion.url %}
-          {# TODO redirect via outgoing? #}
           <li><a href="{{ opinion.url }}" rel="nofollow">{{ opinion.url|without_protocol }}</a></li>
         {% endif %}
       </ul>

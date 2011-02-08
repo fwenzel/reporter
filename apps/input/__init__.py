@@ -29,7 +29,7 @@ class CHANNEL_NIGHTLY:
     short = 'nightly'
     pretty = _(u'Nightly Channel')
 
-CHANNEL_USAGE = (CHANNEL_BETA, CHANNEL_RELEASE)  # TODO add nightly
+CHANNEL_USAGE = (CHANNEL_BETA, CHANNEL_RELEASE)
 CHANNELS = dict((ch.short, ch) for ch in CHANNEL_USAGE)
 
 

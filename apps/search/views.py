@@ -131,7 +131,6 @@ class SearchFeed(Feed):
 
     def item_link(self, item):
         """Permalink per item. Also used as GUID."""
-        # TODO make this a working link. bug 575770.
         return item.get_url_path()
 
     def item_pubdate(self, item):
