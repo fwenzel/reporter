@@ -14,7 +14,7 @@ import input
 from feedback.version_compare import simplify_version
 from input import (APPS, APP_IDS, FIREFOX, MOBILE, LATEST_RELEASE,
                    LATEST_BETAS, LATEST_VERSION, OPINION_PRAISE, OPINION_ISSUE,
-                   OPINION_SUGGESTION, OPINION_TYPES)
+                   OPINION_IDEA, OPINION_TYPES)
 from input.decorators import cache_page
 from input.urlresolvers import reverse
 from search.client import Client, RatingsClient, SearchError
@@ -59,24 +59,24 @@ def _get_results_opts(request, data, product, meta=[]):
         search_opts['type'] = OPINION_PRAISE.id
     elif sentiment == 'sad':
         search_opts['type'] = OPINION_ISSUE.id
-    elif sentiment == 'suggestions':
-        search_opts['type'] = OPINION_SUGGESTION.id
+    elif sentiment == 'ideas':
+        search_opts['type'] = OPINION_IDEA.id
 
     return search_opts
 
 
 def get_sentiment(data=[]):
-    r = dict(happy=0, sad=0, suggestions=0, sentiment='happy')
+    r = dict(happy=0, sad=0, ideas=0, sentiment='happy')
 
     for el in data:
         if el['type'] == OPINION_PRAISE.id:
             r['happy'] = el['count']
         elif el['type'] == OPINION_ISSUE.id:
             r['sad'] = el['count']
-        elif el['type'] == OPINION_SUGGESTION.id:
-            r['suggestions'] = el['count']
+        elif el['type'] == OPINION_IDEA.id:
+            r['ideas'] = el['count']
 
-    r['total'] = r['sad'] + r['happy'] + r['suggestions']
+    r['total'] = r['sad'] + r['happy'] + r['ideas']
 
     if r['sad'] > r['happy']:
         r['sentiment'] = 'sad'
@@ -220,7 +220,7 @@ def index(request):
             chart_data = dict(series=[
                 dict(name=_('Praise'), data=daily['praise']),
                 dict(name=_('Issues'), data=daily['issue']),
-                dict(name=_('Suggestion'), data=daily['suggestion']),
+                dict(name=_('Idea'), data=daily['idea']),
                 ],
             ) if daily else None
             data['chart_data_json'] = json.dumps(chart_data)

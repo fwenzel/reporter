@@ -52,7 +52,7 @@ def beta(request):
         chart_data = dict(series=[
             dict(name=_('Praise'), data=daily['praise']),
             dict(name=_('Issues'), data=daily['issue']),
-            dict(name=_('Suggestions'), data=daily['suggestion']),
+            dict(name=_('Ideas'), data=daily['idea']),
             ],
             )
         total = c.total_found

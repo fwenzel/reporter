@@ -16,7 +16,7 @@ from pyquery import PyQuery as pq
 import test_utils
 
 import feedback
-from input import (FIREFOX, OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
+from input import (FIREFOX, OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA,
                    OPINION_RATING, OPINION_BROKEN, OPINION_TYPES_USAGE)
 from input.urlresolvers import reverse
 from feedback.cron import populate
@@ -154,7 +154,7 @@ class SearchTest(SphinxTestCase):
     def test_type_filter(self):
         eq_(num_results(type=OPINION_PRAISE.id), 17)
         eq_(num_results(type=OPINION_ISSUE.id), 11)
-        eq_(num_results(type=OPINION_SUGGESTION.id), 3)
+        eq_(num_results(type=OPINION_IDEA.id), 3)
 
     def test_os_filter(self):
         eq_(num_results(os='mac'), 31)
@@ -195,7 +195,7 @@ class NoRatingsSearchTest(SphinxTestCase):
 
     def setUp(self):
         populate(20, 'desktop', OPINION_RATING)
-        populate(2, 'desktop', OPINION_SUGGESTION)
+        populate(2, 'desktop', OPINION_IDEA)
         super(NoRatingsSearchTest, self).setUp()
 
     def test_search_page(self):
@@ -209,7 +209,7 @@ class PaginationTest(SphinxTestCase):
 
     def setUp(self):
         # add more opinions so we can test things.
-        populate(1000, 'desktop', OPINION_SUGGESTION)
+        populate(1000, 'desktop', OPINION_IDEA)
         super(PaginationTest, self).setUp()
 
     def compare_2_pages(self, page1, page2):
@@ -259,8 +259,8 @@ class SearchViewTest(SphinxTestCase):
 
     def setUp(self):
         # add more opinions so we can test things.
-        populate(21, 'desktop', OPINION_SUGGESTION)
-        populate(100, 'mobile', OPINION_SUGGESTION)
+        populate(21, 'desktop', OPINION_IDEA)
+        populate(100, 'mobile', OPINION_IDEA)
         populate(5, 'desktop', OPINION_PRAISE)
         populate(10, 'desktop', OPINION_ISSUE)
         super(SearchViewTest, self).setUp()
@@ -285,8 +285,8 @@ class SearchViewTest(SphinxTestCase):
         doc = pq(r.content)
         eq_(len(doc('.message')), 5)
 
-    def test_filter_suggestions(self):
-        r = search_request(sentiment='suggestions')
+    def test_filter_ideas(self):
+        r = search_request(sentiment='ideas')
         doc = pq(r.content)
         eq_(len(doc('.message')), 20)
 

@@ -53,7 +53,7 @@ KNOWN_DEVICES = (
 
 ## Opinion Type Length Restrictions
 MAX_FEEDBACK_LENGTH = 140
-MAX_SUGGESTION_LENGTH = 250
+MAX_IDEA_LENGTH = 250
 
 
 ## Opinion Types
@@ -71,11 +71,11 @@ class OPINION_ISSUE:
     max_length = MAX_FEEDBACK_LENGTH
 
 
-class OPINION_SUGGESTION:
+class OPINION_IDEA:
     id = 3
-    short = 'suggestion'
-    pretty = _(u'Suggestion')
-    max_length = MAX_SUGGESTION_LENGTH
+    short = 'idea'
+    pretty = _(u'Idea')
+    max_length = MAX_IDEA_LENGTH
 
 
 class OPINION_RATING:
@@ -94,12 +94,12 @@ class OPINION_BROKEN:
 op_types = {
     'OPINION_PRAISE': OPINION_PRAISE,
     'OPINION_ISSUE': OPINION_ISSUE,
-    'OPINION_SUGGESTION': OPINION_SUGGESTION,
+    'OPINION_IDEA': OPINION_IDEA,
     'OPINION_RATING': OPINION_RATING,
     'OPINION_BROKEN': OPINION_BROKEN,
 }
 
-OPINION_TYPES_USAGE = (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
+OPINION_TYPES_USAGE = (OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA,
                        OPINION_RATING, OPINION_BROKEN)
 OPINION_TYPES = dict((type.id, type) for type in OPINION_TYPES_USAGE)
 

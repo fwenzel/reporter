@@ -9,7 +9,7 @@ from textcluster import Corpus, search
 
 from feedback.models import Opinion
 from input import (APP_USAGE, LATEST_BETAS, OPINION_PRAISE, OPINION_ISSUE,
-                   OPINION_SUGGESTION, OS_USAGE)
+                   OPINION_IDEA, OS_USAGE)
 from themes.models import Theme, Item
 
 SIM_THRESHOLD = settings.CLUSTER_SIM_THRESHOLD
@@ -63,10 +63,10 @@ def cluster_by_product(qs):
 def cluster_by_feeling(qs, app):
     happy = qs.filter(type=OPINION_PRAISE.id)
     sad = qs.filter(type=OPINION_ISSUE.id)
-    suggestions = qs.filter(type=OPINION_SUGGESTION.id)
+    ideas = qs.filter(type=OPINION_IDEA.id)
     cluster_by_platform(happy, app, 'happy')
     cluster_by_platform(sad, app, 'sad')
-    cluster_by_platform(suggestions, app, 'suggestions')
+    cluster_by_platform(ideas, app, 'ideas')
 
 
 def cluster_by_platform(qs, app, feeling):

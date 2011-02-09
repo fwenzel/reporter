@@ -178,7 +178,7 @@ html {
         }
         .message .praise,
         .message .issue,
-        .message .suggestion {
+        .message .idea {
             position: absolute;
             left: 0;
             top: 15px;
@@ -189,7 +189,7 @@ html {
             }
             .message .praise span,
             .message .issue span,
-            .message .suggestion span{
+            .message .idea span{
                 display: block;
                 width: 0;
                 height: 0;
@@ -198,7 +198,7 @@ html {
         .message .praise {
             background-position: 0px -30px;
             }
-        .message .suggestion {
+        .message .idea {
             background-position: 0px -60px;
             }
         .message .body,

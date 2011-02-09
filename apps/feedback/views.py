@@ -13,8 +13,8 @@ from tower import ugettext as _
 import input
 from input.decorators import cache_page, forward_mobile, negotiate
 from input.urlresolvers import reverse
-from feedback.forms import (PraiseForm, IssueForm, SuggestionForm,
-                            BrokenWebsiteForm, RatingForm, IdeaForm)
+from feedback.forms import (PraiseForm, IssueForm, IdeaForm,
+                            BrokenWebsiteForm, RatingForm, IdeaReleaseForm)
 from feedback.models import Opinion, Rating
 from feedback.utils import detect_language, ua_parse
 from feedback.version_compare import Version
@@ -94,7 +94,7 @@ def give_feedback(request, ua, type):
         FormType = {
             input.OPINION_PRAISE.id: PraiseForm,
             input.OPINION_ISSUE.id: IssueForm,
-            input.OPINION_SUGGESTION.id: SuggestionForm
+            input.OPINION_IDEA.id: IdeaForm
         }.get(type)
     except KeyError:
         return http.HttpResponseBadRequest(_('Invalid feedback type'))
@@ -114,16 +114,16 @@ def give_feedback(request, ua, type):
 
     # Set the div id for css styling
     div_id = 'feedbackform'
-    if type == input.OPINION_SUGGESTION.id:
-        div_id = 'suggestionform'
+    if type == input.OPINION_IDEA.id:
+        div_id = 'ideaform'
 
-    url_suggestion = request.GET.get('url', 'suggestion')
+    url_idea = request.GET.get('url', 'idea')
     data = {
         'form': form,
         'type': type,
         'div_id': div_id,
         'MAX_FEEDBACK_LENGTH': input.MAX_FEEDBACK_LENGTH,
-        'url_suggestion': url_suggestion
+        'url_idea': url_idea
     }
     template = ('feedback/mobile/feedback.html' if request.mobile_site else
                 'feedback/feedback.html')
@@ -161,7 +161,7 @@ def release_feedback(request, ua):
             FormType = {
                 input.OPINION_RATING.id: RatingForm,
                 input.OPINION_BROKEN.id: BrokenWebsiteForm,
-                input.OPINION_SUGGESTION.id: IdeaForm,
+                input.OPINION_IDEA.id: IdeaReleaseForm,
             }[type]
         except (ValueError, KeyError):
             return http.HttpResponseBadRequest(_('Invalid feedback type'))
@@ -190,12 +190,12 @@ def release_feedback(request, ua):
                              RatingForm()),
                 website_form=(form if type == input.OPINION_BROKEN.id else
                               BrokenWebsiteForm()),
-                suggestion_form=(form if type == input.OPINION_SUGGESTION.id
-                                 else IdeaForm()))
+                idea_form=(form if type == input.OPINION_IDEA.id
+                                 else IdeaReleaseForm()))
 
     else:
         data.update(rating_form=RatingForm(), website_form=BrokenWebsiteForm(),
-                    suggestion_form=IdeaForm())
+                    idea_form=IdeaReleaseForm())
 
     template = 'feedback/%srelease_index.html' % (
         'mobile/' if request.mobile_site else '')

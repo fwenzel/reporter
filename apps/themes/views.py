@@ -36,9 +36,9 @@ def _get_sentiments(request, sentiment):
 
     sentiments.append(f)
 
-    f = Filter(urlparams(url, s='suggestions'), _('Suggestions'),
-            _('Suggestions only'),
-               (sentiment == 'suggestions'))
+    f = Filter(urlparams(url, s='ideas'), _('Ideas'),
+            _('Ideas only'),
+               (sentiment == 'ideas'))
 
     sentiments.append(f)
     return sentiments

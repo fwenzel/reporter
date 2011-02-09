@@ -35,9 +35,9 @@ VERSION_CHOICES = {
 SENTIMENT_CHOICES = [('', _lazy('-- all --', 'sentiment_choice')),
     ('happy', _lazy('Praise')),
     ('sad', _lazy('Issues')),
-    ('suggestions', _lazy('Suggestions')),
+    ('ideas', _lazy('Ideas')),
 ]
-SENTIMENTS = ('happy', 'sad', 'suggestions')
+SENTIMENTS = ('happy', 'sad', 'ideas')
 
 OS_CHOICES = ([('', _lazy('-- all --', 'os_choice'))] +
               [(o.short, o.pretty) for o in OS_USAGE])

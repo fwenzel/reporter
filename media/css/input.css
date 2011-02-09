@@ -336,7 +336,7 @@ header, footer, article, section { display: block; }
         .message .praise {
             background-position: 0px -30px;
             }
-        .message .suggestion {
+        .message .idea {
             background-position: 0px -60px;
             }
             .message .type > span {

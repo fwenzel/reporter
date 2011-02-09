@@ -98,7 +98,7 @@ class DecoratorTests(ViewTestCase):
             reverse('dashboard', channel='beta'),
             reverse('feedback.happy'),
             reverse('feedback.sad'),
-            reverse('feedback.suggestion'),
+            reverse('feedback.idea'),
             reverse('feedback'),
         )
 

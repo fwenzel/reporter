@@ -1,7 +1,7 @@
 import jinja2
 from jingo import register
 
-from input import OPINION_PRAISE, OPINION_SUGGESTION
+from input import OPINION_PRAISE, OPINION_IDEA
 
 
 @register.filter
@@ -10,8 +10,8 @@ def is_praise(opinion):
 
 
 @register.filter
-def is_suggestion(opinion):
-    return opinion.type == OPINION_SUGGESTION.id
+def is_idea(opinion):
+    return opinion.type == OPINION_IDEA.id
 
 
 def new_context(context, **kw):

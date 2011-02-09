@@ -66,7 +66,7 @@ $(document).ready(function() {
 
     var sentiment = {
         container: $('#sentiment .ajaxy'),
-        emos: ['total', 'happy', 'sad', 'suggestions'],
+        emos: ['total', 'happy', 'sad', 'ideas'],
 
         init: function() {
             loading(this.container);

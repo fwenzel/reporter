@@ -12,7 +12,7 @@ from product_details import product_details
 from tower import ugettext as _
 
 from input import (KNOWN_DEVICES, KNOWN_MANUFACTURERS, RATING_USAGE,
-                   OPINION_PRAISE, OPINION_SUGGESTION, OS_USAGE)
+                   OPINION_PRAISE, OPINION_IDEA, OS_USAGE)
 from input.utils import crc32, manual_order
 from feedback.models import Opinion
 
@@ -219,7 +219,7 @@ class Client(object):
         result = results[self.queries['day_sentiment']]
         pos = []
         neg = []
-        sug = []
+        ide = []
         for i in result['matches']:
             day_sentiment = i['attrs']['day_sentiment']
             type = day_sentiment % 10
@@ -228,12 +228,12 @@ class Client(object):
             if type == OPINION_PRAISE.id:
                 # Take the type out of the timestamp.  c.f. sphinx.conf.
                 pos.append((day_sentiment - type, count))
-            elif type == OPINION_SUGGESTION.id:
-                sug.append((day_sentiment - type, count))
+            elif type == OPINION_IDEA.id:
+                ide.append((day_sentiment - type, count))
             else:
                 neg.append((day_sentiment - type, count))
 
-        return dict(praise=pos, issue=neg, suggestion=sug)
+        return dict(praise=pos, issue=neg, idea=ide)
 
     def _type_meta(self, results, **kwargs):
         result = results[self.queries['type']]

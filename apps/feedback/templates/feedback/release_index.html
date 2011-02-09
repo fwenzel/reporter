@@ -179,11 +179,11 @@
       <div class="fields">
         <div>
           <label>{{ _('Describe your idea below.') }}</label>
-          <p>{{ suggestion_form.description }}</p>
-          {{ suggestion_form.description.errors }}
+          <p>{{ idea_form.description }}</p>
+          {{ idea_form.description.errors }}
           <span id="count-idea-desc" class="count" data-max="{{
-            suggestion_form.fields.description.max_length }}">{{
-            suggestion_form.fields.description.max_length }}</span>
+            idea_form.fields.description.max_length }}">{{
+            idea_form.fields.description.max_length }}</span>
           <p class="privacy"><span>
             {% trans %}
             To protect your privacy, please ensure that no personally
@@ -193,7 +193,7 @@
         </div>
       </div>
 
-      {% for hidden in suggestion_form.hidden_fields() %}
+      {% for hidden in idea_form.hidden_fields() %}
         {{ hidden }}
         {% if hidden.errors %}
           {{ hidden.name }}:
@@ -201,7 +201,7 @@
         {% endif %}
       {% endfor %}
 
-      {{ suggestion_form.errors['__all__'] }}
+      {{ idea_form.errors['__all__'] }}
 
       <div class="submit">
         <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>

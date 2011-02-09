@@ -20,7 +20,7 @@
         "model": "feedback.opinion",
         "fields": {
             "product": 1,
-            "description": "This is the 3rd suggestion that has been submitted.",
+            "description": "This is the 3rd idea that has been submitted.",
             "created": "2010-06-22 00:38:17",
             "url": "",
             "type": 3,
@@ -35,7 +35,7 @@
         "model": "feedback.opinion",
         "fields": {
             "product": 1,
-            "description": "This is the 2nd suggestion that has been submitted.",
+            "description": "This is the 2nd idea that has been submitted.",
             "created": "2010-06-22 00:38:17",
             "url": "",
             "type": 3,
@@ -50,7 +50,7 @@
         "model": "feedback.opinion",
         "fields": {
             "product": 1,
-            "description": "This is the 1st suggestion that has been submitted.",
+            "description": "This is the 1st idea that has been submitted.",
             "created": "2010-06-22 00:38:17",
             "url": "",
             "type": 3,

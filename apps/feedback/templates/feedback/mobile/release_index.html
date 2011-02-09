@@ -139,14 +139,14 @@
     <div class="field">
       <label>{{ _('Describe your idea below.') }}</label>
       <span id="count-idea-desc" class="char-count" data-max="{{
-                suggestion_form.fields.description.max_length }}">{{
-                suggestion_form.fields.description.max_length }}</span>
-      {{ suggestion_form.description }}
+                idea_form.fields.description.max_length }}">{{
+                idea_form.fields.description.max_length }}</span>
+      {{ idea_form.description }}
       <p class="warning"><span>{{ _('For your privacy, please ensure that no personally identifiable information is included in your feedback.') }}</span></p>
-      {{ suggestion_form.description.errors }}
+      {{ idea_form.description.errors }}
     </div>
 
-    {% for hidden in suggestion_form.hidden_fields() %}
+    {% for hidden in idea_form.hidden_fields() %}
       {{ hidden }}
       {% if hidden.errors %}
         {{ hidden.name }}:

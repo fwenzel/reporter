@@ -7,9 +7,9 @@ from nose.tools import eq_
 from pyquery import pyquery
 
 from input import (FIREFOX, LATEST_BETAS, LATEST_RELEASE, OPINION_PRAISE,
-                   OPINION_ISSUE, OPINION_SUGGESTION, OPINION_RATING,
+                   OPINION_ISSUE, OPINION_IDEA, OPINION_RATING,
                    OPINION_BROKEN, RATING_USAGE, RATING_CHOICES,
-		   MAX_FEEDBACK_LENGTH, MAX_SUGGESTION_LENGTH )
+		   MAX_FEEDBACK_LENGTH, MAX_IDEA_LENGTH)
 from input.tests import ViewTestCase, enforce_ua
 from input.urlresolvers import reverse
 from feedback.models import Opinion
@@ -349,11 +349,11 @@ class ReleaseTests(ViewTestCase):
             eq_(latest.url, data['url'])
             latest.delete()
 
-    def test_suggestion(self):
-        """Submit suggestion with and without AJAX."""
+    def test_idea(self):
+        """Submit idea with and without AJAX."""
         # Empty POST: Count errors
         for ajax in True, False:
-            r = self.post_feedback({'type': OPINION_SUGGESTION.id}, ajax=ajax)
+            r = self.post_feedback({'type': OPINION_IDEA.id}, ajax=ajax)
             if not ajax:
                 doc = pyquery.PyQuery(r.content)
                 eq_(doc('article#idea form .errorlist').length, 1)
@@ -364,8 +364,8 @@ class ReleaseTests(ViewTestCase):
 
         # Submit actual form
         data = {
-            'type': OPINION_SUGGESTION.id,
-            'description': 'This is a suggestion.',
+            'type': OPINION_IDEA.id,
+            'description': 'This is an idea.',
         }
 
         for ajax in True, False:
@@ -395,4 +395,4 @@ class ReleaseTests(ViewTestCase):
         eq_(doc('#count-broken-desc').attr('data-max'),
             str(MAX_FEEDBACK_LENGTH))
         eq_(doc('#count-idea-desc').attr('data-max'),
-            str(MAX_SUGGESTION_LENGTH))
+            str(MAX_IDEA_LENGTH))

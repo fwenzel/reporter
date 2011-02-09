@@ -518,10 +518,10 @@ input.placeholder {
 #feedback .smiley.happy {
     background-position: 0 -278px;
 }
-#feedback .suggestion {
+#feedback .idea {
     background-position: 0 0;
     display: block;
-    background: url(../img/suggestion-box-idea-large.png) no-repeat left top;
+    background: url(../img/idea-box-large.png) no-repeat left top;
     height: 228px;
     width: 228px;
 }
@@ -540,7 +540,7 @@ input.placeholder {
     font-size: 1.25em;
 }
 #feedback #feedbackform,
-#feedback #suggestionform {
+#feedback #ideaform {
     margin: 6em 0 0 30%;
 }
 #feedback #id_description {
@@ -566,7 +566,7 @@ input.placeholder {
 #feedback #feedbackform #id_description {
     height: 2.5em;
 }
-#feedback #suggestionform #id_description {
+#feedback #ideaform #id_description {
     height: 5em;
 }
 #feedback button {
@@ -595,19 +595,19 @@ input.placeholder {
     background: transparent url(http://mozcom-cdn.mozilla.net/img/tignish/about/logo/download/logo-only-preview.png) 5px center no-repeat;
     padding-left: 50px;
 }
-p.feedback_suggestion,
-p.feedback_suggestion_mobile {
+p.feedback_idea,
+p.feedback_idea_mobile {
     clear: both;
     text-align: middle;
 }
-p.feedback_suggestion {
+p.feedback_idea {
     padding: 25px 0 0 60px;
 }
-p.feedback_suggestion_mobile {
+p.feedback_idea_mobile {
     padding: 25px 0 0 0;
 }
-p.feedback_suggestion img,
-p.feedback_suggestion_mobile img {
+p.feedback_idea img,
+p.feedback_idea_mobile img {
     height: 64px;
     width: 64px;
     vertical-align: middle;

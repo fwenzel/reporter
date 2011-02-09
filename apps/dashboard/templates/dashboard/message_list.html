@@ -6,8 +6,8 @@
         <p class="type praise" title="{{ OPINION_PRAISE.pretty }}"><span>{{ OPINION_PRAISE.pretty }}</span></p>
       {% elif opinion.type == OPINION_ISSUE.id: %}
         <p class="type issue" title="{{ OPINION_PRAISE.pretty }}"><span>{{ OPINION_PRAISE.pretty }}</span></p>
-      {% elif opinion.type == OPINION_SUGGESTION.id: %}
-        <p class="type suggestion" title="{{ OPINION_SUGGESTION.pretty }}"><span>{{ OPINION_SUGGESTION.pretty }}</span></p>
+      {% elif opinion.type == OPINION_IDEA.id: %}
+        <p class="type idea" title="{{ OPINION_IDEA.pretty }}"><span>{{ OPINION_IDEA.pretty }}</span></p>
       {% endif %}
       <p class="body">{{ opinion.description }}</p>
       <ul class="meta">
