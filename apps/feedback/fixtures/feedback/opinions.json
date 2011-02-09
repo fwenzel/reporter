@@ -27,7 +27,7 @@
             "locale": "en-US",
             "version": "3.7a6pre",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.3a6pre) Gecko/20100620 Minefield/3.7a6pre",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -42,7 +42,7 @@
             "locale": "en-US",
             "version": "3.7a6pre",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.3a6pre) Gecko/20100620 Minefield/3.7a6pre",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -57,7 +57,7 @@
             "locale": "en-US",
             "version": "3.7a6pre",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.3a6pre) Gecko/20100620 Minefield/3.7a6pre",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -72,7 +72,7 @@
             "locale": "en-US",
             "version": "3.7a6pre",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.3a6pre) Gecko/20100620 Minefield/3.7a6pre",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -87,7 +87,7 @@
             "locale": "en-US",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -102,7 +102,7 @@
             "locale": "en-US",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -117,7 +117,7 @@
             "locale": "",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -132,7 +132,7 @@
             "locale": "en-US",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -147,7 +147,7 @@
             "locale": "en-US",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -162,7 +162,7 @@
             "locale": "en-US",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -177,7 +177,7 @@
             "locale": "en-US",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -192,7 +192,7 @@
             "locale": "en-US",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -207,7 +207,7 @@
             "locale": "en-US",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -222,7 +222,7 @@
             "locale": "en-US",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -237,7 +237,7 @@
             "locale": "en-US",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100527 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -252,7 +252,7 @@
             "locale": "en-US",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100527 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -267,7 +267,7 @@
             "locale": "en-US",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100527 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -282,7 +282,7 @@
             "locale": "en-US",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100527 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -297,7 +297,7 @@
             "locale": "en-US",
             "version": "3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100527 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -313,7 +313,7 @@
             "en-US",
             "version":"3.6.4",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.4) Gecko/20100527 Firefox/3.6.4",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -328,7 +328,7 @@
             "locale": "en-US",
             "version": "3.6.3",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -343,7 +343,7 @@
             "locale": "en-US",
             "version": "3.6.3",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -358,7 +358,7 @@
             "locale": "de",
             "version": "3.6.3",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; de; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -373,7 +373,7 @@
             "locale": "en-US",
             "version": "3.6.3",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -388,7 +388,7 @@
             "locale": "en-US",
             "version": "3.6.3",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -403,7 +403,7 @@
             "locale": "en-US",
             "version": "3.6.3",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -418,7 +418,7 @@
             "locale": "en-US",
             "version": "3.6.3",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -433,7 +433,7 @@
             "locale": "en-US",
             "version": "3.6.3",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -448,7 +448,7 @@
             "locale": "en-US",
             "version": "3.6.3",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -463,7 +463,7 @@
             "locale": "en-US",
             "version": "3.6.3",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {
@@ -478,7 +478,7 @@
             "locale": "en-US",
             "version": "3.6.3",
             "user_agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3",
-            "os": "mac"
+            "platform": "mac"
         }
     },
     {

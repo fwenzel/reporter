@@ -30,8 +30,8 @@ def test_extract_filters_unknown():
     """
     Test that we return the proper value of unknown that sphinx is expecting.
     """
-    _, _, metas = extract_filters(dict(os='unknown'))
-    eq_(metas['os'], 0)
+    _, _, metas = extract_filters(dict(platform='unknown'))
+    eq_(metas['platform'], 0)
 
 
 def test_forms_product_chooser():
@@ -156,9 +156,9 @@ class SearchTest(SphinxTestCase):
         eq_(num_results(type=OPINION_ISSUE.id), 11)
         eq_(num_results(type=OPINION_IDEA.id), 3)
 
-    def test_os_filter(self):
-        eq_(num_results(os='mac'), 31)
-        eq_(num_results(os='palm'), 0)
+    def test_platform_filter(self):
+        eq_(num_results(platform='mac'), 31)
+        eq_(num_results(platform='palm'), 0)
 
     def test_locale_filter(self):
         eq_(num_results(locale='en-US'), 29)

@@ -9,7 +9,7 @@ from textcluster import Corpus, search
 
 from feedback.models import Opinion
 from input import (APP_USAGE, LATEST_BETAS, OPINION_PRAISE, OPINION_ISSUE,
-                   OPINION_IDEA, OS_USAGE)
+                   OPINION_IDEA, PLATFORM_USAGE)
 from themes.models import Theme, Item
 
 SIM_THRESHOLD = settings.CLUSTER_SIM_THRESHOLD
@@ -77,8 +77,8 @@ def cluster_by_platform(qs, app, feeling):
     dimensions = dict(product=app.id, feeling=feeling)
     save_result(result, dimensions)
 
-    for platform in OS_USAGE:
-        result = cluster_queryset(qs.filter(os=platform.short))
+    for platform in PLATFORM_USAGE:
+        result = cluster_queryset(qs.filter(platform=platform.short))
         dimensions['platform'] = platform.short
         save_result(result, dimensions)
 

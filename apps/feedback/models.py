@@ -8,7 +8,7 @@ import caching.base
 
 from feedback import query
 from feedback.utils import ua_parse, extract_terms, smart_truncate
-from input import APP_IDS, OPINION_TYPES, OPINION_PRAISE, OSES, RATING_USAGE
+from input import APP_IDS, OPINION_TYPES, OPINION_PRAISE, PLATFORMS, RATING_USAGE
 from input.models import ModelBase
 from input.urlresolvers import reverse
 
@@ -22,7 +22,7 @@ class OpinionManager(caching.base.CachingManager):
                           date_end=opt('date_end'))
 
         # apply other filters verbatim
-        for field in ('type', 'product', 'version', 'locale', 'os'):
+        for field in ('type', 'product', 'version', 'locale', 'platform'):
             if opt(field):
                 qs = qs.filter(**{field: opt(field)})
 
@@ -50,7 +50,7 @@ class Opinion(ModelBase):
                                    'agent string on save.'))
     product = models.PositiveSmallIntegerField(db_index=True)
     version = models.CharField(max_length=30, db_index=True)
-    os = models.CharField(max_length=30, db_index=True)
+    platform = models.CharField(max_length=30, db_index=True)
     locale = models.CharField(max_length=30, blank=True, db_index=True)
 
     # Mobile device information
@@ -85,11 +85,11 @@ class Opinion(ModelBase):
             return self.product
 
     @property
-    def os_name(self):
+    def platform_name(self):
         try:
-            return OSES[self.os].pretty
+            return PLATFORMS[self.platform].pretty
         except KeyError:
-            return self.os
+            return self.platform
 
     def save(self, terms=True, *args, **kwargs):
         # parse UA and stick it into separate fields
@@ -97,7 +97,7 @@ class Opinion(ModelBase):
         if parsed:
             self.product = parsed['browser'].id
             self.version = parsed['version']
-            self.os = parsed['os']
+            self.platform = parsed['platform']
 
         new = not self.pk
         super(Opinion, self).save(*args, **kwargs)

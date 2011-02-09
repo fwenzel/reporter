@@ -86,7 +86,7 @@ class SiteSummary(ModelBase):
     url = models.URLField(verify_exists=False, blank=True)
     version = models.CharField(max_length=30)
     positive = models.NullBooleanField()
-    os = models.CharField(max_length=30, null=True)
+    platform = models.CharField(max_length=30, null=True)
     size = models.PositiveIntegerField()
     issues_count = models.PositiveIntegerField()
     praise_count = models.PositiveIntegerField()

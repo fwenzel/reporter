@@ -118,7 +118,7 @@ class SearchFeed(Feed):
         categories = {
             'product': APP_IDS.get(item.product).short,
             'version': item.version,
-            'os': item.os,
+            'platform': item.platform,
             'locale': item.locale,
             'sentiment': OPINION_TYPES[item.type].short
         }
@@ -180,7 +180,7 @@ def get_period(form):
 @cache_page(use_get=True)
 def index(request):
     try:
-        meta = ('type', 'locale', 'os', 'day_sentiment', 'manufacturer',
+        meta = ('type', 'locale', 'platform', 'day_sentiment', 'manufacturer',
                 'device')
         (results, form, product, version, metas) = _get_results(
                 request, meta=meta)
@@ -212,7 +212,7 @@ def index(request):
 
         data['opinions'] = data['page'].object_list
         data['sent'] = get_sentiment(metas.get('type', {}))
-        data['demo'] = dict(locale=metas.get('locale'), os=metas.get('os'),
+        data['demo'] = dict(locale=metas.get('locale'), platform=metas.get('platform'),
                             manufacturer=metas.get('manufacturer'),
                             device=metas.get('device'))
         if days >= 7 or data['period'] == 'infin':
@@ -242,7 +242,7 @@ def index(request):
 def release(request):
     """Front page and search view for the release channel."""
     c = RatingsClient()
-    metas = ['os', 'locale']
+    metas = ['platform', 'locale']
 
     for dimension in input.RATING_TYPES.keys():
         metas.append(dimension)
@@ -280,7 +280,7 @@ def release(request):
         products=PROD_CHOICES,
         version=dict(form.fields['version'].choices).get(version or '--'),
         versions=VERSION_CHOICES['release'][product],
-        platforms=metas.get('os'),
+        platforms=metas.get('platform'),
         locales=metas.get('locale'),
         chart_json=json.dumps(ratings_chart),
         chart_categories=json.dumps(categories),

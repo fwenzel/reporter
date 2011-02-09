@@ -44,9 +44,9 @@
       <h3>{{ _('Platforms') }}</h3>
       <div>
         <ul>
-          <li>{{ button(form, 'os', '', label=_('All', 'sites_search_all_platforms'), title=_('All platforms')) }}</li>
-          {% for os in oses %}
-          <li>{{ button(form, 'os', os.short, label=os.short, title=os.pretty) }}</li>
+          <li>{{ button(form, 'platform', '', label=_('All', 'sites_search_all_platforms'), title=_('All platforms')) }}</li>
+          {% for platform in platforms %}
+          <li>{{ button(form, 'platform', platform.short, label=platform.short, title=platform.pretty) }}</li>
           {% endfor %}
         </ul>
       </div>

@@ -72,7 +72,7 @@ def export_tsv():
                     OPINION_TYPES.get(opinion.type).short,
                     getattr(APP_IDS.get(opinion.product), 'short', None),
                     opinion.version,
-                    opinion.os,
+                    opinion.platform,
                     opinion.locale,
                     opinion.manufacturer,
                     opinion.device,

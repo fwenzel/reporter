@@ -7,7 +7,7 @@ from website_issues.mapreduce import generate_sites
 
 class Command(BaseCommand):
     """
-    Build clusters per (site x version x os) from opinions read from a database
+    Build clusters per (site x version x platform) from opinions read from a database
     export.  A (normalized) 'site' is a set of all urls with the same
     "normalized" form:
 

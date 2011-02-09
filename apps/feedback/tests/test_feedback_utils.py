@@ -55,7 +55,7 @@ def test_ua_parse():
         if pattern[1]:
             eq_(parsed['browser'], pattern[1])
             eq_(parsed['version'], pattern[2])
-            eq_(parsed['os'], pattern[3])
+            eq_(parsed['platform'], pattern[3])
         else:
             assert parsed is None
 

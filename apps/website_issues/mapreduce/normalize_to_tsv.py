@@ -19,8 +19,8 @@ def positive(type):
     if type is None: return "NULL"
     return 1 if type == "praise" else 0
 
-def maybe_os(os):
-    return "NULL" if os is None else os
+def maybe_platform(platform):
+    return "NULL" if platform is None else platform 
 
 def normalize_to_tsv(source, sitesummaries, clusters, comments):
     """Converts python-repr-coded objects (emitted by our reducers) back into
@@ -30,7 +30,7 @@ def normalize_to_tsv(source, sitesummaries, clusters, comments):
        comments, clusters and sitesummaries are csv.writer-compatible objects
 
        The input column order is the one defined by the DenormalizingReducer:
-       > (version, site, os, type, s_id, s_size, s_sad_size, s_happy_size,
+       > (version, site, platform, type, s_id, s_size, s_sad_size, s_happy_size,
                            c_id, c_type, c_size, m_refid, m_id, message, score)
 
         The output column order corresponds to the table column order (see
@@ -40,13 +40,13 @@ def normalize_to_tsv(source, sitesummaries, clusters, comments):
     last_s_id = -1
     last_c_id = -1
     for key, value in source:
-        version, site, os, type, s_id, s_size, s_sad_size, s_happy_size, \
+        version, site, platform, type, s_id, s_size, s_sad_size, s_happy_size, \
             c_id, c_type, c_size, m_refid, m_id, message, score = value
         if c_id != last_c_id:
             if s_id != last_s_id:
                 last_s_id = s_id
                 _put(sitesummaries, [s_id, site, version, positive(type),
-                                     maybe_os(os), s_size, s_sad_size,
+                                     maybe_platform(platform), s_size, s_sad_size,
                                      s_happy_size])
             last_c_id = c_id
             _put(clusters, [c_id, s_id, c_size, message, m_refid,
@@ -56,7 +56,7 @@ def normalize_to_tsv(source, sitesummaries, clusters, comments):
 
 def _normalize(source, dest_dir):
     names = ("sitesummaries.tsv", "clusters.tsv", "comments.tsv")
-    files = [open(os.path.join(dest_dir, name), "w+") for name in names]
+    files = [open(platform.path.join(dest_dir, name), "w+") for name in names]
     normalize_to_tsv(source, *[writer(f) for f in files])
 
 def normalize_unix(source, dest_dir):

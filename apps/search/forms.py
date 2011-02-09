@@ -7,7 +7,7 @@ from product_details import product_details
 from tower import ugettext_lazy as _lazy
 
 from feedback.version_compare import simplify_version, version_int
-from input import (FIREFOX, MOBILE, OS_USAGE, LATEST_VERSION, KNOWN_DEVICES,
+from input import (FIREFOX, MOBILE, PLATFORM_USAGE, LATEST_VERSION, KNOWN_DEVICES,
                    KNOWN_MANUFACTURERS, get_channel)
 from input.fields import DateInput, SearchInput
 
@@ -39,8 +39,8 @@ SENTIMENT_CHOICES = [('', _lazy('-- all --', 'sentiment_choice')),
 ]
 SENTIMENTS = ('happy', 'sad', 'ideas')
 
-OS_CHOICES = ([('', _lazy('-- all --', 'os_choice'))] +
-              [(o.short, o.pretty) for o in OS_USAGE])
+PLATFORM_CHOICES = ([('', _lazy('-- all --', 'platform_choice'))] +
+              [(p.short, p.pretty) for p in PLATFORM_USAGE])
 
 MANUFACTURER_CHOICES = [('Unknown', _lazy('Unknown'))] + [(m, m) for m in
                                                           KNOWN_MANUFACTURERS]
@@ -65,8 +65,8 @@ class ReporterSearchForm(forms.Form):
                                   choices=SENTIMENT_CHOICES)
     locale = forms.ChoiceField(required=False, label=_lazy('Locale:'),
                                choices=LOCALE_CHOICES)
-    os = forms.ChoiceField(required=False, label=_lazy('OS:'),
-                           choices=OS_CHOICES)
+    platform = forms.ChoiceField(required=False, label=_lazy('PLATFORM:'),
+                           choices=PLATFORM_CHOICES)
     manufacturer = forms.ChoiceField(required=False,
                                      choices=MANUFACTURER_CHOICES)
     device = forms.ChoiceField(required=False, choices=DEVICE_CHOICES)

@@ -8,7 +8,7 @@ from django.utils.translation.trans_real import parse_accept_lang_header
 from product_details import product_details
 from topia.termextract import extract
 
-from input import BROWSERS, OS_OTHER, OS_PATTERNS
+from input import BROWSERS, PLATFORM_OTHER, PLATFORM_PATTERNS 
 
 
 def ua_parse(ua):
@@ -18,7 +18,7 @@ def ua_parse(ua):
     returns {
         browser: .FIREFOX or .MOBILE,
         version: '3.6b4' or similar,
-        os: one of ('mac', 'win', 'android', 'maemo', 'linux', 'other'),
+        platform: one of ('mac', 'win', 'android', 'maemo', 'linux', 'other'),
         locale: locale code matching locale_details, else None
         }
     or None if detection failed.
@@ -41,13 +41,13 @@ def ua_parse(ua):
     if not detected:
         return None
 
-    # Detect OS
-    os = OS_OTHER.short
-    for pattern in OS_PATTERNS:
+    # Detect Platform 
+    platform = PLATFORM_OTHER.short
+    for pattern in PLATFORM_PATTERNS:
         if ua.find(pattern[0]) >= 0:
-            os = pattern[1]
+            platform = pattern[1]
             break
-    detected['os'] = os
+    detected['platform'] = platform 
 
     return detected
 _ua_parse_cache = {}

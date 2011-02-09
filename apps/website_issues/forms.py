@@ -6,10 +6,10 @@ from django.forms import (CharField, ChoiceField, BooleanField, HiddenInput,
 
 from tower import ugettext_lazy as _lazy
 
-from input import OSES, APPS, FIREFOX, MOBILE, get_channel
+from input import PLATFORMS, APPS, FIREFOX, MOBILE, get_channel
 from input.fields import SearchInput
 from feedback.version_compare import simplify_version
-from search.forms import (SENTIMENT_CHOICES, OS_CHOICES, PROD_CHOICES,
+from search.forms import (SENTIMENT_CHOICES, PLATFORM_CHOICES, PROD_CHOICES,
                           VERSION_CHOICES)
 
 
@@ -49,7 +49,7 @@ FIELD_DEFS = {
                          VERSION_CHOICES[get_channel()][FIREFOX][0][0],
                          choices=VERSION_CHOICES[get_channel()][FIREFOX]),
     "product": field_def(ChoiceField, FIREFOX.short, choices=PROD_CHOICES),
-    "os": field_def(ChoiceField, "", choices=OS_CHOICES),
+    "platform": field_def(ChoiceField, "", choices=PLATFORM_CHOICES),
     "show_one_offs": field_def(BooleanField, False),
     "page": field_def(IntegerField, 1),
     "site": field_def(IntegerField, None),
@@ -63,7 +63,7 @@ class WebsiteIssuesSearchForm(forms.Form):
     q = FIELD_DEFS['q'].field
     sentiment = FIELD_DEFS['sentiment'].field
     product = FIELD_DEFS['product'].field
-    os = FIELD_DEFS['os'].field
+    platform = FIELD_DEFS['platform'].field
     version = FIELD_DEFS['version'].field
     show_one_offs = FIELD_DEFS['show_one_offs'].field
 
@@ -111,11 +111,11 @@ class WebsiteIssuesSearchForm(forms.Form):
                     and cleaned.get(field_name) not in field_def.keys:
                 cleaned[field_name] = field_def.default
 
-        if cleaned.get('product') and cleaned.get('os'):
+        if cleaned.get('product') and cleaned.get('platform'):
             product = APPS[cleaned.get('product')]
-            possible_oses = [os for os in OSES.values() if product in os.apps]
-            if OSES[cleaned.get('os')] not in possible_oses:
-                cleaned['os'] = FIELD_DEFS['os'].default
+            possible_platforms = [platform for platform in PLATFORMS.values() if product in platform.apps]
+            if PLATFORMS[cleaned.get('platform')] not in possible_platforms:
+                cleaned['platform'] = FIELD_DEFS['platform'].default
 
         if not cleaned.get('version'):
             product = cleaned.get('product', FIREFOX)

@@ -17,7 +17,7 @@
             opinion.created|timesince }}</time>
           </a>
         </li>
-        <li><a href="{{ search_url(os=opinion.os, defaults=defaults) }}">{{ os_name(opinion.os) }}</a></li>
+        <li><a href="{{ search_url(platform=opinion.platform, defaults=defaults) }}">{{ platform_name(opinion.platform) }}</a></li>
         <li><a href="{{ search_url(locale=opinion.locale, defaults=defaults) }}">{{ locale_name(opinion.locale) }}</a></li>
         {% if opinion.url %}
           <li><a href="{{ opinion.url }}" rel="nofollow">{{ opinion.url|without_protocol }}</a></li>

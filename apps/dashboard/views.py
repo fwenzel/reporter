@@ -40,12 +40,12 @@ def beta(request):
 
     # Sites clusters
     sites = SiteSummary.objects.filter(version__exact=version).filter(
-        positive__exact=None).filter(os__exact=None)[:settings.TRENDS_COUNT]
+        positive__exact=None).filter(platform__exact=None)[:settings.TRENDS_COUNT]
 
     try:
         c = Client()
         search_opts = dict(product=app.short, version=version)
-        c.query('', meta=('type', 'locale', 'os', 'day_sentiment'),
+        c.query('', meta=('type', 'locale', 'platform', 'day_sentiment'),
                 **search_opts)
         metas = c.meta
         daily = c.meta.get('day_sentiment', {})
@@ -68,7 +68,7 @@ def beta(request):
             'sentiments': get_sentiment(metas.get('type', [])),
             'terms': stats.frequent_terms(qs=frequent_terms),
             'locales': metas.get('locale'),
-            'platforms': metas.get('os'),
+            'platforms': metas.get('platform'),
             'sites': sites,
             'version': version,
             'versions': VERSION_CHOICES['beta'][app],

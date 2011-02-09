@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 import jingo
 from tower import ugettext as _
 
-from input import APPS, OSES, FIREFOX, APP_USAGE
+from input import APPS, PLATFORMS, FIREFOX, APP_USAGE
 from input.decorators import cache_page
 from input.helpers import urlparams
 from input.urlresolvers import reverse
@@ -58,7 +58,7 @@ def _get_platforms(request, product, platform):
     for p in platforms_from_db:
         if not p:
             continue
-        f = Filter(urlparams(url, p=p), p, OSES[p].pretty,
+        f = Filter(urlparams(url, p=p), p, PLATFORMS[p].pretty,
                    (platform == p))
         platforms.append(f)
 

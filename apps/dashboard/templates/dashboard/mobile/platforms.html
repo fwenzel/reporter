@@ -1,6 +1,6 @@
-{% macro os_item(os, count=0, selected=False) %}
-{{ mobile_bar(name='os', id='os_%s' % os, value=os, selected=selected,
-              count=count, total=opinion_count, label=os_name(os)) }}
+{% macro platform_item(platform, count=0, selected=False) %}
+{{ mobile_bar(name='platform', id='platform_%s' % platform, value=platform, selected=selected,
+              count=count, total=opinion_count, label=platform_name(platform)) }}
 {% endmacro %}
 
 {% if platforms %}
@@ -9,11 +9,11 @@
 
   <ul class="collapsee filters bars">
 
-    {% if defaults['os'] %}
-      {{ os_item(defaults['os'], selected=True) }}
+    {% if defaults['platform'] %}
+      {{ platform_item(defaults['platform'], selected=True) }}
     {% else %}
       {% for item in platforms %}
-        {{ os_item(item.os, item.count) }}
+        {{ platform_item(item.platform, item.count) }}
       {% endfor %}
     {% endif %}
   </ul>

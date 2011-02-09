@@ -59,23 +59,23 @@ class TestMobileDashboard(test_utils.TestCase):
 
 
 class TestHelpers(TestCase):
-    def test_os_none(self):
-        """Test that OS with no name does not crash platform helper."""
+    def test_platform_none(self):
+        """Test that PLATFORM with no name does not crash platform helper."""
 
-        class TestOS(object):
-            """Test OS with no name."""
-            os = None
+        class TestPLATFORM(object):
+            """Test PLATFORM with no name."""
+            platform = None
             count = 10
 
         ctx = {
-            'defaults': {'os': None},
-            'platforms': (TestOS(),),
+            'defaults': {'platform': None},
+            'platforms': (TestPLATFORM(),),
             'opinion_count': 20
         }
 
         # No error, please.
         tpl = render_template('dashboard/mobile/platforms.html', ctx)
-        assert tpl.find('id="os_None"') >= 0
+        assert tpl.find('id="platform_None"') >= 0
 
     def test_locale_none(self):
         """Test that locale with no name does not crash locale helper."""

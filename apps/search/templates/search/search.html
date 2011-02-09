@@ -30,7 +30,7 @@
 
     {# TODO URL provided box #}
 
-    {{ platforms_block(demo.os, opinion_count, defaults=defaults) }}
+    {{ platforms_block(demo.platform, opinion_count, defaults=defaults) }}
     {% if product.short == 'mobile' %}
       {{ manufacturer_block(demo.manufacturer, opinion_count,
                             defaults=defaults) }}

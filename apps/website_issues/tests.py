@@ -66,9 +66,9 @@ class TestHelpers(test_utils.TestCase):
 
 class TestViews(test_utils.TestCase):
 
-    def test_invalid_os(self):
-        """Bogus os must not confuse us: we are bogus-compatible."""
+    def test_invalid_platform(self):
+        """Bogus platform must not confuse us: we are bogus-compatible."""
         r = self.client.get(reverse('website_issues', channel='beta'),
-                            {"os": "bogus"})
+                            {"platform": "bogus"})
         eq_(r.status_code, 200)
         assert_true(len(r.content) > 0)

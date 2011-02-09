@@ -267,13 +267,13 @@ class LINUX:
     apps = set((FIREFOX,))
 
 
-class OS_OTHER:
+class PLATFORM_OTHER:
     pretty = _(u'Other')
     short = 'other'
     ua_pattern = None
     apps = set((FIREFOX, MOBILE))
 
-OS_USAGE = _oses = (WINDOWS_XP, WINDOWS_VISTA, WINDOWS_7, OSX, MAEMO, ANDROID,
-                    LINUX)
-OS_PATTERNS = [(o.ua_pattern, o.short) for o in OS_USAGE]
-OSES = dict((os.short, os) for os in _oses)
+PLATFORM_USAGE = _platforms = (WINDOWS_XP, WINDOWS_VISTA, WINDOWS_7, OSX, MAEMO, 
+                               ANDROID, LINUX)
+PLATFORM_PATTERNS = [(p.ua_pattern, p.short) for p in PLATFORM_USAGE]
+PLATFORMS = dict((platform.short, platform) for platform in _platforms)

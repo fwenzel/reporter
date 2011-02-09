@@ -12,7 +12,7 @@ from product_details import product_details
 from tower import ugettext as _
 
 from input import (KNOWN_DEVICES, KNOWN_MANUFACTURERS, RATING_USAGE,
-                   OPINION_PRAISE, OPINION_IDEA, OS_USAGE)
+                   OPINION_PRAISE, OPINION_IDEA, PLATFORM_USAGE)
 from input.utils import crc32, manual_order
 from feedback.models import Opinion
 
@@ -58,7 +58,7 @@ def extract_filters(kwargs):
     if kwargs.get('type'):
         metas['type'] = kwargs['type']
 
-    for meta in ('os', 'manufacturer', 'device'):
+    for meta in ('platform', 'manufacturer', 'device'):
         val = kwargs.get(meta)
         if val and val.lower() == 'unknown':
             # In this situation 'unknown' usually means empty.
@@ -139,8 +139,8 @@ class Client(object):
             self.meta['type'] = self._type_meta(results, **kwargs)
         if 'locale' in metas:
             self.meta['locale'] = self._locale_meta(results, **kwargs)
-        if 'os' in metas:
-            self.meta['os'] = self._os_meta(results, **kwargs)
+        if 'platform' in metas:
+            self.meta['platform'] = self._platform_meta(results, **kwargs)
         if 'manufacturer' in metas:
             self.meta['manufacturer'] = self._manufacturer_meta(results,
                                                                 **kwargs)
@@ -239,10 +239,10 @@ class Client(object):
         result = results[self.queries['type']]
         return [(f['attrs']) for f in result.get('matches', [])]
 
-    def _os_meta(self, results, **kwargs):
-        result = results[self.queries['os']]
-        t = dict(((crc32(f.short), f.short) for f in OS_USAGE))
-        return [dict(count=f['attrs']['count'], os=t.get(f['attrs']['os']))
+    def _platform_meta(self, results, **kwargs):
+        result = results[self.queries['platform']]
+        t = dict(((crc32(f.short), f.short) for f in PLATFORM_USAGE))
+        return [dict(count=f['attrs']['count'], platform=t.get(f['attrs']['platform']))
                 for f in result['matches']]
 
     def _manufacturer_meta(self, results, **kwargs):
