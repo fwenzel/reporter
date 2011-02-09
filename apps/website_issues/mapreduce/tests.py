@@ -98,6 +98,8 @@ class TestTasks(test_utils.TestCase):
 
     def test_comment_clustering_reducer(self):
         pairs = self._clusters()
+        # first cluster must have size 3
+        eq_(pairs[0][0][-1], 3)
         eq_(len(pairs), 258)
 
     # mapreduce iteration 2
