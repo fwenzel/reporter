@@ -5,9 +5,9 @@ from django.conf import settings
 
 from jingo import register
 import jinja2
+from product_details.version_compare import Version
 
 from input import LATEST_VERSION, get_channel
-from feedback.version_compare import simplify_version
 from search.forms import VERSION_CHOICES
 
 
@@ -113,7 +113,7 @@ def themes_block(context, themes, defaults=None):
 @register.inclusion_tag('dashboard/products.html')
 @jinja2.contextfunction
 def products_block(context, products, product):
-    latest_versions = dict((app.short, simplify_version(v)) for app, v in
+    latest_versions = dict((app.short, Version(v).simplified) for app, v in
                             LATEST_VERSION().items())
     version_choices = {}
     for app in VERSION_CHOICES[get_channel()]:

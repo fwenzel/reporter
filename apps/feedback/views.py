@@ -8,6 +8,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.vary import vary_on_headers
 
 import jingo
+from product_details.version_compare import Version
 from tower import ugettext as _
 
 import input
@@ -17,7 +18,6 @@ from feedback.forms import (PraiseForm, IssueForm, IdeaForm,
                             BrokenWebsiteForm, RatingForm, IdeaReleaseForm)
 from feedback.models import Opinion, Rating
 from feedback.utils import detect_language, ua_parse
-from feedback.version_compare import Version
 
 
 def enforce_ua(beta):

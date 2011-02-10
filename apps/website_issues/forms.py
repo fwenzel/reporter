@@ -8,7 +8,6 @@ from tower import ugettext_lazy as _lazy
 
 from input import PLATFORMS, PRODUCTS, FIREFOX, MOBILE, get_channel
 from input.fields import SearchInput
-from feedback.version_compare import simplify_version
 from search.forms import (SENTIMENT_CHOICES, PLATFORM_CHOICES, PROD_CHOICES,
                           VERSION_CHOICES)
 

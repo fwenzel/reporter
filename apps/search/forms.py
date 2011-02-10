@@ -4,9 +4,9 @@ from django.conf import settings
 from django import forms
 
 from product_details import product_details
+from product_details.version_compare import Version
 from tower import ugettext_lazy as _lazy
 
-from feedback.version_compare import simplify_version, version_int
 from input import (FIREFOX, MOBILE, PLATFORM_USAGE, LATEST_VERSION, KNOWN_DEVICES,
                    KNOWN_MANUFACTURERS, get_channel)
 from input.fields import DateInput, SearchInput
@@ -115,7 +115,7 @@ class ReporterSearchForm(forms.Form):
             cleaned['page'] = 1
 
         if not cleaned.get('version'):
-            cleaned['version'] = simplify_version(LATEST_VERSION()[FIREFOX])
+            cleaned['version'] = Version(LATEST_VERSION()[FIREFOX]).simplified
         elif cleaned['version'] == '--':
             cleaned['version'] = ''
 

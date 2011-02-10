@@ -1,10 +1,10 @@
 from django.conf import settings
 
 from product_details import product_details
+from product_details.version_compare import version_list
 from tower import ugettext_lazy as _
 
 from input import urlresolvers
-from feedback.version_compare import version_list
 
 
 def get_channel():
@@ -273,7 +273,7 @@ class PLATFORM_OTHER:
     ua_pattern = None
     apps = set((FIREFOX, MOBILE))
 
-PLATFORM_USAGE = _platforms = (WINDOWS_XP, WINDOWS_VISTA, WINDOWS_7, OSX, MAEMO, 
+PLATFORM_USAGE = _platforms = (WINDOWS_XP, WINDOWS_VISTA, WINDOWS_7, OSX, MAEMO,
                                ANDROID, LINUX)
 PLATFORM_PATTERNS = [(p.ua_pattern, p.short) for p in PLATFORM_USAGE]
 PLATFORMS = dict((platform.short, platform) for platform in _platforms)
