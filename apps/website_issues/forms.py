@@ -6,7 +6,7 @@ from django.forms import (CharField, ChoiceField, BooleanField, HiddenInput,
 
 from tower import ugettext_lazy as _lazy
 
-from input import PLATFORMS, APPS, FIREFOX, MOBILE, get_channel
+from input import PLATFORMS, PRODUCTS, FIREFOX, MOBILE, get_channel
 from input.fields import SearchInput
 from feedback.version_compare import simplify_version
 from search.forms import (SENTIMENT_CHOICES, PLATFORM_CHOICES, PROD_CHOICES,
@@ -112,7 +112,7 @@ class WebsiteIssuesSearchForm(forms.Form):
                 cleaned[field_name] = field_def.default
 
         if cleaned.get('product') and cleaned.get('platform'):
-            product = APPS[cleaned.get('product')]
+            product = PRODUCTS[cleaned.get('product')]
             possible_platforms = [platform for platform in PLATFORMS.values() if product in platform.apps]
             if PLATFORMS[cleaned.get('platform')] not in possible_platforms:
                 cleaned['platform'] = FIELD_DEFS['platform'].default

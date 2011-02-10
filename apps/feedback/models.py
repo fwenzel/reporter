@@ -8,7 +8,7 @@ import caching.base
 
 from feedback import query
 from feedback.utils import ua_parse, extract_terms, smart_truncate
-from input import APP_IDS, OPINION_TYPES, OPINION_PRAISE, PLATFORMS, RATING_USAGE
+from input import PRODUCT_IDS, OPINION_TYPES, OPINION_PRAISE, PLATFORMS, RATING_USAGE
 from input.models import ModelBase
 from input.urlresolvers import reverse
 
@@ -80,7 +80,7 @@ class Opinion(ModelBase):
     @property
     def product_name(self):
         try:
-            return APP_IDS[self.product].pretty
+            return PRODUCT_IDS[self.product].pretty
         except KeyError:
             return self.product
 

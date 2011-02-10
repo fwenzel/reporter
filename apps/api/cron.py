@@ -8,7 +8,7 @@ from django.conf import settings
 
 import cronjobs
 
-from input import APP_IDS
+from input import PRODUCT_IDS
 from feedback.models import Opinion, Rating
 from input import OPINION_RATING, OPINION_TYPES, RATING_IDS
 
@@ -70,7 +70,7 @@ def export_tsv():
                     opinion.id,
                     int(mktime(opinion.created.timetuple())),
                     OPINION_TYPES.get(opinion.type).short,
-                    getattr(APP_IDS.get(opinion.product), 'short', None),
+                    getattr(PRODUCT_IDS.get(opinion.product), 'short', None),
                     opinion.version,
                     opinion.platform,
                     opinion.locale,

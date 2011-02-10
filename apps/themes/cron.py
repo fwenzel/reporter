@@ -8,7 +8,7 @@ import cronjobs
 from textcluster import Corpus, search
 
 from feedback.models import Opinion
-from input import (APP_USAGE, LATEST_BETAS, OPINION_PRAISE, OPINION_ISSUE,
+from input import (PRODUCT_USAGE, LATEST_BETAS, OPINION_PRAISE, OPINION_ISSUE,
                    OPINION_IDEA, PLATFORM_USAGE)
 from themes.models import Theme, Item
 
@@ -53,7 +53,7 @@ def cluster():
 
 
 def cluster_by_product(qs):
-    for app in APP_USAGE:
+    for app in PRODUCT_USAGE:
         log.debug('Clustering %s(%s)' %
                   (unicode(app.pretty), LATEST_BETAS[app]))
         qs_product = qs.filter(product=app.id, version=LATEST_BETAS[app])

@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 
 import jingo
 
-from input import FIREFOX, MOBILE, PLATFORMS, APPS, get_channel
+from input import FIREFOX, MOBILE, PLATFORMS, PRODUCTS, get_channel
 from input.decorators import cache_page
 from feedback.models import Opinion
 from search.forms import PROD_CHOICES
@@ -31,7 +31,7 @@ def _fetch_summaries(form, url=None, count=None, one_offs=False):
     platform = None
     if search_opts["platform"] != '': platform = search_opts["platform"]
     if platform is None and search_opts["product"]:
-        product = APPS[search_opts["product"]].short
+        product = PRODUCTS[search_opts["product"]].short
         qs = qs.filter(platform__exact='<%s>' % product)
     else:
         qs = qs.filter(platform__exact=platform)
@@ -69,7 +69,7 @@ def _common_data(form):
     platforms = PLATFORMS.values()
     product_name = form.cleaned_data["product"]
     if product_name:
-        product = APPS[product_name]
+        product = PRODUCTS[product_name]
         platforms = [platform for platform in platforms if product in platform.apps]
     return {"form": form,
             "platforms": platforms,

@@ -12,7 +12,7 @@ from tower import ugettext as _, ugettext_lazy as _lazy
 
 import input
 from feedback.version_compare import simplify_version
-from input import (APPS, APP_IDS, FIREFOX, MOBILE, LATEST_RELEASE,
+from input import (PRODUCTS, PRODUCT_IDS, FIREFOX, MOBILE, LATEST_RELEASE,
                    LATEST_BETAS, LATEST_VERSION, OPINION_PRAISE, OPINION_ISSUE,
                    OPINION_IDEA, OPINION_TYPES)
 from input.decorators import cache_page
@@ -41,7 +41,7 @@ def _get_results(request, meta=[], client=None):
         version = simplify_version(LATEST_VERSION()[product])
         metas = {}
 
-    product = APPS.get(product, FIREFOX)
+    product = PRODUCTS.get(product, FIREFOX)
 
     return (opinions, form, product, version, metas)
 
@@ -49,7 +49,7 @@ def _get_results(request, meta=[], client=None):
 def _get_results_opts(request, data, product, meta=[]):
     """Prepare the search options for the Sphinx query"""
     search_opts = data
-    search_opts['product'] = APPS[product].id
+    search_opts['product'] = PRODUCTS[product].id
     search_opts['meta'] = meta
     search_opts['offset'] = ((data.get('page', 1) - 1) *
                              settings.SEARCH_PERPAGE)
@@ -116,7 +116,7 @@ class SearchFeed(Feed):
     def item_categories(self, item):
         """Categorize comments. Style: "product:firefox" etc."""
         categories = {
-            'product': APP_IDS.get(item.product).short,
+            'product': PRODUCT_IDS.get(item.product).short,
             'version': item.version,
             'platform': item.platform,
             'locale': item.locale,

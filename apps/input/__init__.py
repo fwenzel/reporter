@@ -185,9 +185,9 @@ class MOBILE:
         hide_below='4.0'
     )
 
-APP_USAGE = _apps = (FIREFOX, MOBILE)
-APPS = dict((app.short, app) for app in _apps)
-APP_IDS = dict((app.id, app) for app in _apps)
+PRODUCT_USAGE = _apps = (FIREFOX, MOBILE)
+PRODUCTS = dict((app.short, app) for app in _apps)
+PRODUCT_IDS = dict((app.id, app) for app in _apps)
 
 UA_PATTERN_FIREFOX = (
     r'^Mozilla.*(Firefox|Minefield|Namoroka|Shiretoko|GranParadiso|BonEcho|'
