@@ -60,7 +60,7 @@
 
 <div id="stats">
   <form id="filters" method="get" action="{{ url('search') }}">
-    <input type="hidden" name="product" value="{{ request.default_app.short }}" />
+    <input type="hidden" name="product" value="{{ request.default_prod.short }}" />
 
     {{ overview_block(sent, defaults=defaults) }}
 

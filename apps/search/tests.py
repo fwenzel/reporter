@@ -469,9 +469,9 @@ def test_get_results(is_valid):
     is_valid.return_value = False
     request = Mock()
     request.GET = {}
-    request.default_app = FIREFOX
+    request.default_prod = FIREFOX
     r = views._get_results(request)
-    eq_(r[2], request.default_app)
+    eq_(r[2], request.default_prod)
 
 
 def test_date_filter_timezone():

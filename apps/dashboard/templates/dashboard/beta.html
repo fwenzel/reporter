@@ -14,7 +14,7 @@
     <h2>{{ _('Latest Feedback') }}</h2>
 
     <form id="kw-search" method="get" action="{{ url('search') }}">
-      <input type="hidden" name="product" value="{{ request.default_app.short }}" />
+      <input type="hidden" name="product" value="{{ request.default_prod.short }}" />
       {{ search_form.q }}
     </form>
 

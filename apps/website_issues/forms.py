@@ -112,7 +112,7 @@ class WebsiteIssuesSearchForm(forms.Form):
 
         if cleaned.get('product') and cleaned.get('platform'):
             product = PRODUCTS[cleaned.get('product')]
-            possible_platforms = [platform for platform in PLATFORMS.values() if product in platform.apps]
+            possible_platforms = [platform for platform in PLATFORMS.values() if product in platform.prods]
             if PLATFORMS[cleaned.get('platform')] not in possible_platforms:
                 cleaned['platform'] = FIELD_DEFS['platform'].default
 

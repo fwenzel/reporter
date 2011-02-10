@@ -3,11 +3,11 @@ import json
 from django.conf import settings
 
 import jingo
-from product_details.version_compare import Version
 from tower import ugettext as _
 
 from feedback import stats
 from feedback.models import Opinion, Term
+from feedback.version_compare import simplify_version
 from input import LATEST_BETAS
 from input.decorators import cache_page, forward_mobile, negotiate
 from search.client import Client, SearchError
@@ -21,13 +21,13 @@ from website_issues.models import SiteSummary
 def beta(request):
     """Beta dashboard."""
     # Defaults
-    app = request.default_app
-    version = Version(LATEST_BETAS[app]).simplified
+    prod = request.default_prod
+    version = simplify_version(LATEST_BETAS[prod])
 
     search_form = ReporterSearchForm()
     # Frequent terms
     term_params = {
-        'product': app.id,
+        'product': prod.id,
         'version': version,
     }
 
@@ -36,7 +36,7 @@ def beta(request):
 
     # opinions queryset for demographics
     latest_opinions = Opinion.objects.browse(**term_params)
-    latest_beta = Opinion.objects.filter(version=version, product=app.id)
+    latest_beta = Opinion.objects.filter(version=version, product=prod.id)
 
     # Sites clusters
     sites = SiteSummary.objects.filter(version__exact=version).filter(
@@ -44,7 +44,7 @@ def beta(request):
 
     try:
         c = Client()
-        search_opts = dict(product=app.short, version=version)
+        search_opts = dict(product=prod.short, version=version)
         c.query('', meta=('type', 'locale', 'platform', 'day_sentiment'),
                 **search_opts)
         metas = c.meta
@@ -63,7 +63,7 @@ def beta(request):
 
     data = {'opinions': latest_opinions.all()[:settings.MESSAGES_COUNT],
             'opinion_count': total,
-            'product': app,
+            'product': prod,
             'products': PROD_CHOICES,
             'sentiments': get_sentiment(metas.get('type', [])),
             'terms': stats.frequent_terms(qs=frequent_terms),
@@ -71,7 +71,7 @@ def beta(request):
             'platforms': metas.get('platform'),
             'sites': sites,
             'version': version,
-            'versions': VERSION_CHOICES['beta'][app],
+            'versions': VERSION_CHOICES['beta'][prod],
             'chart_data_json': json.dumps(chart_data),
             'defaults': get_defaults(search_form),
             'search_form': search_form,

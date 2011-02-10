@@ -70,7 +70,7 @@ def _common_data(form):
     product_name = form.cleaned_data["product"]
     if product_name:
         product = PRODUCTS[product_name]
-        platforms = [platform for platform in platforms if product in platform.apps]
+        platforms = [platform for platform in platforms if product in platform.prods]
     return {"form": form,
             "platforms": platforms,
             "products": form.fields["product"].choices,

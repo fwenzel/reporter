@@ -130,7 +130,7 @@ class TestHelpers(TestCase):
         ms = [site]
         req = self.factory.get('/')
         req.mobile_site = True
-        req.default_app = input.FIREFOX
+        req.default_prod = input.FIREFOX
         r = render('{{ sites_block(ms) }}', dict(ms=ms, request=req))
         doc = pq(r)
         eq_(doc('label').text(), 'youtube.com')

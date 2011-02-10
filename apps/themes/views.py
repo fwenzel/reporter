@@ -69,9 +69,9 @@ def _get_products(request, product):
     products = []
     url = request.get_full_path()
 
-    for app in PRODUCT_USAGE:
-        f = Filter(urlparams(url, a=app.short), app.pretty, app.pretty,
-                   (product == app.short))
+    for prod in PRODUCT_USAGE:
+        f = Filter(urlparams(url, a=prod.short), prod.pretty, prod.pretty,
+                   (product == prod.short))
         products.append(f)
 
     return products
