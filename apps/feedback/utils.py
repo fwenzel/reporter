@@ -8,7 +8,7 @@ from django.utils.translation.trans_real import parse_accept_lang_header
 from product_details import product_details
 from topia.termextract import extract
 
-from input import BROWSERS, PLATFORM_OTHER, PLATFORM_PATTERNS 
+from input import BROWSERS, PLATFORM_OTHER, PLATFORM_PATTERNS
 
 
 def ua_parse(ua):
@@ -41,13 +41,13 @@ def ua_parse(ua):
     if not detected:
         return None
 
-    # Detect Platform 
+    # Detect Platform
     platform = PLATFORM_OTHER.short
     for pattern in PLATFORM_PATTERNS:
         if ua.find(pattern[0]) >= 0:
             platform = pattern[1]
             break
-    detected['platform'] = platform 
+    detected['platform'] = platform
 
     return detected
 _ua_parse_cache = {}

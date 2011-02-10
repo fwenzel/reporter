@@ -3,7 +3,7 @@ from dumbo.lib import identitymapper, identityreducer
 
 # Prepare the job environment. This is like manage.py, but for dumbo jobs.
 # The PYTHONPATH for the app needs to be set in the environment.
-try: 
+try:
     try: import settings_local as settings
     except ImportError: import settings
 except ImportError:

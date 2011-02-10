@@ -35,6 +35,6 @@ class Command(BaseCommand):
     )
 
     def handle(self, *args, **options):
-        return generate_sites(options["source"], 
-                              options["skip_load"], 
+        return generate_sites(options["source"],
+                              options["skip_load"],
                               options["only_clean"])

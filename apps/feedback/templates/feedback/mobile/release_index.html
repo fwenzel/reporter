@@ -35,7 +35,7 @@
 
   <section class="inset"><form action="#thanks" method="post">
     {{ csrf() }}
-    
+
     {% for question in RATING_USAGE %}
     <div class="aspects">
       <div class="aspect">
@@ -50,7 +50,7 @@
       </div>
     </div>
     {% endfor %}
-  
+
     {% for hidden in rating_form.hidden_fields() %}
       {{ hidden }}
       {% if hidden.errors %}
@@ -58,9 +58,9 @@
         {{ hidden.errors }}
       {% endif %}
     {% endfor %}
-    
+
     {{ rating_form.errors['__all__'] }}
-  
+
     <div class="submit">
       <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>
       <noscript><button type="submit">{{ _('Submit Feedback') }}</button></noscript>
@@ -109,7 +109,7 @@
         {{ hidden.errors }}
       {% endif %}
     {% endfor %}
-    
+
     {{ website_form.errors['__all__'] }}
 
     <div class="submit">
@@ -186,7 +186,7 @@
          <strong>{{ _('Feedback Dashboard') }}</strong>
        </span>
      </a></li>
-   
+
      <li><a id="thanks-twitter" href="http://twitter.com/MozMobile">
        <em class="icon"></em>
        <span>
@@ -194,7 +194,7 @@
          <strong>{{ _('@MozMobile') }}</strong>
        </span>
      </a></li>
-   
+
      <li><a id="thanks-facebook" href="http://www.facebook.com/firefoxformobile">
        <em class="icon"></em>
        <span>
@@ -202,7 +202,7 @@
          <strong>{{ _('Firefox on Facebook') }}</strong>
        </span>
      </a></li>
-   
+
      <li><a id="thanks-planet" href="http://planet.mozilla.org">
        <em class="icon"></em>
        <span>

@@ -20,7 +20,7 @@ def positive(type):
     return 1 if type == "praise" else 0
 
 def maybe_platform(platform):
-    return "NULL" if platform is None else platform 
+    return "NULL" if platform is None else platform
 
 def normalize_to_tsv(source, sitesummaries, clusters, comments):
     """Converts python-repr-coded objects (emitted by our reducers) back into
