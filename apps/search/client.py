@@ -2,6 +2,7 @@ import os
 import re
 import socket
 import time
+from calendar import timegm
 from collections import defaultdict
 from datetime import timedelta, date
 from operator import itemgetter
@@ -74,12 +75,21 @@ def extract_filters(kwargs):
             filters['locale'] = crc32(kwargs['locale'])
 
     if kwargs.get('date_start'):
-        start = int(time.mktime(kwargs['date_start'].timetuple()))
+        start = time_as_int(kwargs['date_start'], utc=kwargs.get('utc'))
         end_date = (kwargs.get('date_end') or date.today()) + timedelta(days=1)
-        end = int(time.mktime(end_date.timetuple()))
+        end = time_as_int(end_date)
         ranges['created'] = (start, end)
 
     return (filters, ranges, metas)
+
+
+def time_as_int(date, utc=False):
+    """
+    Converts a date or datetime object to a unixtimestamp.  ``utc=True``
+    interprets the input as a UTC based timestamp.
+    """
+    t = date.timetuple()
+    return int(timegm(t) if utc else time.mktime(t))
 
 
 class SearchError(Exception):
