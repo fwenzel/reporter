@@ -37,7 +37,7 @@ admin.site.register(Opinion, OpinionAdmin)
 
 
 class RatingAdmin(admin.ModelAdmin):
-    date_hierarchy = 'created'
+    pass
 
 admin.site.register(Rating, RatingAdmin)
 
