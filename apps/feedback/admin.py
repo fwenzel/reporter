@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Opinion, RatingAdmin, Term
+from .models import Opinion, Rating, Term
 from .utils import smart_truncate
 
 
@@ -38,6 +38,7 @@ admin.site.register(Opinion, OpinionAdmin)
 
 class RatingAdmin(admin.ModelAdmin):
     date_hierarchy = 'created'
+
 admin.site.register(Rating, RatingAdmin)
 
 
