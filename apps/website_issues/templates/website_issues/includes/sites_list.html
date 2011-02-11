@@ -35,7 +35,7 @@
   {% for site in sites %}
     <li class="site">
       <p class="name">
-        <a href="{{ sites_url(form, url=site.url) }}">{{ site.domain }}</a>
+        <a href="{{ sites_url(form, url=site.url) }}">{{ site.for_display }}</a>
         {% if site.url|protocol == 'https' %}
           <span class="ssl">(SSL)</span>
         {% endif %}

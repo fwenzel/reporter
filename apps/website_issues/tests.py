@@ -39,6 +39,7 @@ class TestUtils(test_utils.TestCase):
         def test_without_protocol(self):
             """Test domain extraction from URLs, for HTTP, about:, chrome."""
             test_urls = (
+                ('http://www.example.com', 'http://example.com'),
                 ('http://example.com', 'http://example.com'),
                 ('http://example.com/the/place/to/be', 'http://example.com'),
                 ('https://example.net:8080', 'https://example.net:8080'),
@@ -49,19 +50,31 @@ class TestUtils(test_utils.TestCase):
             )
             for url, expected in test_domains:
                 eq_(utils.normalize_url(url), expected)
-        
+
 
 class TestHelpers(test_utils.TestCase):
-    def test_without_protocol(self):
-        """Test domain extraction from URLs, for HTTP, about:, chrome."""
+    def test_url_display(self):
+        """Test how HTTP, about:, chrome:// sites are shown to the user"""
         test_domains = (
             ('http://example.com', 'example.com'),
-            ('https://www.example.net:8080/abc', 'www.example.net:8080'),
+            ('https://example.net:8080/abc', 'example.net:8080'),
             ('about:config', 'about:config'),
             ('chrome://something/exciting', 'chrome://something/exciting'),
         )
         for domain, expected in test_domains:
-            eq_(helpers.without_protocol(domain), expected)
+            eq_(helpers.for_display(domain), expected)
+
+    def test_domain_protocol(self):
+        """Test domain extraction from URLs, for HTTP, about:, chrome."""
+        test_domains = (
+            ('http://example.com', 'http', 'example.com'),
+            ('https://example.net:8080/abc', 'https', 'example.net:8080'),
+            ('about:config', 'about', 'config'),
+            ('chrome://something/exciting', 'chrome', 'something/exciting'),
+        )
+        for url, protocol, domain in test_domains:
+            eq_(helpers.protocol(url), protocol)
+            eq_(helpers.domain(url), domain)
 
 
 class TestViews(test_utils.TestCase):

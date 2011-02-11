@@ -127,7 +127,11 @@ class SiteSummary(ModelBase):
 
     @cached_property
     def domain(self):
-        return helpers.without_protocol(self.url)
+        return helpers.domain(self.url)
+
+    @cached_property
+    def for_display(self):
+        return helpers.for_display(self.url)
 
     def get_absolute_url(self):
         return reverse('single_site', args=[self.protocol, self.domain])
