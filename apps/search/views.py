@@ -8,10 +8,10 @@ from django.utils.feedgenerator import Atom1Feed
 
 import commonware.log
 import jingo
+from product_details.version_compare import Version
 from tower import ugettext as _, ugettext_lazy as _lazy
 
 import input
-from feedback.version_compare import simplify_version
 from input import (PRODUCTS, PRODUCT_IDS, FIREFOX, MOBILE, LATEST_RELEASE,
                    LATEST_BETAS, LATEST_VERSION, OPINION_PRAISE, OPINION_ISSUE,
                    OPINION_IDEA, OPINION_TYPES)
@@ -38,7 +38,7 @@ def _get_results(request, meta=[], client=None):
         opinions = []
         product = request.default_prod
         query = ''
-        version = simplify_version(LATEST_VERSION()[product])
+        version = Version(LATEST_VERSION()[product]).simplified
         metas = {}
 
     product = PRODUCTS.get(product, FIREFOX)

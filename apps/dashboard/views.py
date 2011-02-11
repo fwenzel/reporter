@@ -3,11 +3,11 @@ import json
 from django.conf import settings
 
 import jingo
+from product_details.version_compare import Version
 from tower import ugettext as _
 
 from feedback import stats
 from feedback.models import Opinion, Term
-from feedback.version_compare import simplify_version
 from input import LATEST_BETAS
 from input.decorators import cache_page, forward_mobile, negotiate
 from search.client import Client, SearchError
@@ -22,7 +22,7 @@ def beta(request):
     """Beta dashboard."""
     # Defaults
     prod = request.default_prod
-    version = simplify_version(LATEST_BETAS[prod])
+    version = Version(LATEST_BETAS[prod]).simplified
 
     search_form = ReporterSearchForm()
     # Frequent terms

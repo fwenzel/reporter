@@ -3,11 +3,11 @@ from urllib import urlencode
 
 from jingo import register
 import jinja2
+from product_details.version_compare import Version
 
 import input
-from feedback.version_compare import simplify_version
 from input.urlresolvers import reverse
-from .forms import ReporterSearchForm
+from search.forms import ReporterSearchForm
 
 
 @register.function
@@ -30,7 +30,7 @@ def search_url(context, defaults=None, extra=None, feed=False, **kwargs):
     if not 'product' in defaults and not 'product' in kwargs:
         prod = context['request'].default_prod
         fallbacks['product'] = prod.short
-        fallbacks['version'] = simplify_version(input.LATEST_VERSION()[prod])
+        fallbacks['version'] = Version(input.LATEST_VERSION()[prod]).simplified
 
     # get field data from keyword args or defaults
     for field in ReporterSearchForm.base_fields:
