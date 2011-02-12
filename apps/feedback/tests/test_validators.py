@@ -1,6 +1,5 @@
 from django.core.exceptions import ValidationError
 
-from nose.tools import eq_
 import test_utils
 
 from feedback.validators import validate_no_urls, ExtendedURLValidator
