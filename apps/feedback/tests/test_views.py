@@ -266,7 +266,16 @@ class ReleaseTests(ViewTestCase):
 
     def test_feedback_wrongtype(self):
         """Test that giving a wrong type generates a 400."""
+        # Wrong number
         r = self.post_feedback(dict(type=99, follow=False, ajax=True))
+        eq_(r.status_code, 400)
+
+        # Not a number
+        r = self.post_feedback(dict(type='pancakes', follow=False, ajax=True))
+        eq_(r.status_code, 400)
+
+        # No type
+        r = self.post_feedback(dict(follow=False, ajax=True))
         eq_(r.status_code, 400)
 
     def test_rating(self):

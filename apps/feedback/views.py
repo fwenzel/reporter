@@ -95,7 +95,7 @@ def give_feedback(request, ua, type):
             input.OPINION_PRAISE.id: PraiseForm,
             input.OPINION_ISSUE.id: IssueForm,
             input.OPINION_IDEA.id: IdeaForm
-        }.get(type)
+        }[type]
     except KeyError:
         return http.HttpResponseBadRequest(_('Invalid feedback type'))
 
@@ -163,7 +163,7 @@ def release_feedback(request, ua):
                 input.OPINION_BROKEN.id: BrokenWebsiteForm,
                 input.OPINION_IDEA.id: IdeaReleaseForm,
             }[type]
-        except (ValueError, KeyError):
+        except (TypeError, ValueError, KeyError):
             return http.HttpResponseBadRequest(_('Invalid feedback type'))
 
         form = FormType(request.POST)
