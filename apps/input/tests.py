@@ -14,7 +14,7 @@ from mock import patch, Mock
 from nose.tools import eq_
 from pyquery import PyQuery as pq
 
-from input import cron, helpers, urlresolvers, utils, CHANNELS
+from input import cron, helpers, urlresolvers, decorators, CHANNELS
 from input.urlresolvers import reverse
 from input.helpers import babel_date, timesince, urlparams
 
@@ -342,7 +342,7 @@ class TestUtils(TestCase):
         class A(object):
             _foo = 1
 
-            @utils.cached_property
+            @decorators.cached_property
             def foo(self):
                 return self._foo
 

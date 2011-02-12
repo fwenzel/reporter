@@ -4,7 +4,7 @@ import caching.base
 
 from input.models import ModelBase
 from input.urlresolvers import reverse
-from input.utils import cached_property
+from input.decorators import cached_property
 
 from website_issues import helpers
 from website_issues import utils
