@@ -1,0 +1,42 @@
+# Local Django Settings
+
+from settings import *
+
+
+# DEBUG = True
+# TEMPLATE_DEBUG = DEBUG
+# DEBUG_PROPAGATE_EXCEPTIONS = DEBUG
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'firefox_input',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
+        'OPTIONS': {'init_command': 'SET storage_engine=InnoDB',
+                    'charset' : 'utf8',
+                    'use_unicode' : True,
+        },
+    },
+    'website_issues': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'website_issues',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
+        'OPTIONS': {'init_command': 'SET storage_engine=InnoDB',
+                    'charset' : 'utf8',
+                    'use_unicode' : True,
+        },
+    }
+}
+
+
+MIDDLEWARE_CLASSES += (
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware'
+)
+

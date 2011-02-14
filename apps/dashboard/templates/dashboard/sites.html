@@ -6,7 +6,7 @@
     {% for site in sites %}
     <li><a href="{{ site.get_absolute_url() }}"
            class="bar" data-value="{{ site.size }}">
-      <strong>{{ site.url|without_protocol }}</strong>
+      <strong>{{ site.url|for_display }}</strong>
     </a></li>
     {% endfor %}
   </ul>

@@ -46,11 +46,21 @@ def sites_url(context, form, url=None, **kwargs):
 
 
 @register.filter
-def without_protocol(url_):
-    """Extract the domain from a URL."""
+def for_display(url_):
+    """Extract domain, but keep protocol for chrome:// and about: urls."""
     parsed = utils.urlparse(url_)
     if parsed.scheme in ('about', 'chrome'):
         return url_
+    else:
+        return parsed.netloc
+
+
+@register.filter
+def domain(url_):
+    """Remove the protocol from a sites URL (path has been removed already)"""
+    parsed = utils.urlparse(url_)
+    if parsed.scheme == 'chrome':
+        return url_[len('chrome://'):]
     else:
         return parsed.netloc
 

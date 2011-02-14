@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Opinion, Term
+from .models import Opinion, Rating, Term
 from .utils import smart_truncate
 
 
@@ -34,6 +34,12 @@ class OpinionAdmin(admin.ModelAdmin):
                        'locale')
 
 admin.site.register(Opinion, OpinionAdmin)
+
+
+class RatingAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Rating, RatingAdmin)
 
 
 class TermAdmin(admin.ModelAdmin):

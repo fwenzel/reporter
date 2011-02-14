@@ -289,6 +289,7 @@ def release(request):
         period=get_period(form)[0],
         search_form=form,
         total=c.total_found,
+        utc=True,  # The date partitions are by UTC.
     )
 
     template = 'search/release.html'

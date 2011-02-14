@@ -100,7 +100,7 @@ class CommentClusteringReducer(object):
             for c in clusters:
                 c_index += 1
                 rest = [(s["object"], s["similarity"]) for s in c.similars]
-                c_size = len(rest)
+                c_size = len(rest) + 1
                 for (m_id, message), score in [(c.primary, 1.0)] + rest:
                     del unclustered_opinions[m_id]
                     for s_type in (type, None):
