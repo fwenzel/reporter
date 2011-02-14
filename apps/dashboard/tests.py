@@ -10,7 +10,7 @@ from pyquery import PyQuery as pq
 
 import input
 from dashboard import helpers
-from input.tests import TestCase
+from input.tests import InputTestCase
 from input.urlresolvers import reverse
 from search.tests import SphinxTestCase
 
@@ -58,7 +58,7 @@ class TestMobileDashboard(test_utils.TestCase):
         eq_(r.status_code, 200)
 
 
-class TestHelpers(TestCase):
+class TestHelpers(InputTestCase):
     def test_platform_none(self):
         """Test that PLATFORM with no name does not crash platform helper."""
 

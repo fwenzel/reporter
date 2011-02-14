@@ -7,6 +7,9 @@ from input.tests import InputTestCase
 
 
 class TestCron(InputTestCase):
+    def setUp(self):
+        Site.objects.all().delete()
+
     def test_set_domains(self):
         Site.objects.create(pk=1, domain='hi', name='hi')
         Site.objects.create(pk=2, domain='there', name='there')
