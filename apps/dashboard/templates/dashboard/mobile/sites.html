@@ -6,10 +6,10 @@
       {% if not total %}{% set total = site.size|float %}{% endif %}
       {% set perc = (site.size / total * 100.0)|int if total else 0 %}
       <li class="trend">
-        <a href="{{ search_url(defaults=defaults, q='url:'+site.url|for_display) }}"
+        <a href="{{ search_url(defaults=defaults, q='url:'+site.url|strip_protocol) }}"
            class="bar">
           <span class="bg" style="width: {{ perc }}%;"></span>
-          <label>{{ site.url|for_display }}</label>
+          <label>{{ site.url|strip_protocol }}</label>
           <span class="perc">{{ site.size|numberfmt }}</span>
         </a>
       </li>
