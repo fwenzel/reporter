@@ -1,6 +1,7 @@
 import json
 
 from nose.tools import eq_
+from product_details.version_compare import Version
 from pyquery import PyQuery as pq
 
 from feedback.models import Opinion
@@ -35,18 +36,37 @@ class ReleaseTests(ViewTestCase):
         r = self._get_page('3.6b2')
         self.assertRedirects(r, reverse('feedback', channel='beta'), 302, 302)
 
+    # TODO bug 634324. Reenable this after Firefox 4 release.
     @enforce_ua
-    def test_old_release(self):
-        """Old release: redirect."""
+    def notest_old_release(self):
+        """Post Fx4: Old release: redirect to release download page."""
         r = self._get_page('3.5')
         eq_(r.status_code, 302)
         assert r['Location'].endswith(reverse('feedback.download',
                                               channel='release'))
 
+    # TODO bug 634324. Remove this after Firefox 4 release.
     @enforce_ua
-    def test_latest_release(self):
-        """Latest release: no redirect."""
+    def test_old_release(self):
+        """Pre Fx4: Old release: redirect to beta download page."""
+        r = self._get_page('3.5')
+        eq_(r.status_code, 302)
+        assert r['Location'].endswith(reverse('feedback.download',
+                                              channel='beta'))
+    # TODO bug 634324. Reenable this after Firefox 4 release.
+    @enforce_ua
+    def notest_latest_release(self):
+        """Post Fx4: Latest release: no redirect."""
         r = self._get_page(LATEST_RELEASE[FIREFOX])
+        eq_(r.status_code, 200)
+
+    # TODO bug 634324. Remove this after Firefox 4 release.
+    @enforce_ua
+    def notest_latest_release(self):
+        """Pre Fx4: Firefox 4: no redirect."""
+        rel_ver = Version(LATEST_RELEASE[FIREFOX])
+        r = self._get_page('4.0' if Version('4.0') > rel_ver else
+                           rel_ver._version)
         eq_(r.status_code, 200)
 
     @enforce_ua
