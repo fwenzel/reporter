@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block page_title -%}
-{% if site %}{{ site|strip_protocol }} :: {% endif %}
+{% if site %}{{ site.url|strip_protocol }} :: {% endif %}
 {% if request.channel == "release" %}{{ _('Broken Sites') }}
 {% else %}{{ _('Sites') }}{% endif %}
 {%- endblock %}
@@ -72,7 +72,7 @@
       <h3>{{ _('Uncommon Sites') }}</h3>
       <ul>
         {% for site in one_offs %}
-        <li><a href="{{ sites_url(form, url=site.url) }}">{{ site|strip_protocol }}</a></li>
+        <li><a href="{{ sites_url(form, url=site.url) }}">{{ site.url|strip_protocol }}</a></li>
         {% endfor %}
         <li class="more">{{ button(form, 'show_one_offs', True, label=_('More sites...')) }}</li>
       </ul>
