@@ -12,6 +12,7 @@ truncate table website_issues_comment;
 
 LOAD DATA LOCAL INFILE 'comments.tsv'
 INTO TABLE website_issues_comment
+CHARACTER SET "utf8"
 FIELDS TERMINATED BY '\t' ESCAPED BY '\\' LINES TERMINATED BY '\n'
 (id, cluster_id, description, opinion_id, score);
 
@@ -20,6 +21,7 @@ truncate table website_issues_cluster;
 
 LOAD DATA LOCAL INFILE 'clusters.tsv'
 INTO TABLE website_issues_cluster
+CHARACTER SET "utf8"
 FIELDS TERMINATED BY '\t' ESCAPED BY '\\' LINES TERMINATED BY '\n'
 (id, site_summary_id, size, primary_description, primary_comment_id, positive);
 
@@ -28,6 +30,7 @@ truncate table website_issues_sitesummary;
 
 LOAD DATA LOCAL INFILE 'sitesummaries.tsv'
 INTO TABLE website_issues_sitesummary
+CHARACTER SET "utf8"
 FIELDS TERMINATED BY '\t' ESCAPED BY '\\' LINES TERMINATED BY '\n'
 (id, url, version, @positive, @platform, size, issues_count, praise_count)
 set positive = IF(@positive="NULL", NULL, @positive),
