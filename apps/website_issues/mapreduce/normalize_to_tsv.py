@@ -56,7 +56,7 @@ def normalize_to_tsv(source, sitesummaries, clusters, comments):
 
 def _normalize(source, dest_dir):
     names = ("sitesummaries.tsv", "clusters.tsv", "comments.tsv")
-    files = [open(platform.path.join(dest_dir, name), "w+") for name in names]
+    files = [open(os.path.join(dest_dir, name), "w+") for name in names]
     normalize_to_tsv(source, *[writer(f) for f in files])
 
 def normalize_unix(source, dest_dir):
