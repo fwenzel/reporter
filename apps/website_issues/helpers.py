@@ -46,8 +46,8 @@ def sites_url(context, form, url=None, **kwargs):
 
 
 @register.filter
-def for_display(url_):
-    """Extract domain, but keep protocol for chrome:// and about: urls."""
+def strip_protocol(url_):
+    """Strip protocol from urls with exceptions for chrome:// and about:."""
     parsed = utils.urlparse(url_)
     if parsed.scheme in ('about', 'chrome'):
         return url_

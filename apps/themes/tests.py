@@ -2,12 +2,11 @@ from django.conf import settings
 
 import test_utils
 from nose.tools import eq_
-
-from input.urlresolvers import reverse
-from feedback import LATEST_BETAS, FIREFOX
-from feedback.models import Opinion
 from pyquery import PyQuery as pq
 
+from feedback.models import Opinion
+from input import LATEST_BETAS, FIREFOX
+from input.urlresolvers import reverse
 from themes.models import Theme
 
 
@@ -16,7 +15,7 @@ class TestViews(test_utils.TestCase):
         self.client.get('/')
         settings.CLUSTER_SIM_THRESHOLD = 2
 
-        args = dict(product=1, version=LATEST_BETAS[FIREFOX], os='mac',
+        args = dict(product=1, version=LATEST_BETAS[FIREFOX], platform='mac',
                     locale='en-US')
         for x in xrange(10):
             o = Opinion(description='Skip town. slow down '

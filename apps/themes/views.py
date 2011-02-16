@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 import jingo
 from tower import ugettext as _
 
-from feedback import APPS, OSES, FIREFOX, APP_USAGE
+from input import PRODUCTS, PLATFORMS, FIREFOX, PRODUCT_USAGE
 from input.decorators import cache_page
 from input.helpers import urlparams
 from input.urlresolvers import reverse
@@ -36,9 +36,9 @@ def _get_sentiments(request, sentiment):
 
     sentiments.append(f)
 
-    f = Filter(urlparams(url, s='suggestions'), _('Suggestions'),
-            _('Suggestions only'),
-               (sentiment == 'suggestions'))
+    f = Filter(urlparams(url, s='ideas'), _('Ideas'),
+            _('Ideas only'),
+               (sentiment == 'ideas'))
 
     sentiments.append(f)
     return sentiments
@@ -51,14 +51,14 @@ def _get_platforms(request, product, platform):
     f = Filter(urlparams(url, p=None), _('All'), _('All Platforms'),
                (not platform))
     platforms.append(f)
-    platforms_from_db = (Theme.objects.filter(product=APPS[product].id)
+    platforms_from_db = (Theme.objects.filter(product=PRODUCTS[product].id)
                          .values_list('platform', flat=True)
                          .distinct().order_by('platform'))
 
     for p in platforms_from_db:
         if not p:
             continue
-        f = Filter(urlparams(url, p=p), p, OSES[p].pretty,
+        f = Filter(urlparams(url, p=p), p, PLATFORMS[p].pretty,
                    (platform == p))
         platforms.append(f)
 
@@ -69,9 +69,9 @@ def _get_products(request, product):
     products = []
     url = request.get_full_path()
 
-    for app in APP_USAGE:
-        f = Filter(urlparams(url, a=app.short), app.pretty, app.pretty,
-                   (product == app.short))
+    for prod in PRODUCT_USAGE:
+        f = Filter(urlparams(url, a=prod.short), prod.pretty, prod.pretty,
+                   (product == prod.short))
         products.append(f)
 
     return products
@@ -85,7 +85,7 @@ def index(request):
     product = request.GET.get('a', FIREFOX.short)
     products = _get_products(request, product)
     try:
-        qs = qs.filter(product=APPS[product].id)
+        qs = qs.filter(product=PRODUCTS[product].id)
     except KeyError:
         raise http.Http404
 

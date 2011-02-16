@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block page_title -%}
-{% if site %}{{ site.for_display }} :: {% endif %}
+{% if site %}{{ site|strip_protocol }} :: {% endif %}
 {% if request.channel == "release" %}{{ _('Broken Sites') }}
 {% else %}{{ _('Sites') }}{% endif %}
 {%- endblock %}
@@ -44,29 +44,13 @@
       <h3>{{ _('Platforms') }}</h3>
       <div>
         <ul>
-          <li>{{ button(form, 'os', '', label=_('All', 'sites_search_all_platforms'), title=_('All platforms')) }}</li>
-          {% for os in oses %}
-          <li>{{ button(form, 'os', os.short, label=os.short, title=os.pretty) }}</li>
+          <li>{{ button(form, 'platform', '', label=_('All', 'sites_search_all_platforms'), title=_('All platforms')) }}</li>
+          {% for platform in platforms %}
+          <li>{{ button(form, 'platform', platform.short, label=platform.short, title=platform.pretty) }}</li>
           {% endfor %}
         </ul>
       </div>
     </div>
-
-{# TODO add minimum feedback count choice
-    <div class="choice">
-      <h3>_('Min Related')</h3>
-
-      <div>
-        <ul>
-          <li><a class="selected" href="search.html" title="No minimum">_('Any')</a></li>
-          <li><a class="" href="search.html" title="_('25+ messages')">25</a></li>
-          <li><a class="" href="search.html" title="_('50+ messages')">50</a></li>
-          <li><a class="" href="search.html" title="_('100+ messages')">100</a></li>
-          <li><a class="" href="search.html" title="_('250+ messages')">250</a></li>
-        </ul>
-      </div>
-    </div>
-#}
 
   </form>
 </div>
@@ -88,7 +72,7 @@
       <h3>{{ _('Uncommon Sites') }}</h3>
       <ul>
         {% for site in one_offs %}
-        <li><a href="{{ sites_url(form, url=site.url) }}">{{ site.for_display }}</a></li>
+        <li><a href="{{ sites_url(form, url=site.url) }}">{{ site|strip_protocol }}</a></li>
         {% endfor %}
         <li class="more">{{ button(form, 'show_one_offs', True, label=_('More sites...')) }}</li>
       </ul>

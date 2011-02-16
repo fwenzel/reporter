@@ -175,12 +175,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MINIFY_BUNDLES = {
     'css': {
         'common': (
-            'css/reset-min.css',
-            'css/jquery-ui.css',
+            'css/libs/reset-min.css',
+            'css/libs/jquery-ui.css',
             'css/input.css',
         ),
         'common_mobile': (
-            'css/reset-min.css',
+            'css/libs/reset-min.css',
             'css/input-mobile.css',
         ),
 
@@ -195,45 +195,45 @@ MINIFY_BUNDLES = {
 
         # Feedback for Firefox release versions
         'release': (
-            'css/reset-min.css',
+            'css/libs/reset-min.css',
             'css/release.css',
         ),
         'release-mobile': (
-            'css/reset-min.css',
+            'css/libs/reset-min.css',
             'css/release-mobile.css',
         ),
     },
     'js': {
         'common': (
-            'js/jquery.min.js',
-            'js/jquery-ui.min.js',
-            'js/jquery.cookie.js',
+            'js/libs/jquery.min.js',
+            'js/libs/jquery-ui.min.js',
+            'js/libs/jquery.cookie.js',
             'js/init.js',
             'js/input.js',
             'js/search.js',
 
             # Time-based charts
-            'js/highcharts.js',
+            'js/libs/highcharts.js',
             'js/dashboard.js',
         ),
         'common_mobile': (
-            'js/jquery.min.js',
+            'js/libs/jquery.min.js',
             'js/input-mobile.js',
         ),
 
         # old scripts for submission pages (desktop and mobile)
         'common_old': (
-            'js/jquery.min.js',
-            'js/jquery.NobleCount.js',
+            'js/libs/jquery.min.js',
+            'js/libs/jquery.NobleCount.js',
             'js/init.js',
             'js/reporter.js',
         ),
 
         # Release versions feedback
         'release': (
-            'js/jquery.min.js',
-            'js/jquery.scrollto.min.js',
-            'js/jquery.NobleCount.js',
+            'js/libs/jquery.min.js',
+            'js/libs/jquery.scrollto.min.js',
+            'js/libs/jquery.NobleCount.js',
             'js/release.js',
         ),
     },
@@ -296,10 +296,6 @@ PROD_DETAILS_DIR = path('lib/product_details_json')
 # Term filter options
 MIN_TERM_LENGTH = 3
 MAX_TERM_LENGTH = 25
-
-# Feedback length restrictions
-MAX_FEEDBACK_LENGTH = 140
-MAX_SUGGESTION_LENGTH = 250
 
 # Number of items to show in the "Trends" box and Messages box.
 MESSAGES_COUNT = 10

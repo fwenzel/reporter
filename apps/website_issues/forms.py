@@ -6,11 +6,9 @@ from django.forms import (CharField, ChoiceField, BooleanField, HiddenInput,
 
 from tower import ugettext_lazy as _lazy
 
-from input import get_channel
+from input import PLATFORMS, PRODUCTS, FIREFOX, MOBILE, get_channel
 from input.fields import SearchInput
-from feedback import OSES, APPS, FIREFOX, MOBILE
-from feedback.version_compare import simplify_version
-from search.forms import (SENTIMENT_CHOICES, OS_CHOICES, PROD_CHOICES,
+from search.forms import (SENTIMENT_CHOICES, PLATFORM_CHOICES, PROD_CHOICES,
                           VERSION_CHOICES)
 
 
@@ -46,11 +44,11 @@ FIELD_DEFS = {
         )
     ),
     "sentiment": field_def(ChoiceField, "", choices=SENTIMENT_CHOICES),
-    "version": field_def(ChoiceField, 
-                         VERSION_CHOICES[get_channel()][FIREFOX][0][0], 
+    "version": field_def(ChoiceField,
+                         VERSION_CHOICES[get_channel()][FIREFOX][0][0],
                          choices=VERSION_CHOICES[get_channel()][FIREFOX]),
     "product": field_def(ChoiceField, FIREFOX.short, choices=PROD_CHOICES),
-    "os": field_def(ChoiceField, "", choices=OS_CHOICES),
+    "platform": field_def(ChoiceField, "", choices=PLATFORM_CHOICES),
     "show_one_offs": field_def(BooleanField, False),
     "page": field_def(IntegerField, 1),
     "site": field_def(IntegerField, None),
@@ -64,7 +62,7 @@ class WebsiteIssuesSearchForm(forms.Form):
     q = FIELD_DEFS['q'].field
     sentiment = FIELD_DEFS['sentiment'].field
     product = FIELD_DEFS['product'].field
-    os = FIELD_DEFS['os'].field
+    platform = FIELD_DEFS['platform'].field
     version = FIELD_DEFS['version'].field
     show_one_offs = FIELD_DEFS['show_one_offs'].field
 
@@ -86,15 +84,15 @@ class WebsiteIssuesSearchForm(forms.Form):
         FIELD_DEFS['product'] = field_def(ChoiceField, product_choices[0][0],
                                           choices=product_choices)
         product = self.data.get('product', FIREFOX)
-        try: 
+        try:
             if not choices[product]: product = FIREFOX
-        except KeyError: 
+        except KeyError:
             product = FIREFOX
         version_choices = choices[product]
         self.fields['version'].choices = version_choices
         self.fields['version'].initial = version_choices[0][0]
-        FIELD_DEFS['version'] = field_def(ChoiceField, 
-                                          version_choices[0][0], 
+        FIELD_DEFS['version'] = field_def(ChoiceField,
+                                          version_choices[0][0],
                                           choices=version_choices)
         self.cleaned_data = {}
 
@@ -104,7 +102,7 @@ class WebsiteIssuesSearchForm(forms.Form):
         for field_name, field_def in FIELD_DEFS.items():
             if field_name not in cleaned:
                 cleaned[field_name] = field_def.default
-                continue            
+                continue
             if BooleanField == type(field_def.field) \
                     and cleaned.get(field_name) not in (True, False):
                 cleaned[field_name] = field_def.default
@@ -112,11 +110,11 @@ class WebsiteIssuesSearchForm(forms.Form):
                     and cleaned.get(field_name) not in field_def.keys:
                 cleaned[field_name] = field_def.default
 
-        if cleaned.get('product') and cleaned.get('os'):
-            product = APPS[cleaned.get('product')]
-            possible_oses = [os for os in OSES.values() if product in os.apps]
-            if OSES[cleaned.get('os')] not in possible_oses:
-                cleaned['os'] = FIELD_DEFS['os'].default
+        if cleaned.get('product') and cleaned.get('platform'):
+            product = PRODUCTS[cleaned.get('product')]
+            possible_platforms = [platform for platform in PLATFORMS.values() if product in platform.prods]
+            if PLATFORMS[cleaned.get('platform')] not in possible_platforms:
+                cleaned['platform'] = FIELD_DEFS['platform'].default
 
         if not cleaned.get('version'):
             product = cleaned.get('product', FIREFOX)

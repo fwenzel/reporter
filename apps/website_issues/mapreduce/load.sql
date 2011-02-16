@@ -29,10 +29,10 @@ truncate table website_issues_sitesummary;
 LOAD DATA LOCAL INFILE 'sitesummaries.tsv'
 INTO TABLE website_issues_sitesummary
 FIELDS TERMINATED BY '\t' ESCAPED BY '\\' LINES TERMINATED BY '\n'
-(id, url, version, @positive, @os, size, issues_count, praise_count)
+(id, url, version, @positive, @platform, size, issues_count, praise_count)
 set positive = IF(@positive="NULL", NULL, @positive),
-    os = IF(@os="<desktop>",
+    platform = IF(@platform="<desktop>",
             "<firefox>",
-            IF(@os="NULL", NULL, @os));
+            IF(@platform="NULL", NULL, @platform));
 
 commit;

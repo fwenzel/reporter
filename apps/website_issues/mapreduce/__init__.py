@@ -16,7 +16,7 @@ def _system(args, more_env={}):
     env.update(more_env)
     process = subprocess.Popen(" ".join(args), shell=True,
                                env=env,
-                               stdout=sys.stdout, 
+                               stdout=sys.stdout,
                                stderr=sys.stderr)
     exit_code = os.waitpid(process.pid, 0)[1] & 0xff
     if 0 != exit_code:

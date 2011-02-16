@@ -1,8 +1,7 @@
 import json
 
-from input import get_channel
-from feedback import APP_USAGE
-from .forms import VERSION_CHOICES, ReporterSearchForm
+from input import PRODUCT_USAGE, get_channel
+from search.forms import VERSION_CHOICES, ReporterSearchForm
 
 
 def product_versions(request):
@@ -10,5 +9,5 @@ def product_versions(request):
         'PROD_VERSIONS_JSON': json.dumps(dict(
             [(p.short, [(v[0], unicode(v[1])) for v in
              VERSION_CHOICES[get_channel()][p]]) for
-             p in APP_USAGE]))
+             p in PRODUCT_USAGE]))
     }

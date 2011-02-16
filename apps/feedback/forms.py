@@ -8,7 +8,7 @@ from django.core.validators import URLValidator
 from annoying.decorators import autostrip
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
+from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA,
                    OPINION_RATING, OPINION_BROKEN, RATING_USAGE,
                    RATING_CHOICES)
 from feedback.models import Opinion
@@ -126,14 +126,14 @@ class IssueForm(FeedbackForm):
 
 
 @autostrip
-class SuggestionForm(FeedbackForm):
-    """Form for submitting ideas and suggestions."""
+class IdeaForm(FeedbackForm):
+    """Form for submitting ideas."""
     description = forms.CharField(widget=forms.Textarea(
-        attrs={'placeholder': _lazy('Enter your suggestions here.')}),
-        max_length=OPINION_SUGGESTION.max_length,
+        attrs={'placeholder': _lazy('Enter your ideas here.')}),
+        max_length=OPINION_IDEA.max_length,
         validators=[validate_swearwords, validate_no_html,
                     validate_no_email, validate_no_urls])
-    type = forms.CharField(initial=OPINION_SUGGESTION.id,
+    type = forms.CharField(initial=OPINION_IDEA.id,
                            widget=forms.HiddenInput(),
                            required=True)
 
@@ -183,12 +183,12 @@ class BrokenWebsiteForm(FeedbackForm):
 
 
 @autostrip
-class IdeaForm(SuggestionForm):
-    """Flavor of SuggestionForm to be used for release feedback."""
+class IdeaReleaseForm(IdeaForm):
+    """Flavor of IdeaForm to be used for release feedback."""
     description = forms.CharField(widget=forms.Textarea(
-        attrs={'placeholder': _lazy('Enter your suggestions here.'),
+        attrs={'placeholder': _lazy('Enter your ideas here.'),
                'id': 'idea-desc', 'cols': 55, 'rows': 5,
                'class': 'countable'}),
-        max_length=OPINION_SUGGESTION.max_length,
+        max_length=OPINION_IDEA.max_length,
         validators=[validate_swearwords, validate_no_html,
                     validate_no_email, validate_no_urls])

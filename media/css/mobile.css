@@ -84,15 +84,15 @@ body.mobile {
 .mobile#feedback .smiley.happy {
     background-position: 0 -110px;
 }
-.mobile#feedback .suggestion {
-    background: url(../img/suggestion-box-idea-medium.png) no-repeat left top;
+.mobile#feedback .idea {
+    background: url(../img/idea-box-medium.png) no-repeat left top;
     display: block;
     margin-right: 1em;
     height: 60px;
     width: 60px;
     position: static;
 }
-.mobile #suggestionform_mobile #id_description {
+.mobile #ideaform_mobile #id_description {
     height: 5em;
 }
 .mobile#feedback #feedbackform {

@@ -3,11 +3,12 @@ import json
 from django.conf import settings
 
 import jingo
+from product_details.version_compare import Version
 from tower import ugettext as _
 
-from feedback import stats, LATEST_BETAS
+from feedback import stats
 from feedback.models import Opinion, Term
-from feedback.version_compare import simplify_version
+from input import LATEST_BETAS
 from input.decorators import cache_page, forward_mobile, negotiate
 from search.client import Client, SearchError
 from search.forms import PROD_CHOICES, VERSION_CHOICES, ReporterSearchForm
@@ -20,13 +21,13 @@ from website_issues.models import SiteSummary
 def beta(request):
     """Beta dashboard."""
     # Defaults
-    app = request.default_app
-    version = simplify_version(LATEST_BETAS[app])
+    prod = request.default_prod
+    version = Version(LATEST_BETAS[prod]).simplified
 
     search_form = ReporterSearchForm()
     # Frequent terms
     term_params = {
-        'product': app.id,
+        'product': prod.id,
         'version': version,
     }
 
@@ -35,23 +36,23 @@ def beta(request):
 
     # opinions queryset for demographics
     latest_opinions = Opinion.objects.browse(**term_params)
-    latest_beta = Opinion.objects.filter(version=version, product=app.id)
+    latest_beta = Opinion.objects.filter(version=version, product=prod.id)
 
     # Sites clusters
     sites = SiteSummary.objects.filter(version__exact=version).filter(
-        positive__exact=None).filter(os__exact=None)[:settings.TRENDS_COUNT]
+        positive__exact=None).filter(platform__exact=None)[:settings.TRENDS_COUNT]
 
     try:
         c = Client()
-        search_opts = dict(product=app.short, version=version)
-        c.query('', meta=('type', 'locale', 'os', 'day_sentiment'),
+        search_opts = dict(product=prod.short, version=version)
+        c.query('', meta=('type', 'locale', 'platform', 'day_sentiment'),
                 **search_opts)
         metas = c.meta
         daily = c.meta.get('day_sentiment', {})
         chart_data = dict(series=[
             dict(name=_('Praise'), data=daily['praise']),
             dict(name=_('Issues'), data=daily['issue']),
-            dict(name=_('Suggestions'), data=daily['suggestion']),
+            dict(name=_('Ideas'), data=daily['idea']),
             ],
             )
         total = c.total_found
@@ -62,15 +63,15 @@ def beta(request):
 
     data = {'opinions': latest_opinions.all()[:settings.MESSAGES_COUNT],
             'opinion_count': total,
-            'product': app,
+            'product': prod,
             'products': PROD_CHOICES,
             'sentiments': get_sentiment(metas.get('type', [])),
             'terms': stats.frequent_terms(qs=frequent_terms),
             'locales': metas.get('locale'),
-            'platforms': metas.get('os'),
+            'platforms': metas.get('platform'),
             'sites': sites,
             'version': version,
-            'versions': VERSION_CHOICES['beta'][app],
+            'versions': VERSION_CHOICES['beta'][prod],
             'chart_data_json': json.dumps(chart_data),
             'defaults': get_defaults(search_form),
             'search_form': search_form,

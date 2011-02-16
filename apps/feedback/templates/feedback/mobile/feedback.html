@@ -6,7 +6,7 @@
 
 {% block content %}
 
-{% if type == OPINION_SUGGESTION.id: %}
+{% if type == OPINION_IDEA.id: %}
   <div id="{{ div_id }}_mobile">
 {% else %}
   <div id="{{ div_id }}">
@@ -17,43 +17,43 @@
       {{ smiley("happy", "feedback_index_mobile") }}
     {% elif type == OPINION_ISSUE.id: %}
       {{ smiley("sad", "feedback_index_mobile") }}
-    {% elif type == OPINION_SUGGESTION.id: %}
-    <span title="{{ OPINION_SUGGESTION.pretty }}" class="feedback_submit suggestion"></span>
+    {% elif type == OPINION_IDEA.id: %}
+    <span title="{{ OPINION_IDEA.pretty }}" class="feedback_submit idea"></span>
     {% endif %}
     {% if type == OPINION_PRAISE.id: %}
       {{ _('Super! Please tell us more!') }}
     {% elif type == OPINION_ISSUE.id: %}
       {{ _('Ack! Please tell us what to fix!') }}
-    {% elif type == OPINION_SUGGESTION.id: %}
-      {{ _('Awesome! Please make your suggestion below:') }}
+    {% elif type == OPINION_IDEA.id: %}
+      {{ _('Awesome! Please enter your idea below:') }}
     {% endif %}
   </h2>
   <form method="post" action="" autocomplete="off">
     {{ csrf() }}
-    {{ form.description.errors|safe }}
-    <p>{{ form.description|safe }}</p>
+    {{ form.description.errors }}
+    <p>{{ form.description }}</p>
 
     {% if type in (OPINION_PRAISE.id, OPINION_ISSUE.id): %}
-      {{ form.url.errors|safe }}
+      {{ form.url.errors }}
       <p>
-        <label>{{ form.add_url|safe }}
+        <label>{{ form.add_url }}
           {% trans %}
           Add URL of last visited page?
           {% endtrans %}
         </label>
-        {{ form.url|safe }}
+        {{ form.url }}
       </p>
     {% endif %}
 
     {% for hidden in form.hidden_fields() %}
-      {{ hidden|safe }}
+      {{ hidden }}
       {% if hidden.errors %}
         {{ hidden.name }}:
-        {{ hidden.errors|safe }}
+        {{ hidden.errors }}
       {% endif %}
     {% endfor %}
 
-    {{ form.errors['__all__']|safe }}
+    {{ form.errors['__all__'] }}
 
     <aside>
       <span>{{ _('Please ensure that there is no personally identifiable information here.') }}</span>
@@ -63,10 +63,10 @@
 </div>
 
 {% if type in (OPINION_PRAISE.id, OPINION_ISSUE.id): %}
-  <p class="feedback_suggestion_mobile">
-  <img src="{{ MEDIA_URL }}img/suggestion-box-idea-medium.png" />
+  <p class="feedback_idea_mobile">
+  <img src="{{ MEDIA_URL }}img/idea-box-medium.png" />
   {% trans %}
-    Or submit your ideas with our <a href="{{ url_suggestion }}">suggestion box</a>!
+    Or submit your ideas with our <a href="{{ url_idea }}">idea box</a>!
   {% endtrans %}
   </p>
 {% endif %}

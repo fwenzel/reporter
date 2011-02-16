@@ -4,7 +4,7 @@ import caching.base
 
 from input.models import ModelBase
 from input.urlresolvers import reverse
-from input.utils import cached_property
+from input.decorators import cached_property
 
 from website_issues import helpers
 from website_issues import utils
@@ -86,7 +86,7 @@ class SiteSummary(ModelBase):
     url = models.URLField(verify_exists=False, blank=True)
     version = models.CharField(max_length=30)
     positive = models.NullBooleanField()
-    os = models.CharField(max_length=30, null=True)
+    platform = models.CharField(max_length=30, null=True)
     size = models.PositiveIntegerField()
     issues_count = models.PositiveIntegerField()
     praise_count = models.PositiveIntegerField()
@@ -128,10 +128,6 @@ class SiteSummary(ModelBase):
     @cached_property
     def domain(self):
         return helpers.domain(self.url)
-
-    @cached_property
-    def for_display(self):
-        return helpers.for_display(self.url)
 
     def get_absolute_url(self):
         return reverse('single_site', args=[self.protocol, self.domain])

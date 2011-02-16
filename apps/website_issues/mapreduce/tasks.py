@@ -36,9 +36,9 @@ class SiteSummaryMapper(object):
     """Map each site summary to the matching messages.
     Run n mappers.
 
-    > ((byte,), (m_id, ts, type, product, version, os, locale, manufacturer,
+    > ((byte,), (m_id, ts, type, product, version, platform, locale, manufacturer,
                                                         device, url, message))*
-    < ((version, site, os/app, type), (ts, m_id, message))*
+    < ((version, site, platform/app, type), (ts, m_id, message))*
     """
 
     def __init__(self):
@@ -51,12 +51,12 @@ class SiteSummaryMapper(object):
                                OPINION_PRAISE.short])
         for key, value in recombined(data):
             self.comments_in += 1
-            m_id, ts, type, product, version, os, locale, \
+            m_id, ts, type, product, version, platform, locale, \
                 manufacturer, device, url, message = value.split('\t', 10)
             if not url or type not in supported_types: continue
             app = '<%s>' % product
             site = normalize_url(url)
-            out_keys = cartesian((version,), (site,), (app, os, None), (type,))
+            out_keys = cartesian((version,), (site,), (app, platform, None), (type,))
             out_value = (m_id, message)
             self.comments_out += 1
             for out_key in out_keys: yield (out_key, out_value)
@@ -66,8 +66,8 @@ class CommentClusteringReducer(object):
     """Cluster messages for the same site summary.
     Run n reducers (4+ recommended).
 
-    > (version, site, os, type), (m_id, message)+
-    < ((sortkey, version, site, os, s_type, c_index, c_type, c_size),
+    > (version, site, platform, type), (m_id, message)+
+    < ((sortkey, version, site, platform, s_type, c_index, c_type, c_size),
                                                        (m_id, message, score))*
     """
     def __init__(self):
@@ -75,13 +75,13 @@ class CommentClusteringReducer(object):
 
     def __call__(self, key, values_gen):
         values = list(values_gen)
-        version, site, os, type = key
+        version, site, platform, type = key
 
         def result(s_type, c_index, c_size, m_id, message, score):
             sortkey = MAX_SIZE - c_size
             self.cluster_count += 1
             return \
-                (sortkey, version, site, os, s_type, c_index, type, c_size), \
+                (sortkey, version, site, platform, s_type, c_index, type, c_size), \
                 (m_id, message, score)
 
         c_index = 1
@@ -117,9 +117,9 @@ class ClusterIdReducer(object):
     """Assign ids to comments and clusters (for normalization).
     Run only 1 task at a time!
 
-    > (sortkey, version, site, os, s_type, c_index, c_type, c_size),
+    > (sortkey, version, site, platform, s_type, c_index, c_type, c_size),
                                                         (m_id, message, score)+
-    < ((version, site, os, s_type),
+    < ((version, site, platform, s_type),
                         (c_id, c_type, c_size, m_refid, m_id, message, score))*
     """
     def __init__(self):
@@ -128,21 +128,21 @@ class ClusterIdReducer(object):
 
     def __call__(self, key, values):
         self.c_id += 1
-        _, version, site, os, s_type, _, c_type, c_size = key
+        _, version, site, platform, s_type, _, c_type, c_size = key
         for m_id, message, score in values:
             self.m_refid += 1
             yield \
-                (version, site, os, s_type), \
+                (version, site, platform, s_type), \
                 (self.c_id, c_type, c_size, self.m_refid, m_id, message, score)
 
 
 class SummarySizeReducer(object):
     """Count comments for summary, regardless of cluster type.
 
-    > (version, site, os, s_type),
+    > (version, site, platform, s_type),
                          (c_id, c_type, c_size, m_refid, m_id, message, score)+
 
-    < ((sortkey, version, site, os, type),
+    < ((sortkey, version, site, platform, type),
                 (s_size, c_id, c_type, c_size, m_refid, m_id, message, score))*
     """
     def __init__(self):
@@ -162,10 +162,10 @@ class SummaryIdReducer(object):
     Also calculates summary size.
     Run only 1 task at a time!
 
-    > (sortkey, version, site, os, type),
+    > (sortkey, version, site, platform, type),
                  (s_size, c_id, c_type, c_size, m_refid, m_id, message, score)+
 
-    < ((version, site, os),
+    < ((version, site, platform),
             (type, s_id, s_size, c_id, c_size, m_refid, m_id, message, score))*
     """
     def __init__(self):
@@ -173,10 +173,10 @@ class SummaryIdReducer(object):
 
     def __call__(self, key, values):
         self.s_id += 1
-        _, version, site, os, type = key
+        _, version, site, platform, type = key
         for s_size, c_id, c_type, c_size, m_refid, m_id, message, \
                                                                score in values:
-            yield (version, site, os), \
+            yield (version, site, platform), \
                   (type, self.s_id, s_size, c_id, c_type, c_size, m_refid,
                                                           m_id, message, score)
 
@@ -189,15 +189,15 @@ class DenormalizingReducer(object):
     Generates the complete denormalize table layout, with the most busy site
     summaries are on top.
 
-    > (version, site, os),
+    > (version, site, platform),
              (type, s_id, s_size, c_id, c_size, m_refid, m_id, message, score)+
 
     < ((s_id, c_id),
-        (version, site, os, type, s_id, s_size, s_sad_size, s_happy_size,
+        (version, site, platform, type, s_id, s_size, s_sad_size, s_happy_size,
                                  c_id, c_size, m_refid, m_id, message, score))*
     """
     def __call__(self, key, values_gen):
-        version, site, os = key
+        version, site, platform = key
         values = list(values_gen)
         s_sad_size, s_happy_size = 0, 0
         for type, _, s_size, _, _, _, _, _, _, _ in values:
@@ -207,7 +207,7 @@ class DenormalizingReducer(object):
                                                                score in values:
             yield \
                 ("%09d" % s_id, "%09d" % c_id, "%02.5f" % (10.0-score)), \
-                (version, site, os, type, s_id,
+                (version, site, platform, type, s_id,
                  s_size, s_sad_size, s_happy_size,
                  c_id, c_type, c_size,
                  m_refid, m_id, message, score)

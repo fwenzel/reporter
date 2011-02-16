@@ -30,7 +30,7 @@
 
     {# TODO URL provided box #}
 
-    {{ platforms_block(demo.os, opinion_count, defaults=defaults) }}
+    {{ platforms_block(demo.platform, opinion_count, defaults=defaults) }}
     {% if product.short == 'mobile' %}
       {{ manufacturer_block(demo.manufacturer, opinion_count,
                             defaults=defaults) }}
@@ -53,7 +53,7 @@
         {% if key == 'q' %}{% continue %}{% endif %}
         <input type="hidden" name="{{ key }}" value="{{ val }}" />
       {% endfor %}
-      {{ form.q|safe }}
+      {{ form.q }}
     </form>
 
     {{ message_list(opinions, defaults=defaults) }}

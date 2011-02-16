@@ -4,11 +4,11 @@ from django.conf import settings
 from django import forms
 
 from product_details import product_details
+from product_details.version_compare import Version
 from tower import ugettext_lazy as _lazy
 
-from feedback import FIREFOX, MOBILE, OS_USAGE, LATEST_VERSION
-from feedback.version_compare import simplify_version, version_int
-from input import KNOWN_DEVICES, KNOWN_MANUFACTURERS, get_channel
+from input import (FIREFOX, MOBILE, PLATFORM_USAGE, LATEST_VERSION, KNOWN_DEVICES,
+                   KNOWN_MANUFACTURERS, get_channel)
 from input.fields import DateInput, SearchInput
 
 
@@ -35,12 +35,12 @@ VERSION_CHOICES = {
 SENTIMENT_CHOICES = [('', _lazy('-- all --', 'sentiment_choice')),
     ('happy', _lazy('Praise')),
     ('sad', _lazy('Issues')),
-    ('suggestions', _lazy('Suggestions')),
+    ('ideas', _lazy('Ideas')),
 ]
-SENTIMENTS = ('happy', 'sad', 'suggestions')
+SENTIMENTS = ('happy', 'sad', 'ideas')
 
-OS_CHOICES = ([('', _lazy('-- all --', 'os_choice'))] +
-              [(o.short, o.pretty) for o in OS_USAGE])
+PLATFORM_CHOICES = ([('', _lazy('-- all --', 'platform_choice'))] +
+              [(p.short, p.pretty) for p in PLATFORM_USAGE])
 
 MANUFACTURER_CHOICES = [('Unknown', _lazy('Unknown'))] + [(m, m) for m in
                                                           KNOWN_MANUFACTURERS]
@@ -65,8 +65,8 @@ class ReporterSearchForm(forms.Form):
                                   choices=SENTIMENT_CHOICES)
     locale = forms.ChoiceField(required=False, label=_lazy('Locale:'),
                                choices=LOCALE_CHOICES)
-    os = forms.ChoiceField(required=False, label=_lazy('OS:'),
-                           choices=OS_CHOICES)
+    platform = forms.ChoiceField(required=False, label=_lazy('PLATFORM:'),
+                           choices=PLATFORM_CHOICES)
     manufacturer = forms.ChoiceField(required=False,
                                      choices=MANUFACTURER_CHOICES)
     device = forms.ChoiceField(required=False, choices=DEVICE_CHOICES)
@@ -115,7 +115,7 @@ class ReporterSearchForm(forms.Form):
             cleaned['page'] = 1
 
         if not cleaned.get('version'):
-            cleaned['version'] = simplify_version(LATEST_VERSION()[FIREFOX])
+            cleaned['version'] = Version(LATEST_VERSION()[FIREFOX]).simplified
         elif cleaned['version'] == '--':
             cleaned['version'] = ''
 

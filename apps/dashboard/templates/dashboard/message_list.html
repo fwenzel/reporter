@@ -6,8 +6,8 @@
         <p class="type praise" title="{{ OPINION_PRAISE.pretty }}"><span>{{ OPINION_PRAISE.pretty }}</span></p>
       {% elif opinion.type == OPINION_ISSUE.id: %}
         <p class="type issue" title="{{ OPINION_PRAISE.pretty }}"><span>{{ OPINION_PRAISE.pretty }}</span></p>
-      {% elif opinion.type == OPINION_SUGGESTION.id: %}
-        <p class="type suggestion" title="{{ OPINION_SUGGESTION.pretty }}"><span>{{ OPINION_SUGGESTION.pretty }}</span></p>
+      {% elif opinion.type == OPINION_IDEA.id: %}
+        <p class="type idea" title="{{ OPINION_IDEA.pretty }}"><span>{{ OPINION_IDEA.pretty }}</span></p>
       {% endif %}
       <p class="body">{{ opinion.description }}</p>
       <ul class="meta">
@@ -17,11 +17,10 @@
             opinion.created|timesince }}</time>
           </a>
         </li>
-        <li><a href="{{ search_url(os=opinion.os, defaults=defaults) }}">{{ os_name(opinion.os) }}</a></li>
+        <li><a href="{{ search_url(platform=opinion.platform, defaults=defaults) }}">{{ platform_name(opinion.platform) }}</a></li>
         <li><a href="{{ search_url(locale=opinion.locale, defaults=defaults) }}">{{ locale_name(opinion.locale) }}</a></li>
         {% if opinion.url %}
-          {# TODO redirect via outgoing? #}
-          <li><a href="{{ opinion.url }}" rel="nofollow">{{ opinion.url|for_display }}</a></li>
+          <li><a href="{{ opinion.url }}" rel="nofollow">{{ opinion.url|strip_protocol }}</a></li>
         {% endif %}
       </ul>
 

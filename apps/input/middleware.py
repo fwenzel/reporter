@@ -8,7 +8,7 @@ from django.utils.encoding import smart_str
 from caching.base import cached
 import tower
 
-from feedback import FIREFOX, MOBILE
+from input import FIREFOX, MOBILE
 from input import urlresolvers
 from input.helpers import urlparams
 
@@ -94,4 +94,4 @@ class MobileSiteMiddleware(object):
 
         # Keep mobile site status in request object
         request.mobile_site = (settings.SITE_ID == settings.MOBILE_SITE_ID)
-        request.default_app = request.mobile_site and MOBILE or FIREFOX
+        request.default_prod = request.mobile_site and MOBILE or FIREFOX

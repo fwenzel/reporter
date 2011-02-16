@@ -3,13 +3,13 @@ import jinja2
 from product_details import product_details
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from feedback import OSES, OS_OTHER
+from input import PLATFORMS, PLATFORM_OTHER
 
 
 @register.function
-def os_name(os):
-    """Convert an OS short name into a human readable version."""
-    return OSES.get(os, OS_OTHER).pretty
+def platform_name(platform):
+    """Convert a PLATFORM short name into a human readable version."""
+    return PLATFORMS.get(platform, PLATFORM_OTHER).pretty
 
 
 @register.function

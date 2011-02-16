@@ -7,9 +7,9 @@ from django.db import transaction
 import cronjobs
 from textcluster import Corpus, search
 
-from feedback import APP_USAGE, OS_USAGE, LATEST_BETAS
 from feedback.models import Opinion
-from input import OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION
+from input import (PRODUCT_USAGE, LATEST_BETAS, OPINION_PRAISE, OPINION_ISSUE,
+                   OPINION_IDEA, PLATFORM_USAGE)
 from themes.models import Theme, Item
 
 SIM_THRESHOLD = settings.CLUSTER_SIM_THRESHOLD
@@ -53,32 +53,32 @@ def cluster():
 
 
 def cluster_by_product(qs):
-    for app in APP_USAGE:
+    for prod in PRODUCT_USAGE:
         log.debug('Clustering %s(%s)' %
-                  (unicode(app.pretty), LATEST_BETAS[app]))
-        qs_product = qs.filter(product=app.id, version=LATEST_BETAS[app])
-        cluster_by_feeling(qs_product, app)
+                  (unicode(prod.pretty), LATEST_BETAS[prod]))
+        qs_product = qs.filter(product=prod.id, version=LATEST_BETAS[prod])
+        cluster_by_feeling(qs_product, prod)
 
 
-def cluster_by_feeling(qs, app):
+def cluster_by_feeling(qs, prod):
     happy = qs.filter(type=OPINION_PRAISE.id)
     sad = qs.filter(type=OPINION_ISSUE.id)
-    suggestions = qs.filter(type=OPINION_SUGGESTION.id)
-    cluster_by_platform(happy, app, 'happy')
-    cluster_by_platform(sad, app, 'sad')
-    cluster_by_platform(suggestions, app, 'suggestions')
+    ideas = qs.filter(type=OPINION_IDEA.id)
+    cluster_by_platform(happy, prod, 'happy')
+    cluster_by_platform(sad, prod, 'sad')
+    cluster_by_platform(ideas, prod, 'ideas')
 
 
-def cluster_by_platform(qs, app, feeling):
+def cluster_by_platform(qs, prod, feeling):
     # We need to create corpii for each platform and manually inspect each
     # opinion and put it in the right platform bucket.
 
     result = cluster_queryset(qs)
-    dimensions = dict(product=app.id, feeling=feeling)
+    dimensions = dict(product=prod.id, feeling=feeling)
     save_result(result, dimensions)
 
-    for platform in OS_USAGE:
-        result = cluster_queryset(qs.filter(os=platform.short))
+    for platform in PLATFORM_USAGE:
+        result = cluster_queryset(qs.filter(platform=platform.short))
         dimensions['platform'] = platform.short
         save_result(result, dimensions)
 

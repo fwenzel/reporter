@@ -5,9 +5,8 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 
 import jingo
 
-from input import get_channel
+from input import FIREFOX, MOBILE, PLATFORMS, PRODUCTS, get_channel
 from input.decorators import cache_page
-from feedback import FIREFOX, MOBILE, OSES, APPS
 from feedback.models import Opinion
 from search.forms import PROD_CHOICES
 
@@ -28,14 +27,14 @@ def _fetch_summaries(form, url=None, count=None, one_offs=False):
     elif search_opts["sentiment"] == "sad": selected_sentiment = 0
     qs = qs.filter(positive__exact=selected_sentiment)
 
-    # Search for a specific os, for all oses matching the prod, or everything
-    os = None
-    if search_opts["os"] != '': os = search_opts["os"]
-    if os is None and search_opts["product"]:
-        product = APPS[search_opts["product"]].short
-        qs = qs.filter(os__exact='<%s>' % product)
+    # Search for a specific platform, for all platforms matching the prod, or everything
+    platform = None
+    if search_opts["platform"] != '': platform = search_opts["platform"]
+    if platform is None and search_opts["product"]:
+        product = PRODUCTS[search_opts["product"]].short
+        qs = qs.filter(platform__exact='<%s>' % product)
     else:
-        qs = qs.filter(os__exact=os)
+        qs = qs.filter(platform__exact=platform)
 
 
     # If URL was specified, match it exactly, else fuzzy-search.
@@ -67,13 +66,13 @@ def _fetch_summaries(form, url=None, count=None, one_offs=False):
 
 
 def _common_data(form):
-    oses = OSES.values()
+    platforms = PLATFORMS.values()
     product_name = form.cleaned_data["product"]
     if product_name:
-        product = APPS[product_name]
-        oses = [os for os in oses if product in os.apps]
+        product = PRODUCTS[product_name]
+        platforms = [platform for platform in platforms if product in platform.prods]
     return {"form": form,
-            "oses": oses,
+            "platforms": platforms,
             "products": form.fields["product"].choices,
             "product": product,
             "versions": VERSION_CHOICES[get_channel()][product],

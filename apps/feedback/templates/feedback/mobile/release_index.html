@@ -35,12 +35,12 @@
 
   <section class="inset"><form action="#thanks" method="post">
     {{ csrf() }}
-    
+
     {% for question in RATING_USAGE %}
     <div class="aspects">
       <div class="aspect">
         <h2 title="{{ question.help }}">{{ question.pretty }}</h2>
-        {{ rating_form[question.short].errors|safe }}
+        {{ rating_form[question.short].errors }}
         <ul>
           {% for cid, choice in RATING_CHOICES %}
           <li><input id="a{{ question.id }}-{{ cid }}" name="{{ question.short }}" value="{{ cid }}" type="radio" />
@@ -50,17 +50,17 @@
       </div>
     </div>
     {% endfor %}
-  
+
     {% for hidden in rating_form.hidden_fields() %}
-      {{ hidden|safe }}
+      {{ hidden }}
       {% if hidden.errors %}
         {{ hidden.name }}:
-        {{ hidden.errors|safe }}
+        {{ hidden.errors }}
       {% endif %}
     {% endfor %}
-    
-    {{ rating_form.errors['__all__']|safe }}
-  
+
+    {{ rating_form.errors['__all__'] }}
+
     <div class="submit">
       <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>
       <noscript><button type="submit">{{ _('Submit Feedback') }}</button></noscript>
@@ -88,8 +88,8 @@
 
     <div class="field">
       <label>{{ _('What is the URL of the broken site?') }}</label>
-      <p>{{ website_form.url|safe }}</p>
-      {{ website_form.url.errors|safe }}
+      <p>{{ website_form.url }}</p>
+      {{ website_form.url.errors }}
     </div>
 
     <div class="field">
@@ -97,20 +97,20 @@
       <span id="count-broken-desc" class="char-count" data-max="{{
         website_form.fields.description.max_length }}">{{
         website_form.fields.description.max_length }}</span>
-      <p>{{ website_form.description|safe }}</p>
+      <p>{{ website_form.description }}</p>
       <p class="warning"><span>{{ _('For your privacy, please ensure that no personally identifiable information is included in your feedback.') }}</span></p>
-      {{ website_form.description.errors|safe }}
+      {{ website_form.description.errors }}
     </div>
 
     {% for hidden in website_form.hidden_fields() %}
-      {{ hidden|safe }}
+      {{ hidden }}
       {% if hidden.errors %}
         {{ hidden.name }}:
-        {{ hidden.errors|safe }}
+        {{ hidden.errors }}
       {% endif %}
     {% endfor %}
-    
-    {{ website_form.errors['__all__']|safe }}
+
+    {{ website_form.errors['__all__'] }}
 
     <div class="submit">
       <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>
@@ -139,18 +139,18 @@
     <div class="field">
       <label>{{ _('Describe your idea below.') }}</label>
       <span id="count-idea-desc" class="char-count" data-max="{{
-                suggestion_form.fields.description.max_length }}">{{
-                suggestion_form.fields.description.max_length }}</span>
-      {{ suggestion_form.description|safe }}
+                idea_form.fields.description.max_length }}">{{
+                idea_form.fields.description.max_length }}</span>
+      {{ idea_form.description }}
       <p class="warning"><span>{{ _('For your privacy, please ensure that no personally identifiable information is included in your feedback.') }}</span></p>
-      {{ suggestion_form.description.errors|safe }}
+      {{ idea_form.description.errors }}
     </div>
 
-    {% for hidden in suggestion_form.hidden_fields() %}
-      {{ hidden|safe }}
+    {% for hidden in idea_form.hidden_fields() %}
+      {{ hidden }}
       {% if hidden.errors %}
         {{ hidden.name }}:
-        {{ hidden.errors|safe }}
+        {{ hidden.errors }}
       {% endif %}
     {% endfor %}
 
@@ -186,7 +186,7 @@
          <strong>{{ _('Feedback Dashboard') }}</strong>
        </span>
      </a></li>
-   
+
      <li><a id="thanks-twitter" href="http://twitter.com/MozMobile">
        <em class="icon"></em>
        <span>
@@ -194,7 +194,7 @@
          <strong>{{ _('@MozMobile') }}</strong>
        </span>
      </a></li>
-   
+
      <li><a id="thanks-facebook" href="http://www.facebook.com/firefoxformobile">
        <em class="icon"></em>
        <span>
@@ -202,7 +202,7 @@
          <strong>{{ _('Firefox on Facebook') }}</strong>
        </span>
      </a></li>
-   
+
      <li><a id="thanks-planet" href="http://planet.mozilla.org">
        <em class="icon"></em>
        <span>

@@ -12,9 +12,9 @@ class TestPopulate(test_utils.TestCase):
         eq_(Opinion.objects.count(), DEFAULT_NUM_OPINIONS)
 
     def test_populate_type(self):
-        populate(DEFAULT_NUM_OPINIONS, 'desktop', input.OPINION_SUGGESTION)
+        populate(DEFAULT_NUM_OPINIONS, 'desktop', input.OPINION_IDEA)
         count = Opinion.objects.filter(
-                type=input.OPINION_SUGGESTION.id).count()
+                type=input.OPINION_IDEA.id).count()
         eq_(count, DEFAULT_NUM_OPINIONS)
 
     def test_populate_rating(self):

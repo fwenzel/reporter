@@ -33,7 +33,7 @@ class TestUtils(test_utils.TestCase):
         url = 'http://example.com/something'
         p = utils.urlparse(url)
         eq_(p, urlparse_.urlparse(url))
-    
+
     def test_normalize_url(self):
         """Test normalization from urls to sites."""
         def test_without_protocol(self):
@@ -62,7 +62,7 @@ class TestHelpers(test_utils.TestCase):
             ('chrome://something/exciting', 'chrome://something/exciting'),
         )
         for domain, expected in test_domains:
-            eq_(helpers.for_display(domain), expected)
+            eq_(helpers.strip_protocol(domain), expected)
 
     def test_domain_protocol(self):
         """Test domain extraction from URLs, for HTTP, about:, chrome."""
@@ -81,8 +81,17 @@ class TestViews(test_utils.TestCase):
 
     def test_invalid_os(self):
         """Bogus os must not confuse us: we are bogus-compatible."""
-        r = self.client.get(reverse('website_issues', channel='beta'), 
+        r = self.client.get(reverse('website_issues', channel='beta'),
                             {"os": "bogus"})
         eq_(r.status_code, 200)
         assert_true(len(r.content) > 0)
 
+
+class TestViews(test_utils.TestCase):
+
+    def test_invalid_platform(self):
+        """Bogus platform must not confuse us: we are bogus-compatible."""
+        r = self.client.get(reverse('website_issues', channel='beta'),
+                            {"platform": "bogus"})
+        eq_(r.status_code, 200)
+        assert_true(len(r.content) > 0)

@@ -2,7 +2,7 @@
   {{ filter_box_toggle(_('Type of Feedback')) }}
 
   <ul class="bars" data-total="{{ sent.total }}">
-    {% if defaults['sentiment'] not in ('sad', 'suggestions'): %}
+    {% if defaults['sentiment'] not in ('sad', 'ideas'): %}
     {% with sel = (defaults['sentiment'] == 'happy') %}
     <li>
     <input id="praise_bar" name="sentiment" value="happy" type="checkbox" {{ 'checked' if sel else '' }} />
@@ -16,7 +16,7 @@
     {% endwith %}
     {% endif %}
 
-    {% if defaults['sentiment'] not in ('happy', 'suggestions'): %}
+    {% if defaults['sentiment'] not in ('happy', 'ideas'): %}
     {% with sel = (defaults['sentiment'] == 'sad') %}
     <li>
       <input id="issue_bar" name="sentiment" value="sad" type="checkbox" {{ 'checked' if sel else '' }} />
@@ -31,13 +31,13 @@
     {% endif %}
 
     {% if defaults['sentiment'] not in ('happy', 'sad'): %}
-    {% with sel = (defaults['sentiment'] == 'suggestions') %}
+    {% with sel = (defaults['sentiment'] == 'ideas') %}
     <li>
-      <input id="suggestion_bar" name="sentiment" value="suggestions" type="checkbox" {{ 'checked' if sel else '' }} />
-      <label for="suggestion_bar" class="bar {{ 'selected' if sel else '' }}"
-        data-value="{{ sent.suggestions }}"
-        data-value-pretty="{{ sent.suggestions|numberfmt }}">
-        <strong>{{ _('Suggestions') }}</strong>
+      <input id="idea_bar" name="sentiment" value="ideas" type="checkbox" {{ 'checked' if sel else '' }} />
+      <label for="idea_bar" class="bar {{ 'selected' if sel else '' }}"
+        data-value="{{ sent.ideas}}"
+        data-value-pretty="{{ sent.ideas|numberfmt }}">
+        <strong>{{ _('Ideas') }}</strong>
       </label>
     </li>
     {% endwith %}

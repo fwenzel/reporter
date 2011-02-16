@@ -3,7 +3,7 @@ from django import http
 
 from nose.tools import eq_
 
-from feedback import FIREFOX, MOBILE
+from input import FIREFOX, MOBILE
 from feedback.utils import detect_language, ua_parse, smart_truncate
 
 
@@ -55,7 +55,7 @@ def test_ua_parse():
         if pattern[1]:
             eq_(parsed['browser'], pattern[1])
             eq_(parsed['version'], pattern[2])
-            eq_(parsed['os'], pattern[3])
+            eq_(parsed['platform'], pattern[3])
         else:
             assert parsed is None
 

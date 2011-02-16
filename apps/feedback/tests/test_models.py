@@ -3,7 +3,7 @@ from datetime import date
 from mock import patch
 from test_utils import eq_, TestCase
 
-from feedback import FIREFOX, WINDOWS_7
+from input import FIREFOX, WINDOWS_7
 from feedback.models import Opinion, Term
 from feedback.stats import frequent_terms
 
@@ -75,11 +75,11 @@ def test_product_name():
     eq_(o.product_name, 17)
 
 
-def test_os_name():
+def test_platform_name():
     """Show platform name or ID if unknown."""
     o = Opinion()
-    o.os = 'win7'
-    eq_(o.os_name, WINDOWS_7.pretty)
+    o.platform = 'win7'
+    eq_(o.platform_name, WINDOWS_7.pretty)
 
-    o.os = 'win25'  # Unknown ID
-    eq_(o.os_name, 'win25')
+    o.platform = 'win25'  # Unknown ID
+    eq_(o.platform_name, 'win25')

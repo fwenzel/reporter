@@ -8,9 +8,9 @@ from mock import Mock
 from nose.tools import eq_
 from pyquery import PyQuery as pq
 
-import feedback
+import input
 from dashboard import helpers
-from input.tests import TestCase
+from input.tests import InputTestCase
 from input.urlresolvers import reverse
 from search.tests import SphinxTestCase
 
@@ -48,7 +48,7 @@ class TestDashboard(SphinxTestCase):
         eq_(len(pag_link), 1)
         assert pag_link.attr('href').endswith(
             '?product=firefox&version=%s' % (
-                feedback.LATEST_BETAS[feedback.FIREFOX]))
+                input.LATEST_BETAS[input.FIREFOX]))
 
 
 class TestMobileDashboard(test_utils.TestCase):
@@ -58,24 +58,24 @@ class TestMobileDashboard(test_utils.TestCase):
         eq_(r.status_code, 200)
 
 
-class TestHelpers(TestCase):
-    def test_os_none(self):
-        """Test that OS with no name does not crash platform helper."""
+class TestHelpers(InputTestCase):
+    def test_platform_none(self):
+        """Test that PLATFORM with no name does not crash platform helper."""
 
-        class TestOS(object):
-            """Test OS with no name."""
-            os = None
+        class TestPLATFORM(object):
+            """Test PLATFORM with no name."""
+            platform = None
             count = 10
 
         ctx = {
-            'defaults': {'os': None},
-            'platforms': (TestOS(),),
+            'defaults': {'platform': None},
+            'platforms': (TestPLATFORM(),),
             'opinion_count': 20
         }
 
         # No error, please.
         tpl = render_template('dashboard/mobile/platforms.html', ctx)
-        assert tpl.find('id="os_None"') >= 0
+        assert tpl.find('id="platform_None"') >= 0
 
     def test_locale_none(self):
         """Test that locale with no name does not crash locale helper."""
@@ -130,7 +130,7 @@ class TestHelpers(TestCase):
         ms = [site]
         req = self.factory.get('/')
         req.mobile_site = True
-        req.default_app = feedback.FIREFOX
+        req.default_prod = input.FIREFOX
         r = render('{{ sites_block(ms) }}', dict(ms=ms, request=req))
         doc = pq(r)
         eq_(doc('label').text(), 'youtube.com')

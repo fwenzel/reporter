@@ -8,14 +8,13 @@ from django.utils.feedgenerator import Atom1Feed
 
 import commonware.log
 import jingo
+from product_details.version_compare import Version
 from tower import ugettext as _, ugettext_lazy as _lazy
 
 import input
-from feedback import (APPS, APP_IDS, FIREFOX, MOBILE, LATEST_RELEASE,
-                      LATEST_BETAS, LATEST_VERSION)
-from feedback.version_compare import simplify_version
-from input import (OPINION_PRAISE, OPINION_ISSUE, OPINION_SUGGESTION,
-                   OPINION_TYPES)
+from input import (PRODUCTS, PRODUCT_IDS, FIREFOX, MOBILE, LATEST_RELEASE,
+                   LATEST_BETAS, LATEST_VERSION, OPINION_PRAISE, OPINION_ISSUE,
+                   OPINION_IDEA, OPINION_TYPES)
 from input.decorators import cache_page
 from input.urlresolvers import reverse
 from search.client import Client, RatingsClient, SearchError
@@ -37,12 +36,12 @@ def _get_results(request, meta=[], client=None):
         metas = c.meta
     else:
         opinions = []
-        product = request.default_app
+        product = request.default_prod
         query = ''
-        version = simplify_version(LATEST_VERSION()[product])
+        version = Version(LATEST_VERSION()[product]).simplified
         metas = {}
 
-    product = APPS.get(product, FIREFOX)
+    product = PRODUCTS.get(product, FIREFOX)
 
     return (opinions, form, product, version, metas)
 
@@ -50,7 +49,7 @@ def _get_results(request, meta=[], client=None):
 def _get_results_opts(request, data, product, meta=[]):
     """Prepare the search options for the Sphinx query"""
     search_opts = data
-    search_opts['product'] = APPS[product].id
+    search_opts['product'] = PRODUCTS[product].id
     search_opts['meta'] = meta
     search_opts['offset'] = ((data.get('page', 1) - 1) *
                              settings.SEARCH_PERPAGE)
@@ -60,24 +59,24 @@ def _get_results_opts(request, data, product, meta=[]):
         search_opts['type'] = OPINION_PRAISE.id
     elif sentiment == 'sad':
         search_opts['type'] = OPINION_ISSUE.id
-    elif sentiment == 'suggestions':
-        search_opts['type'] = OPINION_SUGGESTION.id
+    elif sentiment == 'ideas':
+        search_opts['type'] = OPINION_IDEA.id
 
     return search_opts
 
 
 def get_sentiment(data=[]):
-    r = dict(happy=0, sad=0, suggestions=0, sentiment='happy')
+    r = dict(happy=0, sad=0, ideas=0, sentiment='happy')
 
     for el in data:
         if el['type'] == OPINION_PRAISE.id:
             r['happy'] = el['count']
         elif el['type'] == OPINION_ISSUE.id:
             r['sad'] = el['count']
-        elif el['type'] == OPINION_SUGGESTION.id:
-            r['suggestions'] = el['count']
+        elif el['type'] == OPINION_IDEA.id:
+            r['ideas'] = el['count']
 
-    r['total'] = r['sad'] + r['happy'] + r['suggestions']
+    r['total'] = r['sad'] + r['happy'] + r['ideas']
 
     if r['sad'] > r['happy']:
         r['sentiment'] = 'sad'
@@ -117,9 +116,9 @@ class SearchFeed(Feed):
     def item_categories(self, item):
         """Categorize comments. Style: "product:firefox" etc."""
         categories = {
-            'product': APP_IDS.get(item.product).short,
+            'product': PRODUCT_IDS.get(item.product).short,
             'version': item.version,
-            'os': item.os,
+            'platform': item.platform,
             'locale': item.locale,
             'sentiment': OPINION_TYPES[item.type].short
         }
@@ -132,7 +131,6 @@ class SearchFeed(Feed):
 
     def item_link(self, item):
         """Permalink per item. Also used as GUID."""
-        # TODO make this a working link. bug 575770.
         return item.get_url_path()
 
     def item_pubdate(self, item):
@@ -182,7 +180,7 @@ def get_period(form):
 @cache_page(use_get=True)
 def index(request):
     try:
-        meta = ('type', 'locale', 'os', 'day_sentiment', 'manufacturer',
+        meta = ('type', 'locale', 'platform', 'day_sentiment', 'manufacturer',
                 'device')
         (results, form, product, version, metas) = _get_results(
                 request, meta=meta)
@@ -214,7 +212,7 @@ def index(request):
 
         data['opinions'] = data['page'].object_list
         data['sent'] = get_sentiment(metas.get('type', {}))
-        data['demo'] = dict(locale=metas.get('locale'), os=metas.get('os'),
+        data['demo'] = dict(locale=metas.get('locale'), platform=metas.get('platform'),
                             manufacturer=metas.get('manufacturer'),
                             device=metas.get('device'))
         if days >= 7 or data['period'] == 'infin':
@@ -222,7 +220,7 @@ def index(request):
             chart_data = dict(series=[
                 dict(name=_('Praise'), data=daily['praise']),
                 dict(name=_('Issues'), data=daily['issue']),
-                dict(name=_('Suggestion'), data=daily['suggestion']),
+                dict(name=_('Idea'), data=daily['idea']),
                 ],
             ) if daily else None
             data['chart_data_json'] = json.dumps(chart_data)
@@ -244,7 +242,7 @@ def index(request):
 def release(request):
     """Front page and search view for the release channel."""
     c = RatingsClient()
-    metas = ['os', 'locale']
+    metas = ['platform', 'locale']
 
     for dimension in input.RATING_TYPES.keys():
         metas.append(dimension)
@@ -282,7 +280,7 @@ def release(request):
         products=PROD_CHOICES,
         version=dict(form.fields['version'].choices).get(version or '--'),
         versions=VERSION_CHOICES['release'][product],
-        platforms=metas.get('os'),
+        platforms=metas.get('platform'),
         locales=metas.get('locale'),
         chart_json=json.dumps(ratings_chart),
         chart_categories=json.dumps(categories),
