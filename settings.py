@@ -100,7 +100,7 @@ LANGUAGE_URL_MAP.update((i.lower(), i) for i in INPUT_LANGUAGES)
 SUPPORTED_NONLOCALES = ('media', 'admin')
 
 # TODO: These will be ported to /feeedback/beta
-SUPPORTED_NONCHANNELS = ('media', 'admin', 'happy', 'sad', 'about')
+SUPPORTED_NONCHANNELS = ('media', 'admin', 'happy', 'sad', 'about', 'idea')
 DEFAULT_CHANNEL = 'release'
 
 TEXT_DOMAIN = 'messages'
