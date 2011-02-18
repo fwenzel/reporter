@@ -62,6 +62,7 @@
     {{ rating_form.errors['__all__'] }}
 
     <div class="submit">
+        {# L10n: Submitting... is a text shown while waiting for the sending to complete. #}
       <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>
       <noscript><button type="submit">{{ _('Submit Feedback') }}</button></noscript>
     </div>
@@ -113,6 +114,7 @@
     {{ website_form.errors['__all__'] }}
 
     <div class="submit">
+        {# L10n: Submitting... is a text shown while waiting for the sending to complete. #}
       <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>
       <noscript><button type="submit">{{ _('Submit Feedback') }}</button></noscript>
     </div>
@@ -155,6 +157,7 @@
     {% endfor %}
 
     <div class="submit">
+        {# L10n: Submitting... is a text shown while waiting for the sending to complete. #}
       <a href="#" data-waittext="{{ _('Submitting Feedback') }}"><span>{{ _('Submit Feedback') }}</span></a><span></span>
       <noscript><button type="submit">{{ _('Submit Feedback') }}</button></noscript>
     </div>
