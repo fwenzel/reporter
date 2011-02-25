@@ -12,27 +12,29 @@
         {{ filter_list(products) }}
       </div>
     </div>
-    <div class="choice" id="filter_type">
-      <h3>{{ _('Type of Feedback') }}</h3>
-      <div>
-        {{ filter_list(sentiments) }}
+    {% if CHANNEL == 'beta' %}
+      <div class="choice" id="filter_type">
+        <h3>{{ _('Type of Feedback') }}</h3>
+        <div>
+          {{ filter_list(sentiments) }}
+        </div>
       </div>
-    </div>
-    {# No need to show platforms if there is only one non-All platform #}
-    {% if platforms|length > 2 %}
-    <div class="choice" id="filter_platform">
-      <h3>{{ _('Platform') }}</h3>
-      <div>
-        {{ filter_list(platforms) }}
+      {# No need to show platforms if there is only one non-All platform #}
+      {% if platforms|length > 2 %}
+      <div class="choice" id="filter_platform">
+        <h3>{{ _('Platform') }}</h3>
+        <div>
+          {{ filter_list(platforms) }}
+        </div>
       </div>
-    </div>
+      {% endif %}
     {% endif %}
   </form>
 </div>
 
 <div class="col middle wide">
   <div id="messages" class="block">
-    <h2>{{ _('Common Themes') }}</h2>
+    <h2>{{ _('Common Themes') if CHANNEL == 'beta' else _('Frequent Ideas') }}</h2>
     {{ theme_list(themes) }}
 
     {{ pager() }}
