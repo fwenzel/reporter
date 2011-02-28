@@ -503,6 +503,13 @@ footer form option {
 
 #broken {
 }
+#broken header {
+    background: -moz-radial-gradient(center 0, #fff, #f4e7e6);
+    color: #a75048;
+}
+#broken header h1 {
+    color: #612f2a;
+}
 #broken-url {
     width: 80%;
 }
@@ -515,6 +522,13 @@ footer form option {
 
 
 #idea {
+}
+#idea header {
+    background: -moz-radial-gradient(center 0, #fff, #ececd8);
+    color: #999949;
+}
+#idea header h1 {
+    color: #5a5a2b;
 }
 #idea-desc {
     height: 6em;

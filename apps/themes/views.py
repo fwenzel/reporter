@@ -7,8 +7,11 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 import jingo
 from tower import ugettext as _
 
-from input import PRODUCTS, PLATFORMS, FIREFOX, PRODUCT_USAGE
-from input.decorators import cache_page
+from input import (CHANNEL_BETA, CHANNEL_RELEASE,
+                   OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA,
+                   PRODUCTS, PLATFORMS, FIREFOX, PRODUCT_USAGE,
+                   get_channel)
+from input.decorators import cache_page, negotiate
 from input.helpers import urlparams
 from input.urlresolvers import reverse
 from themes.models import Theme
@@ -18,33 +21,31 @@ Filter = namedtuple('Filter', 'url text title selected')
 
 
 def _get_sentiments(request, sentiment):
+    """Get available sentiment filters (beta channel only)."""
     sentiments = []
     url = request.get_full_path()
 
     f = Filter(urlparams(url, s=None), _('All'),  _('All feedback'),
                not sentiment)
-
     sentiments.append(f)
 
-    f = Filter(urlparams(url, s='happy'), _('Praise'),  _('Praise only'),
-               (sentiment == 'happy'))
-
+    f = Filter(urlparams(url, s=OPINION_PRAISE.short), _('Praise'),
+               _('Praise only'), (sentiment == OPINION_PRAISE.short))
     sentiments.append(f)
 
-    f = Filter(urlparams(url, s='sad'), _('Issues'),  _('Issues only'),
-               (sentiment == 'sad'))
-
+    f = Filter(urlparams(url, s=OPINION_ISSUE.short), _('Issues'),
+               _('Issues only'), (sentiment == OPINION_ISSUE.short))
     sentiments.append(f)
 
-    f = Filter(urlparams(url, s='ideas'), _('Ideas'),
-            _('Ideas only'),
-               (sentiment == 'ideas'))
-
+    f = Filter(urlparams(url, s=OPINION_IDEA.short), _('Ideas'),
+               _('Ideas only'), (sentiment == OPINION_IDEA.short))
     sentiments.append(f)
+
     return sentiments
 
 
 def _get_platforms(request, product, platform):
+    """Get platforms (beta channel only)."""
     platforms = []
     url = request.get_full_path()
 
@@ -66,6 +67,7 @@ def _get_platforms(request, product, platform):
 
 
 def _get_products(request, product):
+    """Get product filters (all channels)."""
     products = []
     url = request.get_full_path()
 
@@ -78,10 +80,10 @@ def _get_products(request, product):
 
 
 @cache_page(use_get=True)
-def index(request):
-    """List the various clusters of data we have."""
+def beta_index(request):
+    """List the themes clusters for beta releases."""
 
-    qs = Theme.objects.all()
+    qs = Theme.objects.filter(channel=CHANNEL_BETA.short)
     product = request.GET.get('a', FIREFOX.short)
     products = _get_products(request, product)
     try:
@@ -117,9 +119,41 @@ def index(request):
 
 
 @cache_page(use_get=True)
+def release_index(request):
+    """List the themes clusters for major releases."""
+
+    qs = Theme.objects.filter(channel=CHANNEL_RELEASE.short,
+                              feeling=OPINION_IDEA.short)
+    product = request.GET.get('a', FIREFOX.short)
+    products = _get_products(request, product)
+    try:
+        qs = qs.filter(product=PRODUCTS[product].id)
+    except KeyError:
+        raise http.Http404
+
+    args = dict(products=products)
+    page = request.GET.get('page', 1)
+
+    if qs:
+        pp = settings.SEARCH_PERPAGE
+        pager = Paginator(qs.select_related(), pp)
+
+        try:
+            args['page'] = pager.page(page)
+        except (EmptyPage, InvalidPage):
+            args['page'] = pager.page(pager.num_pages)
+
+        args['themes'] = args['page'].object_list
+
+    return jingo.render(request, 'themes/index.html', args)
+
+index = negotiate(beta=beta_index, release=release_index)
+
+
+@cache_page(use_get=True)
 def theme(request, theme_id):
     try:
-        theme = Theme.objects.get(id=theme_id)
+        theme = Theme.objects.get(id=theme_id, channel=get_channel())
     except Theme.DoesNotExist:
         raise http.Http404
 
