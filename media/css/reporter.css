@@ -12,7 +12,7 @@ body {
 /* background fix: bug 574031 */
 body,
 header .stripe {
-    min-width: 1100px;
+    min-width: 950px;
 }
 
 #nav-access {
