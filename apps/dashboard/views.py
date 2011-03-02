@@ -1,20 +1,40 @@
+import itertools
 import json
+import time
 
 from django.conf import settings
 
 import jingo
+from product_details import product_details
 from product_details.version_compare import Version
 from tower import ugettext as _
 
 from feedback import stats
 from feedback.models import Opinion, Term
-from input import LATEST_BETAS
+from input import LATEST_BETAS, FIREFOX
 from input.decorators import cache_page, forward_mobile, negotiate
 from search.client import Client, SearchError
 from search.forms import PROD_CHOICES, VERSION_CHOICES, ReporterSearchForm
 from search.views import get_sentiment, release, get_defaults
 from website_issues.models import SiteSummary
 
+
+unixtime = lambda s: int(time.mktime(time.strptime(s, '%Y-%m-%d')))
+
+def get_plotbands():
+    plotbands = []
+    color = itertools.cycle(('#fff', '#ddf'))
+    to = int(time.time())
+    versions = product_details.firefox_history_development_releases
+    for version in FIREFOX.beta_versions:
+        frm = unixtime(versions[version])
+        plotband = dict(color=color.next(),
+                        to=to,
+                        label=dict(text=version))
+        plotband['from'] = frm
+        plotbands.append(plotband)
+        to = frm
+    return plotbands
 
 @forward_mobile
 @cache_page
@@ -54,6 +74,7 @@ def beta(request):
             dict(name=_('Issues'), data=daily['issue']),
             dict(name=_('Ideas'), data=daily['idea']),
             ],
+            plotBands=get_plotbands()
             )
         total = c.total_found
     except SearchError:
