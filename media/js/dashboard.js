@@ -43,7 +43,8 @@ var input_chart; // Highcharts wants this to be global.
                             return Highcharts.dateFormat(time_fmt_short,
                                                          this.value * 1000);
                         }
-                    }
+                    },
+                    plotBands: chart_data.plotBands || {}
                 },
                 yAxis: options.yAxis || {
                     title: { text: null },
@@ -63,7 +64,6 @@ var input_chart; // Highcharts wants this to be global.
     chart_me('feedback-chart');
     var r_opts = {
         type: 'column', tooltip: {}, legend: {enabled: false},
-//        colors: ['#ff0000', '#ffa02a', '#55c4dd', '#60df57', '#009f37'],
         colors: ['#D73027', '#FC8D59', '#FEE08B', '#91CF60', '#1A9850'],
         plotOptions: { series: {borderWidth: 0, shadow: false}}
 
