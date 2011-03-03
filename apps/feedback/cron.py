@@ -55,7 +55,7 @@ DEVICES = dict(Samsung='Epic Vibrant Transform'.split(),
 
 @cronjobs.register
 @transaction.commit_on_success
-def populate(num_opinions=None, product='mobile', type=None):
+def populate(num_opinions=None, product='mobile', type=None, locale=None):
     if not num_opinions:
         num_opinions = getattr(settings, 'NUM_FAKE_OPINIONS',
                                DEFAULT_NUM_OPINIONS)
@@ -70,7 +70,7 @@ def populate(num_opinions=None, product='mobile', type=None):
             type = random.choice(TYPES).id
         o = Opinion(type=type,
                     url=random.choice(URLS),
-                    locale=random.choice(settings.INPUT_LANGUAGES),
+                    locale=locale or random.choice(settings.INPUT_LANGUAGES),
                     user_agent=random.choice(UA_STRINGS[product]))
 
         if type != input.OPINION_RATING.id:
