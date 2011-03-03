@@ -73,7 +73,7 @@ def extract_filters(kwargs):
         else:
             filters['locale'] = crc32(kwargs['locale'])
 
-    # We should allow infinite queries too.
+    # TODO: We should allow infinite queries when we get hardware or ES
     many_days_ago = date.today() - timedelta(days=60)
     start = time_as_int(kwargs.get('date_start') or many_days_ago,
                         utc=kwargs.get('utc'))
