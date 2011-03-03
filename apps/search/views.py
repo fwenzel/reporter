@@ -1,5 +1,7 @@
 import datetime
+import itertools
 import json
+import time
 
 from django.conf import settings
 from django.contrib.syndication.views import Feed
@@ -8,19 +10,39 @@ from django.utils.feedgenerator import Atom1Feed
 
 import commonware.log
 import jingo
+from product_details import product_details
 from product_details.version_compare import Version
 from tower import ugettext as _, ugettext_lazy as _lazy
 
 import input
-from input import (PRODUCTS, PRODUCT_IDS, FIREFOX, MOBILE, LATEST_RELEASE,
-                   LATEST_BETAS, LATEST_VERSION, OPINION_PRAISE, OPINION_ISSUE,
-                   OPINION_IDEA, OPINION_TYPES)
+from input import (PRODUCTS, PRODUCT_IDS, FIREFOX, LATEST_VERSION,
+                   OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA, OPINION_TYPES)
 from input.decorators import cache_page
 from input.urlresolvers import reverse
 from search.client import Client, RatingsClient, SearchError
 from search.forms import ReporterSearchForm, PROD_CHOICES, VERSION_CHOICES
 
 log = commonware.log.getLogger('i.search')
+
+
+unixtime = lambda s: int(time.mktime(time.strptime(s, '%Y-%m-%d')))
+
+
+def get_plotbands():
+    """Get's plotbands from product details."""
+    plotbands = []
+    color = itertools.cycle(('#fff', '#eef'))
+    to = int(time.time())
+    versions = product_details.firefox_history_development_releases
+    for version in FIREFOX.beta_versions:
+        frm = unixtime(versions[version])
+        plotband = dict(color=color.next(),
+                        to=to,
+                        label=dict(text=version))
+        plotband['from'] = frm
+        plotbands.append(plotband)
+        to = frm
+    return plotbands
 
 
 def _get_results(request, meta=[], client=None):
@@ -212,7 +234,8 @@ def index(request):
 
         data['opinions'] = data['page'].object_list
         data['sent'] = get_sentiment(metas.get('type', {}))
-        data['demo'] = dict(locale=metas.get('locale'), platform=metas.get('platform'),
+        data['demo'] = dict(locale=metas.get('locale'),
+                            platform=metas.get('platform'),
                             manufacturer=metas.get('manufacturer'),
                             device=metas.get('device'))
         if days >= 7 or data['period'] == 'infin':
@@ -222,6 +245,7 @@ def index(request):
                 dict(name=_('Issues'), data=daily['issue']),
                 dict(name=_('Idea'), data=daily['idea']),
                 ],
+                plotBands=get_plotbands()
             ) if daily else None
             data['chart_data_json'] = json.dumps(chart_data)
     else:
