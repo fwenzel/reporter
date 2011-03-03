@@ -284,7 +284,7 @@ class FeedTest(SphinxTestCase):
         url_base = 'http://%s/%s/%s/' % (s.domain, 'en-US',
                                         settings.DEFAULT_CHANNEL)
         eq_(doc('entry link').attr['href'],
-            '%s%s' % (url_base, 'opinion/32'))
+            '%s%s' % (url_base, 'opinion/29'))
 
     def test_item_title(self):
         """
@@ -292,7 +292,8 @@ class FeedTest(SphinxTestCase):
         Bug 617204.
         """
         r = self.client.get(reverse('search.feed', channel='beta'),
-                            dict(product='firefox', version='--'))
+                            dict(product='firefox', version='--',
+                                 date_start='2007-01-01'))
         doc = self._pq(r)
         # If we get a memory address, this is not a unicode string.
         eq_(doc('entry title').text().find('object at 0x'), -1)

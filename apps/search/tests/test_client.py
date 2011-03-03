@@ -36,26 +36,31 @@ class SearchTest(SphinxTestCase):
         eq_(num_results(date_start=start, date_end=end), 5)
 
     def test_filter_locale(self):
-        eq_(num_results(locale='en-US'), 29)
-        eq_(num_results(locale='de'), 1)
-        eq_(num_results(locale='unknown'), 1)
+        start = datetime.datetime(2010, 5, 27)
+        eq_(num_results(locale='en-US', date_start=start), 29)
+        eq_(num_results(locale='de', date_start=start), 1)
+        eq_(num_results(locale='unknown', date_start=start), 1)
 
     def test_filter_platform(self):
-        eq_(num_results(platform='mac'), 31)
-        eq_(num_results(platform='palm'), 0)
+        start = datetime.datetime(2010, 5, 27)
+        eq_(num_results(platform='mac', date_start=start), 31)
+        eq_(num_results(platform='palm', date_start=start), 0)
 
     def test_filter_product(self):
-        eq_(num_results(product=1), 31)
-        eq_(num_results(product=2), 0)
+        start = datetime.datetime(2010, 5, 27)
+        eq_(num_results(product=1, date_start=start), 31)
+        eq_(num_results(product=2, date_start=start), 0)
 
     def test_filter_type(self):
-        eq_(num_results(type=input.OPINION_PRAISE.id), 17)
-        eq_(num_results(type=input.OPINION_ISSUE.id), 11)
-        eq_(num_results(type=input.OPINION_IDEA.id), 3)
+        start = datetime.datetime(2010, 5, 27)
+        eq_(num_results(type=input.OPINION_PRAISE.id, date_start=start), 17)
+        eq_(num_results(type=input.OPINION_ISSUE.id, date_start=start), 11)
+        eq_(num_results(type=input.OPINION_IDEA.id, date_start=start), 3)
 
     def test_filter_version(self):
-        eq_(num_results(version='3.6.3'), 11)
-        eq_(num_results(version='3.6.4'), 16)
+        start = datetime.datetime(2010, 5, 27)
+        eq_(num_results(version='3.6.3', date_start=start), 11)
+        eq_(num_results(version='3.6.4', date_start=start), 16)
 
     @patch('search.client.sphinx.SphinxClient.GetLastError')
     def test_getlasterror(self, sphinx):
@@ -69,7 +74,8 @@ class SearchTest(SphinxTestCase):
         assert 'day__avg__startup' in c.queries
 
     def test_query(self):
-        eq_(num_results(), 31)
+        start = datetime.datetime(2010, 5, 27)
+        eq_(num_results(date_start=start), 31)
 
     @patch('search.client.sphinx.SphinxClient.RunQueries')
     def test_result_empty(self, rq):
@@ -91,11 +97,13 @@ class SearchTest(SphinxTestCase):
         self.assertRaises(SearchError, query)
 
     def test_result_set(self):
-        rs = query()
+        start = datetime.datetime(2010, 5, 27)
+        rs = query(date_start=start)
         assert isinstance(rs[0], Opinion)
 
     def test_url_search(self):
-        eq_(num_results('url:*'), 7)
+        start = datetime.datetime(2010, 5, 27)
+        eq_(num_results('url:*', date_start=start), 7)
 
 
 def test_date_filter_timezone():
