@@ -51,6 +51,7 @@ var input_chart; // Highcharts wants this to be global.
                     min: 0,
                     tickPixelInterval: 40,
                     minorTickInterval: 500,
+                    minorGridLineColor: "rgba(0, 0, 0, .1)"
                 },
                 plotOptions: options.plotOptions || {},
                 series: chart_data.series,
