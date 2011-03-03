@@ -73,11 +73,13 @@ def extract_filters(kwargs):
         else:
             filters['locale'] = crc32(kwargs['locale'])
 
-    if kwargs.get('date_start'):
-        start = time_as_int(kwargs['date_start'], utc=kwargs.get('utc'))
-        end_date = (kwargs.get('date_end') or date.today()) + timedelta(days=1)
-        end = time_as_int(end_date)
-        ranges['created'] = (start, end)
+    # We should allow infinite queries too.
+    many_days_ago = date.today() - timedelta(days=60)
+    start = time_as_int(kwargs.get('date_start') or many_days_ago,
+                        utc=kwargs.get('utc'))
+    end_date = (kwargs.get('date_end') or date.today()) + timedelta(days=1)
+    end = time_as_int(end_date)
+    ranges['created'] = (start, end)
 
     return (filters, ranges, metas)
 
@@ -197,7 +199,7 @@ class Client(object):
         sc.SetLimits(min(SPHINX_HARD_LIMIT - limit, offset), limit)
 
         # Always sort in reverse chronological order.
-        sc.SetSortMode(sphinx.SPH_SORT_EXTENDED, '@id DESC')
+        sc.SetSortMode(sphinx.SPH_SORT_EXTENDED, 'created DESC')
         sc.AddQuery(term, self.index)
         self.queries['primary'] = self.query_index
         self.query_index += 1
