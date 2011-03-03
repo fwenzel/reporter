@@ -6,8 +6,9 @@ from django.db import transaction
 
 import cronjobs
 
-import input
 from feedback.models import Opinion, Rating
+import input
+
 
 DEFAULT_NUM_OPINIONS = 100
 TYPES = list(input.OPINION_TYPES_USAGE)
@@ -35,15 +36,17 @@ sample = lambda: ' '.join(random.sample(text.split(), 15))
 UA_STRINGS = {'mobile': ['Mozilla/5.0 (Android; Linux armv71; rv:2.0b6pre)'
                          ' Gecko/20100924 Namoroka/4.0b7pre Fennec/2.0b1pre'],
               'desktop': ['Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
-                          'fr-FR; rv:2.0b1) Gecko/20100628 Firefox/4.0b1',
+                          'fr-FR; rv:2.0b1) Gecko/20100628 Firefox/%s' % (
+                              input.LATEST_BETAS[input.FIREFOX]),
 
-                          # 'Mozilla/5.0 (Windows; U; Windows NT 5.1; '
-                          # 'en-US; rv:1.9.2.4) Gecko/20100611 Firefox/3.6.13 '
-                          # '(.NET CLR 3.5.30729)',
+                          'Mozilla/5.0 (Windows; U; Windows NT 5.1; '
+                          'en-US; rv:1.9.2.4) Gecko/20100611 Firefox/%s '
+                          '(.NET CLR 3.5.30729)' % (
+                              input.LATEST_RELEASE[input.FIREFOX]),
 
-                          # 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
-                          # 'fr-FR; rv:2.0b1) Gecko/20100628 Firefox/3.6.13',
-
+                          'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; '
+                          'fr-FR; rv:2.0b1) Gecko/20100628 Firefox/%s' % (
+                              input.LATEST_RELEASE[input.FIREFOX]),
                           ]}
 DEVICES = dict(Samsung='Epic Vibrant Transform'.split(),
                HTC='Evo Hero'.split(),
@@ -56,8 +59,10 @@ def populate(num_opinions=None, product='mobile', type=None):
     if not num_opinions:
         num_opinions = getattr(settings, 'NUM_FAKE_OPINIONS',
                                DEFAULT_NUM_OPINIONS)
+    else:
+        num_opinions = int(num_opinions)
 
-    if type:
+    if hasattr(type, 'id'):  # Take "3" as well as OPINION_IDEA
         type = type.id
 
     for i in xrange(num_opinions):
