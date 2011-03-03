@@ -31,7 +31,7 @@ unixtime = lambda s: int(time.mktime(time.strptime(s, '%Y-%m-%d')))
 def get_plotbands():
     """Get's plotbands from product details."""
     plotbands = []
-    color = itertools.cycle(('#fff', '#eef'))
+    color = itertools.cycle(('#fff', 'rgba(0, 0, 255, 0.07)'))
     to = int(time.time())
     versions = product_details.firefox_history_development_releases
     for version in FIREFOX.beta_versions:
