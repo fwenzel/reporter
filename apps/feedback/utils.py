@@ -6,6 +6,7 @@ from django.utils.translation import to_locale
 from django.utils.translation.trans_real import parse_accept_lang_header
 
 from product_details import product_details
+from product_details.version_compare import Version
 from topia.termextract import extract
 
 from input import BROWSERS, PLATFORM_OTHER, PLATFORM_PATTERNS
@@ -32,9 +33,14 @@ def ua_parse(ua):
     for browser in BROWSERS:
         match = re.match(browser[1], ua)
         if match:
+            try:
+                version = Version(match.group(2))
+            except:
+                # Unable to parse version? No dice.
+                return None
             detected = {
                 'browser': browser[0],
-                'version': match.group(2),
+                'version': str(version),
             }
             break
     # Browser not recognized? Bail.

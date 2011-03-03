@@ -48,6 +48,9 @@ def test_ua_parse():
         ('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-us) '
          'AppleWebKit/531.22.7 (KHTML, like Gecko) Version/4.0.5 '
          'Safari/531.22.7', None),
+        ('Mozilla/5.0 (Windows; U; Windows NT 6.1; de; rv:1.9.2.6) '
+         'Gecko/20100625 Firefox/ Anonymisiert durch AlMiSoft '
+         'Browser-Anonymisierer 48771657', None),  # bug 629687
     )
 
     for pattern in patterns:
