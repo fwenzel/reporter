@@ -28,7 +28,7 @@ header .stripe {
     z-index: 1;
 }
 
-[dir="rtl"] #doc {
+.html-rtl #doc {
     text-align: right;
 }
 
@@ -194,7 +194,7 @@ body {
     padding: 35px;
 }
 
-#footer-contents[dir=rtl] {
+.html-rtl #footer-contents {
     text-align: right;
 }
 

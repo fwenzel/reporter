@@ -477,7 +477,7 @@ footer form option {
     height: 0;
     opacity: 0;
 }
-[dir="rtl"] #rate table tbody td input {
+.html-rtl #rate table tbody td input {
     left: auto;
     right: -1000em;
 }

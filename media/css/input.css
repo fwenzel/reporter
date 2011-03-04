@@ -61,14 +61,14 @@ h2 {
     width: 21.27%; /* = 200 / 940 */
     margin-left: 2.12%; /* = 20 / 940 */
 }
-[dir="rtl"] .col {
+.html-rtl .col {
     margin-left: 0;
     margin-right: 2.12%;
 }
 .col:first-child {
     margin-left: 0;
 }
-[dir="rtl"] .col:first-child {
+.html-rtl .col:first-child {
     margin-right: 0;
 }
 .col.wide {
@@ -162,7 +162,7 @@ header, footer, article, section { display: block; }
     background: #dbdee0 url(../img/up-white.png) no-repeat center center;
     -moz-border-radius: 6px;
 }
-[dir="rtl"] .segments > div .toggle > span {
+.html-rtl .segments > div .toggle > span {
     right: auto;
     left: 0;
 }
@@ -233,7 +233,7 @@ label.bar:hover strong {
     background: #EEF6FA;
     background: #ddedf5;
 }
-[dir="rtl"] .bar .bg {
+.html-rtl .bar .bg {
     left: auto;
     right: 0;
 }
@@ -256,7 +256,7 @@ label.bar:hover strong {
     position: absolute;
     right: 4px;
 }
-[dir="rtl"] .bar .count {
+.html-rtl .bar .count {
     right: auto;
     left: 4px;
 }
@@ -286,7 +286,7 @@ label.bar:hover strong {
 .filter ul {
     margin-left: 18px;
 }
-[dir="rtl"] .filter ul {
+.html-rtl .filter ul {
     margin-left: 0;
     margin-right: 18px;
 }
@@ -298,7 +298,7 @@ label.bar:hover strong {
     left: -18px;
     top: 4px;
 }
-[dir="rtl"] .filter li input {
+.html-rtl .filter li input {
     left: 0;
     right: -18px;
 }
@@ -329,7 +329,7 @@ label.bar:hover strong {
     height: 24px;
     background: url('../img/msg-sprite.png') no-repeat;
 }
-[dir="rtl"] .message .type {
+.html-rtl .message .type {
     left: auto;
     right: 0;
 }
@@ -381,7 +381,7 @@ label.bar:hover strong {
     right: 0;
     top: 15px;
 }
-[dir="rtl"] .message .options {
+.html-rtl .message .options {
     right: auto;
     left: 0;
 }
@@ -394,7 +394,7 @@ label.bar:hover strong {
     background: #edeeef url("../img/down-white.png") no-repeat scroll center center;
     -moz-border-radius: 3px;
 }
-[dir="rtl"] .message .options > a {
+.html-rtl .message .options > a {
     right: auto;
     left: 0;
 }
@@ -432,7 +432,7 @@ background-color: #B6BCC0;
     -moz-border-radius-topright: 0;
     -moz-box-shadow: 0 1px 1px rgba(0,0,0, .25);
 }
-[dir="rtl"] .message .options ul {
+.html-rtl .message .options ul {
     right: auto;
     left: 0;
     text-align: right;
@@ -470,7 +470,7 @@ background-color: #B6BCC0;
     height: 24px;
     background-image: url(../img/msg-sprite.png) no-repeat;
 }
-[dir="rtl"] .theme .type {
+.html-rtl .theme .type {
     left: auto;
     right: 0;
 }
@@ -489,7 +489,7 @@ background-color: #B6BCC0;
     font-size: 14px;
     line-height: 17px;
 }
-[dir="rtl"] .theme .primary {
+.html-rtl .theme .primary {
     margin-left: 0;
     margin-right: 36px;
 }
@@ -514,7 +514,7 @@ background-color: #B6BCC0;
     margin-left: 48px;
     margin-top: 8px;
 }
-[dir="rtl"] .theme .samples {
+.html-rtl .theme .samples {
     margin-left: 0;
     margin-right: 48px;
 }
@@ -572,7 +572,7 @@ background-color: #B6BCC0;
     margin-top: 8px;
     margin-left: 12px;
 }
-[dir="rtl"] .site .samples {
+.html-rtl .site .samples {
     margin-left: 0;
     margin-right: 12px;
 }
@@ -656,13 +656,13 @@ background-color: #B6BCC0;
 .pager .next {
     float: right;
 }
-[dir="rtl"] .pager .next {
+.html-rtl .pager .next {
     float: left;
 }
 .pager .prev {
     float: left;
 }
-[dir="rtl"] .pager .prev {
+.html-rtl .pager .prev {
     float: none;
 }
 .pager .inactive {
@@ -746,7 +746,7 @@ background-color: #B6BCC0;
     color: #c8e0f6;
     vertical-align: middle;
 }
-[dir="rtl"] #header ul {
+.html-rtl #header ul {
     margin-left: 0;
     margin-right: .5em;
 }
@@ -820,7 +820,7 @@ background-color: #B6BCC0;
     top: 15px;
     width: 33.3%;
 }
-[dir="rtl"] #kw-search {
+.html-rtl #kw-search {
     right: auto;
     left: 15px;
 }
@@ -857,9 +857,9 @@ background-color: #B6BCC0;
     font-size: 11px;
     line-height: 21px;
 }
-[dir="rtl"] #messages .exit,
-[dir="rtl"] #themes .exit,
-[dir="rtl"] #sites .exit {
+.html-rtl #messages .exit,
+.html-rtl #themes .exit,
+.html-rtl #sites .exit {
     float: left;
 }
 #message-warning,
@@ -903,7 +903,7 @@ background-color: #B6BCC0;
 #opinion #sharing {
     padding-left: 5px;
 }
-[dir="rtl"] #opinion #sharing {
+.html-rtl #opinion #sharing {
     padding-left: 0;
     padding-right: 5px;
 }
@@ -915,7 +915,7 @@ background-color: #B6BCC0;
     color: #40403b;
     padding-left: 26px;
 }
-[dir="rtl"] #message-warning {
+.html-rtl #message-warning {
     background-position: 99.3% center;
     padding-left: 0;
     padding-right: 26px;
@@ -1064,7 +1064,7 @@ background-color: #B6BCC0;
     padding: 35px;
 }
 
-#footer-contents[dir=rtl] {
+.html-rtl #footer-contents {
     text-align: right;
 }
 
@@ -1164,7 +1164,7 @@ background-color: #B6BCC0;
 }
 
 /** RTL fix for jQuery UI datepicker */
-[dir="rtl"] .ui-helper-hidden-accessible {
+.html-rtl .ui-helper-hidden-accessible {
     left: auto;
     right: -99999999px;
 }
