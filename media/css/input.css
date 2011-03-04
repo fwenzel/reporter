@@ -352,6 +352,7 @@ label.bar:hover strong {
 .message .body {
     font-size: 14px;
     line-height: 18px;
+    overflow: hidden;
 }
 .message .body strong {
     font-weight: bold;
@@ -840,7 +841,6 @@ background-color: #B6BCC0;
 #messages,
 #themes,
 #sites {
-    overflow-x: hidden;
 }
 #messages h2,
 #themes h2,
