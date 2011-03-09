@@ -344,3 +344,14 @@ class ReleaseDashboardTestCase(SphinxTestCase):
         get_results.side_effect = SearchError()
         r = self.get_request()
         eq_(r.status_code, 500)
+
+    def test_date_flip_future_start(self):
+        """
+        With date_start in the future, and date_end empty, ensure we do something
+        useful (default to end=today and flip the dates).
+        """
+        dates = dict(
+            date_start=datetime.date.today() + datetime.timedelta(days=10),
+            date_end='')
+        r = self.get_request(**dates)
+        eq_(r.status_code, 200)

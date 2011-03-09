@@ -101,6 +101,10 @@ class ReporterSearchForm(forms.Form):
     def clean(self):
         cleaned = self.cleaned_data
 
+        # default date_end to today
+        if not self.cleaned_data.get('date_end'):
+            self.cleaned_data['date_end'] = date.today() + timedelta(days=1)
+
         # Flip start and end if necessary.
         if (cleaned.get('date_start') and cleaned.get('date_end') and
             cleaned['date_start'] > cleaned['date_end']):
