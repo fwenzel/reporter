@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date
 
 from django.conf import settings
 from django import forms
@@ -102,8 +102,9 @@ class ReporterSearchForm(forms.Form):
         cleaned = self.cleaned_data
 
         # default date_end to today
-        if not self.cleaned_data.get('date_end'):
-            self.cleaned_data['date_end'] = date.today() + timedelta(days=1)
+        if (self.cleaned_data.get('date_start') and
+            not self.cleaned_data.get('date_end')):
+            self.cleaned_data['date_end'] = date.today()
 
         # Flip start and end if necessary.
         if (cleaned.get('date_start') and cleaned.get('date_end') and
