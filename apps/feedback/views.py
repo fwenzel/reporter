@@ -76,8 +76,7 @@ def enforce_ua(beta):
                 # Bug 634324: Until Firefox 4 is released, show "download beta"
                 # message to 3.6 and lower release users.
                 ver4 = Version('4.0')
-                if (parsed['browser'] == input.FIREFOX and ref_ver < ver4 and
-                    this_ver < ver4):
+                if (parsed['browser'] == input.FIREFOX and this_ver < ver4):
                     return http.HttpResponseRedirect(
                             reverse('feedback.download', channel='beta'))
 
