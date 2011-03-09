@@ -160,13 +160,18 @@ class FIREFOX:
     pretty = _(u'Firefox')
     guid = '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}'
     beta_versions = version_list(
-        product_details.firefox_history_development_releases,
-        hide_below='4.0b1'
+        dict(product_details.firefox_history_major_releases.items() +
+             product_details.firefox_history_stability_releases.items() +
+             product_details.firefox_history_development_releases.items()),
+        hide_below='4.0b1',
+        filter=(lambda v: v.is_beta)
     )
     release_versions = version_list(
-        dict(product_details.firefox_history_major_releases,
-             **product_details.firefox_history_stability_releases),
-        hide_below='3.6'  # TODO bump this once Firefox 4 ships.
+        dict(product_details.firefox_history_major_releases.items() +
+             product_details.firefox_history_stability_releases.items() +
+             product_details.firefox_history_development_releases.items()),
+        hide_below='3.6',  # TODO bump this once Firefox 4 ships.
+        filter=(lambda v: v.is_release)
     )
 
 
@@ -202,13 +207,12 @@ BROWSERS = (
 )
 
 LATEST_BETAS = {
-    FIREFOX: product_details.firefox_versions[
-        'LATEST_FIREFOX_RELEASED_DEVEL_VERSION'],
+    FIREFOX: FIREFOX.beta_versions[0],
     MOBILE: product_details.mobile_details['beta_version'],
 }
 
 LATEST_RELEASE = {
-    FIREFOX: product_details.firefox_versions['LATEST_FIREFOX_VERSION'],
+    FIREFOX: FIREFOX.release_versions[0],
     MOBILE: product_details.mobile_details['version'],
 }
 
