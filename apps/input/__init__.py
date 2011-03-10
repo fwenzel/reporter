@@ -207,12 +207,14 @@ BROWSERS = (
 )
 
 LATEST_BETAS = {
-    FIREFOX: FIREFOX.beta_versions[0],
+    FIREFOX: (FIREFOX.beta_versions[0] if FIREFOX.beta_versions else
+              product_details.firefox_versions['LATEST_FIREFOX_RELEASED_DEVEL_VERSION']),
     MOBILE: product_details.mobile_details['beta_version'],
 }
 
 LATEST_RELEASE = {
-    FIREFOX: FIREFOX.release_versions[0],
+    FIREFOX: (FIREFOX.release_versions[0] if FIREFOX.release_versions else
+              product_details.firefox_versions['LATEST_FIREFOX_VERSION']),
     MOBILE: product_details.mobile_details['version'],
 }
 
