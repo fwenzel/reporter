@@ -316,5 +316,8 @@ def release(request):
         utc=True,  # The date partitions are by UTC.
     )
 
+    # TODO do not mess with mobile site detection anymore once the release
+    # dashboard is mobilified. Bug 632225.
+    request.mobile_site = False
     template = 'search/release.html'
     return jingo.render(request, template, data)
