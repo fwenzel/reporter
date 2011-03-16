@@ -42,7 +42,10 @@ if [ -d $SYNC_DIR/migrations/sites ]; then
    checkretval
 fi
 
-su - apache -s /bin/sh -c '/usr/bin/python26 /data/input/www/django/input.mozilla.com/reporter/manage.py cron cluster'
+# Clustering commented out because it takes too long during release.
+# If urgent, start by hand (in a screen). If not urgent, wait until clustering
+# cron job reoccurs.
+#su - apache -s /bin/sh -c '/usr/bin/python26 /data/input/www/django/input.mozilla.com/reporter/manage.py cron cluster'
 
 /data/input/deploy
 checkretval
