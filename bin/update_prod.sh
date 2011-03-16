@@ -33,6 +33,8 @@ cd $SYNC_DIR
 schematic migrations
 checkretval
 
+# Pull in highcharts.src.js - our lawyers make us do this.
+/usr/bin/python26 $INPUT_DIR/manage.py cron get_highcharts
 /usr/bin/python26 $INPUT_DIR/manage.py compress_assets
 
 if [ -d $SYNC_DIR/migrations/sites ]; then

@@ -23,6 +23,8 @@ popd > /dev/null
 $PYTHON vendor/src/schematic/schematic migrations/
 $PYTHON vendor/src/schematic/schematic migrations/sites
 
+# Pull in highcharts.src.js - our lawyers make us do this.
+/usr/bin/python26 $INPUT_DIR/manage.py cron get_highcharts
 # Minify assets.
 $PYTHON manage.py compress_assets
 

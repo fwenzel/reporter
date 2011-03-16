@@ -13,3 +13,4 @@ build.py
 *-all.js
 media/data/*tsv.bz2
 .coverage
+media/js/libs/highcharts.src.js

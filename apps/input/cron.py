@@ -1,12 +1,24 @@
 import logging
+import os
+import urllib2
 
 from django.conf import settings
 from django.contrib.sites.models import Site
 
 import cronjobs
 
-
 log = logging.getLogger('reporter')
+
+@cronjobs.register
+def get_highcharts():
+    """Fetch highcharts."""
+    localfilename = os.path.join(settings.MEDIA_ROOT, 'js', 'libs',
+                                 'highcharts.src.js')
+    u = urllib2.urlopen('https://github.com/highslide-software/highcharts.com/'
+                        'raw/2f27a00/js/highcharts.src.js')
+    with open(localfilename, 'w') as f:
+        f.write(u.read())
+
 
 @cronjobs.register
 def set_domains(desktop_domain, mobile_domain):

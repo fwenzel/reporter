@@ -29,15 +29,15 @@ to install the required Python libraries.
 
 [virtualenv]: http://pypi.python.org/pypi/virtualenv
 
+### Highcharts
+
+Due to licensing issues, we can't rightfully bundle highcharts.js.  So you can
+go get it using `./manage.py cron get_highcharts`.
+
 ### Sphinx
 
 For searching, we use [Sphinx][sphinx]. Set up an instance of it, and adjust
-the SPHINX\_\* settings in settings.py to match your setup. There are three
-management commands to go with it:
-
-* ``start_sphinx`` starts the sphinx daemon
-* ``stop_sphinx`` stops it
-* ``update_index`` updates the search index (see below)
+the SPHINX\_\* settings in settings.py to match your setup.
 
 [sphinx]: http://www.sphinxsearch.com/
 

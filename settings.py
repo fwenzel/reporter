@@ -213,7 +213,7 @@ MINIFY_BUNDLES = {
             'js/search.js',
 
             # Time-based charts
-            'js/libs/highcharts.js',
+            'js/libs/highcharts.src.js',
             'js/dashboard.js',
         ),
         'common_mobile': (
