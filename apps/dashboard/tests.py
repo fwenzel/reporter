@@ -133,7 +133,7 @@ class TestHelpers(InputTestCase):
         req.default_prod = input.FIREFOX
         r = render('{{ sites_block(ms) }}', dict(ms=ms, request=req))
         doc = pq(r)
-        eq_(doc('label').text(), 'youtube.com')
+        eq_(doc('.label').text(), 'youtube.com')
 
     def test_mobile_bar(self):
         r = render('{{ mobile_bar("candy", "bar") }}')
