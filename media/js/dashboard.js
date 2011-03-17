@@ -44,6 +44,7 @@ var input_chart; // Highcharts wants this to be global.
                                                          this.value * 1000);
                         }
                     },
+                    lineColor: options.xLineColor || '#C0D0E0',
                     plotBands: chart_data.plotBands || {}
                 },
                 yAxis: options.yAxis || {
@@ -76,10 +77,11 @@ var input_chart; // Highcharts wants this to be global.
         colors: ['#55c4dd'],
         legend: {enabled: false},
         plotOptions: { series: {shadow: false, marker: {radius: 2.5}}},
+        xLineColor: 'transparent',
         yAxis: {
             title: { text: null },
-            min: 1,
-            max: 5,
+            min: 0.9,
+            max: 5.1,
             allowDecimals: false,
             endOnTick: false,
             startOnTick: false,
