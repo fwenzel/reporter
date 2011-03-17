@@ -9,7 +9,7 @@
         <a href="{{ search_url(defaults=defaults, q='url:'+site.url|strip_protocol) }}"
            class="bar">
           <span class="bg" style="width: {{ perc }}%;"></span>
-          <label>{{ site.url|strip_protocol }}</label>
+          <span class="label">{{ site.url|strip_protocol }}</span>
           <span class="perc">{{ site.size|numberfmt }}</span>
         </a>
       </li>

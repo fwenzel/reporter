@@ -250,6 +250,7 @@ body {
     bottom: 0;
 }
 .bar label,
+.bar .label,
 .bar input,
 .bar .perc {
     position: relative;
