@@ -1,11 +1,13 @@
 {% if chart_data_json and chart_data_json != 'null' %}
-<div id="feedback-chart" class="block large-chart"
-  data-tooltip="{{ _('{num} opinions on {day}') }}"
-  {# L10n: A quasi strftime string for a full date. #}
-  data-timeformat="{{ _('%e %B %Y') }}"
-  {# L10n: A quasi strftime string for a short date (no year). #}
-  data-timeformat-short="{{ _('%e %b') }}"
-  data-chart-config="{{ chart_data_json }}">
-  <p>{{ _('Loading feedback history...') }}</p>
+<div class="block">
+  <div id="feedback-chart" class="large-chart"
+    data-tooltip="{{ _('{num} opinions on {day}') }}"
+    {# L10n: A quasi strftime string for a full date. #}
+    data-timeformat="{{ _('%e %B %Y') }}"
+    {# L10n: A quasi strftime string for a short date (no year). #}
+    data-timeformat-short="{{ _('%e %b') }}"
+    data-chart-config="{{ chart_data_json }}">
+    <p>{{ _('Loading feedback history...') }}</p>
+  </div>
 </div>
 {% endif %}
