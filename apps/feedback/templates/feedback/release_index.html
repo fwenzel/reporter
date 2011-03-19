@@ -43,8 +43,6 @@
 
   <section class="content">
     <form method="post" action="#rate">
-      {{ csrf() }}
-
       <table>
         <colgroup class="labels">
           <col />
@@ -118,8 +116,6 @@
 
   <section class="content">
     <form method="post" action="#broken">
-      {{ csrf() }}
-
       <div class="fields">
         <div>
           <label for="broken-url">{{ _('What is the URL of the site?') }}</label>
@@ -176,8 +172,6 @@
 
   <section class="content">
     <form method="post" action="#idea">
-      {{ csrf() }}
-
       <div class="fields">
         <div>
           <label>{{ _('Describe your idea below.') }}</label>

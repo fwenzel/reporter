@@ -34,8 +34,6 @@
   </header>
 
   <section class="inset"><form action="#thanks" method="post">
-    {{ csrf() }}
-
     {% for question in RATING_USAGE %}
     <div class="aspects">
       <div class="aspect">
@@ -85,8 +83,6 @@
   </header>
 
   <section id="broken" class="inset"><form action="#thanks" method="post">
-        {{ csrf() }}
-
     <div class="field">
       <label>{{ _('What is the URL of the broken site?') }}</label>
       <p>{{ website_form.url }}</p>
