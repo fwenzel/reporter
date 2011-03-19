@@ -5,6 +5,7 @@ from django import http
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.vary import vary_on_headers
 
 import jingo
@@ -95,6 +96,7 @@ def enforce_ua(beta):
 @forward_mobile
 @enforce_ua(beta=True)
 @never_cache
+@csrf_exempt
 def give_feedback(request, ua, type):
     """Submit feedback page."""
 
@@ -156,6 +158,7 @@ def beta_feedback(request, ua):
 @vary_on_headers('User-Agent')
 @enforce_ua(beta=False)
 @cache_page
+@csrf_exempt
 def release_feedback(request, ua):
     """The index page for release version feedback."""
     data = {
