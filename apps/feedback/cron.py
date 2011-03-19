@@ -2,12 +2,12 @@ import datetime
 import random
 
 from django.conf import settings
-from django.db import transaction
+from django.db import transaction, models
 
 import cronjobs
 
-from feedback.models import Opinion
 import input
+from feedback.models import Opinion, extract_terms
 
 
 DEFAULT_NUM_OPINIONS = 100
@@ -56,6 +56,9 @@ DEVICES = dict(Samsung='Epic Vibrant Transform'.split(),
 @cronjobs.register
 @transaction.commit_on_success
 def populate(num_opinions=None, product='mobile', type=None, locale=None):
+    models.signals.post_save.disconnect(extract_terms, sender=Opinion,
+                                        dispatch_uid='extract_terms')
+
     if not num_opinions:
         num_opinions = getattr(settings, 'NUM_FAKE_OPINIONS',
                                DEFAULT_NUM_OPINIONS)
@@ -80,8 +83,11 @@ def populate(num_opinions=None, product='mobile', type=None, locale=None):
             o.manufacturer = manufacturer
             o.device = random.choice(DEVICES[manufacturer])
 
-        o.save(terms=False)
+        o.save()
 
         o.created = datetime.datetime.now() - datetime.timedelta(
                 seconds=random.randint(0, 30 * 24 * 3600))
         o.save()
+
+    models.signals.post_save.connect(extract_terms, sender=Opinion,
+                                     dispatch_uid='extract_terms')

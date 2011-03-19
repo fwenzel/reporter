@@ -2,11 +2,11 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.db import models
-from django.db.models import Count
+from django.db.models import Count, signals
 
 import caching.base
 
-from feedback import query
+from feedback import query, utils
 from feedback.utils import ua_parse, extract_terms, smart_truncate
 from input import PRODUCT_IDS, OPINION_TYPES, OPINION_PRAISE, PLATFORMS
 from input.models import ModelBase
@@ -91,29 +91,31 @@ class Opinion(ModelBase):
         except KeyError:
             return self.platform
 
-    def save(self, terms=True, *args, **kwargs):
-        # parse UA and stick it into separate fields
-        parsed = ua_parse(self.user_agent)
-        if parsed:
-            self.product = parsed['browser'].id
-            self.version = parsed['version']
-            self.platform = parsed['platform']
-
-        new = not self.pk
-        super(Opinion, self).save(*args, **kwargs)
-
-        # Extract terms from description text and save them if this is new.
-        if new and terms:
-            terms = (t for t in extract_terms(self.description) if
-                     len(t) >= settings.MIN_TERM_LENGTH)
-            for term in terms:
-                this_term, created = Term.objects.get_or_create(term=term)
-                this_term.save()
-                self.terms.add(this_term)
-
     def get_url_path(self):
         return reverse('opinion.detail', args=(self.id,))
 
+
+def parse_user_agent(sender, instance, **kw):
+    parsed = ua_parse(instance.user_agent)
+    if parsed:
+        instance.product = parsed['browser'].id
+        instance.version = parsed['version']
+        instance.platform = parsed['platform']
+
+
+def extract_terms(sender, instance, **kw):
+    if instance.terms.all() or settings.DISABLE_TERMS:
+        return
+    terms = (t for t in utils.extract_terms(instance.description) if
+             len(t) >= settings.MIN_TERM_LENGTH)
+    for term in terms:
+        this_term, created = Term.objects.get_or_create(term=term)
+        instance.terms.add(this_term)
+
+signals.pre_save.connect(parse_user_agent, sender=Opinion)
+signals.post_save.connect(extract_terms, sender=Opinion,
+                          dispatch_uid='extract_terms')
+# post_Save for POST to metrics
 
 class TermManager(models.Manager):
     def get_query_set(self):

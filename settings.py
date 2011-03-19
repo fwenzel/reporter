@@ -337,5 +337,4 @@ ARECIBO_SERVER_URL = ""
 # Setting this to False allows feedback to be collected from any user agent.
 # (good for testing)
 ENFORCE_USER_AGENT = True
-
-
+DISABLE_TERMS = False

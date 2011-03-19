@@ -1,5 +1,7 @@
 from datetime import date
 
+from django.conf import settings
+
 from mock import patch
 from test_utils import eq_, TestCase
 
@@ -53,6 +55,14 @@ class TermTestCase(TestCase):
         """Term's unicode representation."""
         t = Term(term='Hello')
         eq_(unicode(t), u'Hello')
+
+    @patch.object(settings._wrapped, 'DISABLE_TERMS', False)
+    def test_term_extraction(self):
+        """Make sure we create our terms."""
+        settings.DISABLE_TERMS = False
+        op = Opinion.objects.create(product=1, description='This is a test')
+        terms = [term.term for term in op.terms.all()]
+        eq_(terms, ['test'])
 
 
 @patch('django.db.models.query.QuerySet.filter')
