@@ -181,13 +181,18 @@ class MOBILE:
     pretty = _(u'Mobile')
     guid = '{a23983c0-fd0e-11dc-95ff-0800200c9a66}'
     beta_versions = version_list(
-        product_details.mobile_history_development_releases,
-        hide_below='4.0b1'
+        dict(product_details.mobile_history_major_releases.items() +
+             product_details.mobile_history_stability_releases.items() +
+             product_details.mobile_history_development_releases.items()),
+        hide_below='4.0b1',
+        filter=(lambda v: v.is_beta)
     )
     release_versions = version_list(
-        dict(product_details.mobile_history_major_releases,
-             **product_details.mobile_history_stability_releases),
-        hide_below='4.0'
+        dict(product_details.mobile_history_major_releases.items() +
+             product_details.mobile_history_stability_releases.items() +
+             product_details.mobile_history_development_releases.items()),
+        hide_below='4.0',
+        filter=(lambda v: v.is_release)
     )
 
 PRODUCT_USAGE = _prods = (FIREFOX, MOBILE)
