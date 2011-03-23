@@ -211,16 +211,19 @@ BROWSERS = (
     (FIREFOX, UA_PATTERN_FIREFOX),
 )
 
+key = 'LATEST_FIREFOX_RELEASED_DEVEL_VERSION'
 LATEST_BETAS = {
     FIREFOX: (FIREFOX.beta_versions[0] if FIREFOX.beta_versions else
-              product_details.firefox_versions['LATEST_FIREFOX_RELEASED_DEVEL_VERSION']),
-    MOBILE: product_details.mobile_details['beta_version'],
+              product_details.firefox_versions[key]),
+    MOBILE: (MOBILE.beta_versions[0] if MOBILE.beta_versions else
+             product_details.mobile_details['beta_version']),
 }
 
 LATEST_RELEASE = {
     FIREFOX: (FIREFOX.release_versions[0] if FIREFOX.release_versions else
               product_details.firefox_versions['LATEST_FIREFOX_VERSION']),
-    MOBILE: product_details.mobile_details['version'],
+    MOBILE: (MOBILE.release_versions[0] if MOBILE.release_versions else
+              product_details.mobile_details['version']),
 }
 
 
@@ -284,7 +287,7 @@ class PLATFORM_OTHER:
     ua_pattern = None
     prods = set((FIREFOX, MOBILE))
 
-PLATFORM_USAGE = _platforms = (WINDOWS_XP, WINDOWS_VISTA, WINDOWS_7, OSX, MAEMO,
-                               ANDROID, LINUX)
+PLATFORM_USAGE = _platforms = (WINDOWS_XP, WINDOWS_VISTA, WINDOWS_7, OSX,
+                               MAEMO, ANDROID, LINUX)
 PLATFORM_PATTERNS = [(p.ua_pattern, p.short) for p in PLATFORM_USAGE]
 PLATFORMS = dict((platform.short, platform) for platform in _platforms)
