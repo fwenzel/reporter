@@ -170,7 +170,7 @@ class FIREFOX:
         dict(product_details.firefox_history_major_releases.items() +
              product_details.firefox_history_stability_releases.items() +
              product_details.firefox_history_development_releases.items()),
-        hide_below='3.6',  # TODO bump this once Firefox 4 ships.
+        hide_below='4.0',
         filter=(lambda v: v.is_release)
     )
 
