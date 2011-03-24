@@ -128,7 +128,9 @@ class Client(object):
 
         if '__' in field:
             (field, method, over) = field.split('__')
-            select = '%s, %s(%s) as aggregate' % (field, method, over)
+            # TODO: upgrade to sphinx 1.1 so we can get rid of the
+            # over * 1.0 hack.
+            select = '%s, %s(%s * 1.0) as aggregate' % (field, method, over)
         else:
             select = '%s, SUM(1) as count' % field
 
@@ -349,4 +351,5 @@ class RatingsClient(Client):
             value = lambda m: round(m['attrs']['aggregate'], 1)
             agg[rating.id] = [(m['attrs']['day'], value(m)) for m
                               in result['matches']]
+        import pdb; pdb.set_trace()
         return agg
