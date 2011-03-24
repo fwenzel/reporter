@@ -351,5 +351,4 @@ class RatingsClient(Client):
             value = lambda m: round(m['attrs']['aggregate'], 1)
             agg[rating.id] = [(m['attrs']['day'], value(m)) for m
                               in result['matches']]
-        import pdb; pdb.set_trace()
         return agg
