@@ -142,9 +142,9 @@ def give_feedback(request, ua, type):
 
 @forward_mobile
 @vary_on_headers('User-Agent')
-@enforce_ua(beta=True)
+@enforce_ua(beta=False)
 @cache_page
-def beta_feedback(request, ua):
+def feedback(request, ua):
     """
     The index page for beta version feedback, which shows links to the happy
     and sad feedback pages.
@@ -152,67 +152,6 @@ def beta_feedback(request, ua):
     template = 'feedback/%sbeta_index.html' % (
         'mobile/' if request.mobile_site else '')
     return jingo.render(request, template)
-
-
-@forward_mobile
-@vary_on_headers('User-Agent')
-@enforce_ua(beta=False)
-@cache_page
-@csrf_exempt
-def release_feedback(request, ua):
-    """The index page for release version feedback."""
-    data = {
-        'RATING_USAGE': input.RATING_USAGE,
-        'RATING_CHOICES': input.RATING_CHOICES,
-    }
-
-    if request.method == 'POST':
-        try:
-            type = int(request.POST.get('type'))
-            FormType = {
-                input.OPINION_RATING.id: RatingForm,
-                input.OPINION_BROKEN.id: BrokenWebsiteForm,
-                input.OPINION_IDEA.id: IdeaReleaseForm,
-            }[type]
-        except (TypeError, ValueError, KeyError):
-            return http.HttpResponseBadRequest(_('Invalid feedback type'))
-
-        form = FormType(request.POST)
-        if form.is_valid():
-            save_opinion_from_form(request, type, ua, form)
-
-            if request.is_ajax():
-                return http.HttpResponse(json.dumps('ok'),
-                                         mimetype='application/json')
-            else:
-                return http.HttpResponseRedirect(
-                    reverse('feedback', channel='release') + '#thanks')
-
-        elif request.is_ajax():
-            # For AJAX request, return errors only.
-            return http.HttpResponseBadRequest(json.dumps(form.errors),
-                                               mimetype='application/json')
-
-        else:
-            # For non-AJAX, return form with errors, and blank other feedback
-            # forms.
-            data.update(
-                rating_form=(form if type == input.OPINION_RATING.id else
-                             RatingForm()),
-                website_form=(form if type == input.OPINION_BROKEN.id else
-                              BrokenWebsiteForm()),
-                idea_form=(form if type == input.OPINION_IDEA.id
-                                 else IdeaReleaseForm()))
-
-    else:
-        data.update(rating_form=RatingForm(), website_form=BrokenWebsiteForm(),
-                    idea_form=IdeaReleaseForm())
-
-    template = 'feedback/%srelease_index.html' % (
-        'mobile/' if request.mobile_site else '')
-    return jingo.render(request, template, data)
-
-feedback = negotiate(beta=beta_feedback, release=release_feedback)
 
 
 @cache_page
