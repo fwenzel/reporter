@@ -100,7 +100,8 @@ LANGUAGE_URL_MAP.update((i.lower(), i) for i in INPUT_LANGUAGES)
 SUPPORTED_NONLOCALES = ('media', 'admin')
 
 # TODO: These will be ported to /feeedback/beta
-SUPPORTED_NONCHANNELS = ('media', 'admin', 'happy', 'sad', 'about', 'idea')
+SUPPORTED_NONCHANNELS = ('media', 'admin', 'feedback', 'happy', 'sad', 'about',
+                         'idea', 'thanks')
 DEFAULT_CHANNEL = 'release'
 
 TEXT_DOMAIN = 'messages'
@@ -343,4 +344,4 @@ TSV_EXPORT_DIR = path('media/data')
 ## FEATURE FLAGS:
 # Setting this to False allows feedback to be collected from any user agent.
 # (good for testing)
-ENFORCE_USER_AGENT = True
+ENFORCE_USER_AGENT = False

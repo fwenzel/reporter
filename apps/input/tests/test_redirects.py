@@ -8,8 +8,8 @@ class RedirectTests(InputTestCase):
     def test_redirects(self):
         redirect = lambda x: '/en-US/%s/%s' % (settings.DEFAULT_CHANNEL, x)
         redirs = {
-                '/feedback': '/en-US/release/feedback',
-                '/thanks': '/en-US/%s/thanks' % settings.DEFAULT_CHANNEL,
+                '/feedback': '/en-US/feedback',
+                '/thanks': '/en-US/thanks',
                 '/themes': '/en-US/%s/themes' % settings.DEFAULT_CHANNEL,
                 '/sites': redirect('sites')
                 }
