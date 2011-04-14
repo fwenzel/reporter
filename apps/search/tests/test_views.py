@@ -2,7 +2,6 @@
 import datetime
 
 from django.contrib.sites.models import Site
-from django.conf import settings
 from django.test.client import Client as TestClient
 
 from mock import patch, Mock
@@ -10,7 +9,7 @@ from nose.tools import eq_
 from pyquery import PyQuery as pq
 
 from input import (FIREFOX, OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA,
-                   OPINION_RATING, OPINION_TYPES_USAGE)
+                   OPINION_TYPES_USAGE)
 from input.urlresolvers import reverse
 from feedback.cron import populate
 from feedback.models import Opinion
@@ -39,23 +38,7 @@ def test_get_period():
 def search_request(product='firefox', **kwargs):
     kwargs['product'] = product
     kwargs['version'] = '--'
-    return TestClient().get(reverse('search', channel='beta'),
-                            kwargs, follow=True)
-
-
-class NoRatingsSearchTest(SphinxTestCase):
-    """Ratings in search results is an abomination. -wenzel"""
-    fixtures = []
-
-    def setUp(self):
-        populate(20, 'desktop', OPINION_RATING)
-        populate(2, 'desktop', OPINION_IDEA)
-        super(NoRatingsSearchTest, self).setUp()
-
-    def test_search_page(self):
-        r = search_request()
-        doc = pq(r.content)
-        eq_(len(doc('.message')), 2)
+    return TestClient().get(reverse('search'), kwargs, follow=True)
 
 
 class PaginationTest(SphinxTestCase):
@@ -281,8 +264,7 @@ class FeedTest(SphinxTestCase):
                                  date_end='01/01/2031'))
         doc = self._pq(r)
         s = Site.objects.all()[0]
-        url_base = 'http://%s/%s/%s/' % (s.domain, 'en-US',
-                                        settings.DEFAULT_CHANNEL)
+        url_base = 'http://%s/%s/' % (s.domain, 'en-US')
         eq_(doc('entry link').attr['href'],
             '%s%s' % (url_base, 'opinion/29'))
 
@@ -291,7 +273,7 @@ class FeedTest(SphinxTestCase):
         If we don't convert opinion type names to unicode, the world will end.
         Bug 617204.
         """
-        r = self.client.get(reverse('search.feed', channel='beta'),
+        r = self.client.get(reverse('search.feed'),
                             dict(product='firefox', version='--',
                                  date_start='2007-01-01'))
         doc = self._pq(r)
@@ -327,31 +309,3 @@ def test_get_results(is_valid):
     request.default_prod = FIREFOX
     r = views._get_results(request)
     eq_(r[2], request.default_prod)
-
-
-class ReleaseDashboardTestCase(SphinxTestCase):
-    def get_request(self, **kw):
-        data = dict(product='firefox')
-        data.update(kw)
-        return self.client.get(reverse('dashboard', channel='release'), data)
-
-    def test_version_filter_high(self):
-        r = self.get_request(product='firefox')
-        eq_(r.status_code, 200)
-
-    @patch('search.views._get_results')
-    def test_error(self, get_results):
-        get_results.side_effect = SearchError()
-        r = self.get_request()
-        eq_(r.status_code, 500)
-
-    def test_date_flip_future_start(self):
-        """
-        With date_start in the future, and date_end empty, ensure we do something
-        useful (default to end=today and flip the dates).
-        """
-        dates = dict(
-            date_start=datetime.date.today() + datetime.timedelta(days=10),
-            date_end='')
-        r = self.get_request(**dates)
-        eq_(r.status_code, 200)

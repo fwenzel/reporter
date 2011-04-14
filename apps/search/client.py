@@ -12,8 +12,8 @@ from django.conf import settings
 from product_details import product_details
 from tower import ugettext as _
 
-from input import (KNOWN_DEVICES, KNOWN_MANUFACTURERS, RATING_USAGE,
-                   OPINION_PRAISE, OPINION_IDEA, PLATFORM_USAGE)
+from input import (KNOWN_DEVICES, KNOWN_MANUFACTURERS, OPINION_PRAISE,
+                   OPINION_IDEA, PLATFORM_USAGE)
 from input.utils import crc32, manual_order
 from feedback.models import Opinion
 
@@ -146,7 +146,6 @@ class Client(object):
         self.query_index += 1
         self.sphinx.ResetGroupBy()
 
-
     def handle_metas(self, results, metas, kwargs):
         # Handle any meta data we have.
         if 'type' in metas:
@@ -256,7 +255,8 @@ class Client(object):
     def _platform_meta(self, results, **kwargs):
         result = results[self.queries['platform']]
         t = dict(((crc32(f.short), f.short) for f in PLATFORM_USAGE))
-        return [dict(count=f['attrs']['count'], platform=t.get(f['attrs']['platform']))
+        return [dict(count=f['attrs']['count'],
+                     platform=t.get(f['attrs']['platform']))
                 for f in result['matches']]
 
     def _manufacturer_meta(self, results, **kwargs):
@@ -314,41 +314,3 @@ class ResultSet(object):
             k -= self.offset
 
         return self.queryset.__getitem__(k)
-
-
-class RatingsClient(Client):
-    """Queries the ratings index instead."""
-
-    def __init__(self):
-        super(RatingsClient, self).__init__()
-        self.index = 'ratings'
-
-    def handle_metas(self, results, metas, kwargs):
-        super(RatingsClient, self).handle_metas(results, metas, kwargs)
-        if 'startup' in metas:
-            self.meta['ratings'] = self._ratings_meta(results, **kwargs)
-            self.meta['ratings_avg'] = self._ratings_avg_meta(results,
-                                                              **kwargs)
-
-    def _ratings_meta(self, results, **kwargs):
-        agg = {}
-        for rating in RATING_USAGE:
-            if rating.short not in self.queries:
-                continue
-            d = defaultdict(int)
-            d.update((m['attrs'][rating.short], m['attrs']['count'])
-                     for m in results[self.queries[rating.short]]['matches'])
-            agg[rating.id] = d
-        return agg
-
-    def _ratings_avg_meta(self, results, **kwargs):
-        agg = {}
-        for rating in RATING_USAGE:
-            key = 'day__avg__%s' % rating.short
-            if key not in self.queries:
-                continue
-            result = results[self.queries[key]]
-            value = lambda m: round(m['attrs']['aggregate'], 1)
-            agg[rating.id] = [(m['attrs']['day'], value(m)) for m
-                              in result['matches']]
-        return agg

@@ -79,13 +79,12 @@ class TestViews(test_utils.TestCase):
 
     def test_sites(self):
         """Quickly check if sites works in general."""
-        r = self.client.get(reverse('website_issues', channel='beta'))
+        r = self.client.get(reverse('website_issues'))
         eq_(r.status_code, 200)
         assert_true(len(r.content) > 0)
 
     def test_invalid_platform(self):
         """Bogus platform must not confuse us: we are bogus-compatible."""
-        r = self.client.get(reverse('website_issues', channel='beta'),
-                            {"platform": "bogus"})
+        r = self.client.get(reverse('website_issues'), {"platform": "bogus"})
         eq_(r.status_code, 200)
         assert_true(len(r.content) > 0)

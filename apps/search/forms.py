@@ -7,8 +7,8 @@ from product_details import product_details
 from product_details.version_compare import Version
 from tower import ugettext_lazy as _lazy
 
-from input import (FIREFOX, MOBILE, PLATFORM_USAGE, LATEST_VERSION, KNOWN_DEVICES,
-                   KNOWN_MANUFACTURERS, get_channel)
+from input import (FIREFOX, MOBILE, PLATFORM_USAGE, LATEST_BETAS,
+                   KNOWN_DEVICES, KNOWN_MANUFACTURERS)
 from input.fields import DateInput, SearchInput
 
 
@@ -18,18 +18,13 @@ PROD_CHOICES = (
 )
 
 VERSION_CHOICES = {
-    'beta': {
-        FIREFOX: ([('--', _lazy('-- all --', 'version_choice'))] +
-                  [(v, v) for v in FIREFOX.beta_versions]),
-        MOBILE: ([('--', _lazy('-- all --', 'version_choice'))] +
-                 [(v, v) for v in MOBILE.beta_versions]),
-    },
-    'release': {
-        FIREFOX: ([('--', _lazy('-- all --', 'version_choice'))] +
-                  [(v, v) for v in FIREFOX.release_versions]),
-        MOBILE: ([('--', _lazy('-- all --', 'version_choice'))] +
-                 [(v, v) for v in MOBILE.release_versions]),
-    },
+    FIREFOX: ([('--', _lazy('-- all --', 'version_choice'))] +
+              [(v, v) for v in (FIREFOX.extra_versions +
+                                FIREFOX.release_versions +
+                                FIREFOX.beta_versions)]),
+    MOBILE: ([('--', _lazy('-- all --', 'version_choice'))] +
+             [(v, v) for v in (MOBILE.release_versions +
+                               MOBILE.beta_versions)]),
 }
 
 SENTIMENT_CHOICES = [('', _lazy('-- all --', 'sentiment_choice')),
@@ -60,7 +55,7 @@ class ReporterSearchForm(forms.Form):
     product = forms.ChoiceField(choices=PROD_CHOICES, label=_lazy('Product:'),
                                 initial=FIREFOX.short, required=False)
     version = forms.ChoiceField(required=False, label=_lazy('Version:'),
-            choices=VERSION_CHOICES[get_channel()][FIREFOX])
+            choices=VERSION_CHOICES[FIREFOX])
     sentiment = forms.ChoiceField(required=False, label=_lazy('Sentiment:'),
                                   choices=SENTIMENT_CHOICES)
     locale = forms.ChoiceField(required=False, label=_lazy('Locale:'),
@@ -81,8 +76,7 @@ class ReporterSearchForm(forms.Form):
     def __init__(self, *args, **kwargs):
         """Pick version choices and initial product based on site ID."""
         super(ReporterSearchForm, self).__init__(*args, **kwargs)
-        self.fields['version'].choices = (
-                VERSION_CHOICES[get_channel()][FIREFOX])
+        self.fields['version'].choices = VERSION_CHOICES[FIREFOX]
 
         # Show Mobile versions if that was picked by the user.
         picked = None
@@ -95,8 +89,7 @@ class ReporterSearchForm(forms.Form):
             settings.SITE_ID == settings.MOBILE_SITE_ID):
             # We default to Firefox. Only change if this is the mobile site.
             self.fields['product'].initial = MOBILE.short
-            self.fields['version'].choices = \
-                    VERSION_CHOICES[get_channel()][MOBILE]
+            self.fields['version'].choices = VERSION_CHOICES[MOBILE]
 
     def clean(self):
         cleaned = self.cleaned_data
@@ -120,7 +113,7 @@ class ReporterSearchForm(forms.Form):
             cleaned['page'] = 1
 
         if not cleaned.get('version'):
-            cleaned['version'] = Version(LATEST_VERSION()[FIREFOX]).simplified
+            cleaned['version'] = Version(LATEST_BETAS[FIREFOX]).simplified
         elif cleaned['version'] == '--':
             cleaned['version'] = ''
 

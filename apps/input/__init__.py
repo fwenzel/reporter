@@ -1,36 +1,6 @@
-from django.conf import settings
-
 from product_details import product_details
 from product_details.version_compare import version_list
 from tower import ugettext_lazy as _
-
-from input import urlresolvers
-
-
-def get_channel():
-    prefix = urlresolvers.get_url_prefix()
-    if prefix and prefix.channel:
-        return prefix.channel
-    return settings.DEFAULT_CHANNEL
-
-
-## Channels
-class CHANNEL_RELEASE:
-    short = 'release'
-    pretty = _(u'Release Channel')
-
-
-class CHANNEL_BETA:
-    short = 'beta'
-    pretty = _(u'Beta Channel')
-
-
-class CHANNEL_NIGHTLY:
-    short = 'nightly'
-    pretty = _(u'Nightly Channel')
-
-CHANNEL_USAGE = (CHANNEL_BETA, CHANNEL_RELEASE)
-CHANNELS = dict((ch.short, ch) for ch in CHANNEL_USAGE)
 
 
 ## Known manufacturers and devices for mobile feedback.
@@ -95,62 +65,10 @@ op_types = {
     'OPINION_PRAISE': OPINION_PRAISE,
     'OPINION_ISSUE': OPINION_ISSUE,
     'OPINION_IDEA': OPINION_IDEA,
-    'OPINION_RATING': OPINION_RATING,
-    'OPINION_BROKEN': OPINION_BROKEN,
 }
 
-OPINION_TYPES_USAGE = (OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA,
-                       OPINION_RATING, OPINION_BROKEN)
+OPINION_TYPES_USAGE = OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA
 OPINION_TYPES = dict((type.id, type) for type in OPINION_TYPES_USAGE)
-
-
-## Release Feedback: Rating Types
-class RATING_STARTUP:
-    id = 1
-    short = 'startup'
-    pretty = _(u'Start-Up Time')
-    help = _(u'How long Firefox takes to start running')
-
-
-class RATING_PAGELOAD:
-    id = 2
-    short = 'pageload'
-    pretty = _(u'Page Load Time')
-    help = _(u'How long it takes for web pages to load')
-
-
-class RATING_RESPONSIVE:
-    id = 3
-    short = 'responsive'
-    pretty = _(u'Responsiveness')
-    help = _(u'How quickly web pages respond once they have loaded')
-
-
-class RATING_CRASHY:
-    id = 4
-    short = 'crashy'
-    pretty = _(u'Stability')
-    help = _(u'How frequently Firefox crashes or loses data')
-
-
-class RATING_FEATURES:
-    id = 5
-    short = 'features'
-    pretty = _(u'Features')
-    help = _(u"How well Firefox's built-in features serve your needs")
-
-RATING_USAGE = (RATING_STARTUP, RATING_PAGELOAD, RATING_RESPONSIVE,
-                RATING_CRASHY, RATING_FEATURES)
-RATING_TYPES = dict((r.short, r) for r in RATING_USAGE)
-RATING_IDS = dict((r.id, r) for r in RATING_USAGE)
-
-RATING_CHOICES = (
-    (1, _(u'Poor')),
-    (2, _(u'Fair')),
-    (3, _(u"Don't Care")),
-    (4, _(u'Good')),
-    (5, _(u'Excellent')),
-)
 
 
 ## Applications
@@ -159,11 +77,12 @@ class FIREFOX:
     short = 'firefox'
     pretty = _(u'Firefox')
     guid = '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}'
+    extra_versions = ['6.0a1', '5.0a2']
     beta_versions = version_list(
         dict(product_details.firefox_history_major_releases.items() +
              product_details.firefox_history_stability_releases.items() +
              product_details.firefox_history_development_releases.items()),
-        hide_below='4.0b1',
+        hide_below='4.0b12',
         filter=(lambda v: v.is_beta)
     )
     release_versions = version_list(
@@ -225,10 +144,6 @@ LATEST_RELEASE = {
     MOBILE: (MOBILE.release_versions[0] if MOBILE.release_versions else
               product_details.mobile_details['version']),
 }
-
-
-def LATEST_VERSION():
-    return LATEST_BETAS if get_channel() == 'beta' else LATEST_RELEASE
 
 
 # Operating Systems

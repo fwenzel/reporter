@@ -13,7 +13,7 @@ from input import urlresolvers
 from input.helpers import urlparams
 
 
-class LocaleAndChannelURLMiddleware(object):
+class LocaleURLMiddleware(object):
     """
     1. Search for the locale.
     2. Save it in the request.
@@ -25,22 +25,17 @@ class LocaleAndChannelURLMiddleware(object):
         urlresolvers.set_url_prefix(prefixer)
         full_path = prefixer.fix(prefixer.shortened_path)
 
-        # Lang and channel are changeable by GET request.
-        # Note that some paths might not exist across all channels, so handle
-        # with care.
-        # Format is (GET parameter, prefixer attribute)
-        for param, attr in (('lang', 'locale'), ('channel', 'channel')):
-            if param in request.GET:
-                # Blank out the prefixer attribute so that we can set a new
-                # one. Remove the parameter from the query params so we don't
-                # have an infinite loop.
-                setattr(prefixer, attr, '')
-                new_path = prefixer.fix(prefixer.shortened_path)
-                query = dict((smart_str(k), request.GET[k]) for k in
-                             request.GET)
-                query.pop(param)
-                return HttpResponsePermanentRedirect(urlparams(new_path,
-                                                               **query))
+        # Lang is changeable by GET request.
+        if 'lang' in request.GET:
+            # Blank out the prefixer attribute so that we can set a new
+            # one. Remove the parameter from the query params so we don't
+            # have an infinite loop.
+            prefixer.locale = ''
+            new_path = prefixer.fix(prefixer.shortened_path)
+            query = dict((smart_str(k), request.GET[k]) for k in
+                         request.GET)
+            query.pop('lang')
+            return HttpResponsePermanentRedirect(urlparams(new_path, **query))
 
         if full_path != request.path:
             query_string = request.META.get('QUERY_STRING', '')
@@ -53,7 +48,7 @@ class LocaleAndChannelURLMiddleware(object):
 
             # Vary on Accept-Language if we changed the locale
             old_locale = prefixer.locale
-            new_locale, new_channel, _ = prefixer.split_path(full_path)
+            new_locale, _ = prefixer.split_path(full_path)
             if old_locale != new_locale:
                 response['Vary'] = 'Accept-Language'
 
@@ -61,7 +56,6 @@ class LocaleAndChannelURLMiddleware(object):
 
         request.path_info = '/' + prefixer.shortened_path
         request.locale = prefixer.locale
-        request.channel = prefixer.channel
         tower.activate(prefixer.locale)
 
 

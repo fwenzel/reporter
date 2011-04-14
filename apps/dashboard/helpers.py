@@ -7,7 +7,7 @@ from jingo import register
 import jinja2
 from product_details.version_compare import Version
 
-from input import LATEST_VERSION, get_channel
+from input import LATEST_BETAS
 from search.forms import VERSION_CHOICES
 
 
@@ -114,14 +114,14 @@ def themes_block(context, themes, defaults=None):
 @jinja2.contextfunction
 def products_block(context, products, product):
     latest_versions = dict((prod.short, Version(v).simplified) for prod, v in
-                            LATEST_VERSION().items())
+                            LATEST_BETAS.items())
     version_choices = {}
-    for prod in VERSION_CHOICES[get_channel()]:
+    for prod in VERSION_CHOICES:
         version_choices = json.dumps(
             dict((prod.short,
                   [map(unicode, v) for v
-                   in VERSION_CHOICES[get_channel()][prod]]) for prod in
-                 VERSION_CHOICES[get_channel()]))
+                   in VERSION_CHOICES[prod]]) for prod in
+                 VERSION_CHOICES))
     return new_context(**locals())
 
 

@@ -3,9 +3,6 @@ from django.core.urlresolvers import reverse as django_reverse
 from django.utils.thread_support import currentThread
 from django.utils.translation.trans_real import parse_accept_lang_header
 
-import input
-
-
 # Thread-local storage for URL prefixes. Access with (get|set)_url_prefix.
 _prefixes = {}
 
@@ -25,21 +22,15 @@ def clean_url_prefixes():
     _prefixes.clear()
 
 
-def reverse(viewname, urlconf=None, args=None, kwargs=None, prefix=None,
-            channel=None):
+def reverse(viewname, urlconf=None, args=None, kwargs=None, prefix=None):
     """Wraps Django's reverse to prepend the correct locale."""
     prefixer = get_url_prefix()
-    current_channel = prefixer.channel if prefixer else None
-
-    if channel:
-        prefixer.channel = channel
 
     if prefixer:
         prefix = prefix or '/'
     url = django_reverse(viewname, urlconf, args, kwargs, prefix)
     if prefixer:
         new_url = prefixer.fix(url)
-        prefixer.channel = current_channel
         return new_url
     else:
         return url
@@ -59,44 +50,26 @@ class Prefixer(object):
     def __init__(self, request):
         self.request = request
         split = self.split_path(request.path_info)
-        self.locale, self.channel, self.shortened_path = split
+        self.locale, self.shortened_path = split
 
     def split_path(self, path_):
         """
-        Split the requested path into (locale, channel, path).
+        Split the requested path into (locale, path).
 
-        locale and channel will be empty if they aren't found.
+        locale will be empty if not found.
         """
         path = path_.lstrip('/')
 
         # Use partitition instead of split since it always returns 3 parts
-        first, _, first_rest = path.partition('/')
-        second, _, rest = first_rest.partition('/')
+        first, _, rest = path.partition('/')
 
         lang = first.lower()
         if lang in settings.LANGUAGE_URL_MAP:
             lang = settings.LANGUAGE_URL_MAP[lang]
 
-            if second in input.CHANNELS:
-                return lang, second, rest
-            else:
-                return lang, '', first_rest
-        elif first in input.CHANNELS:
-            return '', first, first_rest
+            return lang, rest
         else:
-            lang = ''
-
-            if second in input.CHANNELS:
-                return lang, second, rest
-            else:
-                return lang, '', path
-
-    def get_channel(self):
-        if 'channel' in self.request.GET:
-            channel = self.request.GET['channel'].lower()
-            if channel in input.CHANNELS:
-                return channel
-        return settings.DEFAULT_CHANNEL
+            return '', path
 
     def get_language(self):
         """
@@ -135,10 +108,6 @@ class Prefixer(object):
         if path.partition('/')[0] not in settings.SUPPORTED_NONLOCALES:
             locale = self.locale if self.locale else self.get_language()
             url_parts.append(locale)
-
-        if path.partition('/')[0] not in settings.SUPPORTED_NONCHANNELS:
-            channel = self.channel if self.channel else self.get_channel()
-            url_parts.append(channel)
 
         url_parts.append(path)
 

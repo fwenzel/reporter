@@ -1,4 +1,3 @@
-import cgi
 import datetime
 import urlparse
 
@@ -9,14 +8,12 @@ from django.utils.encoding import smart_str
 from django.utils.http import urlencode
 
 from babel import Locale, UnknownLocaleError
-from babel.dates import format_datetime
 from babel.support import Format
 from jingo import register
 import jinja2
 import pytz
 from tower import ugettext as _, ungettext as ngettext
 
-import utils
 from .urlresolvers import reverse
 from themes.helpers import new_context
 
@@ -47,6 +44,7 @@ def isotime(t):
     if not hasattr(t, 'tzinfo'):
         return
     return _append_tz(t).astimezone(pytz.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
 
 def _append_tz(t):
     tz = pytz.timezone(settings.TIME_ZONE)
@@ -92,10 +90,11 @@ def absolute_url(context, relative):
     """Given a relative URL, build an absolute URL including domain."""
     return context['request'].build_absolute_uri(relative)
 
+
 @register.function
-def url(viewname, channel=None, *args, **kwargs):
+def url(viewname, *args, **kwargs):
     """Helper for Django's ``reverse`` in templates."""
-    return reverse(viewname, args=args, kwargs=kwargs, channel=channel)
+    return reverse(viewname, args=args, kwargs=kwargs)
 
 
 @register.filter

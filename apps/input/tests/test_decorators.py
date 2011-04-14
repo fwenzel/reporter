@@ -35,10 +35,10 @@ class DecoratorTests(ViewTestCase):
             return FakeSite()
         mock.side_effect = side_effect
 
-        r = self.mclient.get(reverse('dashboard', channel='beta') + '?foo=bar')
+        r = self.mclient.get(reverse('dashboard') + '?foo=bar')
         eq_(r.status_code, 301)
         eq_(r['Location'], 'http://' + fake_mobile_domain +
-            reverse('dashboard', channel='beta') + '?foo=bar')
+            reverse('dashboard') + '?foo=bar')
 
     @patch('django.contrib.sites.models.Site.objects.get')
     def test_mobile_device_detection(self, mock):
@@ -57,7 +57,7 @@ class DecoratorTests(ViewTestCase):
 
         # URLs that should allow Mobile detection
         urls = (
-            reverse('dashboard', channel='beta'),
+            reverse('dashboard'),
             reverse('feedback.happy'),
             reverse('feedback.sad'),
             reverse('feedback.idea'),

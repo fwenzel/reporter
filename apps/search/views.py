@@ -14,12 +14,11 @@ from product_details import product_details
 from product_details.version_compare import Version
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-import input
-from input import (PRODUCTS, PRODUCT_IDS, FIREFOX, LATEST_VERSION,
+from input import (PRODUCTS, PRODUCT_IDS, FIREFOX, LATEST_BETAS,
                    OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA, OPINION_TYPES)
 from input.decorators import cache_page
 from input.urlresolvers import reverse
-from search.client import Client, RatingsClient, SearchError
+from search.client import Client, SearchError
 from search.forms import ReporterSearchForm, PROD_CHOICES, VERSION_CHOICES
 
 log = commonware.log.getLogger('i.search')
@@ -61,7 +60,7 @@ def _get_results(request, meta=[], client=None):
         opinions = []
         product = request.default_prod
         query = ''
-        version = Version(LATEST_VERSION()[product]).simplified
+        version = Version(LATEST_BETAS[product]).simplified
         metas = {}
 
     product = PRODUCTS.get(product, FIREFOX)
@@ -218,7 +217,7 @@ def index(request):
         product=product,
         products=PROD_CHOICES,
         version=dict(form.fields['version'].choices).get(version or '--'),
-        versions=VERSION_CHOICES['beta'][product],
+        versions=VERSION_CHOICES[product],
     )
 
     data['period'], days = get_period(form)
@@ -260,65 +259,4 @@ def index(request):
     data['defaults'] = get_defaults(form)
     template = 'search/%ssearch.html' % (
         'mobile/' if request.mobile_site else '')
-    return jingo.render(request, template, data)
-
-
-@cache_page(use_get=True)
-def release(request):
-    """Front page and search view for the release channel."""
-    c = RatingsClient()
-    metas = ['platform', 'locale']
-
-    for dimension in input.RATING_TYPES.keys():
-        metas.append(dimension)
-        metas.append('day__avg__%s' % dimension)
-
-    try:
-        (_, form, product, version, metas) = _get_results(request, metas,
-                                                          client=c)
-    except SearchError, e:
-        return jingo.render(request, 'search/unavailable.html',
-                           {'search_error': e}, status=500)
-
-    rating_values = dict((k, unicode(v)) for k, v in input.RATING_CHOICES)
-
-    series = []
-    categories = []
-
-    if 'ratings' in metas:
-        for rating_value in rating_values:
-            data = [v[rating_value] for k, v in metas['ratings'].items() if v]
-            series.append(dict(name=rating_values[rating_value], data=data))
-
-    ratings_chart = dict(series=series)
-    categories = []
-    charts = []
-
-    if 'ratings_avg' in metas:
-        for r in input.RATING_USAGE:
-            categories.append(unicode(r.pretty))
-            charts.append(dict(rating=r, json=json.dumps(dict(series=[dict(
-                data=metas['ratings_avg'][r.id])]))))
-
-    data = dict(
-        product=product,
-        products=PROD_CHOICES,
-        version=dict(form.fields['version'].choices).get(version or '--'),
-        versions=VERSION_CHOICES['release'][product],
-        platforms=metas.get('platform'),
-        locales=metas.get('locale'),
-        chart_json=json.dumps(ratings_chart),
-        chart_categories=json.dumps(categories),
-        avg_charts=charts,
-        defaults=get_defaults(form),
-        period=get_period(form)[0],
-        search_form=form,
-        total=c.total_found,
-        utc=True,  # The date partitions are by UTC.
-    )
-
-    # TODO do not mess with mobile site detection anymore once the release
-    # dashboard is mobilified. Bug 632225.
-    request.mobile_site = False
-    template = 'search/release.html'
     return jingo.render(request, template, data)

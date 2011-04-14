@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 
 import jingo
 
-from input import PLATFORMS, PRODUCTS, get_channel
+from input import PLATFORMS, PRODUCTS
 from input.decorators import cache_page
 from feedback.models import Opinion
 
@@ -77,7 +77,7 @@ def _common_data(form):
             "platforms": platforms,
             "products": form.fields["product"].choices,
             "product": product,
-            "versions": VERSION_CHOICES[get_channel()][product],
+            "versions": VERSION_CHOICES[product],
             "version": form.cleaned_data["version"]}
 
 

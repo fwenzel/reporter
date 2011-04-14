@@ -6,7 +6,7 @@ from nose.tools import eq_
 
 import input
 from feedback.models import Opinion
-from search.client import Client, RatingsClient, SearchError, extract_filters
+from search.client import Client, SearchError, extract_filters
 from search.tests import SphinxTestCase
 
 query = lambda x='', **kwargs: Client().query(x, **kwargs)
@@ -66,12 +66,6 @@ class SearchTest(SphinxTestCase):
     def test_getlasterror(self, sphinx):
         sphinx = lambda: True
         self.assertRaises(SearchError, query)
-
-    def test_meta_query(self):
-        """Test that we can store complicated filter queries."""
-        c = RatingsClient()
-        c.query('', meta=['day__avg__startup', 'startup'])
-        assert 'day__avg__startup' in c.queries
 
     def test_query(self):
         start = datetime.datetime(2010, 5, 27)

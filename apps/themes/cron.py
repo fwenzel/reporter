@@ -8,9 +8,8 @@ import cronjobs
 from textcluster import Corpus, search
 
 from feedback.models import Opinion
-from input import (CHANNEL_USAGE, PLATFORM_USAGE, PRODUCT_USAGE,
-                   LATEST_BETAS, LATEST_RELEASE, OPINION_PRAISE,
-                   OPINION_ISSUE, OPINION_IDEA)
+from input import (PLATFORM_USAGE, PRODUCT_USAGE, LATEST_BETAS, LATEST_RELEASE,
+                   OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA)
 from themes.models import Theme, Item
 
 SIM_THRESHOLD = settings.CLUSTER_SIM_THRESHOLD
@@ -55,15 +54,16 @@ def cluster():
 
 def cluster_by_product_and_channel(qs):
     def get_version(channel, prod):
-        return LATEST_BETAS[prod] if channel == 'beta' else LATEST_RELEASE[prod]
+        return (LATEST_BETAS[prod] if channel == 'beta'
+                else LATEST_RELEASE[prod])
 
-    for channel in CHANNEL_USAGE:
+    for channel in ('beta', 'release'):
         for prod in PRODUCT_USAGE:
-            version = get_version(channel.short, prod)
+            version = get_version(channel, prod)
             log.debug('Clustering %s (%s: %s)' %
-                      (unicode(prod.pretty), channel.short, version))
+                      (unicode(prod.pretty), channel, version))
             qs_product = qs.filter(product=prod.id, version=version)
-            cluster_by_feeling(qs_product, channel.short, prod)
+            cluster_by_feeling(qs_product, channel, prod)
 
 
 def cluster_by_feeling(qs, channel, prod):

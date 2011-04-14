@@ -9,7 +9,6 @@ from nose.tools import eq_
 from pyquery import PyQuery as pq
 
 import input
-from dashboard import helpers
 from input.tests import InputTestCase
 from input.urlresolvers import reverse
 from search.tests import SphinxTestCase
@@ -36,12 +35,8 @@ class TestDashboard(SphinxTestCase):
         r = self.client.get(reverse('dashboard'), follow=True)
         eq_(r.status_code, 200)
 
-    def test_beta_dashboard(self):
-        r = self.client.get(reverse('dashboard', channel='beta'))
-        eq_(r.status_code, 200)
-
     def test_beta_pagination_link(self):
-        r = self.client.get(reverse('dashboard', channel='beta'))
+        r = self.client.get(reverse('dashboard'))
         doc = pq(r.content)
 
         pag_link = doc('.pager a.next')
@@ -53,7 +48,7 @@ class TestDashboard(SphinxTestCase):
 
 class TestMobileDashboard(test_utils.TestCase):
     def test_dashboard(self):
-        r = self.client.get(reverse('dashboard', channel='beta'), follow=True,
+        r = self.client.get(reverse('dashboard'), follow=True,
                             SITE_ID=settings.MOBILE_SITE_ID)
         eq_(r.status_code, 200)
 

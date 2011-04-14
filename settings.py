@@ -99,11 +99,6 @@ LANGUAGE_URL_MAP.update((i.lower(), i) for i in INPUT_LANGUAGES)
 # Paths that don't require a locale prefix.
 SUPPORTED_NONLOCALES = ('media', 'admin')
 
-# TODO: These will be ported to /feeedback/beta
-SUPPORTED_NONCHANNELS = ('media', 'admin', 'feedback', 'happy', 'sad', 'about',
-                         'idea', 'thanks')
-DEFAULT_CHANNEL = 'release'
-
 TEXT_DOMAIN = 'messages'
 STANDALONE_DOMAINS = []
 
@@ -137,16 +132,12 @@ MEDIA_URL = '/media/'
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/admin-media/'
 
-# Make this unique, and don't share it with anybody.
+# Ignore me!
 SECRET_KEY = '^e*0du@u83$de+==+x$5k%x#+4v7&nm-_sggrr(t!&@kufz87n'
 
 # Templates
-
 CSRF_FAILURE_VIEW = '%s.urls.handler_csrf' % ROOT_PACKAGE
-
-TEMPLATE_DIRS = (
-    path('templates'),
-)
+TEMPLATE_DIRS = (path('templates'),)
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -251,7 +242,7 @@ def JINJA_CONFIG():
 
 MIDDLEWARE_CLASSES = (
     'input.middleware.MobileSiteMiddleware',
-    'input.middleware.LocaleAndChannelURLMiddleware',
+    'input.middleware.LocaleURLMiddleware',
 
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

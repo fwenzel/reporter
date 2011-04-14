@@ -102,27 +102,3 @@ def forward_mobile(f):
         return f(request, *args, **kwargs)
 
     return wrapped
-
-
-# Not quite a decorator:
-def negotiate(release, beta):
-    """
-    If
-        /beta/foo
-        /release/foo
-    exist
-
-    you can create a urls.py that points 'foo' to views.foo
-    in views.py:
-
-        foo = negotiate(beta=beta_foo, release=release_foo,
-                        nightly=nightly_foo)
-
-    Will then serve up the correct view based on your request.
-    """
-    def negotiated(request, *args, **kwargs):
-        if request.channel == 'beta':
-            return beta(request, *args, **kwargs)
-        else:
-            return release(request, *args, **kwargs)
-    return negotiated

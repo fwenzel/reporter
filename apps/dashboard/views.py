@@ -9,16 +9,16 @@ from tower import ugettext as _
 from feedback import stats
 from feedback.models import Opinion, Term
 from input import LATEST_BETAS
-from input.decorators import cache_page, forward_mobile, negotiate
+from input.decorators import cache_page, forward_mobile
 from search.client import Client, SearchError
 from search.forms import PROD_CHOICES, VERSION_CHOICES, ReporterSearchForm
-from search.views import get_sentiment, release, get_defaults, get_plotbands
+from search.views import get_sentiment, get_defaults, get_plotbands
 from website_issues.models import SiteSummary
 
 
 @forward_mobile
 @cache_page
-def beta(request):
+def dashboard(request):
     """Beta dashboard."""
     # Defaults
     prod = request.default_prod
@@ -73,7 +73,7 @@ def beta(request):
             'platforms': metas.get('platform'),
             'sites': sites,
             'version': version,
-            'versions': VERSION_CHOICES['beta'][prod],
+            'versions': VERSION_CHOICES[prod],
             'chart_data_json': json.dumps(chart_data),
             'defaults': get_defaults(search_form),
             'search_form': search_form,
@@ -84,6 +84,3 @@ def beta(request):
     else:
         template = 'dashboard/mobile/beta.html'
     return jingo.render(request, template, data)
-
-
-dashboard = negotiate(beta=beta, release=release)

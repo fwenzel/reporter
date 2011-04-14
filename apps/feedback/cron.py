@@ -6,7 +6,7 @@ from django.db import transaction
 
 import cronjobs
 
-from feedback.models import Opinion, Rating
+from feedback.models import Opinion
 import input
 
 
@@ -73,8 +73,7 @@ def populate(num_opinions=None, product='mobile', type=None, locale=None):
                     locale=locale or random.choice(settings.INPUT_LANGUAGES),
                     user_agent=random.choice(UA_STRINGS[product]))
 
-        if type != input.OPINION_RATING.id:
-            o.description = sample()
+        o.description = sample()
 
         if 'mobile':
             manufacturer = random.choice(DEVICES.keys())
@@ -83,12 +82,6 @@ def populate(num_opinions=None, product='mobile', type=None, locale=None):
 
         o.save(terms=False)
 
-        if type == input.OPINION_RATING.id:
-            for question in input.RATING_USAGE:
-                Rating(
-                    opinion=o,
-                    type=question.id,
-                    value=random.randint(1, 5)).save()
         o.created = datetime.datetime.now() - datetime.timedelta(
                 seconds=random.randint(0, 30 * 24 * 3600))
         o.save()

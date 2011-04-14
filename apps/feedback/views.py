@@ -12,10 +12,10 @@ from product_details.version_compare import Version
 from tower import ugettext as _
 
 import input
-from input.decorators import cache_page, forward_mobile, negotiate
+from input.decorators import cache_page, forward_mobile
 from input.urlresolvers import reverse
 from feedback.forms import PraiseForm, IssueForm, IdeaForm
-from feedback.models import Opinion, Rating
+from feedback.models import Opinion
 from feedback.utils import detect_language, ua_parse
 
 
@@ -35,9 +35,8 @@ def enforce_ua(beta):
 
             if not parsed:  # Unknown UA.
                 if request.method == 'GET':
-                    return http.HttpResponseRedirect(reverse(
-                        'feedback.download',
-                        channel='beta' if beta else 'release'))
+                    return http.HttpResponseRedirect(
+                            reverse('feedback.download'))
                 else:
                     return http.HttpResponseBadRequest(
                         _('User-Agent request header must be set.'))
@@ -49,26 +48,25 @@ def enforce_ua(beta):
             # Enforce beta releases.
             if beta:
                 if this_ver.is_release:  # Forward release to release feedback.
-                    return http.HttpResponseRedirect(
-                        reverse('feedback', channel='release'))
+                    return http.HttpResponseRedirect(reverse('feedback'))
                 elif not this_ver.is_beta:  # Not a beta? Upgrade to beta.
                     return http.HttpResponseRedirect(
-                            reverse('feedback.download', channel='beta'))
+                            reverse('feedback.download'))
 
                 # Check for outdated beta.
                 ref_ver = Version(input.LATEST_BETAS[parsed['browser']])
                 if this_ver < ref_ver:
                     return http.HttpResponseRedirect(
-                            reverse('feedback.download', channel='beta'))
+                            reverse('feedback.download'))
 
             # Enforce release versions.
             else:
                 if this_ver.is_beta:  # Forward betas to beta feedback.
                     return http.HttpResponseRedirect(
-                        reverse('feedback', channel='beta'))
+                        reverse('feedback'))
                 elif not this_ver.is_release:  # Not a release? Upgrade.
                     return http.HttpResponseRedirect(
-                            reverse('feedback.download', channel='beta'))
+                            reverse('feedback.download'))
 
                 ref_ver = Version(input.LATEST_RELEASE[parsed['browser']])
 
@@ -77,12 +75,12 @@ def enforce_ua(beta):
                 ver4 = Version('4.0')
                 if (parsed['browser'] == input.FIREFOX and this_ver < ver4):
                     return http.HttpResponseRedirect(
-                            reverse('feedback.download', channel='beta'))
+                            reverse('feedback.download'))
 
                 # Check for outdated release.
                 if this_ver < ref_ver:
                     return http.HttpResponseRedirect(
-                            reverse('feedback.download', channel='release'))
+                            reverse('feedback.download'))
 
             # If we made it here, it's a valid version.
             return f(request, ua=ua, *args, **kwargs)
@@ -153,22 +151,12 @@ def feedback(request, ua):
 
 
 @cache_page
-def need_beta(request):
+def download(request):
     """Encourage people to download a current beta version."""
 
     template = 'feedback/%sneed_beta.html' % (
         'mobile/' if request.mobile_site else '')
     return jingo.render(request, template)
-
-
-@cache_page
-def need_release(request):
-    """Encourage people to download a current release version."""
-
-    template = 'feedback/need_release.html'
-    return jingo.render(request, template)
-
-download = negotiate(release=need_release, beta=need_beta)
 
 
 @cache_page
@@ -200,23 +188,10 @@ def save_opinion_from_form(request, type, ua, form):
     if type not in input.OPINION_TYPES:
         raise ValueError('Unknown type %s' % type)
 
-    if type != input.OPINION_RATING.id:
-        return Opinion(
-            type=type,
-            url=form.cleaned_data.get('url', ''),
-            description=form.cleaned_data['description'],
-            user_agent=ua, locale=locale,
-            manufacturer=form.cleaned_data['manufacturer'],
-            device=form.cleaned_data['device']).save()
-
-    else:
-        opinion = Opinion(
-            type=type,
-            user_agent=ua, locale=locale)
-        opinion.save()
-        for question in input.RATING_USAGE:
-            value = form.cleaned_data.get(question.short)
-            if not value:
-                continue
-            Rating(opinion=opinion, type=question.id, value=value).save()
-        return opinion
+    return Opinion(
+        type=type,
+        url=form.cleaned_data.get('url', ''),
+        description=form.cleaned_data['description'],
+        user_agent=ua, locale=locale,
+        manufacturer=form.cleaned_data['manufacturer'],
+        device=form.cleaned_data['device']).save()

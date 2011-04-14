@@ -6,7 +6,7 @@ from django.forms import (CharField, ChoiceField, BooleanField, HiddenInput,
 
 from tower import ugettext_lazy as _lazy
 
-from input import PLATFORMS, PRODUCTS, FIREFOX, MOBILE, get_channel
+from input import PLATFORMS, PRODUCTS, FIREFOX, MOBILE
 from input.fields import SearchInput
 from search.forms import (SENTIMENT_CHOICES, PLATFORM_CHOICES, PROD_CHOICES,
                           VERSION_CHOICES)
@@ -33,8 +33,8 @@ FIELD_DEFS = {
     ),
     "sentiment": field_def(ChoiceField, "", choices=SENTIMENT_CHOICES),
     "version": field_def(ChoiceField,
-                         VERSION_CHOICES[get_channel()][FIREFOX][0][0],
-                         choices=VERSION_CHOICES[get_channel()][FIREFOX]),
+                         VERSION_CHOICES[FIREFOX][0][0],
+                         choices=VERSION_CHOICES[FIREFOX]),
     "product": field_def(ChoiceField, FIREFOX.short, choices=PROD_CHOICES),
     "platform": field_def(ChoiceField, "", choices=PLATFORM_CHOICES),
     "show_one_offs": field_def(BooleanField, False),
@@ -65,7 +65,7 @@ class WebsiteIssuesSearchForm(forms.Form):
     def __init__(self, *args, **kwargs):
         """Set available products/versions based on selected channel/product"""
         super(WebsiteIssuesSearchForm, self).__init__(*args, **kwargs)
-        choices = VERSION_CHOICES[get_channel()]
+        choices = VERSION_CHOICES
         product_choices = \
             [(p.short, p.pretty) for p in (FIREFOX, MOBILE) if choices[p]]
         self.fields['product'].choices = product_choices
@@ -109,7 +109,7 @@ class WebsiteIssuesSearchForm(forms.Form):
 
         if not cleaned.get('version'):
             product = cleaned.get('product', FIREFOX)
-            cleaned['version'] = VERSION_CHOICES[get_channel()][product][0][0]
+            cleaned['version'] = VERSION_CHOICES[product][0][0]
 
         if cleaned.get('page') is not None:
             cleaned['page'] = max(1, int(cleaned['page']))

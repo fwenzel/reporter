@@ -14,7 +14,6 @@ def default_prefixer(sender, **kwargs):
     request = http.HttpRequest()
     request.META['SCRIPT_NAME'] = ''
     prefixer = urlresolvers.Prefixer(request)
-    prefixer.channel = settings.DEFAULT_CHANNEL
     prefixer.locale = settings.LANGUAGE_CODE
     urlresolvers.set_url_prefix(prefixer)
 

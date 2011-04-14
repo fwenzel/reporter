@@ -13,22 +13,21 @@ class ReleaseTests(ViewTestCase):
         """Request release feedback page."""
         extra = dict(HTTP_USER_AGENT=FX_UA % ver) if ver else {}
 
-        return self.client.get(reverse('feedback', channel='release'), **extra)
+        return self.client.get(reverse('feedback'), **extra)
 
     @enforce_ua
     def test_no_ua(self):
         """No UA: redirect."""
         r = self._get_page()
         eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback.download',
-                                              channel='release'))
+        assert r['Location'].endswith(reverse('feedback.download'))
 
     @enforce_ua
     def test_beta(self):
         """Beta version on release page: redirect."""
         raise SkipTest
         r = self._get_page('3.6b2')
-        self.assertRedirects(r, reverse('feedback', channel='beta'), 302, 302)
+        self.assertRedirects(r, reverse('feedback'), 302, 302)
 
     # TODO bug 634324. Reenable this after Firefox 4 release.
     @enforce_ua
@@ -36,8 +35,7 @@ class ReleaseTests(ViewTestCase):
         """Post Fx4: Old release: redirect to release download page."""
         r = self._get_page('3.5')
         eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback.download',
-                                              channel='release'))
+        assert r['Location'].endswith(reverse('feedback.download'))
 
     # TODO bug 634324. Reenable this after Firefox 4 release.
     @enforce_ua
@@ -58,5 +56,4 @@ class ReleaseTests(ViewTestCase):
         if ajax:
             options['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
 
-        return self.client.post(reverse('feedback', channel='release'), data,
-                                **options)
+        return self.client.post(reverse('feedback'), data, **options)

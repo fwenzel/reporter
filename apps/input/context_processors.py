@@ -1,12 +1,11 @@
 from django.conf import settings
 from django.utils import translation
 
-from input import get_channel, op_types, CHANNELS, CHANNEL_USAGE
+from input import op_types
 
 
 def input(request):
-    return dict(settings=settings, CHANNEL=get_channel(),
-                CHANNELS=CHANNELS, CHANNEL_USAGE=CHANNEL_USAGE)
+    return dict(settings=settings)
 
 
 def i18n(request):

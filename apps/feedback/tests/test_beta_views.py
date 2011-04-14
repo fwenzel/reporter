@@ -30,14 +30,14 @@ class BetaViewTests(ViewTestCase):
         r = self._get_page()
         eq_(r.status_code, 302)
         assert r['Location'].endswith(
-                reverse('feedback.download', channel='beta'))
+                reverse('feedback.download'))
 
     @enforce_ua
     def test_release(self):
         """Release version on beta page: redirect."""
         r = self._get_page('3.6')
         eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback', channel='release'))
+        assert r['Location'].endswith(reverse('feedback'))
 
     @enforce_ua
     def test_old_beta(self):
@@ -45,7 +45,7 @@ class BetaViewTests(ViewTestCase):
         r = self._get_page('3.6b2')
         eq_(r.status_code, 302)
         assert r['Location'].endswith(
-                reverse('feedback.download', channel='beta'))
+                reverse('feedback.download'))
 
     @enforce_ua
     def test_latest_beta(self):
@@ -65,7 +65,7 @@ class BetaViewTests(ViewTestCase):
         r = self._get_page('20.0b2pre')
         eq_(r.status_code, 302)
         assert r['Location'].endswith(
-                reverse('feedback.download', channel='beta'))
+                reverse('feedback.download'))
 
     def test_give_feedback(self):
         r = self.client.post(reverse('feedback.sad'))
@@ -166,7 +166,7 @@ class BetaViewTests(ViewTestCase):
 
     def test_feedback_index(self):
         """Test feedback index page for Betas."""
-        r = self.client.get(reverse('feedback', channel='beta'),
+        r = self.client.get(reverse('feedback'),
                             HTTP_USER_AGENT=(self.FX_UA % '20.0b2'),
                             follow=True)
         eq_(r.status_code, 200)
@@ -180,11 +180,9 @@ class BetaViewTests(ViewTestCase):
         JS to pick up.
         """
         for link in ('feedback.happy', 'feedback.sad'):
-            r = self.client.get(reverse(link, channel='beta'),
+            r = self.client.get(reverse(link),
                                 HTTP_USER_AGENT=(self.FX_UA % '20.0b2'),
                                 follow=True)
             doc = pq(r.content)
             eq_(doc('#count').attr('data-max'),
                 str(MAX_FEEDBACK_LENGTH))
-
-

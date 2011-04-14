@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from .models import Opinion, Rating, Term
-from .utils import smart_truncate
+from .models import Opinion, Term
 
 
 class OpinionAdmin(admin.ModelAdmin):
@@ -20,8 +19,8 @@ class OpinionAdmin(admin.ModelAdmin):
             'fields': ('type', 'description', 'created')
         }),
         ('Build Info', {
-            'fields': ('user_agent', 'product_name', 'version', 'platform_name',
-                       'locale')
+            'fields': ('user_agent', 'product_name', 'version',
+                       'platform_name', 'locale')
         }),
         ('Device Info', {
             'fields': ('manufacturer', 'device')
@@ -34,12 +33,6 @@ class OpinionAdmin(admin.ModelAdmin):
                        'locale')
 
 admin.site.register(Opinion, OpinionAdmin)
-
-
-class RatingAdmin(admin.ModelAdmin):
-    pass
-
-admin.site.register(Rating, RatingAdmin)
 
 
 class TermAdmin(admin.ModelAdmin):

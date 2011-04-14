@@ -7,8 +7,8 @@ from mock import Mock, patch
 from pyquery import PyQuery as pq
 from test_utils import eq_
 
-from input import CHANNELS, helpers
-from input.helpers import babel_date, isotime, timesince, urlparams
+from input import helpers
+from input.helpers import babel_date, timesince, urlparams
 from input.tests import InputTestCase, render
 
 
@@ -19,12 +19,6 @@ class HelperTests(InputTestCase):
         request.META = {'HTTP_HOST': 'example.com'}
         r = render('{{ absolute_url("/somewhere") }}', {'request': request})
         eq_(r, 'http://example.com/somewhere')
-
-    def test_channel_switch(self):
-        """Ensure URL reversal allows us to switch channels."""
-        for ch in CHANNELS:
-            eq_(render("{{ url('dashboard', channel='%s') }}" % ch),
-                '/en-US/%s/' % ch)
 
     @patch('input.helpers.translation.get_language')
     def test_get_format(self, get_language):

@@ -14,10 +14,7 @@ from search.forms import ReporterSearchForm
 @jinja2.contextfunction
 def search_url(context, defaults=None, extra=None, feed=False, **kwargs):
     """Build a search URL with default values unless specified otherwise."""
-    channel = input.get_channel()
-    if channel == 'release':
-        search = reverse('dashboard')
-    elif feed:
+    if feed:
         search = reverse('search.feed')
     else:
         search = reverse('search')
@@ -30,7 +27,7 @@ def search_url(context, defaults=None, extra=None, feed=False, **kwargs):
     if not 'product' in defaults and not 'product' in kwargs:
         prod = context['request'].default_prod
         fallbacks['product'] = prod.short
-        fallbacks['version'] = Version(input.LATEST_VERSION()[prod]).simplified
+        fallbacks['version'] = Version(input.LATEST_BETAS[prod]).simplified
 
     # get field data from keyword args or defaults
     for field in ReporterSearchForm.base_fields:

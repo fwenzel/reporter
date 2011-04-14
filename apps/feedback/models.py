@@ -8,7 +8,7 @@ import caching.base
 
 from feedback import query
 from feedback.utils import ua_parse, extract_terms, smart_truncate
-from input import PRODUCT_IDS, OPINION_TYPES, OPINION_PRAISE, PLATFORMS, RATING_USAGE
+from input import PRODUCT_IDS, OPINION_TYPES, OPINION_PRAISE, PLATFORMS
 from input.models import ModelBase
 from input.urlresolvers import reverse
 
@@ -162,11 +162,3 @@ class Term(ModelBase):
 
     class Meta:
         ordering = ('term',)
-
-
-class Rating(ModelBase):
-    """Ratings associated with an opinion."""
-    opinion = models.ForeignKey(Opinion, related_name='ratings')
-    type = models.PositiveSmallIntegerField(default=RATING_USAGE[0],
-                                            db_index=True)
-    value = models.PositiveSmallIntegerField()

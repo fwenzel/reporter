@@ -3,7 +3,7 @@ from django.conf import settings
 from mock import Mock, patch
 from test_utils import eq_
 
-from input import CHANNELS, urlresolvers
+from input import urlresolvers
 from input.tests import InputTestCase
 from input.urlresolvers import reverse
 
@@ -29,8 +29,7 @@ class MiddlewareTests(InputTestCase):
         for pattern in patterns:
             r = self.client.get('/', HTTP_ACCEPT_LANGUAGE=pattern[0])
             eq_(r.status_code, 301)
-            did_it_work = r['Location'].rstrip('/').endswith(
-                    pattern[1] + '/' + settings.DEFAULT_CHANNEL)
+            did_it_work = r['Location'].rstrip('/').endswith(pattern[1])
             self.assertTrue(did_it_work, "%s didn't match %s" % pattern)
 
     def test_mobilesite_nohost(self):
@@ -55,11 +54,11 @@ class MiddlewareTests(InputTestCase):
 
     def test_redirect_with_querystring(self):
         r = self.client.get('/?foo=bar')
-        eq_(r['Location'], 'http://testserver/en-US/release/?foo=bar')
+        eq_(r['Location'], 'http://testserver/en-US/?foo=bar')
 
     def test_redirect_with_locale(self):
-        r = self.client.get(reverse('dashboard', channel='beta') + '?lang=fr')
-        eq_(r['Location'], 'http://testserver/fr/beta/')
+        r = self.client.get(reverse('dashboard') + '?lang=fr')
+        eq_(r['Location'], 'http://testserver/fr/')
 
     def test_x_frame_options(self):
         """Ensure X-Frame-Options middleware works as expected."""
@@ -74,7 +73,7 @@ class MiddlewareTests(InputTestCase):
         request = Mock()
         request.path_info = '/beta'
         p = urlresolvers.Prefixer(request)
-        eq_(p.channel, 'beta')
+        eq_(p.locale, '')
 
     def test_almost_locale(self):
         request = Mock()
@@ -82,33 +81,10 @@ class MiddlewareTests(InputTestCase):
         p = urlresolvers.Prefixer(request)
         eq_(p.locale, 'en-US')
 
-    def test_almost_locale_with_channel(self):
-        request = Mock()
-        request.path_info = '/en/release'
-        p = urlresolvers.Prefixer(request)
-        eq_(p.locale, 'en-US')
-        eq_(p.channel, 'release')
-
     def test_fake_locale(self):
         r = self.factory.get('/zf/beta')
         p = urlresolvers.Prefixer(r)
         eq_(p.locale, '')
-        eq_(p.channel, 'beta')
-
-    def test_channel_in_get(self):
-        for ch in CHANNELS:
-            request = Mock()
-            request.path_info = '/'
-            request.GET = dict(channel=ch)
-            p = urlresolvers.Prefixer(request)
-            eq_(p.get_channel(), ch)
-
-        # Invalid channel
-        request = Mock()
-        request.path_info = '/'
-        request.GET = dict(channel='bogus')
-        p = urlresolvers.Prefixer(request)
-        eq_(p.get_channel(), settings.DEFAULT_CHANNEL)
 
     def test_locale_in_get(self):
         request = Mock()

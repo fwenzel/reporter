@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import url, patterns, include
 from django.conf import settings
 from django.contrib import admin
+from django.shortcuts import redirect
 
 import jingo
 
@@ -28,6 +29,7 @@ urlpatterns = patterns('',
         name='about'),
     (r'^robots\.txt$', jingo.render, {'template': 'robots.txt',
                                       'mimetype': 'text/plain'}),
+    url('^(?:beta|release)/', lambda r: redirect('/')),
 )
 
 if settings.DEBUG:
