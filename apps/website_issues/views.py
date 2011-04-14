@@ -5,13 +5,12 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 
 import jingo
 
-from input import FIREFOX, MOBILE, PLATFORMS, PRODUCTS, get_channel
+from input import PLATFORMS, PRODUCTS, get_channel
 from input.decorators import cache_page
 from feedback.models import Opinion
-from search.forms import PROD_CHOICES
 
 from .forms import WebsiteIssuesSearchForm, VERSION_CHOICES
-from .models import Comment, Cluster, SiteSummary
+from .models import Cluster, SiteSummary
 
 
 def _fetch_summaries(form, url=None, count=None, one_offs=False):
@@ -23,19 +22,22 @@ def _fetch_summaries(form, url=None, count=None, one_offs=False):
 
     # selected_sentiment = None means "both"
     selected_sentiment = None
-    if search_opts["sentiment"] == "happy": selected_sentiment = 1
-    elif search_opts["sentiment"] == "sad": selected_sentiment = 0
+    if search_opts["sentiment"] == "happy":
+        selected_sentiment = 1
+    elif search_opts["sentiment"] == "sad":
+        selected_sentiment = 0
     qs = qs.filter(positive__exact=selected_sentiment)
 
-    # Search for a specific platform, for all platforms matching the prod, or everything
+    # Search for a specific platform, for all platforms matching the prod, or
+    # everything
     platform = None
-    if search_opts["platform"] != '': platform = search_opts["platform"]
+    if search_opts["platform"] != '':
+        platform = search_opts["platform"]
     if platform is None and search_opts["product"]:
         product = PRODUCTS[search_opts["product"]].short
         qs = qs.filter(platform__exact='<%s>' % product)
     else:
         qs = qs.filter(platform__exact=platform)
-
 
     # If URL was specified, match it exactly, else fuzzy-search.
     if url:
@@ -70,7 +72,7 @@ def _common_data(form):
     product_name = form.cleaned_data["product"]
     if product_name:
         product = PRODUCTS[product_name]
-        platforms = [platform for platform in platforms if product in platform.prods]
+        platforms = [p for p in platforms if product in p.prods]
     return {"form": form,
             "platforms": platforms,
             "products": form.fields["product"].choices,
@@ -151,5 +153,5 @@ def site_theme(request, theme_id):
             "page": page,
             "opinion_count": pager.count,
             "opinions": opinions,
-            "site": cluster.site_summary,}
+            "site": cluster.site_summary}
     return jingo.render(request, 'website_issues/theme.html', data)
