@@ -44,8 +44,13 @@ def normalize_url(url):
     'https://mailexample.co.uk'
     """
     parse_result = urlparse(url)
-    if parse_result.scheme == 'about':
+    if parse_result.scheme in ('about', 'chrome'):
         return parse_result.geturl()
+
     netloc = parse_result.netloc
-    if netloc.startswith("www."): netloc = netloc[4:]
+    if '@' in netloc:
+        netloc = netloc.partition('@')[2]
+
+    if netloc.startswith("www."):
+        netloc = netloc[4:]
     return ''.join((parse_result.scheme, '://', netloc))
