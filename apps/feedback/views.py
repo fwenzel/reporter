@@ -1,5 +1,4 @@
 from functools import wraps
-import json
 
 from django import http
 from django.conf import settings
@@ -15,8 +14,7 @@ from tower import ugettext as _
 import input
 from input.decorators import cache_page, forward_mobile, negotiate
 from input.urlresolvers import reverse
-from feedback.forms import (PraiseForm, IssueForm, IdeaForm,
-                            BrokenWebsiteForm, RatingForm, IdeaReleaseForm)
+from feedback.forms import PraiseForm, IssueForm, IdeaForm
 from feedback.models import Opinion, Rating
 from feedback.utils import detect_language, ua_parse
 
