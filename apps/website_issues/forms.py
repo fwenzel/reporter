@@ -11,18 +11,6 @@ from input.fields import SearchInput
 from search.forms import (SENTIMENT_CHOICES, PLATFORM_CHOICES, PROD_CHOICES,
                           VERSION_CHOICES)
 
-
-VERSION_CHOICES = {
-    'beta': {
-        FIREFOX: [(v, v) for v in FIREFOX.beta_versions],
-        MOBILE: [(v, v) for v in MOBILE.beta_versions],
-    },
-    'release': {
-        FIREFOX: [(v, v) for v in FIREFOX.release_versions],
-        MOBILE: [(v, v) for v in MOBILE.release_versions],
-    },
-}
-
 FieldDef = namedtuple("FieldDef", "default field keys")
 
 
@@ -85,7 +73,8 @@ class WebsiteIssuesSearchForm(forms.Form):
                                           choices=product_choices)
         product = self.data.get('product', FIREFOX)
         try:
-            if not choices[product]: product = FIREFOX
+            if not choices[product]:
+                product = FIREFOX
         except KeyError:
             product = FIREFOX
         version_choices = choices[product]
@@ -112,7 +101,9 @@ class WebsiteIssuesSearchForm(forms.Form):
 
         if cleaned.get('product') and cleaned.get('platform'):
             product = PRODUCTS[cleaned.get('product')]
-            possible_platforms = [platform for platform in PLATFORMS.values() if product in platform.prods]
+            possible_platforms = [platform for platform in PLATFORMS.values()
+                                  if product in platform.prods]
+
             if PLATFORMS[cleaned.get('platform')] not in possible_platforms:
                 cleaned['platform'] = FIELD_DEFS['platform'].default
 
