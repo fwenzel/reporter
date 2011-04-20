@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 import jingo
 
 from input import PLATFORMS, PRODUCTS
+from input.urlresolvers import reverse
 from input.decorators import cache_page
 from feedback.models import Opinion
 
@@ -93,6 +94,8 @@ def website_issues(request):
         one_offs, _ = _fetch_summaries(form, count=settings.TRENDS_COUNT,
                                        one_offs=True)
     data = dict(_common_data(form))
+    data['base_url'] = (reverse('website_issues') + '?' +
+                        request.META['QUERY_STRING'])
     data.update({"page": page, "sites": sites, "one_offs": one_offs})
     return jingo.render(request, 'website_issues/sites.html', data)
 
@@ -124,6 +127,8 @@ def single_site(request, protocol, url_):
         page = pager.page(pager.num_pages)
 
     data = dict(_common_data(form))
+    data['base_url'] = (reverse('single_site', args=[protocol, url_]) + '?' +
+                        request.META['QUERY_STRING'])
     data.update({"page": page, "site": site})
     return jingo.render(request, 'website_issues/sites.html', data)
 

@@ -10,7 +10,7 @@
 {% macro button(form, name, value='', label='', title='', classes='') %}
   {% set sel = (form.cleaned_data[name] == value) %}
   <a class="{{ 'selected' if sel else ''}} {{ classes }}"
-     href="{{ sites_url(form,**{name: value}) }}">{{ label }}</a>
+     href="{{ base_url|urlparams(**{name: value, 'page': None}) }}">{{ label }}</a>
 {% endmacro %}
 
 {% block content %}
@@ -72,7 +72,7 @@
       <h3>{{ _('Uncommon Sites') }}</h3>
       <ul>
         {% for site in one_offs %}
-        <li><a href="{{ sites_url(form, url=site.url) }}">{{ site.url|strip_protocol }}</a></li>
+        <li><a href="{{ sites_url(url=site.url) }}">{{ site.url|strip_protocol }}</a></li>
         {% endfor %}
         <li class="more">{{ button(form, 'show_one_offs', True, label=_('More sites...')) }}</li>
       </ul>
