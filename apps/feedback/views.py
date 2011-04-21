@@ -19,78 +19,44 @@ from feedback.models import Opinion
 from feedback.utils import detect_language, ua_parse
 
 
-def enforce_ua(beta):
+def enforce_ua(f):
     """
     View decorator enforcing feedback from the right (latest beta, latest
     release) users only.
 
     Can be disabled with settings.ENFORCE_USER_AGENT = False.
     """
-    def decorate(f):
-        @wraps(f)
-        def wrapped(request, *args, **kwargs):
-            # Validate User-Agent request header.
-            ua = request.META.get('HTTP_USER_AGENT', None)
-            parsed = ua_parse(ua)
+    @wraps(f)
+    def wrapped(request, *args, **kwargs):
+        # Validate User-Agent request header.
+        ua = request.META.get('HTTP_USER_AGENT', None)
+        parsed = ua_parse(ua)
 
-            if not parsed:  # Unknown UA.
-                if request.method == 'GET':
-                    return http.HttpResponseRedirect(
-                            reverse('feedback.download'))
-                else:
-                    return http.HttpResponseBadRequest(
-                        _('User-Agent request header must be set.'))
-
-            if not settings.ENFORCE_USER_AGENT:
-                return f(request, ua=ua, *args, **kwargs)
-
-            this_ver = Version(parsed['version'])
-            # Enforce beta releases.
-            if beta:
-                if this_ver.is_release:  # Forward release to release feedback.
-                    return http.HttpResponseRedirect(reverse('feedback'))
-                elif not this_ver.is_beta:  # Not a beta? Upgrade to beta.
-                    return http.HttpResponseRedirect(
-                            reverse('feedback.download'))
-
-                # Check for outdated beta.
-                ref_ver = Version(input.LATEST_BETAS[parsed['browser']])
-                if this_ver < ref_ver:
-                    return http.HttpResponseRedirect(
-                            reverse('feedback.download'))
-
-            # Enforce release versions.
+        if not parsed:  # Unknown UA.
+            if request.method == 'GET':
+                return http.HttpResponseRedirect(
+                        reverse('feedback.download'))
             else:
-                if this_ver.is_beta:  # Forward betas to beta feedback.
-                    return http.HttpResponseRedirect(
-                        reverse('feedback'))
-                elif not this_ver.is_release:  # Not a release? Upgrade.
-                    return http.HttpResponseRedirect(
-                            reverse('feedback.download'))
+                return http.HttpResponseBadRequest(
+                    _('User-Agent request header must be set.'))
 
-                ref_ver = Version(input.LATEST_RELEASE[parsed['browser']])
-
-                # Bug 634324: Until Firefox 4 is released, show "download beta"
-                # message to 3.6 and lower release users.
-                ver4 = Version('4.0')
-                if (parsed['browser'] == input.FIREFOX and this_ver < ver4):
-                    return http.HttpResponseRedirect(
-                            reverse('feedback.download'))
-
-                # Check for outdated release.
-                if this_ver < ref_ver:
-                    return http.HttpResponseRedirect(
-                            reverse('feedback.download'))
-
-            # If we made it here, it's a valid version.
+        if not settings.ENFORCE_USER_AGENT:
             return f(request, ua=ua, *args, **kwargs)
 
-        return wrapped
-    return decorate
+        this_ver = Version(parsed['version'])
+        ref_ver = Version(input.LATEST_RELEASE[parsed['browser']])
+        # Check for outdated release.
+        if this_ver < ref_ver:
+            return http.HttpResponseRedirect(reverse('feedback.download'))
+
+        # If we made it here, it's a valid version.
+        return f(request, ua=ua, *args, **kwargs)
+
+    return wrapped
 
 
 @forward_mobile
-@enforce_ua(beta=True)
+@enforce_ua
 @never_cache
 @csrf_exempt
 def give_feedback(request, ua, type):
@@ -138,12 +104,12 @@ def give_feedback(request, ua, type):
 
 @forward_mobile
 @vary_on_headers('User-Agent')
-@enforce_ua(beta=False)
+@enforce_ua
 @cache_page
 def feedback(request, ua):
     """
-    The index page for beta version feedback, which shows links to the happy
-    and sad feedback pages.
+    The index page for feedback, which shows links to the happy and sad
+    feedback pages.
     """
     template = 'feedback/%sbeta_index.html' % (
         'mobile/' if request.mobile_site else '')
@@ -152,9 +118,9 @@ def feedback(request, ua):
 
 @cache_page
 def download(request):
-    """Encourage people to download a current beta version."""
+    """Encourage people to download a current version."""
 
-    template = 'feedback/%sneed_beta.html' % (
+    template = 'feedback/%sdownload.html' % (
         'mobile/' if request.mobile_site else '')
     return jingo.render(request, template)
 

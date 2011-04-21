@@ -335,4 +335,4 @@ TSV_EXPORT_DIR = path('media/data')
 ## FEATURE FLAGS:
 # Setting this to False allows feedback to be collected from any user agent.
 # (good for testing)
-ENFORCE_USER_AGENT = False
+ENFORCE_USER_AGENT = True

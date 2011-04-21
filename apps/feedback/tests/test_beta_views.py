@@ -5,8 +5,7 @@ from django.conf import settings
 from nose.tools import eq_
 from pyquery import PyQuery as pq
 
-from input import (FIREFOX, LATEST_BETAS, OPINION_PRAISE, OPINION_ISSUE,
-                   MAX_FEEDBACK_LENGTH)
+from input import OPINION_PRAISE, OPINION_ISSUE, MAX_FEEDBACK_LENGTH
 from input.tests import ViewTestCase, enforce_ua
 from input.urlresolvers import reverse
 from feedback.models import Opinion
@@ -34,24 +33,15 @@ class BetaViewTests(ViewTestCase):
 
     @enforce_ua
     def test_release(self):
-        """Release version on beta page: redirect."""
-        r = self._get_page('3.6')
-        eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback'))
+        r = self._get_page('4.0')
+        eq_(r.status_code, 200)
 
     @enforce_ua
     def test_old_beta(self):
         """Old beta: redirect."""
         r = self._get_page('3.6b2')
         eq_(r.status_code, 302)
-        assert r['Location'].endswith(
-                reverse('feedback.download'))
-
-    @enforce_ua
-    def test_latest_beta(self):
-        """Latest beta: no redirect."""
-        r = self._get_page(LATEST_BETAS[FIREFOX])
-        eq_(r.status_code, 200)
+        assert r['Location'].endswith(reverse('feedback.download'))
 
     @enforce_ua
     def test_newer_beta(self):
@@ -61,11 +51,11 @@ class BetaViewTests(ViewTestCase):
 
     @enforce_ua
     def test_nightly(self):
-        """Nightly version: redirect."""
-        r = self._get_page('20.0b2pre')
-        eq_(r.status_code, 302)
-        assert r['Location'].endswith(
-                reverse('feedback.download'))
+        """Nightly version: should be able to submit."""
+        r = self._get_page('20.0a1')
+        eq_(r.status_code, 200)
+        r = self._get_page('20.0a2')
+        eq_(r.status_code, 200)
 
     def test_give_feedback(self):
         r = self.client.post(reverse('feedback.sad'))
