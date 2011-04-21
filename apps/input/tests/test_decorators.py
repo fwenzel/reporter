@@ -36,7 +36,7 @@ class DecoratorTests(ViewTestCase):
         mock.side_effect = side_effect
 
         r = self.mclient.get(reverse('dashboard') + '?foo=bar')
-        eq_(r.status_code, 301)
+        eq_(r.status_code, 302)
         eq_(r['Location'], 'http://' + fake_mobile_domain +
             reverse('dashboard') + '?foo=bar')
 
@@ -58,9 +58,6 @@ class DecoratorTests(ViewTestCase):
         # URLs that should allow Mobile detection
         urls = (
             reverse('dashboard'),
-            reverse('feedback.happy'),
-            reverse('feedback.sad'),
-            reverse('feedback.idea'),
             reverse('feedback'),
         )
 
@@ -84,7 +81,7 @@ class DecoratorTests(ViewTestCase):
             for ua, forward_this in ua_patterns:
                 r = self.client.get(test_url, HTTP_USER_AGENT=ua)
                 if forward_this:
-                    eq_(r.status_code, 301)
+                    eq_(r.status_code, 302, test_url)
                     assert r['Location'].find(fake_mobile_domain) >= 0
                 else:
                     assert (r.status_code == 200 or  # Page is served, or:

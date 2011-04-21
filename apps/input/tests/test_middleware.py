@@ -71,7 +71,7 @@ class MiddlewareTests(InputTestCase):
 
     def test_no_prefixer(self):
         urlresolvers.clean_url_prefixes()
-        eq_(urlresolvers.reverse('feedback.sad'), '/sad')
+        eq_(urlresolvers.reverse('feedback'), '/feedback')
 
     def test_no_locale(self):
         request = Mock()

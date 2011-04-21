@@ -71,8 +71,7 @@ class FeedbackForm(forms.Form):
     # Do not change unless you know what you are doing.
     # TODO @deprecated id == id_url used to be used by the extension.
     url = ExtendedURLField(required=False, widget=forms.TextInput(
-        attrs={'placeholder': 'http://', 'id': 'id_url',
-               'class': 'url'}))
+        attrs={'placeholder': 'http://', 'class': 'url'}))
 
     # NB the classes 'manufacturer' and 'device' are hard-coded into the
     # Testpilot extension on Mobile.
@@ -100,11 +99,15 @@ class FeedbackForm(forms.Form):
 @autostrip
 class PraiseForm(FeedbackForm):
     """Form for praise."""
-    description = forms.CharField(widget=forms.Textarea(
-        attrs={'placeholder': _lazy('Enter your feedback here.')}),
+
+    description = forms.CharField(
+        widget=forms.Textarea(),
+        label=_lazy('Please describe what you liked.'),
         max_length=OPINION_PRAISE.max_length,
         validators=[validate_swearwords, validate_no_html,
-                    validate_no_email, validate_no_urls])
+                    validate_no_email, validate_no_urls],
+        required=True
+        )
     type = forms.CharField(initial=OPINION_PRAISE.id,
                            widget=forms.HiddenInput(),
                            required=True)
@@ -113,11 +116,14 @@ class PraiseForm(FeedbackForm):
 @autostrip
 class IssueForm(FeedbackForm):
     """Form for negative feedback."""
-    description = forms.CharField(widget=forms.Textarea(
-        attrs={'placeholder': _lazy('Enter your feedback here.')}),
+    description = forms.CharField(
+        widget=forms.Textarea(),
+        label=_lazy('Please describe your problem below.'),
         max_length=OPINION_ISSUE.max_length,
         validators=[validate_swearwords, validate_no_html,
-                    validate_no_email, validate_no_urls])
+                    validate_no_email, validate_no_urls],
+        required=True
+        )
     type = forms.CharField(initial=OPINION_ISSUE.id,
                            widget=forms.HiddenInput(),
                            required=True)
@@ -126,11 +132,14 @@ class IssueForm(FeedbackForm):
 @autostrip
 class IdeaForm(FeedbackForm):
     """Form for submitting ideas."""
-    description = forms.CharField(widget=forms.Textarea(
-        attrs={'placeholder': _lazy('Enter your ideas here.')}),
+    description = forms.CharField(
+        widget=forms.Textarea(),
+        label=_lazy('Describe your idea below.'),
         max_length=OPINION_IDEA.max_length,
         validators=[validate_swearwords, validate_no_html,
-                    validate_no_email, validate_no_urls])
+                    validate_no_email, validate_no_urls],
+        required=True
+        )
     type = forms.CharField(initial=OPINION_IDEA.id,
                            widget=forms.HiddenInput(),
                            required=True)

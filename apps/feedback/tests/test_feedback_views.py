@@ -5,7 +5,7 @@ from django.conf import settings
 from nose.tools import eq_
 from pyquery import PyQuery as pq
 
-from input import OPINION_PRAISE, OPINION_ISSUE, MAX_FEEDBACK_LENGTH
+from input import OPINION_PRAISE, OPINION_ISSUE
 from input.tests import ViewTestCase, enforce_ua
 from input.urlresolvers import reverse
 from feedback.models import Opinion
@@ -21,7 +21,7 @@ class BetaViewTests(ViewTestCase):
     def _get_page(self, ver=None):
         """Request beta feedback page."""
         extra = dict(HTTP_USER_AGENT=self.FX_UA % ver) if ver else {}
-        return self.client.get(reverse('feedback.sad'), **extra)
+        return self.client.get(reverse('feedback'), **extra)
 
     @enforce_ua
     def test_no_ua(self):
@@ -58,7 +58,7 @@ class BetaViewTests(ViewTestCase):
         eq_(r.status_code, 200)
 
     def test_give_feedback(self):
-        r = self.client.post(reverse('feedback.sad'))
+        r = self.client.post(reverse('feedback'))
         eq_(r.content, 'User-Agent request header must be set.')
 
     def test_opinion_detail(self):
@@ -78,7 +78,7 @@ class BetaViewTests(ViewTestCase):
             if url:
                 data['url'] = url
 
-            r = self.client.post(reverse('feedback.happy'), data,
+            r = self.client.post(reverse('feedback'), data,
                                  HTTP_USER_AGENT=(self.FX_UA % '20.0b2'),
                                  follow=True)
             # Neither valid nor invalid URLs cause anything but a 200 response.
@@ -106,7 +106,7 @@ class BetaViewTests(ViewTestCase):
     def test_submissions_without_url(self):
         """Ensure feedback without URL can be submitted. Bug 610023."""
         req = lambda: self.client.post(
-            reverse('feedback.sad'), {
+            reverse('feedback'), {
                 'description': 'Hello!',
                 'type': OPINION_ISSUE.id,
             }, HTTP_USER_AGENT=(self.FX_UA % '20.0b2'), follow=True)
@@ -126,13 +126,14 @@ class BetaViewTests(ViewTestCase):
         Ensure both mobile and desktop submission pages have autocomplete off.
         """
         def autocomplete_check(site_id):
-            r = self.client.get(reverse('feedback.sad'), HTTP_USER_AGENT=(
+            r = self.client.get(reverse('feedback'), HTTP_USER_AGENT=(
                 self.FX_UA % '20.0b2'), SITE_ID=site_id, follow=True)
             doc = pq(r.content)
-            form = doc('#feedbackform form')
+            forms = doc('article form')
 
-            assert form
-            eq_(form.attr('autocomplete'), 'off')
+            assert forms
+            for form in forms:
+                eq_(pq(form).attr('autocomplete'), 'off')
 
         autocomplete_check(settings.DESKTOP_SITE_ID)
         autocomplete_check(settings.MOBILE_SITE_ID)
@@ -140,7 +141,7 @@ class BetaViewTests(ViewTestCase):
     def test_submission_with_device_info(self):
         """Ensure mobile device info can be submitted."""
         r = self.client.post(
-            reverse('feedback.sad'), {
+            reverse('feedback'), {
                 'description': 'Hello!',
                 'type': OPINION_ISSUE.id,
                 'manufacturer': 'FancyBrand',
@@ -160,19 +161,3 @@ class BetaViewTests(ViewTestCase):
                             HTTP_USER_AGENT=(self.FX_UA % '20.0b2'),
                             follow=True)
         eq_(r.status_code, 200)
-        doc = pq(r.content)
-        for link in ('feedback.happy', 'feedback.sad'):
-            eq_(doc('a[href$="%s"]' % reverse(link)).length, 1)
-
-    def test_max_length(self):
-        """
-        Ensure description's max_length attribute is propagated correctly for
-        JS to pick up.
-        """
-        for link in ('feedback.happy', 'feedback.sad'):
-            r = self.client.get(reverse(link),
-                                HTTP_USER_AGENT=(self.FX_UA % '20.0b2'),
-                                follow=True)
-            doc = pq(r.content)
-            eq_(doc('#count').attr('data-max'),
-                str(MAX_FEEDBACK_LENGTH))

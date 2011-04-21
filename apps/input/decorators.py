@@ -4,7 +4,7 @@ import urllib
 
 from django.conf import settings
 from django.contrib.sites.models import Site
-from django.http import HttpResponsePermanentRedirect
+from django.http import HttpResponseRedirect
 from django.utils.hashcompat import md5_constructor
 
 from view_cache_utils import cache_page_with_prefix
@@ -95,7 +95,7 @@ def forward_mobile(f):
             if request.GET:
                 target = '%s?%s' % (target, urllib.urlencode(request.GET))
 
-            response = HttpResponsePermanentRedirect(target)
+            response = HttpResponseRedirect(target)
             response['Vary'] = 'User-Agent'
             return response
 

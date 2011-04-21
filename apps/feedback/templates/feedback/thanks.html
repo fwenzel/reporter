@@ -1,24 +1,58 @@
-{% extends "base_noheader.html" %}
+{% extends "base.html" %}
 
-{% block page_title %}{{ _('Thanks for Your Feedback') }}{% endblock %}
-{% block body_id %}thanks{% endblock %}
+{% block site_css %}{{ css('feedback') }}{% endblock %}
+{% block site_js %}{{ js('feedback') }}{% endblock %}
+
+{% block page_title %}{{ _('Thanks') }}{% endblock %}
+
+{% block site_header %}{% endblock %}
+
 
 {% block content %}
-<h1>{{ _('Thanks for sending us your feedback!') }}</h1>
 
-<h2>
-  {% trans url=url('dashboard') %}
-  If you want to see where your feedback was sent to, take a look at our
-  <a href="{{ url }}">Firefox Input Dashboard</a>.
-  {% endtrans %}
-</h2>
+<article id="thanks" class="visible">
+  <header>
+    <h1>{{ _('Thanks for Your Feedback') }}</h1>
+    <p>
+      <span>{{ _('Your feedback will be used to create a') }}</span>
+      <span>{{ _('better experience in future releases of Firefox.') }}</span>
+    </p>
+  </header>
+  
+  <div class="content">
+    <div>
+      <h3>{{ _('Have more to say?') }}</h3>
+      <p>
+        {% trans fb_url='/feedback' %}
+        Feel free to <a href="{{ fb_url }}">submit more feedback</a>
+        {% endtrans %}
+      </p>
+    </div>
 
-<div id="next-steps">
-  <p>{{ _('Find out the latest news from Mozilla:') }}</p>
-  <nav>
-    <div class="tw"><a href="http://twitter.com/firefox/">Twitter</a></div>
-    <div class="fb"><a href="http://www.facebook.com/group.php?v=wall&amp;gid=173578463110">Facebook</a></div>
-    <div class="moz"><a href="http://planet.mozilla.org">Planet Mozilla</a></div>
-  </nav>
-</div>
+    <div>
+      <h3>Want to see where your feedback goes?</h3>
+      <p>
+        {% trans dash_url='/' %}
+        Visit the <a href="{{ dash_url }}">Firefox Feedback Dashboard</a>
+        {% endtrans %}
+      </p>
+    </div>
+
+    <div>
+      <h3>{{ _('Find the latest news about Firefox.') }}</h3>
+      <ul>
+        <li><a id="twitter" href="http://twitter.com/firefox"><span>Twitter</span></a></li>
+        <li><a id="facebook" href="http://www.facebook.com/Firefox"><span>Facebook</a></span></li>
+        <li><a id="planet" href="http://planet.mozilla.org/"><span>Planet Mozilla</a></span></li>
+      </ul>
+    </div>
+  </div>
+  
+  <span class="fade"></span>
+</article>
+
+{% endblock %}
+
+{% block site_footer %}
+{% include "includes/footer_feedback.html" %}
 {% endblock %}

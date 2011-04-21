@@ -5,7 +5,6 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.vary import vary_on_headers
 
 import jingo
 from product_details.version_compare import Version
@@ -59,61 +58,38 @@ def enforce_ua(f):
 @enforce_ua
 @never_cache
 @csrf_exempt
-def give_feedback(request, ua, type):
-    """Submit feedback page."""
-
-    try:
-        FormType = {
-            input.OPINION_PRAISE.id: PraiseForm,
-            input.OPINION_ISSUE.id: IssueForm,
-            input.OPINION_IDEA.id: IdeaForm
-        }[type]
-    except KeyError:
-        return http.HttpResponseBadRequest(_('Invalid feedback type'))
+def feedback(request, ua):
+    """Page to receive feedback under happy/sad/idea categories"""
 
     if request.method == 'POST':
-        form = FormType(request.POST)
+        typ = int(request.POST.get('type'))
+
+        if typ == input.OPINION_PRAISE.id:
+            form = PraiseForm(request.POST, auto_id='happy-%s')
+        elif typ == input.OPINION_ISSUE.id:
+            form = IssueForm(request.POST, auto_id='sad-%s')
+        else:
+            form = IdeaForm(request.POST, auto_id='idea-%s')
+
         if form.is_valid():
-            # Save to the DB.
-            save_opinion_from_form(request, type, ua, form)
+            save_opinion_from_form(request, typ, ua, form)
 
-            return http.HttpResponseRedirect(reverse('feedback.thanks'))
-
+            url = reverse('feedback.thanks')
+            return http.HttpResponseRedirect(url)
+        else:
+            forms = {'happy': (form if typ == input.OPINION_PRAISE.id else
+                               PraiseForm(auto_id='happy-%s')),
+                     'sad': (form if typ == input.OPINION_ISSUE.id else
+                             IssueForm(auto_id='sad-%s')),
+                     'idea': (form if typ == input.OPINION_IDEA.id else
+                              IdeaForm(auto_id='idea-%s'))}
     else:
-        # URL is fed in by the feedback extension.
-        url = request.GET.get('url', '')
-        form = FormType(initial={'url': url, 'add_url': False, 'type': type})
+        forms = {'happy': PraiseForm(auto_id='happy-%s'),
+                 'sad': IssueForm(auto_id='sad-%s'),
+                 'idea': IdeaForm(auto_id='idea-%s')}
 
-    # Set the div id for css styling
-    div_id = 'feedbackform'
-    if type == input.OPINION_IDEA.id:
-        div_id = 'ideaform'
-
-    url_idea = request.GET.get('url', 'idea')
-    data = {
-        'form': form,
-        'type': type,
-        'div_id': div_id,
-        'MAX_FEEDBACK_LENGTH': input.MAX_FEEDBACK_LENGTH,
-        'url_idea': url_idea
-    }
-    template = ('feedback/mobile/feedback.html' if request.mobile_site else
-                'feedback/feedback.html')
-    return jingo.render(request, template, data)
-
-
-@forward_mobile
-@vary_on_headers('User-Agent')
-@enforce_ua
-@cache_page
-def feedback(request, ua):
-    """
-    The index page for feedback, which shows links to the happy and sad
-    feedback pages.
-    """
-    template = 'feedback/%sbeta_index.html' % (
-        'mobile/' if request.mobile_site else '')
-    return jingo.render(request, template)
+    return jingo.render(request, 'feedback/index.html',
+                        {'forms': forms, 'post_url': reverse('feedback')})
 
 
 @cache_page
