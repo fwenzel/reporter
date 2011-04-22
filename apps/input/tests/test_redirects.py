@@ -9,7 +9,9 @@ class RedirectTests(InputTestCase):
                 '/feedback': '/en-US/feedback',
                 '/thanks': '/en-US/thanks',
                 '/themes': '/en-US/themes',
-                '/sites': redirect('sites')
+                '/sites': redirect('sites'),
+                '/en-US/release/themes': redirect('themes'),
+                '/en-US/beta/sites': redirect('sites'),
                 }
         for link, redir in redirs.iteritems():
             self.assertRedirects(self.fxclient.get(link, follow=True), redir,

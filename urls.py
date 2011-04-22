@@ -16,6 +16,15 @@ handler_csrf = lambda r, reason: jingo.render(r, 'csrf_error.html')
 
 admin.autodiscover()
 
+
+def unchannel(request):
+    url = request.META['PATH_INFO']
+    url = url.replace('beta/', '', 1).replace('release/', '', 1)
+    qs = request.META['QUERY_STRING']
+    if qs:
+        url += '?' + qs
+    return redirect(url, permanent=True)
+
 urlpatterns = patterns('',
     ('', include('dashboard.urls')),
     ('', include('feedback.urls')),
@@ -29,7 +38,7 @@ urlpatterns = patterns('',
         name='about'),
     (r'^robots\.txt$', jingo.render, {'template': 'robots.txt',
                                       'mimetype': 'text/plain'}),
-    url('^(?:beta|release)/', lambda r: redirect('/')),
+    url('^(?:beta|release)/', unchannel),
 )
 
 if settings.DEBUG:
