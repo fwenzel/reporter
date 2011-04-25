@@ -85,6 +85,7 @@ class Prefixer(object):
         if self.request.META.get('HTTP_ACCEPT_LANGUAGE'):
             ranked_languages = parse_accept_lang_header(
                 self.request.META['HTTP_ACCEPT_LANGUAGE'])
+            ranked_languages = [(x.lower(), y) for x, y in ranked_languages]
 
             # Do we support or remap their locale?
             supported = [lang[0] for lang in ranked_languages if lang[0]

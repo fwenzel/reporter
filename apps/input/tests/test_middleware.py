@@ -15,6 +15,10 @@ class MiddlewareTests(InputTestCase):
         site (xx) if it exists.
         """
         patterns = (
+            ('fR,de;q=0.7', 'fr'),
+            ('zh,fr;q=0.7', 'zh-CN'),
+            ('eN,fr;q=0.7', 'en-US'),
+            ('en,de;q=0.8', 'en-US'),
             ('en-us,en;q=0.7,de;q=0.8', 'en-US'),
             ('fr-FR,de-DE;q=0.5', 'fr'),
             ('zh, en-us;q=0.8, en;q=0.6', 'zh-CN'),
