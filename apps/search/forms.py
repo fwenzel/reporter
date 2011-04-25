@@ -23,7 +23,8 @@ VERSION_CHOICES = {
                                 FIREFOX.release_versions +
                                 FIREFOX.beta_versions)]),
     MOBILE: ([('--', _lazy('-- all --', 'version_choice'))] +
-             [(v, v) for v in (MOBILE.release_versions +
+             [(v, v) for v in (MOBILE.extra_versions +
+                               MOBILE.release_versions +
                                MOBILE.beta_versions)]),
 }
 
