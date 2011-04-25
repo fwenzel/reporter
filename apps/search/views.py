@@ -35,6 +35,8 @@ def get_plotbands():
     to = int(time.time())
     versions = product_details.firefox_history_development_releases
     for version in FIREFOX.beta_versions:
+        if version not in versions:
+            continue
         frm = unixtime(versions[version])
         plotband = dict(color=color.next(),
                         to=to,
