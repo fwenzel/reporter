@@ -490,7 +490,7 @@ background-color: #B6BCC0;
     line-height: 17px;
 }
 .html-rtl .theme .primary {
-    margin-left: 0;
+    margin-left: 16px;
     margin-right: 36px;
 }
 .theme .primary a {
