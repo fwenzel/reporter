@@ -10,12 +10,12 @@
 <p>{{ _('Please choose the type of feedback that you would like to submit to us:') }}</p>
 
 <div class="feedback_index happy">
-   <a href="happy" title="{{ _('Firefox makes me happy ...') }}"><div
+  <a href="{{ url('feedback.happy') }}" title="{{ _('Firefox makes me happy ...') }}"><div
        class="smiley happy feedback_index">&#9786;</div></a>
    <p>{{ _('Firefox makes me happy ...') }}</p>
 </div>
 <div class="feedback_index sad">
-   <a href="sad" title="{{ _('Firefox makes me sad ...') }}"><div
+   <a href="{{ url('feedback.sad') }}" title="{{ _('Firefox makes me sad ...') }}"><div
        class="smiley sad feedback_index">&#9786;</div></a>
    <p>{{ _('Firefox makes me sad ...') }}</p>
 </div>
