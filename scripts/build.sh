@@ -49,7 +49,7 @@ DATABASES = {
     'website_issues': {
         'ENGINE': 'mysql',
         'HOST': 'sm-hudson01',
-        'NAME': 'input_$1',
+        'NAME': 'input_ws_$1',
         'USER': 'hudson',
         'PASSWORD': '',
         'OPTIONS': {'init_command': 'SET storage_engine=InnoDB'},
