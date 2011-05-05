@@ -81,10 +81,13 @@ class TestHelpers(test_utils.TestCase):
 NUM_SITES = 2
 NUM_PRAISE = 8
 NUM_ISSUES = 3
+
+
 class TestViews(test_utils.TestCase):
 
-    @staticmethod
-    def setupAll():
+    @classmethod
+    def setup_class(cls):
+        super(TestViews, cls).setup_class()
 
         def make_comment(cluster, n, i, type):
             "Invent comment i of n for the given cluster."
@@ -101,7 +104,8 @@ class TestViews(test_utils.TestCase):
             """Create a bunch of clusters for the given summary."""
             numcreated = 0
             for csize in [NUM_PRAISE - NUM_ISSUES, NUM_ISSUES]:
-                if numcreated >= numcomments: break
+                if numcreated >= numcomments:
+                    break
                 cluster = Cluster(site_summary=summary, size=csize)
                 for i in xrange(csize):
                     if i == 0:
