@@ -44,10 +44,11 @@ def search_request(product='firefox', **kwargs):
 class PaginationTest(SphinxTestCase):
     fixtures = []
 
-    def setUp(self):
+    @classmethod
+    def setup_class(cls):
         # add more opinions so we can test things.
         populate(1000, 'desktop', OPINION_IDEA)
-        super(PaginationTest, self).setUp()
+        super(PaginationTest, cls).setup_class()
 
     def compare_2_pages(self, page1, page2):
         r = search_request(page=page1)
@@ -94,13 +95,14 @@ class SearchViewTest(SphinxTestCase):
 
     fixtures = []
 
-    def setUp(self):
+    @classmethod
+    def setup_class(cls):
         # add more opinions so we can test things.
         populate(21, 'desktop', OPINION_IDEA)
         populate(100, 'mobile', OPINION_IDEA)
         populate(5, 'desktop', OPINION_PRAISE)
         populate(10, 'desktop', OPINION_ISSUE)
-        super(SearchViewTest, self).setUp()
+        super(SearchViewTest, cls).setup_class()
 
     def test_filter_date_no_end(self):
         """End date should be today."""

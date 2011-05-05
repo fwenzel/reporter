@@ -10,7 +10,7 @@ from search.utils import start_sphinx, stop_sphinx, reindex
 
 
 # TODO(davedash): liberate from Zamboni
-class SphinxTestCase(test_utils.TransactionTestCase):
+class SphinxTestCase(test_utils.TestCase):
     """
     This test case type can setUp and tearDown the sphinx daemon.  Use this
     when testing any feature that requires sphinx.
@@ -19,32 +19,27 @@ class SphinxTestCase(test_utils.TransactionTestCase):
     sphinx = True
     sphinx_is_running = False
 
-    def setUp(self):
-        super(SphinxTestCase, self).setUp()
+    @classmethod
+    def setup_class(cls):
+        super(SphinxTestCase, cls).setup_class()
 
-        settings.SITE_ID = settings.DESKTOP_SITE_ID
+        if not settings.SPHINX_SEARCHD or not settings.SPHINX_INDEXER:
+            raise SkipTest()
 
-        if not SphinxTestCase.sphinx_is_running:
-            if (not settings.SPHINX_SEARCHD or
-                not settings.SPHINX_INDEXER):  # pragma: no cover
-                raise SkipTest()
+        os.environ['DJANGO_ENVIRONMENT'] = 'test'
 
-            os.environ['DJANGO_ENVIRONMENT'] = 'test'
+        if os.path.exists(settings.TEST_SPHINX_CATALOG_PATH):
+            shutil.rmtree(settings.TEST_SPHINX_CATALOG_PATH)
+        if os.path.exists(settings.TEST_SPHINX_LOG_PATH):
+            shutil.rmtree(settings.TEST_SPHINX_LOG_PATH)
 
-            if os.path.exists(settings.TEST_SPHINX_CATALOG_PATH):
-                shutil.rmtree(settings.TEST_SPHINX_CATALOG_PATH)
-            if os.path.exists(settings.TEST_SPHINX_LOG_PATH):
-                shutil.rmtree(settings.TEST_SPHINX_LOG_PATH)
+        os.makedirs(settings.TEST_SPHINX_LOG_PATH)
+        os.makedirs(settings.TEST_SPHINX_CATALOG_PATH)
 
-            os.makedirs(settings.TEST_SPHINX_LOG_PATH)
-            os.makedirs(settings.TEST_SPHINX_CATALOG_PATH)
-
-            reindex()
-            start_sphinx()
-            SphinxTestCase.sphinx_is_running = True
+        reindex()
+        start_sphinx()
 
     @classmethod
-    def tearDownClass(cls):
-        if SphinxTestCase.sphinx_is_running:
-            stop_sphinx()
-            SphinxTestCase.sphinx_is_running = False
+    def teardown_class(cls):
+        stop_sphinx()
+        super(SphinxTestCase, cls).teardown_class()
