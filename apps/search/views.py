@@ -1,5 +1,4 @@
 import datetime
-import itertools
 import json
 import time
 
@@ -10,7 +9,6 @@ from django.utils.feedgenerator import Atom1Feed
 
 import commonware.log
 import jingo
-from product_details import product_details
 from product_details.version_compare import Version
 from tower import ugettext as _, ugettext_lazy as _lazy
 
@@ -25,26 +23,6 @@ log = commonware.log.getLogger('i.search')
 
 
 unixtime = lambda s: int(time.mktime(time.strptime(s, '%Y-%m-%d')))
-
-
-def get_plotbands():
-    """Get's plotbands from product details."""
-    plotbands = []
-    color = itertools.cycle(('rgba(255, 255, 255, 0)',
-                             'rgba(0, 0, 255, 0.07)'))
-    to = int(time.time())
-    versions = product_details.firefox_history_development_releases
-    for version in FIREFOX.beta_versions:
-        if version not in versions:
-            continue
-        frm = unixtime(versions[version])
-        plotband = dict(color=color.next(),
-                        to=to,
-                        label=dict(text=version))
-        plotband['from'] = frm
-        plotbands.append(plotband)
-        to = frm
-    return plotbands
 
 
 def _get_results(request, meta=[], client=None):
@@ -246,8 +224,7 @@ def index(request):
                 dict(name=_('Praise'), data=daily['praise']),
                 dict(name=_('Issues'), data=daily['issue']),
                 dict(name=_('Idea'), data=daily['idea']),
-                ],
-                plotBands=get_plotbands()
+                ]
             ) if daily else None
             data['chart_data_json'] = json.dumps(chart_data)
     else:

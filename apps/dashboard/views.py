@@ -12,7 +12,7 @@ from input import LATEST_BETAS
 from input.decorators import cache_page, forward_mobile
 from search.client import Client, SearchError
 from search.forms import PROD_CHOICES, VERSION_CHOICES, ReporterSearchForm
-from search.views import get_sentiment, get_defaults, get_plotbands
+from search.views import get_sentiment, get_defaults
 from website_issues.models import SiteSummary
 
 
@@ -54,9 +54,7 @@ def dashboard(request):
             dict(name=_('Praise'), data=daily['praise']),
             dict(name=_('Issues'), data=daily['issue']),
             dict(name=_('Ideas'), data=daily['idea']),
-            ],
-            plotBands=get_plotbands()
-            )
+            ])
         total = c.total_found
     except SearchError:
         metas = {}

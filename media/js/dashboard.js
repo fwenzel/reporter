@@ -45,7 +45,6 @@ var input_chart; // Highcharts wants this to be global.
                         }
                     },
                     lineColor: options.xLineColor || '#C0D0E0',
-                    plotBands: chart_data.plotBands || {}
                 },
                 yAxis: options.yAxis || {
                     title: { text: null },
@@ -64,37 +63,6 @@ var input_chart; // Highcharts wants this to be global.
     }
 
     chart_me('feedback-chart');
-    var r_opts = {
-        type: 'column', tooltip: {}, legend: {enabled: false},
-        colors: ['#D73027', '#FC8D59', '#FEE08B', '#91CF60', '#1A9850'],
-        plotOptions: { series: {borderWidth: 0, shadow: false}}
-
-    };
-    chart_me('ratings-chart', r_opts);
-
-    var opts = {
-        margin: [],
-        colors: ['#55c4dd'],
-        legend: {enabled: false},
-        plotOptions: { series: {shadow: false, marker: {radius: 2.5}}},
-        xLineColor: 'transparent',
-        yAxis: {
-            title: { text: null },
-            min: 0.9,
-            max: 5.1,
-            allowDecimals: false,
-            endOnTick: false,
-            startOnTick: false,
-            tickInterval: 1
-        }
-    }
-    chart_me('startup-chart', opts);
-    chart_me('pageload-chart', opts);
-    chart_me('responsive-chart', opts);
-    chart_me('crashy-chart', opts);
-    chart_me('features-chart', opts);
-
-
 
     /** Show "welcome" block on first visit */
     $(document).ready(function() {
