@@ -36,7 +36,7 @@ LOG_LEVEL = logging.ERROR
 # Database name has to be set because of sphinx
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql',
+        'ENGINE': 'django.db.backends.mysql',
         'HOST': 'sm-hudson01',
         'NAME': 'input_$1',
         'USER': 'hudson',
@@ -47,7 +47,7 @@ DATABASES = {
         'TEST_COLLATION': 'utf8_general_ci',
     },
     'website_issues': {
-        'ENGINE': 'mysql',
+        'ENGINE': 'django.db.backends.mysql',
         'HOST': 'sm-hudson01',
         'NAME': 'input_ws_$1',
         'USER': 'hudson',
