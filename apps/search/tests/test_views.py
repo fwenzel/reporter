@@ -117,7 +117,7 @@ class SearchViewTest(SphinxTestCase):
         today = datetime.date.today().strftime('%Y-%m-%d')
         r = search_request(date_start=today)
         doc = pq(r.content)
-        assert count > len(doc('.message'))
+        assert count > len(doc('.message')) or len(doc('.message')) == 20
 
     def test_filter_happy(self):
         r = search_request(sentiment='happy')
