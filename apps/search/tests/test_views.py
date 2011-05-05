@@ -233,6 +233,9 @@ class SearchViewTest(SphinxTestCase):
 
 
 class FeedTest(SphinxTestCase):
+    def setUp(self):
+        Site.objects.get_or_create(pk=1)
+
     def _pq(self, response):
         """PyQuery-fy a response."""
         return pq(response.content.replace('xmlns', 'xmlfail'))
