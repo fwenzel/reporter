@@ -42,7 +42,6 @@ SLAVE_DATABASES = []
 CACHE_DEFAULT_PERIOD = CACHE_MIDDLEWARE_SECONDS = 60 * 5  # 5 minutes
 CACHE_COUNT_TIMEOUT = 60  # seconds
 CACHE_PREFIX = CACHE_MIDDLEWARE_KEY_PREFIX = 'reporter:'
-
 # L10n
 
 # Local time zone for this installation. Choices can be found here:
@@ -147,7 +146,7 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.auth',
+    'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
     'django.core.context_processors.media',
     'django.core.context_processors.request',
