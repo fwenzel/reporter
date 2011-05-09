@@ -330,7 +330,12 @@ djcelery.setup_loader()
 ## API
 TSV_EXPORT_DIR = path('media/data')
 
+# URL for reporting arecibo errors too. If not set, won't be sent.
+ARECIBO_SERVER_URL = ""
+
 ## FEATURE FLAGS:
 # Setting this to False allows feedback to be collected from any user agent.
 # (good for testing)
 ENFORCE_USER_AGENT = True
+
+

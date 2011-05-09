@@ -4,14 +4,24 @@ from django.contrib import admin
 from django.shortcuts import redirect
 
 import jingo
+from django_arecibo.tasks import post as arecibo_post
 
 
 def _error_page(request, status):
     """Render error pages with jinja2."""
     return jingo.render(request, '%d.html' % status, status=status)
+
+
 handler404 = lambda r: _error_page(r, 404)
-handler500 = lambda r: _error_page(r, 500)
 handler_csrf = lambda r, reason: jingo.render(r, 'csrf_error.html')
+
+def handler500(request):
+    arecibo = getattr(settings, 'ARECIBO_SERVER_URL', '')
+
+    if arecibo:
+        arecibo_post(request, 500)
+
+    return _error_page(r, 500)
 
 
 admin.autodiscover()
