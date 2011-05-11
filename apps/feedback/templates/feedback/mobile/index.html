@@ -1,0 +1,74 @@
+{% extends "base_mobile.html" %}
+
+{% block page_title %}{{ _('Submit Feedback') }}{% endblock %}
+{% block full_header %}{% endblock %}
+
+{% block site_css %}{{ css('feedback-mobile') }}{% endblock %}
+{% block site_js %}{{ js('feedback-mobile') }}{% endblock %}
+
+{% block extra_headers %}
+<meta name="viewport" content="initial-scale=1" />
+{% endblock %}
+
+{% block content %}
+
+<section id="intro">
+  <header>
+    <div class="wrapper">
+      <h1>{{ _('Give Feedback') }}</h1>
+    </div>
+  </header>
+
+  <article class="inset">
+    <div class="wrapper">
+      <header>
+        <p>
+          {% trans %}
+          We love feedback about Firefox for Mobile! What would you
+          like to tell us?
+          {% endtrans %}
+        </p>
+      </header>
+      
+      <ul class="choices">
+        <li id="top-happy">
+          <span>
+            <a href="#happy">{{ _('Firefox made me happy') }}&hellip;</a>
+          </span>
+        </li>
+        <li id="top-sad">
+          <span>
+            <a href="#sad">{{ _('Firefox made me sad') }}&hellip;</a>
+          </span>
+        </li>
+        <li id="top-idea">
+          <span>
+            <a href="#idea">{{ _('I have an idea for Firefox') }}&hellip;</a>
+          </span>
+        </li>
+      </ul>
+
+      <div class="field">
+        <p class="warning">
+          <span>
+            {% trans url='http://support.mozilla.com/{{ LANG }}/' %}
+            If you need help or have a problem with Firefox,
+            please visit <a href="{{ url }}">Firefox Support</a>.
+            {% endtrans %}
+          </span>
+        </p>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+{% for type, form in forms.iteritems() %}
+  {% include "feedback/mobile/feedback-form.html" %}
+{% endfor %}
+
+{% endblock %}
+
+{% block footer %}
+{% include "includes/footer_feedback.html" %}
+{% endblock %}

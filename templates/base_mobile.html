@@ -15,12 +15,14 @@
   </head>
 
   <body id="{% block body_id %}{% endblock %}">
+    {% block full_header %}
     <div id="header">
       <h1><a href="{{ url('dashboard') }}">
         <strong>Firefox Input</strong> {{ _('Dashboard') }}
       </a></h1>
       {% block header %}{% endblock %}
     </div>
+    {% endblock %}
 
     <div id="body">
       {% block content %}{% endblock %}

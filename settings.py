@@ -189,9 +189,9 @@ MINIFY_BUNDLES = {
             'css/libs/reset2.css',
             'css/feedback.css',
         ),
-        'release-mobile': (
+        'feedback-mobile': (
             'css/libs/reset-min.css',
-            'css/release-mobile.css',
+            'css/feedback-mobile.css',
         ),
     },
     'js': {
@@ -225,6 +225,9 @@ MINIFY_BUNDLES = {
             'js/libs/jquery.min.js',
             'js/init.js',
             'js/feedback.js',
+        ),
+        'feedback-mobile': (
+            'js/feedback-mobile.js',
         ),
     },
 }

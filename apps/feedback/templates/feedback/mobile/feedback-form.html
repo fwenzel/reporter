@@ -1,0 +1,87 @@
+<section id="{{ type }}">
+  
+  {% if form.errors %}
+  <input type="hidden" id="errors" name="errors" value="{{ type }}" />
+  {% endif %}
+
+  <nav>
+    <div class="wrapper">
+      <a href="#intro">{{ _('Back to Feedback') }}</a>
+    </div>
+  </nav>
+
+  <header>
+    <div class="wrapper">
+      <h1>{{ _('Give Feedback') }}</h1>
+    </div>
+  </header>
+
+  <article class="inset">
+    <form action="{{ post_url }}" method="post" autocomplete="off">
+      <div class="wrapper">
+        <header class="inset">
+          <p>
+            {% if type == 'happy' %}
+              {{ _("We're glad Firefox for Mobile made you happy! Please tell us what you liked.") }}
+            {% elif type == 'sad' %}
+              {{ _("We're sorry Firefox for Mobile made you sad. Please tell us what happened so we can fix it.") }}
+            {% else %}
+              {{ _("We love ideas for Firefox for Mobile! Please descibe your idea below.") }}
+            {% endif %}
+          </p>
+
+          {% if type != 'idea' %}
+          <p class="alt">
+            <span>
+              {{ _('Got an idea? <a href="%(url)s">Submit it instead.</a>')|format(url='idea') }}
+            </span>
+          </p>
+          {% endif %}
+        </header>
+        
+        <div class="field">
+          {% if type == 'idea' %}
+            {% set placeholder = 'Enter your idea here.' %}
+          {% else %}
+            {% set placeholder = 'Enter your feedback here.' %}
+          {% endif %}
+
+          {{ form.description|field_attrs(placeholder=placeholder) }}
+          {{ form.description.errors }}
+        </div>
+        
+        {% if type != 'idea' %}
+        <div class="field">
+          <label for="{{ type }}-hasurl">
+            <input id="{{ type }}-hasurl" name="hasurl" type="checkbox" />
+            {{ _('Include your last visited site?') }}
+          </label>
+          {{ form.url }}
+          {{ form.url.errors }}
+        </div>
+        {% endif %}
+
+        <div class="field">
+          <p class="warning">
+            <span>
+              {% trans %}
+              For your privacy, please don't include any
+              personally identifiable information in your
+              feedback.
+              {% endtrans %}
+            </span>
+          </p>
+        </div>
+        
+        {% for hidden in form.hidden_fields() %}
+        {{ hidden }}
+        {% endfor %}
+
+        <div class="submit">
+          <button type="submit">{{ _('Send Feedback') }}</button>
+        </div>
+      </div>
+    </form>
+  </article>
+
+</section>

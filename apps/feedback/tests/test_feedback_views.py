@@ -125,21 +125,17 @@ class BetaViewTests(ViewTestCase):
         """
         Ensure both mobile and desktop submission pages have autocomplete off.
         """
-        def get_doc(site_id, page):
-            r = self.client.get(reverse(page), HTTP_USER_AGENT=(
+        def with_site(site_id):
+            r = self.client.get(reverse('feedback'), HTTP_USER_AGENT=(
                 self.FX_UA % '20.0b2'), SITE_ID=site_id, follow=True)
-            return pq(r.content)
+            d = pq(r.content)
+            forms = d('article form')
+            assert forms
+            for form in forms:
+                eq_(pq(form).attr('autocomplete'), 'off')
 
-        d = get_doc(settings.DESKTOP_SITE_ID, 'feedback')
-        forms = d('article form')
-        assert forms
-        for form in forms:
-            eq_(pq(form).attr('autocomplete'), 'off')
-
-        d = get_doc(settings.MOBILE_SITE_ID, 'feedback.sad')
-        form = d('#feedbackform form')
-        assert form
-        eq_(form.attr('autocomplete'), 'off')
+        with_site(settings.DESKTOP_SITE_ID)        
+        with_site(settings.MOBILE_SITE_ID)
 
 
     def test_submission_with_device_info(self):

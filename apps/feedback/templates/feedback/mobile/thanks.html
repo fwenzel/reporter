@@ -1,19 +1,70 @@
-{% extends "base_mobile_old.html" %}
+{% extends "base_mobile.html" %}
 
 {% block page_title %}{{ _('Thanks for Your Feedback') }}{% endblock %}
-{% block body_id %}thanks{% endblock %}
-{% block global_header %}{% endblock %}
+{% block full_header %}{% endblock %}
+{% block site_css %}{{ css('feedback-mobile') }}{% endblock %}
+
+{% block extra_headers %}
+<meta name="viewport" content="initial-scale=1" />
+{% endblock %}
 
 {% block content %}
-<h1>{{ _('Thanks for sending us your feedback!') }}</h1>
 
-<div id="next-steps">
-  {#<p>{{ _('Some ways to help out more:') }}</p>#}
-  <p>{{ _('Find out the latest news from Mozilla:') }}</p>
+<section id="thanks">
   <nav>
-    <div class="tw"><a href="http://twitter.com/mozmobile">Twitter</a></div>
-    <div class="fb"><a href="http://www.facebook.com/firefoxformobile">Facebook</a></div>
-    <div class="moz"><a href="http://planet.firefox.com/mobile/">Planet Mobile Firefox</a></div>
+    <div class="wrapper">
+      <a href="{{ url('feedback') }}">{{ _('Back to Feedback') }}</a>
+    </div>
   </nav>
-</div>
+  
+  <header>
+    <div class="wrapper">
+      <h1>{{ _('Give Feedback') }}</h1>
+    </div>
+  </header>
+
+  <article class="inset">
+    <div class="wrapper">
+      <header>
+        <p><strong>{{ _('Thanks for sharing your feedback!') }}</strong></p>
+        <p>{{ _('Want to know what's going on with Firefox for Mobile? We have many ways of staying in touch:') }}</p>
+      </header>
+      
+      <ul class="choices">
+        <li id="thanks-dashboard">
+          <span>
+            <small>{{ _('See where your feedback goes.') }}</small>
+            <a href="{{ url('feedback') }}">{{ _('Feedback Dashboard') }}</a>
+          </span>
+        </li>
+
+        <li id="thanks-twitter">
+          <span>
+            <small>{{ _('Follow us on Twitter.') }}</small>
+            <a href="http://twitter.com/MozMobile">@MozMobile</a>
+          </span>
+        </li>
+        
+        <li id="thanks-facebook">
+          <span>
+            <small>{{ _("Let's be friends.") }}</small>
+            <a href="http://www.facebook.com/Firefox">{{ _('Firefox on Facebook') }}</a>
+          </span>
+        </li>
+
+        <li id="thanks-planet">
+          <span>
+            <small>{{ _('Get the latest news on Firefox.') }}</small>
+            <a href="http://planet.mozilla.org">{{ _('Planet Mozilla') }}</a>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </article>
+
+</section>
+{% endblock %}
+
+{% block footer %}
+{% include "includes/footer_feedback.html" %}
 {% endblock %}
