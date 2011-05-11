@@ -60,6 +60,7 @@ DATABASES = {
 }
 
 INSTALLED_APPS += ('django_nose',)
+CELERY_ALWAYS_EAGER = True
 SETTINGS
 
 echo "Starting tests..."
