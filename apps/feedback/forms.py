@@ -78,9 +78,9 @@ class FeedbackForm(forms.Form):
     # Do not change unless you know what you are doing.
     # TODO @deprecated the id_* IDs used to be used by the extension.
     manufacturer = forms.CharField(required=False, widget=forms.HiddenInput(
-        attrs={'id': 'id_manufacturer', 'class': 'manufacturer'}))
+        attrs={'class': 'manufacturer'}))
     device = forms.CharField(required=False, widget=forms.HiddenInput(
-        attrs={'id': 'id_device', 'class': 'device'}))
+        attrs={'class': 'device'}))
 
     def clean(self):
         # Ensure this is not a recent duplicate submission.
