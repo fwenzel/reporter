@@ -99,7 +99,8 @@ LANGUAGE_URL_MAP.update((i.lower(), i) for i in INPUT_LANGUAGES)
 SUPPORTED_NONLOCALES = ('media', 'admin')
 
 TEXT_DOMAIN = 'messages'
-STANDALONE_DOMAINS = []
+STANDALONE_DOMAINS = [TEXT_DOMAIN, 'javascript']
+TOWER_KEYWORDS = {'_lazy': None}
 
 # Tells the extract script what files to look for l10n in and what function
 # handles the extraction. The Tower library expects this.
@@ -111,8 +112,6 @@ DOMAIN_METHODS = {
             'tower.management.commands.extract.extract_tower_template'),
     ],
 }
-
-TOWER_KEYWORDS = {'_lazy': None}
 
 
 # Media
