@@ -163,6 +163,15 @@ article .content .submit a {
     -moz-transition: box-shadow .2s;
     cursor: pointer;
 }
+article .content .submit a.disabled,
+article .content .submit a.disabled:hover,
+article .content .submit a.disabled:focus {
+    background: -moz-linear-gradient(#c5c5c5, #9d9d9d);
+    -moz-box-shadow: 0px 3px 0 #888;
+    box-shadow: 0px 3px 0 #888;
+    cursor: default;
+    text-shadow: 0px -1px 0px #929292;
+}
 article .content .submit a span {
     vertical-align: -3px;
 }

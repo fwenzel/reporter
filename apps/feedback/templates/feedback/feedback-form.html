@@ -32,7 +32,7 @@
         <div>
           {{ form.description.label_tag() }}
           <p>{{ form.description }}</p>
-          <div id="{{ type }}-description-counter" class="characters-remaining">140</div>
+          <div id="{{ type }}-description-counter" class="characters-remaining"></div>
           {{ form.description.errors }}
         </div>
 
@@ -66,7 +66,7 @@
 
       {{ form.errors['__all__'] }}
 
-      <div class="submit">
+      <div id="{{ type }}-submit" class="submit">
         <a href="#" data-waittext="{{ _('Submitting Feedback') }}">
           <span>{{ _('Submit Feedback') }}</span>
         </a>

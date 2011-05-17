@@ -69,11 +69,13 @@
     
     function countRemaining(inputElement) {
         var counter = $('#' + $(inputElement).attr('id') + '-counter'),
-        remaining = $(inputElement).attr('data-max-length') - $(inputElement).val().length;
+        max = $(inputElement).attr('data-max-length'),
+        remaining = max - $(inputElement).val().length;
         
         $(counter).text(remaining);
         $(counter).toggleClass('no-characters-remaining', remaining < 0);
-        $(counter).toggleClass('limited-characters-remaining', remaining <= 20);
+        $(counter).toggleClass('limited-characters-remaining', remaining <= Math.round(max * 0.2));
+        $('#' + $(inputElement).attr('id').replace(/-description/, '') + '-submit a').toggleClass('disabled', (max == remaining || remaining < 0));
     }
     
     function getArticle(href) {
@@ -115,7 +117,10 @@
         };
         
         $('.submit a').click(function(e) {
-            $(this).closest('form').submit();
+            if ($(this).hasClass('disabled') === false) {
+                $(this).closest('form').submit();
+            }
+            
             return false;
         });
         
