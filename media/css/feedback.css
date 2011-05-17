@@ -250,6 +250,23 @@ input[type=text], input[type=url], textarea {
     box-shadow: 0 0 2px rgba(0,0,0, .4) inset;
 }
 
+.characters-remaining {
+    color: green;
+    float: right;
+    font-size: 1.1em;
+    margin: 5px 5px 0 0;
+}
+
+.limited-characters-remaining {
+    color: inherit;
+    font-weight: bold;
+}
+
+.no-characters-remaining {
+    color: red;
+    font-weight: bold;
+}
+
 #idea .privacy-wrapper {
     margin-top: 5px;
 }

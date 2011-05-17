@@ -32,6 +32,7 @@
         <div>
           {{ form.description.label_tag() }}
           <p>{{ form.description }}</p>
+          <div id="{{ type }}-description-counter" class="characters-remaining">140</div>
           {{ form.description.errors }}
         </div>
 

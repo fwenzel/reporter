@@ -67,6 +67,15 @@
     
     var currentArticle;
     
+    function countRemaining(inputElement) {
+        var counter = $('#' + $(inputElement).attr('id') + '-counter'),
+        remaining = $(inputElement).attr('data-max-length') - $(inputElement).val().length;
+        
+        $(counter).text(remaining);
+        $(counter).toggleClass('no-characters-remaining', remaining < 0);
+        $(counter).toggleClass('limited-characters-remaining', remaining <= 20);
+    }
+    
     function getArticle(href) {
         var hash = (href || '').replace(/^.*#/, '') || 'intro';
         var elem = $('#'+hash);
@@ -113,6 +122,13 @@
         $('article form').submit(function(e) {
             var button = $(this).find('.submit a');
             button.submitButton('waiting');
+        });
+        
+        $('article textarea').each(function(i, element) {
+            countRemaining(element);
+        });
+        $('article textarea').live('keyup', function(e) {
+            countRemaining(this);
         });
 
         $('#happy-with-url').clickEnable('#happy-url');
