@@ -77,7 +77,7 @@ def give_feedback(request, ua, type):
         url = {
             input.OPINION_PRAISE.id: '/feedback#happy',
             input.OPINION_ISSUE.id: '/feedback#sad',
-            input.OPINION_IDEA.id: '/feedback#issue',
+            input.OPINION_IDEA.id: '/feedback#idea',
         }[type]
         return http.HttpResponseRedirect(url)
 
