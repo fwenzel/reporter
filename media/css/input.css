@@ -58,7 +58,7 @@ h2 {
 .col {
     display: inline-block;
     vertical-align: top;
-    width: 21.27%; /* = 200 / 940 */
+    width: 20.555%; /* = 200 / 940 */
     margin-left: 2.12%; /* = 20 / 940 */
 }
 .html-rtl .col {
