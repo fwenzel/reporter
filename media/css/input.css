@@ -353,6 +353,7 @@ label.bar:hover strong {
     font-size: 14px;
     line-height: 18px;
     overflow: hidden;
+    word-wrap: break-word;
 }
 .message .body strong {
     font-weight: bold;
@@ -458,6 +459,8 @@ background-color: #B6BCC0;
     position: relative;
     padding: 15px 0;
     border-top: 1px dotted #b6bcc0;
+    overflow: hidden;
+    word-wrap: break-word;
 }
 .theme:first-child {
     border-top: 0;
@@ -533,6 +536,8 @@ background-color: #B6BCC0;
     position: relative;
     padding: 15px 0;
     border-top: 1px dotted #b6bcc0;
+    overflow: hidden;
+    word-wrap: break-word;
 }
 .site:first-child {
     border-top: 0;
