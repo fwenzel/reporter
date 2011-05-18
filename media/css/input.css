@@ -1063,9 +1063,9 @@ background-color: #B6BCC0;
 }
 
 #footer-contents {
-    width: 880px;
     text-align: left;
     margin: auto;
+    max-width: 940px;
     padding: 35px;
 }
 
