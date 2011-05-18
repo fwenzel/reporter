@@ -101,7 +101,8 @@ class PraiseForm(FeedbackForm):
     """Form for praise."""
 
     description = forms.CharField(
-        widget=forms.Textarea(),
+        widget=forms.Textarea(
+            attrs={'data-max-length': OPINION_PRAISE.max_length}),
         label=_lazy('Please describe what you liked.'),
         max_length=OPINION_PRAISE.max_length,
         validators=[validate_swearwords, validate_no_html,
@@ -117,7 +118,8 @@ class PraiseForm(FeedbackForm):
 class IssueForm(FeedbackForm):
     """Form for negative feedback."""
     description = forms.CharField(
-        widget=forms.Textarea(),
+        widget=forms.Textarea(
+            attrs={'data-max-length': OPINION_ISSUE.max_length}),
         label=_lazy('Please describe your problem below.'),
         max_length=OPINION_ISSUE.max_length,
         validators=[validate_swearwords, validate_no_html,
@@ -133,7 +135,8 @@ class IssueForm(FeedbackForm):
 class IdeaForm(FeedbackForm):
     """Form for submitting ideas."""
     description = forms.CharField(
-        widget=forms.Textarea(),
+        widget=forms.Textarea(
+            attrs={'data-max-length': OPINION_IDEA.max_length}),
         label=_lazy('Describe your idea below.'),
         max_length=OPINION_IDEA.max_length,
         validators=[validate_swearwords, validate_no_html,
