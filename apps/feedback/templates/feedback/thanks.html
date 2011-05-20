@@ -30,7 +30,16 @@
     </div>
 
     <div>
-      <h3>Want to see where your feedback goes?</h3>
+      <h3>{{ _('Contribute to Mozilla.') }}</h3>
+      <p>
+        {% trans url='http://mozilla.org/contribute/' %}
+        Learn how you can <a href="{{ url }}">make Firefox and Mozilla better</a>
+        {% endtrans %}
+      </p>
+    </div>
+
+    <div>
+      <h3>{{ _('Want to see where your feedback goes?') }}</h3>
       <p>
         {% trans dash_url='/' %}
         Visit the <a href="{{ dash_url }}">Firefox Feedback Dashboard</a>
