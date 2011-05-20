@@ -77,7 +77,7 @@ class FIREFOX:
     short = 'firefox'
     pretty = _(u'Firefox')
     guid = '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}'
-    extra_versions = ['6.0a1', '5.0a2']
+    extra_versions = ['6.0a1', '5.0a2', '5.0']
     beta_versions = version_list(
         dict(product_details.firefox_history_major_releases.items() +
              product_details.firefox_history_stability_releases.items() +
