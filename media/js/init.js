@@ -62,12 +62,13 @@ $(document).ready(function(){
         .find('button').hide();
 
     // Open twitter links as popup
-    $('.messages .options a.twitter').click(function(e) {
+    $('.messages .options a.twitter,a.tweet-this').live('click', function(e) {
         var x = Math.max(0, (screen.width - 550) / 2),
             y = Math.max(0, (screen.height - 450) / 2);
         window.open($(this).attr('href'), 'tweetthis',
             'height=450,width=550,left='+x+',top='+y);
-        e.preventDefault();
+        
+        return false;
     });
 });
 

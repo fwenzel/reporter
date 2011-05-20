@@ -20,6 +20,19 @@
   </header>
   
   <div class="content">
+    {% if opinion %}
+      <div>
+        <h3>{{ _('Share your feedback.') }}</h3>
+        <p>
+            <a href="{{ 'http://twitter.com/share'|urlparams(
+              url=absolute_url('/feedback'),
+              text='%s #fxinput' % opinion.description|truncchar(100),
+              related='firefox') }}"
+              class="tweet-this" target="_blank">{{ _('Tweet feedback to your followers') }}</a>
+        </p>
+      </div>
+    {% endif %}
+
     <div>
       <h3>{{ _('Have more to say?') }}</h3>
       <p>

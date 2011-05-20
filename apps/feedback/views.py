@@ -73,7 +73,8 @@ def feedback(request, ua):
             form = IdeaForm(request.POST, auto_id='idea-%s')
 
         if form.is_valid():
-            save_opinion_from_form(request, typ, ua, form)
+            request.session['previous_opinion'] = save_opinion_from_form(
+                                                    request, typ, ua, form)
 
             url = reverse('feedback.thanks')
             return http.HttpResponseRedirect(url)
@@ -105,13 +106,17 @@ def download(request):
     return jingo.render(request, template)
 
 
-@cache_page
 def thanks(request):
     """Thank you for your feedback."""
 
+    try:
+        previous_opinion = request.session['previous_opinion']
+    except KeyError:
+        previous_opinion = None
+
     template = 'feedback/%sthanks.html' % (
         'mobile/' if request.mobile_site else '')
-    return jingo.render(request, template)
+    return jingo.render(request, template, {'opinion': previous_opinion})
 
 
 @cache_page
@@ -134,10 +139,13 @@ def save_opinion_from_form(request, type, ua, form):
     if type not in input.OPINION_TYPES:
         raise ValueError('Unknown type %s' % type)
 
-    return Opinion(
+    opinion = Opinion(
         type=type,
         url=form.cleaned_data.get('url', ''),
         description=form.cleaned_data['description'],
         user_agent=ua, locale=locale,
         manufacturer=form.cleaned_data['manufacturer'],
-        device=form.cleaned_data['device']).save()
+        device=form.cleaned_data['device'])
+    opinion.save()
+
+    return opinion
