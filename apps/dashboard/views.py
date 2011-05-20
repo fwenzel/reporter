@@ -22,7 +22,8 @@ def dashboard(request):
     """Beta dashboard."""
     # Defaults
     prod = request.default_prod
-    version = Version(LATEST_BETAS[prod]).simplified
+    version = (getattr(prod, 'default_version', None) or
+               Version(LATEST_BETAS[prod]).simplified)
 
     search_form = ReporterSearchForm()
     # Frequent terms
