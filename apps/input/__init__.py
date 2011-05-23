@@ -100,7 +100,8 @@ class MOBILE:
     short = 'mobile'
     pretty = _(u'Mobile')
     guid = '{a23983c0-fd0e-11dc-95ff-0800200c9a66}'
-    extra_versions = ['6.0a1', '5.0a2']
+    extra_versions = ['6.0a1', '5.0a2', '5.0']
+    default_version = '5.0'
     beta_versions = version_list(
         dict(product_details.mobile_history_major_releases.items() +
              product_details.mobile_history_stability_releases.items() +

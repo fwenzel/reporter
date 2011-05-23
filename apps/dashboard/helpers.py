@@ -113,8 +113,11 @@ def themes_block(context, themes, defaults=None):
 @register.inclusion_tag('dashboard/products.html')
 @jinja2.contextfunction
 def products_block(context, products, product):
-    latest_versions = dict((prod.short, Version(v).simplified) for prod, v in
-                            LATEST_BETAS.items())
+    latest_versions = dict((prod.short,
+                            Version(prod.default_version if
+                                    getattr(prod, 'default_version', None)
+                                    else v).simplified)
+                           for prod, v in LATEST_BETAS.items())
     version_choices = {}
     for prod in VERSION_CHOICES:
         version_choices = json.dumps(
