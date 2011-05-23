@@ -21,7 +21,7 @@ def handler500(request):
     if arecibo:
         arecibo_post(request, 500)
 
-    return _error_page(r, 500)
+    return _error_page(request, 500)
 
 
 admin.autodiscover()
