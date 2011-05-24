@@ -91,6 +91,11 @@ class Opinion(ModelBase):
         except KeyError:
             return self.platform
 
+    @property
+    def type_name(self):
+        """Human-readable name of opinion type (i.e. praise, issue, idea.)"""
+        return unicode(OPINION_TYPES[self.type].pretty)
+
     def get_url_path(self):
         return reverse('opinion.detail', args=(self.id,))
 
