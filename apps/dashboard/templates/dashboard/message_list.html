@@ -1,15 +1,11 @@
 {% if opinions %}
   <ul class="messages segmented">
   {% for opinion in opinions %}
-    <li class="message">
-      {% if opinion.type == OPINION_PRAISE.id: %}
-        <p class="type praise" title="{{ OPINION_PRAISE.pretty }}"><span>{{ OPINION_PRAISE.pretty }}</span></p>
-      {% elif opinion.type == OPINION_ISSUE.id: %}
-        <p class="type issue" title="{{ OPINION_PRAISE.pretty }}"><span>{{ OPINION_PRAISE.pretty }}</span></p>
-      {% elif opinion.type == OPINION_IDEA.id: %}
-        <p class="type idea" title="{{ OPINION_IDEA.pretty }}"><span>{{ OPINION_IDEA.pretty }}</span></p>
-      {% endif %}
+    <li class="message {{ opinion.type_name|lower }}">
+      <h3 class="type {{ opinion.type_name|lower }}" title="{{ opinion.type_name }}"><span>{{ opinion.type_name }}</span></h3>
+      
       <p class="body">{{ opinion.description }}</p>
+      
       <ul class="meta">
         <li>
           <a href="{{ opinion.get_url_path() }}">
