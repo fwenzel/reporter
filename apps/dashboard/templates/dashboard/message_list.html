@@ -20,7 +20,6 @@
         {% endif %}
       </ul>
 
-      {% if not request.mobile_site %}
       <div class="options">
         <a href="#"><span>{{ _('More Options') }}</span></a>
         <ul>
@@ -37,7 +36,6 @@
             class="twitter" target="_blank">{{ _('Tweet This') }}</a></li>
         </ul>
       </div>
-      {% endif %}
     </li>
   {% endfor %}
   </ul>

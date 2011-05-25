@@ -1,0 +1,31 @@
+{% if opinions %}
+  <ul class="messages segmented">
+  {% for opinion in opinions %}
+    <li class="list-item">
+      <a href="{{ opinion.get_url_path() }}" class="message {{ opinion.type_name|lower }}">
+        <h3 class="type {{ opinion.type_name|lower }}" title="{{ opinion.type_name }}"><span>{{ opinion.type_name }}</span></h3>
+        
+        <p class="body">{{ opinion.description }}</p>
+        
+        <ul class="meta">
+          <li>
+              <time datetime="{{ opinion.created|isotime }}" title="{{ opinion.created|babel_datetime }}">{{
+              opinion.created|timesince }}</time>
+          </li>
+          <li>{{ platform_name(opinion.platform) }}{% if opinion.device %} ({{ opinion.device }}){% endif %}</li>
+          <li>{{ locale_name(opinion.locale) }}</li>
+          {% if opinion.url %}
+            <li class="domain">{{ opinion.url|strip_protocol }}</li>
+          {% endif %}
+        </ul>
+      </a>
+    </li>
+  {% endfor %}
+  </ul>
+{% else %}
+  {% if show_notfound %}
+  <ul class="messages">
+    <li id="message-warning">{{ _('No search results found.') }}</li>
+  </ul>
+  {% endif %}
+{% endif %}

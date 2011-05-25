@@ -44,11 +44,15 @@ def locales_block(context, locales, total, defaults=None):
     return render_template(tpl, new_context(**locals()))
 
 
-@register.inclusion_tag('dashboard/message_list.html')
+@register.function
 @jinja2.contextfunction
 def message_list(context, opinions, defaults=None, show_notfound=True):
     """A list of messages."""
-    return new_context(**locals())
+    if not context['request'].mobile_site:
+        tpl = 'dashboard/message_list.html'
+    else:
+        tpl = 'dashboard/mobile/message_list.html'
+    return render_template(tpl, new_context(**locals()))
 
 
 @register.function
