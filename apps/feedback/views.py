@@ -119,10 +119,16 @@ def thanks(request):
     return jingo.render(request, template, {'opinion': previous_opinion})
 
 
+@forward_mobile
 @cache_page
 def opinion_detail(request, id):
     o = get_object_or_404(Opinion, pk=id)
-    return jingo.render(request, 'feedback/opinion.html', {'opinion': o})
+    
+    if not request.mobile_site:
+        template = 'feedback/opinion.html'
+    else:
+        template = 'feedback/mobile/opinion.html'
+    return jingo.render(request, template, {'opinion': o})
 
 
 def save_opinion_from_form(request, type, ua, form):

@@ -1,0 +1,21 @@
+{% extends "base_mobile.html" %}
+
+{% block page_title %}"{{ opinion.description|truncatewords(15) }}"{% endblock %}
+{% block body_id %}opinion{% endblock %}
+
+{% block header %}
+  <header id="header">
+  	<div id="message-header">
+  		<a href="{{ url('dashboard') }}">{{ _('Dashboard') }}</a>
+  	</div>
+  </header>
+{% endblock header %}
+
+{% block content %}
+<div class="col middle wide">
+  <div id="message" class="block">
+  {{ message_list((opinion,)) }}
+  </div>
+</div>
+
+{% endblock %}
