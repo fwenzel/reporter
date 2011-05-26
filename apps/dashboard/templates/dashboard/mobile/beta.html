@@ -1,44 +1,49 @@
 {% extends "base_mobile.html" %}
 
 {% block header %}
-<ul>
-  <!--
-  --><li><a class="selected" href="#feed">{# Title for the list of messages. #}{{ _('Feed') }}</a></li><!--
-  --><li><a class="" href="#stats">{{ _('Statistics') }}</a></li><!--
-  --><li><a class="" href="#trends">{{ _('Trends') }}</a></li><!--
-  -->
-</ul>
+<div id="search" class="block">
+  <form id="kw-search" method="get" action="{{ url('search') }}">
+    <input type="hidden" name="product" value="{{ request.default_prod.short }}" />
+    {{ search_form.q }}
+    
+    <a id="search-clear" href="#" title="Clear Search">Clear Search</a>
+  </form>
+</div>
+
+<nav id="tabs">
+  <ul>
+    <!--
+    --><li><a id="tab-feed" class="selected" href="#feed">{# Title for the list of messages. #}{{ _('Feed') }}</a></li><!--
+    --><li><a id="tab-stats" class="" href="#stats">{{ _('Statistics') }}</a></li><!--
+    --><li><a id="tab-trends" class="" href="#trends">{{ _('Trends') }}</a></li><!--
+    --><li><a id="tab-settings" class="" href="#settings">{{ _('Settings') }}</a></li><!--
+    -->
+  </ul>
+</nav>
 {% endblock %}
 
 {% block content %}
-<div id="feed-count" class="block">
-  <ul class="segmented">
-    {{ big_count_block(opinion_count) }}
-    {{ when_block(form=search_form, selected='1d') }}
-  </ul>
-</div>
-
-<div id="feed">
-  <div id="search" class="block">
-    <form id="kw-search" method="get" action="{{ url('search') }}">
-      <input type="hidden" name="product" value="{{ request.default_prod.short }}" />
-      {{ search_form.q }}
-    </form>
-  </div>
-
+<div id="feed" class="section selected">
   <div class="block">
     {{ message_list(opinions) }}
   </div>
 
   <div class="pager">
     <!--
-    --><span class="prev"><del>{{ _('&laquo; Newer Feedback')|safe }}</del></span><!--
-    --><span class="next"><a href="{{ search_url() }}">{{ _('Older Feedback &raquo;')|safe }}</a></span><!--
+    --><span class="button disabled prev">{{ _('&laquo; Newer Feedback')|safe }}</span><!--
+    --><a href="{{ search_url() }}" class="button next">{{ _('Older Feedback &raquo;')|safe }}</a><!--
     -->
   </div>
 </div>
 
-<div id="stats">
+<div id="stats" class="section">
+  <div id="feed-count" class="block">
+    <ul class="segmented">
+      {{ big_count_block(opinion_count) }}
+      {{ when_block(form=search_form, selected='1d') }}
+    </ul>
+  </div>
+  
   <form id="filters" method="get" action="{{ url('search') }}">
     <input type="hidden" name="product" value="{{ request.default_prod.short }}" />
 
@@ -52,7 +57,13 @@
   </form>
 </div>
 
-<div id="trends">
+<div id="trends" class="section">
+  {{ themes_block(terms) }}
+
+  {{ sites_block(sites) }}
+</div>
+
+<div id="settings" class="section">
   {{ themes_block(terms) }}
 
   {{ sites_block(sites) }}
