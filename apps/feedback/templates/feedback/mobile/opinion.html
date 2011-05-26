@@ -14,7 +14,39 @@
 {% block content %}
 <div class="col middle wide">
   <div id="message" class="block">
-  {{ message_list((opinion,)) }}
+    <div class="message {{ opinion.type_name|lower }}">
+      <h3 class="type {{ opinion.type_name|lower }}" title="{{ opinion.type_name }}"><span>{{ opinion.type_name }}</span></h3>
+
+      <p class="body">{{ opinion.description }}</p>
+
+      <ul class="meta">
+        <li>
+          <a href="{{ opinion.get_url_path() }}">
+            <time datetime="{{ opinion.created|isotime }}" title="{{ opinion.created|babel_datetime }}">{{
+            opinion.created|timesince }}</time>
+          </a>
+        </li>
+        <li><a href="{{ search_url(platform=opinion.platform, defaults=defaults) }}">{{ platform_name(opinion.platform) }}{% if opinion.device %} ({{ opinion.device }}){% endif %}</a></li>
+        <li><a href="{{ search_url(locale=opinion.locale, defaults=defaults) }}">{{ locale_name(opinion.locale) }}</a></li>
+        {% if opinion.url %}
+          <li class="domain"><a href="{{ opinion.url }}" rel="nofollow">{{ opinion.url|strip_protocol }}</a></li>
+        {% endif %}
+      </ul>
+
+      <div class="actions">
+        <ul class="options">
+          {# L10n: Link to Google Translator #}
+          <li><a href="{{ 'http://translate.google.com/'|urlparams(
+            sl='auto', q=opinion.description) }}" target="_blank" class="button">{{
+            _('Translate Message') }}</a></li>
+          <li><a href="{{ 'http://twitter.com/share'|urlparams(
+            url=absolute_url(opinion.get_url_path()),
+            text='%s #fxinput' % opinion.description|truncchar(100),
+            related='firefox') }}"
+            class="button twitter" target="_blank">{{ _('Tweet This') }}</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 
