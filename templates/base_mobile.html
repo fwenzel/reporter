@@ -3,6 +3,7 @@
   <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta name="viewport" content="initial-scale=1" />
+
     <title>{% block page_title %}{{ _('Welcome') }}{% endblock %} :: Firefox Input</title>
 
     {% block site_css %}
@@ -14,14 +15,15 @@
     {% block extra_headers %}{% endblock %}
   </head>
 
-  <body id="{% block body_id %}{% endblock %}">
+  <body id="{% block body_id %}feedback{% endblock %}" class="no-js">
     {% block full_header %}
-    <div id="header">
-      <h1><a href="{{ url('dashboard') }}">
+    <header id="header">
+      <h1 class="off-screen"><a href="{{ url('dashboard') }}">
         <strong>Firefox Input</strong> {{ _('Dashboard') }}
       </a></h1>
+      
       {% block header %}{% endblock %}
-    </div>
+    </header>
     {% endblock %}
 
     <div id="body">
