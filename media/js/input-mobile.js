@@ -22,6 +22,8 @@
 
 
     $(document).ready(function() {
+		$('body').removeClass('no-js').addClass('js');
+		
         $('.collapsible').collapsible();
         $('#filters').filters();
 		
@@ -34,9 +36,6 @@
 			
 			return false;
 		});
-		
-		// Activate the first tab
-		$('#tabs a:first').click();
 		
 		// Scroll past the browser's location bar in iOS/Firefox for Android
 		window.scrollTo(0, 1);
