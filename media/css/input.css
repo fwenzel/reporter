@@ -941,7 +941,10 @@ background-color: #B6BCC0;
     display: block;
     color: #326DA1;
     font-size: 12px;
-    line-height: 18px;
+    line-height: 14px;
+    margin: 0 0 8px;
+    overflow-x: hidden;
+    word-wrap: break-word;
 }
 #uncommon-sites .more a {
     color: #808080;
