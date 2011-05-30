@@ -59,9 +59,6 @@
     		
     		return false;
 		});
-		
-		// Scroll past the browser's location bar in iOS/Firefox for Android
-		window.scrollTo(0, 1);
     });
 
 })(jQuery);
