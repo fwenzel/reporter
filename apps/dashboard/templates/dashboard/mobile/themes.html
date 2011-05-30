@@ -1,4 +1,4 @@
-<div class="block collapsible" id="filter_themes">
+<div class="block collapsible filter_themes">
   <h2><a class="toggle" href="#">{{ _('Often Mentioned') }}</a></h2>
 
   <ul class="collapsee trends bars">
@@ -9,7 +9,7 @@
         <a href="{{ search_url(defaults=defaults, q=item.term) }}" class="bar">
           <span class="bg" style="width: {{ perc }}%;"></span>
           <span class="label">{{ item.term }}</span>
-          <span class="perc">{{ item.count|numberfmt }}</span>
+          <span class="percentage">{{ item.count|numberfmt }}</span>
         </a>
       </li>
     {% endfor %}

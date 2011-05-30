@@ -4,7 +4,7 @@
 {% endmacro %}
 
 {% if platforms %}
-<div class="block collapsible" id="filter_platform">
+<div class="block collapsible filter-group" id="filter_platform">
   <h2><a class="toggle" href="#">{{ _('Platform') }}</a></h2>
 
   <ul class="collapsee filters bars">
@@ -16,6 +16,13 @@
         {{ platform_item(item.platform, item.count) }}
       {% endfor %}
     {% endif %}
+    
+    <li class="bar hide">
+      <a href="#more" class="expand-filters">
+        {{ _('Show More Platforms') }}
+      </a>
+    </li>
+
   </ul>
 </div>
 {% endif %}

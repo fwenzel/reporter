@@ -38,9 +38,8 @@
 
 <div id="stats" class="section">
   <div id="feed-count" class="block">
-    <ul class="segmented">
+    <ul id="message-total">
       {{ big_count_block(opinion_count) }}
-      {{ when_block(form=search_form, selected='1d') }}
     </ul>
   </div>
   
