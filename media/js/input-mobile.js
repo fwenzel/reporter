@@ -19,6 +19,19 @@
         this.find('select').change(doSubmit);
         return this;
     };
+    $.fn.hideExtraFilters = function() {
+        var filters = $(this).children('.filter');
+
+        $(filters).addClass('expandable expanded');
+        
+        // If enough filters exist, show the "Show More X" link and
+        // hide filters beyond the first four.
+        if (filters.length) {
+            $(this).children('.expand').show();
+            $(this).children('.filter:nth-child(1n+5)')
+                .removeClass('expanded');
+        }
+    };
 
 
     $(document).ready(function() {
@@ -26,6 +39,7 @@
 		
         $('.collapsible').collapsible();
         $('#filters').filters();
+        $('#filters div ul').hideExtraFilters();
 		
 		$('#tabs a').live('click', function(e) {
 			$('.section').hide();
@@ -35,6 +49,15 @@
 			$(this).addClass('selected').blur();
 			
 			return false;
+		});
+		
+		// Listen for any "Show more X" filter links
+		$('.expand-filters').live('click', function() {
+		    $(this).closest('ul').children('.filter')
+    		    .addClass('expanded');
+    		$(this).parent('li').hide();
+    		
+    		return false;
 		});
 		
 		// Scroll past the browser's location bar in iOS/Firefox for Android
