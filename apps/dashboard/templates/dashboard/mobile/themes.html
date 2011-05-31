@@ -9,7 +9,7 @@
         <a href="{{ search_url(defaults=defaults, q=item.term) }}" class="bar">
           <span class="bg" style="width: {{ perc }}%;"></span>
           <span class="label">{{ item.term }}</span>
-          <span class="percentage">{{ item.count|numberfmt }}</span>
+          <span class="count">{{ item.count|numberfmt }}</span>
         </a>
       </li>
     {% endfor %}
