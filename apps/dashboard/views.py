@@ -43,6 +43,7 @@ def dashboard(request):
     sites = SiteSummary.objects.filter(version__exact=version).filter(
         positive__exact=None).filter(
         platform__exact=None)[:settings.TRENDS_COUNT]
+    sites = SiteSummary.objects.all()
 
     try:
         c = Client()

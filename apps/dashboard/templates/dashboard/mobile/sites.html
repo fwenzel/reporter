@@ -9,8 +9,10 @@
         <a href="{{ search_url(defaults=defaults, q='url:'+site.url|strip_protocol) }}"
            class="bar">
           <span class="bg" style="width: {{ perc }}%;"></span>
-          <span class="label">{{ site.url|strip_protocol }}</span>
-          <span class="perc">{{ site.size|numberfmt }}</span>
+            <span class="label">
+              {{ site.url|strip_protocol }}
+              <span class="count">{{ site.size|numberfmt }}</span>
+            </span>
         </a>
       </li>
     {% endfor %}

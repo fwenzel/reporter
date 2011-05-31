@@ -41,6 +41,12 @@
     <ul id="message-total">
       {{ big_count_block(opinion_count) }}
     </ul>
+    
+    <!--
+    <ul class="segmented">
+      {{ when_block(form=search_form, selected='1d') }}
+    </ul>
+    -->
   </div>
   
   <form id="filters" method="get" action="{{ url('search') }}">

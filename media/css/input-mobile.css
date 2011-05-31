@@ -302,9 +302,13 @@ a {
 	font-size: 12px;
 	font-weight: bold;
 }
+
+.section h2 a {
+    color: #000;
+}
+
 #message-total li {
     font-size: 18px;
-    font-weight: normal !important;
     line-height: 18px;
 }
 	#message-total li strong, .section .bar strong {
@@ -386,14 +390,16 @@ a {
 
 .bar label, .bar .label, #message-total li, .expand-filters {
     display: block;
-    font-weight: bold;
     padding: 15px 10px;
     position: relative;
 }
 
+.bar label, .bar .label {
+    color: #000;
+}
+
 .bar .percentage {
     color: #999;
-    font-weight: normal;
 }
 
 .bar .count {
@@ -404,7 +410,7 @@ a {
     display: none;
 }
 
-.bar label:after {
+.bar label:after, .bar .label:after {
     background: url(../img/stat-search.png) no-repeat 0 0;
     bottom: 5px;
     content: '';
@@ -417,6 +423,16 @@ a {
 
 .bar a.expand-filters {
     display: block;
+}
+
+/** Trend-specific styles */
+#trends .bar {
+    position: relative;
+}
+
+#trends .bar .count {
+    color: #999;
+    display: inline;
 }
 
 /** Messages */

@@ -8,8 +8,10 @@
       <li class="trend">
         <a href="{{ search_url(defaults=defaults, q=item.term) }}" class="bar">
           <span class="bg" style="width: {{ perc }}%;"></span>
-          <span class="label">{{ item.term }}</span>
-          <span class="count">{{ item.count|numberfmt }}</span>
+          <span class="label">
+            {{ item.term }}
+            <span class="count">({{ item.count|numberfmt }})</span>
+          </span>
         </a>
       </li>
     {% endfor %}
