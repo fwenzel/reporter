@@ -1,6 +1,7 @@
 import json
 
 from django.conf import settings
+from django.contrib.sites.models import Site
 
 import jingo
 from product_details.version_compare import Version
@@ -45,6 +46,9 @@ def dashboard(request):
         platform__exact=None)[:settings.TRENDS_COUNT]
     sites = SiteSummary.objects.all()
 
+    # Get the desktop site's absolute URL for use in the settings tab
+    desktop_site = Site.objects.get(id=settings.DESKTOP_SITE_ID)
+
     try:
         c = Client()
         search_opts = dict(product=prod.short, version=version)
@@ -77,6 +81,7 @@ def dashboard(request):
             'chart_data_json': json.dumps(chart_data),
             'defaults': get_defaults(search_form),
             'search_form': search_form,
+            'desktop_url': 'http://' + desktop_site.domain,
            }
 
     if not request.mobile_site:

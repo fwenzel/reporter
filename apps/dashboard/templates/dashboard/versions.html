@@ -1,6 +1,6 @@
 <span class="selectbox" id="filter_versions">
   <span class="text">
-    {{ version }}
+    {{ version if version else _('All') }}
   </span>
   <select id="version" name="version">
     {% for val, name in versions %}

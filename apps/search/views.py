@@ -3,6 +3,7 @@ import json
 import time
 
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.contrib.syndication.views import Feed
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.feedgenerator import Atom1Feed
@@ -192,7 +193,11 @@ def index(request):
 
     page = form.data.get('page', 1)
 
+    # Get the desktop site's absolute URL for use in the settings tab
+    desktop_site = Site.objects.get(id=settings.DESKTOP_SITE_ID)
+
     data = dict(
+        desktop_url='http://' + desktop_site.domain,
         form=form,
         product=product,
         products=PROD_CHOICES,

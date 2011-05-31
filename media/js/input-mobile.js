@@ -39,7 +39,7 @@
 		
         $('.collapsible').collapsible();
         $('#filters').filters();
-        $('#filters div ul').hideExtraFilters();
+        $('#stats-form div ul').hideExtraFilters();
 		
 		$('#tabs a').live('click', function(e) {
 			$('.section').hide();

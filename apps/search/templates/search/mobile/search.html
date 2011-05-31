@@ -3,7 +3,6 @@
 {% block header %}
 <div id="search" class="block">
   <form id="kw-search" method="get" action="{{ url('search') }}">
-    <input type="hidden" name="product" value="{{ request.default_prod.short }}" />
     {% for key, val in defaults.items() %}
       {% if key == 'q' %}{% continue %}{% endif %}
       <input type="hidden" name="{{ key }}" value="{{ val }}" />
@@ -28,13 +27,6 @@
 {% endblock %}
 
 {% block content %}
-<div id="feed-count" class="block">
-  <ul class="segmented">
-    {{ big_count_block(opinion_count) }}
-    {{ when_block(form=form, selected=period, defaults=defaults) }}
-  </ul>
-</div>
-
 <div id="feed" class="section selected">
   <div class="block">
     {{ message_list(opinions, defaults=defaults) }}
@@ -44,31 +36,35 @@
   <div class="pager"><!--
     {% with link_txt = _('&laquo; Newer Feedback')|safe %}
       {% if page.has_previous() %}
-      --><span class="prev"><a href="{{ search_url(
+      --><a class="button prev" href="{{ search_url(
         defaults=form.data, extra={'page': page.previous_page_number()})
-      }}">{{ link_txt }}</a></span><!--
+      }}">{{ link_txt }}</a><!--
       {% else %}
-      --><span class="prev inactive"><del>{{ link_txt }}</del></span><!--
+      --><span class="button disabled prev">{{ link_txt }}</span><!--
       {% endif %}
     {% endwith %}
 
     {% with link_txt = _('Older Feedback &raquo;')|safe %}
       {% if page.has_next() %}
-      --><span class="next"><a href="{{ search_url(
+      --><a class="button next" href="{{ search_url(
         defaults=form.data, extra={'page': page.next_page_number()})
-      }}">{{ link_txt }}</a></span><!--
+      }}">{{ link_txt }}</a><!--
       {% else %}
-      --><span class="next inactive"><del>{{ link_txt }}</del></span><!--
+      --><span class="button disabled next">{{ link_txt }}</span><!--
       {% endif %}
     {% endwith %}
   --></div>
   {% endif %}
 </div>
 
-<div id="stats" class="section">
-  <form id="filters" method="get" action="{{ url('search') }}">
-    <input type="hidden" name="product" value="{{ request.default_prod.short }}" />
-
+<form id="filters" method="get" action="{{ url('search') }}">
+  <div id="stats" class="section">
+    <div id="feed-count" class="block">
+      <ul id="message-total">
+        {{ big_count_block(opinion_count) }}
+      </ul>
+    </div>
+  
     {{ overview_block(sent, defaults=defaults) }}
 
     {# TODO "URL provided?" filter #}
@@ -76,12 +72,36 @@
     {{ platforms_block(demo.platform, opinion_count, defaults=defaults) }}
 
     {{ locales_block(demo.locale, opinion_count, defaults=defaults) }}
-  </form>
-</div>
+  </div>
 
-<div id="trends" class="section">
-  {{ themes_block(terms) }}
+  <div id="trends" class="section">
+    {{ themes_block(terms) }}
 
-  {{ sites_block(sites) }}
-</div>
+    {{ sites_block(sites) }}
+  </div>
+
+  <div id="settings" class="section">
+    <ul>
+      <li class="bar">
+        <label for="product">{{ _('Product') }}</label>
+        <div class="choice select">
+          {{ products_block(products, product) }}
+        </div>
+      </li>
+      <li class="bar">
+        <label for="">{{ _('Version') }}</label>
+        <div class="choice select">
+          {{ versions_block(versions, version) }}
+        </div>
+      </li>
+    
+      {{ when_block(form=form, selected=period, defaults=defaults) }}
+      <li>
+        <a href="{{ desktop_url }}" class="bar link">
+          {{ _('Switch to Desktop Dashboard') }}
+        </a>
+      </li>
+    </ul>
+  </div>
+</form>
 {% endblock %}

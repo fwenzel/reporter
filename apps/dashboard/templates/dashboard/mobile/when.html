@@ -1,8 +1,8 @@
-<li class="choice">
+<li class="bar">
   {# L10n: refers to time-based search filters (e.g., "for last: 1d") #}
-  <label>{{ _('For last:') }}</label>
+  <span class="label">{{ _('For last:') }}</span>
 
-  <ul>
+  <ul class="choice">
     {% include "dashboard/includes/when_selectors.html" %}
   </ul>
 </li>

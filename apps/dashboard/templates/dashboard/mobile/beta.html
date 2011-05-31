@@ -36,22 +36,14 @@
   </div>
 </div>
 
-<div id="stats" class="section">
-  <div id="feed-count" class="block">
-    <ul id="message-total">
-      {{ big_count_block(opinion_count) }}
-    </ul>
-    
-    <!--
-    <ul class="segmented">
-      {{ when_block(form=search_form, selected='1d') }}
-    </ul>
-    -->
-  </div>
+<form id="filters" class="filters" method="get" action="{{ url('search') }}">
+  <div id="stats" class="section">
+    <div id="feed-count" class="block">
+      <ul id="message-total">
+        {{ big_count_block(opinion_count) }}
+      </ul>
+    </div>
   
-  <form id="filters" method="get" action="{{ url('search') }}">
-    <input type="hidden" name="product" value="{{ request.default_prod.short }}" />
-
     {{ overview_block(sentiments) }}
 
     {# TODO "URL provided?" filter #}
@@ -59,18 +51,36 @@
     {{ platforms_block(platforms, opinion_count) }}
 
     {{ locales_block(locales, opinion_count) }}
-  </form>
-</div>
+  </div>
 
-<div id="trends" class="section">
-  {{ themes_block(terms) }}
+  <div id="trends" class="section">
+    {{ themes_block(terms) }}
 
-  {{ sites_block(sites) }}
-</div>
+    {{ sites_block(sites) }}
+  </div>
 
-<div id="settings" class="section">
-  {{ themes_block(terms) }}
+  <div id="settings" class="section">
+    <ul>
+      <li class="bar">
+        <label for="product">{{ _('Product') }}</label>
+        <div class="choice select">
+          {{ products_block(products, product) }}
+        </div>
+      </li>
+      <li class="bar">
+        <label for="">{{ _('Version') }}</label>
+        <div class="choice select">
+          {{ versions_block(versions, version) }}
+        </div>
+      </li>
 
-  {{ sites_block(sites) }}
-</div>
+      {{ when_block(form=search_form, selected='1d') }}
+      <li>
+        <a href="{{ desktop_url }}" class="bar link">
+          {{ _('Switch to Desktop Dashboard') }}
+        </a>
+      </li>
+    </ul>
+  </div>
+</form>
 {% endblock %}
