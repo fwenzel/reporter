@@ -1,11 +1,12 @@
-from time import mktime
 import bz2
 import csv
 import os.path
 import shutil
+from time import mktime
 
 from django.conf import settings
 
+import commonware.log
 import cronjobs
 
 from input import PRODUCT_IDS
@@ -14,6 +15,7 @@ from input import OPINION_TYPES
 
 
 BUCKET_SIZE = 10000  # Bucket size to split query set into.
+log = commonware.log.getLogger('i.export_tsv')
 
 
 class TSVDialect(csv.Dialect):
@@ -65,19 +67,23 @@ def export_tsv():
         tsv = csv.writer(outfile, dialect=TSVDialect)
         for bucket in _split_queryset(opinions):
             for opinion in bucket:
-                tsv.writerow(_fix_row([
-                    opinion.id,
-                    int(mktime(opinion.created.timetuple())),
-                    OPINION_TYPES.get(opinion.type).short,
-                    getattr(PRODUCT_IDS.get(opinion.product), 'short', None),
-                    opinion.version,
-                    opinion.platform,
-                    opinion.locale,
-                    opinion.manufacturer,
-                    opinion.device,
-                    opinion.url,
-                    opinion.description,
-                ]))
+                try:
+                    tsv.writerow(_fix_row([
+                        opinion.id,
+                        int(mktime(opinion.created.timetuple())),
+                        getattr(OPINION_TYPES.get(opinion.type), 'short', None),
+                        getattr(PRODUCT_IDS.get(opinion.product), 'short', None),
+                        opinion.version,
+                        opinion.platform,
+                        opinion.locale,
+                        opinion.manufacturer,
+                        opinion.device,
+                        opinion.url,
+                        opinion.description,
+                    ]))
+                except Exception, e:
+                    log.warning('Error exporting opinion %d: %s' % (
+                        opinion.id, str(e)))
     finally:
         outfile.close()
     shutil.move(opinions_tmp, opinions_path)
