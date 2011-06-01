@@ -7,9 +7,9 @@
       {% if key == 'q' %}{% continue %}{% endif %}
       <input type="hidden" name="{{ key }}" value="{{ val }}" />
     {% endfor %}
-    
+
     {{ form.q }}
-    
+
     <a id="search-clear" href="#" title="Clear Search">Clear Search</a>
   </form>
 </div>
@@ -64,7 +64,7 @@
         {{ big_count_block(opinion_count) }}
       </ul>
     </div>
-  
+
     {{ overview_block(sent, defaults=defaults) }}
 
     {# TODO "URL provided?" filter #}
@@ -94,7 +94,7 @@
           {{ versions_block(versions, version) }}
         </div>
       </li>
-    
+
       {{ when_block(form=form, selected=period, defaults=defaults) }}
       <li>
         <a href="{{ desktop_url }}" class="bar link">
