@@ -77,7 +77,7 @@ class FIREFOX:
     short = 'firefox'
     pretty = _(u'Firefox')
     guid = '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}'
-    extra_versions = ['7.0', '6.0a2', '6.0a1', '5.0a2', '5.0']
+    extra_versions = ['7.0a1', '6.0a2', '6.0a1', '5.0a2', '5.0']
     default_version = '5.0'  # Default dashboard version.
     beta_versions = version_list(
         dict(product_details.firefox_history_major_releases.items() +
@@ -100,7 +100,7 @@ class MOBILE:
     short = 'mobile'
     pretty = _(u'Mobile')
     guid = '{a23983c0-fd0e-11dc-95ff-0800200c9a66}'
-    extra_versions = ['7.0', '6.0a2', '6.0a1', '5.0a2', '5.0']
+    extra_versions = ['7.0a1', '6.0a2', '6.0a1', '5.0a2', '5.0']
     default_version = '5.0'
     beta_versions = version_list(
         dict(product_details.mobile_history_major_releases.items() +
