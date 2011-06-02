@@ -48,7 +48,13 @@
 {% else %}
   {% if show_notfound %}
   <ul class="messages">
-    <li id="message-warning">{{ _('No search results found.') }}</li>
+    <li id="message-warning">
+      <h3>{{ _('No search results found.') }}</h3>
+
+      <p>{{ _('You can adjust your search criteria or use fewer filters to find more opinions.') }}</p>
+
+      <p>{{ _('Note: Recently released versions of Firefox may have less feedback.') }}</p>
+    </li>
   </ul>
   {% endif %}
 {% endif %}

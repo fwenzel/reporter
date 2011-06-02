@@ -875,7 +875,17 @@ background-color: #B6BCC0;
     color: #3D3F40;
     border-bottom: 1px dotted #b6bcc0;
 }
-
+#message-warning h3 {
+    color: #000;
+    font-size: 14px;
+    margin-top: 3px;
+    text-align: center;
+}
+#message-warning p {
+    color: #40403b;
+    margin: 0 0 5px;
+    text-align: center;
+}
 
 /* Time-based feedback chart. */
 .large-chart {
