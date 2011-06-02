@@ -5,19 +5,25 @@
   <form id="kw-search" method="get" action="{{ url('search') }}">
     <input type="hidden" name="product" value="{{ request.default_prod.short }}" />
     {{ search_form.q }}
-    
-    <a id="search-clear" href="#" title="Clear Search">Clear Search</a>
+
+    <a id="search-clear" href="#" title="{{ _('Clear Search') }}">{{ _('Clear Search') }}</a>
   </form>
 </div>
 
 <nav id="tabs">
   <ul>
-    <!--
-    --><li><a id="tab-feed" class="selected" href="#feed">{# Title for the list of messages. #}{{ _('Feed') }}</a></li><!--
-    --><li><a id="tab-stats" class="" href="#stats">{{ _('Statistics') }}</a></li><!--
-    --><li><a id="tab-trends" class="" href="#trends">{{ _('Trends') }}</a></li><!--
-    --><li><a id="tab-settings" class="" href="#settings">{{ _('Settings') }}</a></li><!--
-    -->
+    <li>
+      <a id="tab-feed" class="selected" href="#feed">{{ _('Feed') }}</a>
+    </li>
+    <li>
+      <a id="tab-stats" class="" href="#stats">{{ _('Statistics') }}</a>
+    </li>
+    <li>
+      <a id="tab-trends" class="" href="#trends">{{ _('Trends') }}</a>
+    </li>
+    <li>
+      <a id="tab-settings" class="" href="#settings">{{ _('Settings') }}</a>
+    </li>
   </ul>
 </nav>
 {% endblock %}
@@ -29,10 +35,8 @@
   </div>
 
   <div class="pager">
-    <!--
-    --><span class="button disabled prev">{{ _('&laquo; Newer Feedback')|safe }}</span><!--
-    --><a href="{{ search_url() }}" class="button next">{{ _('Older Feedback &raquo;')|safe }}</a><!--
-    -->
+    <span class="button disabled prev">{{ _('&laquo; Newer Feedback')|safe }}</span>
+    <a href="{{ search_url() }}" class="button next">{{ _('Older Feedback &raquo;')|safe }}</a>
   </div>
 </div>
 

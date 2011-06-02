@@ -10,18 +10,24 @@
 
     {{ form.q }}
 
-    <a id="search-clear" href="#" title="Clear Search">Clear Search</a>
+    <a id="search-clear" href="#" title="{{ _('Clear Search') }}">{{ _('Clear Search') }}</a>
   </form>
 </div>
 
 <nav id="tabs">
   <ul>
-    <!--
-    --><li><a id="tab-feed" class="selected" href="#feed">{# Title for the list of messages. #}{{ _('Feed') }}</a></li><!--
-    --><li><a id="tab-stats" class="" href="#stats">{{ _('Statistics') }}</a></li><!--
-    --><li><a id="tab-trends" class="" href="#trends">{{ _('Trends') }}</a></li><!--
-    --><li><a id="tab-settings" class="" href="#settings">{{ _('Settings') }}</a></li><!--
-    -->
+    <li>
+      <a id="tab-feed" class="selected" href="#feed">{{ _('Feed') }}</a>
+    </li>
+    <li>
+      <a id="tab-stats" class="" href="#stats">{{ _('Statistics') }}</a>
+    </li>
+    <li>
+      <a id="tab-trends" class="" href="#trends">{{ _('Trends') }}</a>
+    </li>
+    <li>
+      <a id="tab-settings" class="" href="#settings">{{ _('Settings') }}</a>
+    </li>
   </ul>
 </nav>
 {% endblock %}
@@ -33,27 +39,27 @@
   </div>
 
   {% if page and page.has_other_pages() %}
-  <div class="pager"><!--
+  <div class="pager">
     {% with link_txt = _('&laquo; Newer Feedback')|safe %}
       {% if page.has_previous() %}
-      --><a class="button prev" href="{{ search_url(
-        defaults=form.data, extra={'page': page.previous_page_number()})
-      }}">{{ link_txt }}</a><!--
+        <a class="button prev" href="{{ search_url(
+          defaults=form.data, extra={'page': page.previous_page_number()})
+        }}">{{ link_txt }}</a>
       {% else %}
-      --><span class="button disabled prev">{{ link_txt }}</span><!--
+        <span class="button disabled prev">{{ link_txt }}</span>
       {% endif %}
     {% endwith %}
 
     {% with link_txt = _('Older Feedback &raquo;')|safe %}
       {% if page.has_next() %}
-      --><a class="button next" href="{{ search_url(
-        defaults=form.data, extra={'page': page.next_page_number()})
-      }}">{{ link_txt }}</a><!--
+        <a class="button next" href="{{ search_url(
+          defaults=form.data, extra={'page': page.next_page_number()})
+        }}">{{ link_txt }}</a>
       {% else %}
-      --><span class="button disabled next">{{ link_txt }}</span><!--
+        <span class="button disabled next">{{ link_txt }}</span>
       {% endif %}
     {% endwith %}
-  --></div>
+  </div>
   {% endif %}
 </div>
 
