@@ -14,6 +14,17 @@ import swearwords
 # Simple email regex to keep people from submitting personal data.
 EMAIL_RE = re.compile(r'[^\s]+@[^\s]+\.[^\s]{2,6}')
 
+# IPv4 Address verifier
+PRIVATE_IP_RE = re.compile(
+    r'^(https?://)?' # http:// or https://
+    r'(?:0\.0\.0\.0)|'
+    r'(?:127\.0)|'
+    r'(?:10\.)|'
+    r'(?:172\.1[6-9]\.)|'
+    r'(?:172\.2[0-9]\.)|'
+    r'(?:172\.3[0-1]\.)|'
+    r'(?:192\.168\.)', re.IGNORECASE)
+
 # Simple "possibly a URL" regex
 URL_RE = re.compile(r'(://|www\.[^\s]|\.\w{2,}/)')
 
@@ -43,6 +54,13 @@ def validate_no_email(str):
             _('Your feedback seems to contain an email address. Please remove '
               'this and similar personal data from the text, then try again. '
               'Thanks!'))
+
+
+def validate_no_private_ips(str):
+    """Disallow private IPv4 IPs from being submitted."""
+    if PRIVATE_IP_RE.search(str):
+        raise ValidationError(
+            _('URLs with IP addresses must contain public IP addresses.'))
 
 
 def validate_no_urls(str):

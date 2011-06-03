@@ -12,6 +12,7 @@ from input import OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA
 from feedback.models import Opinion
 from feedback.validators import (validate_swearwords, validate_no_html,
                                  validate_no_email, validate_no_urls,
+                                 validate_no_private_ips,
                                  ExtendedURLValidator)
 
 
@@ -24,6 +25,7 @@ class ExtendedURLField(forms.URLField):
         # Remove old URL validator, add ours instead.
         self.validators = filter(lambda x: not isinstance(x, URLValidator),
                                  self.validators)
+        self.validators.append(validate_no_private_ips)
         self.validators.append(ExtendedURLValidator())
 
     def to_python(self, value):
