@@ -293,7 +293,7 @@ class FeedTest(SphinxTestCase):
         views.SearchFeed.get_object = mock_get_object
 
         def mock_items(self, obj):
-            return [Opinion(id=n, type=type.id, product=FIREFOX.id) for
+            return [Opinion(id=n, _type=type.id, product=FIREFOX.id) for
                     n, type in enumerate(OPINION_TYPES_USAGE)]
         views.SearchFeed.items = mock_items
 

@@ -1,8 +1,11 @@
 {% if opinions %}
   <ul class="messages segmented">
   {% for opinion in opinions %}
-    <li class="message {{ opinion.type_name|lower }}">
-      <h3 class="type {{ opinion.type_name|lower }}" title="{{ opinion.type_name }}"><span>{{ opinion.type_name }}</span></h3>
+    <li class="message {{ opinion.type.short }}">
+      <h3 class="type {{ opinion.type.short }}"
+        title="{{ opinion.type.pretty }}">
+        <span>{{ opinion.type.pretty }}</span>
+      </h3>
       
       <p class="body">{{ opinion.description }}</p>
       

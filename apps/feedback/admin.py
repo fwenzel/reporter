@@ -5,18 +5,18 @@ from .models import Opinion, Term
 
 class OpinionAdmin(admin.ModelAdmin):
     date_hierarchy = 'created'
-    list_display = ('type', 'truncated_description', 'created',
+    list_display = ('_type', 'truncated_description', 'created',
                     'product_name', 'version', 'platform_name', 'locale',
                     'manufacturer', 'device')
     list_display_links = ('truncated_description',)
-    list_filter = ('type', 'version', 'platform', 'locale', 'manufacturer',
+    list_filter = ('_type', 'version', 'platform', 'locale', 'manufacturer',
                    'device')
     ordering = ('-created',)
     search_fields = ['description']
 
     fieldsets = (
         (None, {
-            'fields': ('type', 'description', 'created')
+            'fields': ('_type', 'description', 'created')
         }),
         ('Build Info', {
             'fields': ('user_agent', 'product_name', 'version',

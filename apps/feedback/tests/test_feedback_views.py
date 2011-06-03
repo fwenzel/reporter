@@ -72,7 +72,7 @@ class BetaViewTests(ViewTestCase):
                 # Need to vary text so we don't cause duplicates warnings.
                 'description': 'Hello %d' % datetime.now().microsecond,
                 'add_url': 'on',
-                'type': OPINION_PRAISE.id,
+                '_type': OPINION_PRAISE.id,
             }
 
             if url:
@@ -108,7 +108,7 @@ class BetaViewTests(ViewTestCase):
         req = lambda: self.client.post(
             reverse('feedback'), {
                 'description': 'Hello!',
-                'type': OPINION_ISSUE.id,
+                '_type': OPINION_ISSUE.id,
             }, HTTP_USER_AGENT=(self.FX_UA % '20.0b2'), follow=True)
         # No matter what you submit in the URL field, there must be a 200
         # response code.
@@ -143,7 +143,7 @@ class BetaViewTests(ViewTestCase):
         r = self.client.post(
             reverse('feedback'), {
                 'description': 'Hello!',
-                'type': OPINION_ISSUE.id,
+                '_type': OPINION_ISSUE.id,
                 'manufacturer': 'FancyBrand',
                 'device': 'FancyPhone 2.0',
             }, HTTP_USER_AGENT=(self.FX_UA % '20.0b2'), follow=True)

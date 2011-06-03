@@ -109,7 +109,7 @@ class PraiseForm(FeedbackForm):
                     validate_no_email, validate_no_urls],
         required=True
         )
-    type = forms.CharField(initial=OPINION_PRAISE.id,
+    _type = forms.CharField(initial=OPINION_PRAISE.id,
                            widget=forms.HiddenInput(),
                            required=True)
 
@@ -126,7 +126,7 @@ class IssueForm(FeedbackForm):
                     validate_no_email, validate_no_urls],
         required=True
         )
-    type = forms.CharField(initial=OPINION_ISSUE.id,
+    _type = forms.CharField(initial=OPINION_ISSUE.id,
                            widget=forms.HiddenInput(),
                            required=True)
 
@@ -143,6 +143,6 @@ class IdeaForm(FeedbackForm):
                     validate_no_email, validate_no_urls],
         required=True
         )
-    type = forms.CharField(initial=OPINION_IDEA.id,
+    _type = forms.CharField(initial=OPINION_IDEA.id,
                            widget=forms.HiddenInput(),
                            required=True)

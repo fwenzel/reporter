@@ -71,7 +71,7 @@ def export_tsv():
                     tsv.writerow(_fix_row([
                         opinion.id,
                         int(mktime(opinion.created.timetuple())),
-                        getattr(OPINION_TYPES.get(opinion.type), 'short', None),
+                        getattr(OPINION_TYPES.get(opinion._type), 'short', None),
                         getattr(PRODUCT_IDS.get(opinion.product), 'short', None),
                         opinion.version,
                         opinion.platform,

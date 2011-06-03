@@ -39,8 +39,9 @@ class OpinionManager(caching.base.CachingManager):
 
 class Opinion(ModelBase):
     """A single feedback item."""
-    type = models.PositiveSmallIntegerField(
-            blank=True, default=OPINION_PRAISE.id, db_index=True)
+    _type = models.PositiveSmallIntegerField(blank=True,
+        db_column='type', default=OPINION_PRAISE.id, db_index=True)
+    
     url = models.URLField(verify_exists=False, blank=True)
     description = models.TextField(blank=True)
     terms = models.ManyToManyField('Term', related_name='used_in')
@@ -67,10 +68,10 @@ class Opinion(ModelBase):
     def __unicode__(self):
         try:
             return u'(%s) %s' % (
-                unicode(OPINION_TYPES[self.type].pretty),
+                unicode(OPINION_TYPES[self._type].pretty),
                 self.truncated_description)
         except KeyError:  # pragma: no cover
-            return unicode(self.type)
+            return unicode(self._type)
 
     @property
     def truncated_description(self):
@@ -92,9 +93,12 @@ class Opinion(ModelBase):
             return self.platform
 
     @property
-    def type_name(self):
-        """Human-readable name of opinion type (i.e. praise, issue, idea.)"""
-        return unicode(OPINION_TYPES[self.type].pretty)
+    def type(self):
+        """
+        Return a type object with id, short name, and localized/pretty
+        name properties.
+        """
+        return OPINION_TYPES[self._type]
 
     def get_url_path(self):
         return reverse('opinion.detail', args=(self.id,))

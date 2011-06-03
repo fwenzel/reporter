@@ -63,7 +63,7 @@ def feedback(request, ua):
     """Page to receive feedback under happy/sad/idea categories"""
 
     if request.method == 'POST':
-        typ = int(request.POST.get('type'))
+        typ = int(request.POST.get('_type'))
 
         if typ == input.OPINION_PRAISE.id:
             form = PraiseForm(request.POST, auto_id='happy-%s')
@@ -145,8 +145,8 @@ def save_opinion_from_form(request, type, ua, form):
     if type not in input.OPINION_TYPES:
         raise ValueError('Unknown type %s' % type)
 
-    opinion = Opinion(
-        type=type,
+    return Opinion(
+        _type=type,
         url=form.cleaned_data.get('url', ''),
         description=form.cleaned_data['description'],
         user_agent=ua, locale=locale,

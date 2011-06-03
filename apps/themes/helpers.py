@@ -6,12 +6,12 @@ from input import OPINION_PRAISE, OPINION_IDEA
 
 @register.filter
 def is_praise(opinion):
-    return opinion.type == OPINION_PRAISE.id
+    return opinion._type == OPINION_PRAISE.id
 
 
 @register.filter
 def is_idea(opinion):
-    return opinion.type == OPINION_IDEA.id
+    return opinion._type == OPINION_IDEA.id
 
 
 def new_context(context, **kw):

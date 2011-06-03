@@ -14,8 +14,11 @@
 {% block content %}
 <div class="col middle wide">
   <div id="message" class="block">
-    <div class="message {{ opinion.type_name|lower }}">
-      <h3 class="type {{ opinion.type_name|lower }}" title="{{ opinion.type_name }}"><span>{{ opinion.type_name }}</span></h3>
+    <div class="message {{ opinion.type.short }}">
+      <h3 class="type {{ opinion.type.short }}"
+        title="{{ opinion.type.pretty }}">
+        <span>{{ opinion.type.pretty }}</span>
+      </h3>
 
       <p class="body">{{ opinion.description }}</p>
 

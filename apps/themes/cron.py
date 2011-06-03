@@ -74,7 +74,7 @@ def cluster_by_feeling(qs, channel, prod):
         'release': (OPINION_IDEA,),
     }
     for opinion_type in cluster_by[channel]:
-        type_qs = qs.filter(type=opinion_type.id)
+        type_qs = qs.filter(_type=opinion_type.id)
 
         cluster_by_platform(type_qs, channel, prod, opinion_type.short)
 

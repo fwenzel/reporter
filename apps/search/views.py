@@ -123,7 +123,7 @@ class SearchFeed(Feed):
             'version': item.version,
             'platform': item.platform,
             'locale': item.locale,
-            'sentiment': OPINION_TYPES[item.type].short
+            'sentiment': item.type.short
         }
 
         return (':'.join(i) for i in categories.items())
@@ -183,7 +183,7 @@ def get_period(form):
 @cache_page(use_get=True)
 def index(request):
     try:
-        meta = ('type', 'locale', 'platform', 'day_sentiment', 'manufacturer',
+        meta = ('_type', 'locale', 'platform', 'day_sentiment', 'manufacturer',
                 'device')
         (results, form, product, version, metas) = _get_results(
                 request, meta=meta)
@@ -218,7 +218,7 @@ def index(request):
             data['page'] = pager.page(pager.num_pages)
 
         data['opinions'] = data['page'].object_list
-        data['sent'] = get_sentiment(metas.get('type', {}))
+        data['sent'] = get_sentiment(metas.get('_type', {}))
         data['demo'] = dict(locale=metas.get('locale'),
                             platform=metas.get('platform'),
                             manufacturer=metas.get('manufacturer'),
