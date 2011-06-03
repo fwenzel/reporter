@@ -23,7 +23,7 @@
       <a href="#intro" title="Go Back">{{ _('Go Back') }}<strong></strong></a>
     </nav>
   </header>
-  
+
   <section class="content">
     <form action="{{ post_url }}" method="post" autocomplete="off">
 
@@ -39,7 +39,7 @@
         {% if type != 'idea' %}
         <div>
           <label for="{{ type }}-with-url">
-            <input id="{{ type }}-with-url" type="checkbox" name="with-url" />
+            <input id="{{ type }}-with-url" type="checkbox" name="add_url" />
             {% if type == 'happy' %}
               {{ _('Include the URL of a site that worked better.') }}
             {% elif type == 'sad' %}
@@ -92,6 +92,6 @@
 
     </form>
   </section>
-  
+
   <span class="fade"></span>
 </article>
