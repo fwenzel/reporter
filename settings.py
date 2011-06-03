@@ -325,6 +325,7 @@ BROKER_PASSWORD = "guest"
 BROKER_CONNECTION_TIMEOUT = 0.1
 CELERY_RESULT_BACKEND = 'amqp'
 CELERY_IGNORE_RESULT = True
+CELERY_IMPORTS = ('django_arecibo.tasks',)
 
 import djcelery
 djcelery.setup_loader()
