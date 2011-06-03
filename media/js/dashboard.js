@@ -9,6 +9,8 @@ var input_chart; // Highcharts wants this to be global.
             if (!chart_div.length) return;
 
             var chart_data = JSON.parse(chart_div.attr('data-chart-config'));
+            // Store the previous x-axis label to prevent duplicates
+            var previous_label;
             var tooltip_fmt = chart_div.attr('data-tooltip');
             var time_fmt = chart_div.attr('data-timeformat');
             var time_fmt_short = chart_div.attr('data-timeformat-short');
@@ -40,11 +42,16 @@ var input_chart; // Highcharts wants this to be global.
                     type: 'datetime',
                     labels: {
                         formatter: function() {
-                            return Highcharts.dateFormat(time_fmt_short,
-                                                         this.value * 1000);
+                            var label = Highcharts.dateFormat(time_fmt_short,
+                                                        this.value * 1000);
+                            if (previous_label == label) {
+                                return null;
+                            } else {
+                                return previous_label = label;
+                            }
                         }
                     },
-                    lineColor: options.xLineColor || '#C0D0E0',
+                    lineColor: options.xLineColor || '#C0D0E0'
                 },
                 yAxis: options.yAxis || {
                     title: { text: null },
