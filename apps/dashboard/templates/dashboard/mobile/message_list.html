@@ -9,8 +9,7 @@
         
         <ul class="meta">
           <li>
-              <time datetime="{{ opinion.created|isotime }}" title="{{ opinion.created|babel_datetime }}">{{
-              opinion.created|timesince }}</time>
+              {{ opinion.created|time }}
           </li>
           <li>{{ platform_name(opinion.platform) }}{% if opinion.device %} ({{ opinion.device }}){% endif %}</li>
           <li>{{ locale_name(opinion.locale) }}</li>

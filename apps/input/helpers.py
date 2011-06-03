@@ -6,6 +6,7 @@ from django.template import defaultfilters
 from django.utils import translation
 from django.utils.encoding import smart_str
 from django.utils.http import urlencode
+from django.utils.safestring import mark_safe
 
 from babel import Locale, UnknownLocaleError
 from babel.support import Format
@@ -59,6 +60,21 @@ def babel_date(t, format='medium'):
 @register.filter
 def babel_datetime(t, format='medium'):
     return _get_format().datetime(t, format=format)
+
+@register.filter
+def time(time):
+    """
+    Return a <time> tag with a locale-formatted time inside the title
+    attribute and an HTML5 datetime attribute formatted time inside the
+    datetime attribute.
+    
+    The content of the time tag itself will be the result of timesince(time).
+    """
+    return mark_safe(
+        u'<time datetime="{isotime}" title="{time}">{ago}</time>'.format(
+            ago=timesince(time),
+            isotime=isotime(time),
+            time=babel_datetime(time)))
 
 
 @register.filter

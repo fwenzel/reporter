@@ -22,8 +22,7 @@
       <ul class="meta">
         <li>
           <a href="{{ opinion.get_url_path() }}">
-            <time datetime="{{ opinion.created|isotime }}" title="{{ opinion.created|babel_datetime }}">{{
-            opinion.created|timesince }}</time>
+            {{ opinion.created|time }}
           </a>
         </li>
         <li><a href="{{ search_url(platform=opinion.platform, defaults=defaults) }}">{{ platform_name(opinion.platform) }}{% if opinion.device %} ({{ opinion.device }}){% endif %}</a></li>
