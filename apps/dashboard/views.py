@@ -20,8 +20,6 @@ from website_issues.models import SiteSummary
 @forward_mobile
 @cache_page
 def dashboard(request):
-    """Beta dashboard."""
-    # Defaults
     prod = request.default_prod
     version = (getattr(prod, 'default_version', None) or
                Version(LATEST_BETAS[prod]).simplified)
@@ -32,9 +30,6 @@ def dashboard(request):
         'product': prod.id,
         'version': version,
     }
-
-    frequent_terms = Term.objects.frequent(
-        **term_params)[:settings.TRENDS_COUNT]
 
     # opinions queryset for demographics
     latest_opinions = Opinion.objects.browse(**term_params)
@@ -72,7 +67,6 @@ def dashboard(request):
             'product': prod,
             'products': PROD_CHOICES,
             'sentiments': get_sentiment(metas.get('type', [])),
-            'terms': stats.frequent_terms(qs=frequent_terms),
             'locales': metas.get('locale'),
             'platforms': metas.get('platform'),
             'sites': sites,
