@@ -145,7 +145,7 @@ def save_opinion_from_form(request, type, ua, form):
     if type not in input.OPINION_TYPES:
         raise ValueError('Unknown type %s' % type)
 
-    return Opinion(
+    opinion = Opinion(
         _type=type,
         url=form.cleaned_data.get('url', ''),
         description=form.cleaned_data['description'],
