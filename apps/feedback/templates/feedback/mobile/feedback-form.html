@@ -1,5 +1,5 @@
 <section id="{{ type }}">
-  
+
   {% if form.errors %}
   <input type="hidden" id="errors" name="errors" value="{{ type }}" />
   {% endif %}
@@ -38,7 +38,7 @@
           </p>
           {% endif %}
         </header>
-        
+
         <div class="field">
           {% if type == 'idea' %}
             {% set placeholder = 'Enter your idea here.' %}
@@ -49,11 +49,11 @@
           {{ form.description|field_attrs(placeholder=placeholder) }}
           {{ form.description.errors }}
         </div>
-        
+
         {% if type != 'idea' %}
         <div class="field">
           <label for="{{ type }}-hasurl">
-            <input id="{{ type }}-hasurl" name="hasurl" type="checkbox" />
+            <input id="{{ type }}-hasurl" name="add_url" type="checkbox" />
             {{ _('Include your last visited site?') }}
           </label>
           {{ form.url }}
@@ -72,7 +72,7 @@
             </span>
           </p>
         </div>
-        
+
         {% for hidden in form.hidden_fields() %}
         {{ hidden }}
         {% endfor %}
