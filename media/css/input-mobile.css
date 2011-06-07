@@ -473,8 +473,14 @@ li.bar:last-child, li:last-child a.bar {
 	#message-warning {
 	    background: #fcfadc;
 	    font-size: 1.2em;
-	    font-weight: bold;
+	    padding: 10px;
 	    text-align: center;
+	}
+	#message-warning h3 {
+	    font-weight: bold;
+	}
+	#message-warning p {
+	    margin-top: 5px;
 	}
 		.message:before {
 		    background: url(../img/smileys.png) no-repeat 0 0;
