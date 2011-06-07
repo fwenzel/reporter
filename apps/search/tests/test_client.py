@@ -53,9 +53,9 @@ class SearchTest(SphinxTestCase):
 
     def test_filter_type(self):
         start = datetime.datetime(2010, 5, 27)
-        eq_(num_results(_type=input.OPINION_PRAISE.id, date_start=start), 17)
-        eq_(num_results(_type=input.OPINION_ISSUE.id, date_start=start), 11)
-        eq_(num_results(_type=input.OPINION_IDEA.id, date_start=start), 3)
+        eq_(num_results(type=input.OPINION_PRAISE.id, date_start=start), 17)
+        eq_(num_results(type=input.OPINION_ISSUE.id, date_start=start), 11)
+        eq_(num_results(type=input.OPINION_IDEA.id, date_start=start), 3)
 
     def test_filter_version(self):
         start = datetime.datetime(2010, 5, 27)
