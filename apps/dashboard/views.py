@@ -25,15 +25,14 @@ def dashboard(request):
                Version(LATEST_BETAS[prod]).simplified)
 
     search_form = ReporterSearchForm()
-    # # Frequent terms
-    # term_params = {
-    #     'product': prod.id,
-    #     'version': version,
-    # }
+    # Frequent terms
+    term_params = {
+        'product': prod.id,
+        'version': version,
+    }
 
     # # opinions queryset for demographics
-    # latest_opinions = Opinion.objects.browse(**term_params)
-    # latest_beta = Opinion.objects.filter(version=version, product=prod.id)
+    latest_opinions = Opinion.objects.browse(**term_params)
 
     # # Sites clusters
     # sites = SiteSummary.objects.filter(version__exact=version).filter(
@@ -59,11 +58,11 @@ def dashboard(request):
         total = c.total_found
     except SearchError:
         metas = {}
-        total = latest_beta.count()
+        total = latest_opinions.count()
         chart_data = None
 
     data = {
-    #           'opinions': latest_opinions.all()[:settings.MESSAGES_COUNT],
+        'opinions': latest_opinions.all()[:settings.MESSAGES_COUNT],
         'opinion_count': total,
         'product': prod,
     #         'products': PROD_CHOICES,
