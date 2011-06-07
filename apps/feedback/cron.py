@@ -71,7 +71,7 @@ def populate(num_opinions=None, product='mobile', type=None, locale=None):
     for i in xrange(num_opinions):
         if not type:
             type = random.choice(TYPES).id
-        o = Opinion(type=type,
+        o = Opinion(_type=type,
                     url=random.choice(URLS),
                     locale=locale or random.choice(settings.INPUT_LANGUAGES),
                     user_agent=random.choice(UA_STRINGS[product]))
