@@ -106,6 +106,7 @@ def download(request):
     return jingo.render(request, template)
 
 
+@never_cache
 def thanks(request):
     """Thank you for your feedback."""
 
