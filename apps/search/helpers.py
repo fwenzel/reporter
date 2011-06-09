@@ -27,7 +27,8 @@ def search_url(context, defaults=None, extra=None, feed=False, **kwargs):
     if not 'product' in defaults and not 'product' in kwargs:
         prod = context['request'].default_prod
         fallbacks['product'] = prod.short
-        fallbacks['version'] = Version(input.LATEST_BETAS[prod]).simplified
+        fallbacks['version'] = (getattr(prod, 'default_version', None) or
+                                Version(input.LATEST_BETAS[prod]).simplified)
 
     # get field data from keyword args or defaults
     for field in ReporterSearchForm.base_fields:
