@@ -4,6 +4,7 @@
 <div id="search" class="block">
   <form id="kw-search" method="get" action="{{ url('search') }}">
     <input type="hidden" name="product" value="{{ request.default_prod.short }}" />
+    <input type="hidden" name="version" value="{{ version }}" />
     {{ search_form.q }}
 
     <a id="search-clear" href="#" title="{{ _('Clear Search') }}">{{ _('Clear Search') }}</a>
