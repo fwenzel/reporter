@@ -77,6 +77,13 @@
 
     {{ platforms_block(demo.platform, opinion_count, defaults=defaults) }}
 
+    {% if product.short == 'mobile' %}
+      {{ manufacturer_block(demo.manufacturer, total,
+                            defaults=defaults) }}
+
+      {{ device_block(demo.device, total, defaults=defaults) }}
+    {% endif %}
+
     {{ locales_block(demo.locale, opinion_count, defaults=defaults) }}
   </div>
 

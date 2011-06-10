@@ -1,0 +1,27 @@
+{% macro device_item(device, count=0, selected=False) %}
+<li class="bar filter">
+  <input id="device_{{ device }}" name="device"
+         value="{{ device or 'Unknown' }}"
+         {{ 'disabled' if defaults['manufacturer'] and not device }}
+         type="checkbox" {{ 'checked' if selected else '' }} />
+  <label for="device_{{ device }}" class="{{ 'selected' if selected else '' }}" data-value="{{ count }}">
+    {{ device or _('Unknown') }}
+  </label>
+</li>
+{% endmacro %}
+
+{% if devices %}
+<div class="block collapsible filter-group" id="filter_device">
+  {{ filter_box_toggle(_('Devices')) }}
+
+  <ul class="collapsee filters bars" data-total="{{ total }}">
+    {% if defaults['device'] %}
+      {{ device_item(defaults['device'], selected=True) }}
+    {% else %}
+      {% for item in devices[:15] %}
+        {{ device_item(item.device, item.count) }}
+      {% endfor %}
+    {% endif %}
+  </ul>
+</div>
+{% endif %}

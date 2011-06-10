@@ -42,7 +42,7 @@ class TestDashboard(SphinxTestCase):
         pag_link = doc('.pager a.next')
         eq_(len(pag_link), 1)
         assert pag_link.attr('href').endswith(
-            '?product=firefox&version=%s' % (
+            '?product=firefox&version=%s' % (input.FIREFOX.default_version or
                 input.LATEST_BETAS[input.FIREFOX]))
 
 
@@ -95,7 +95,8 @@ class TestHelpers(InputTestCase):
         item.count = 50
         item.manufacturer = "RySny"
         ms = [item]
-        r = render('{{ manufacturer_block(ms, 100) }}', dict(ms=ms))
+        r = render('{{ manufacturer_block(ms, 100) }}', dict(ms=ms,
+                                                             request=''))
         doc = pq(r)
         eq_(doc('input').attr('id'), 'brand_RySny')
 
@@ -104,7 +105,7 @@ class TestHelpers(InputTestCase):
         item.count = 50
         item.device = "TacoTruck"
         ms = [item]
-        r = render('{{ device_block(ms, 100) }}', dict(ms=ms))
+        r = render('{{ device_block(ms, 100) }}', dict(ms=ms, request=''))
         doc = pq(r)
         eq_(doc('input').attr('id'), 'device_TacoTruck')
 

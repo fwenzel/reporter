@@ -46,8 +46,8 @@ def dashboard(request):
     try:
         c = Client()
         search_opts = dict(product=prod.short, version=version)
-        c.query('', meta=('type', 'locale', 'platform', 'day_sentiment'),
-                **search_opts)
+        c.query('', meta=('type', 'locale', 'manufacturer', 'device',
+                'day_sentiment'), **search_opts)
         metas = c.meta
         daily = c.meta.get('day_sentiment', {})
         chart_data = dict(series=[
@@ -69,6 +69,8 @@ def dashboard(request):
         'sentiments': get_sentiment(metas.get('type', [])),
         'locales': metas.get('locale'),
         'platforms': metas.get('platform'),
+        'devices': metas.get('device'),
+        'manufacturers': metas.get('manufacturer'),
         # 'sites': sites,
         'version': version,
         'versions': VERSION_CHOICES[prod],

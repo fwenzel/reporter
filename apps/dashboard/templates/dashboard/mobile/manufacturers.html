@@ -1,0 +1,28 @@
+{% macro brand_item(manufacturer, count=0, selected=False) %}
+<li class="bar filter">
+  <input id="brand_{{ manufacturer|slugify }}" name="manufacturer"
+         value="{{ manufacturer or 'Unknown' }}"
+         type="checkbox" {{ 'checked' if selected else '' }} />
+  <label for="brand_{{ manufacturer|slugify }}"
+         class="{{ 'selected' if selected else '' }}"
+         data-value="{{ count }}">
+    {{ manufacturer or _('Unknown') }}
+  </label>
+</li>
+{% endmacro %}
+
+{% if manufacturers %}
+<div class="block collapsible filter-group" id="filter_manufacturer">
+  {{ filter_box_toggle(_('Manufacturer')) }}
+
+  <ul class="collapsee filters bars" data-total="{{ total }}">
+    {% if defaults['manufacturer'] %}
+      {{ brand_item(defaults['manufacturer'], selected=True) }}
+    {% else %}
+      {% for item in manufacturers %}
+        {{ brand_item(item.manufacturer, item.count) }}
+      {% endfor %}
+    {% endif %}
+  </ul>
+</div>
+{% endif %}

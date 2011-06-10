@@ -68,14 +68,20 @@ def platforms_block(context, platforms, total, defaults=None):
 @register.function
 @jinja2.contextfunction
 def manufacturer_block(context, manufacturers, total, defaults=None):
-    tpl = 'dashboard/manufacturers.html'
+    if not getattr(context['request'], 'mobile_site', False):
+        tpl = 'dashboard/manufacturers.html'
+    else:
+        tpl = 'dashboard/mobile/manufacturers.html'
     return render_template(tpl, new_context(**locals()))
 
 
 @register.function
 @jinja2.contextfunction
 def device_block(context, devices, total, defaults=None):
-    tpl = 'dashboard/devices.html'
+    if not getattr(context['request'], 'mobile_site', False):
+        tpl = 'dashboard/devices.html'
+    else:
+        tpl = 'dashboard/mobile/devices.html'
     return render_template(tpl, new_context(**locals()))
 
 
