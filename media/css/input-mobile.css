@@ -249,6 +249,14 @@ a {
 	#tab-feed.selected:before {
 	    background-position: -24px 0;
 	}
+	
+	/** HACK: Prevent Trends from appearing while Sites is disabled */
+	#tabs a {
+	    width: 33.33%;
+	}
+	#tab-trends, #tab-trends:before, #tab-trends:after {
+	    display: none !important;
+	}
 
 @media (orientation: landscape) and (min-width: 480px) {
 
