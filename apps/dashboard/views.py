@@ -66,7 +66,7 @@ def dashboard(request):
         'opinion_count': total,
         'product': prod,
         'products': PROD_CHOICES,
-        'sentiments': get_sentiment(metas.get('type', [])),
+        'sent': get_sentiment(metas.get('type', [])),
         'locales': metas.get('locale'),
         'platforms': metas.get('platform'),
         'devices': metas.get('device'),

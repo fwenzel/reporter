@@ -3,17 +3,19 @@
 
   <ul class="collapsee filters bars">
     {% if not defaults['sentiment'] == 'sad' %}
-    {% with sel = (defaults['sentiment'] == 'happy') %}
-    {{ mobile_bar(name='sentiment', id='praise_bar', value='happy', selected=sel,
-                  count=sent.happy, total=sent.total, label=_('Praise')) }}
-    {% endwith %}
+      {% with sel = (defaults['sentiment'] == 'happy') %}
+      {{ mobile_bar(name='sentiment', id='praise_bar', value='happy',
+          selected=sel, count=sent.happy, total=sent.total,
+          label=_('Praise')) }}
+      {% endwith %}
     {% endif %}
 
     {% if not defaults['sentiment'] == 'happy' %}
-    {% with sel = (defaults['sentiment'] == 'sad') %}
-    {{ mobile_bar(name='sentiment', id='issue_bar', value='sad', selected=sel,
-                  count=sent.sad, total=sent.total, label=_('Issues')) }}
-    {% endwith %}
+      {% with sel = (defaults['sentiment'] == 'sad') %}
+      {{ mobile_bar(name='sentiment', id='issue_bar', value='sad',
+          selected=sel, count=sent.sad, total=sent.total,
+          label=_('Issues')) }}
+      {% endwith %}
     {% endif %}
   </ul>
 </div>
