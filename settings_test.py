@@ -1,1 +1,2 @@
 DISABLE_TERMS = True
+ES_DISABLED = True
