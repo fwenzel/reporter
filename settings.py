@@ -339,7 +339,7 @@ ARECIBO_SERVER_URL = ""
 ## ElasticSearch
 ES_HOSTS = []
 ES_INDEX = 'input'
-
+ES_DISABLED = True
 ## FEATURE FLAGS:
 # Setting this to False allows feedback to be collected from any user agent.
 # (good for testing)
