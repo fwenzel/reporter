@@ -114,7 +114,8 @@ class ReporterSearchForm(forms.Form):
             cleaned['page'] = 1
 
         if not cleaned.get('version'):
-            cleaned['version'] = Version(LATEST_BETAS[FIREFOX]).simplified
+            cleaned['version'] = (getattr(FIREFOX, 'default_version', None) or
+                                    Version(LATEST_BETAS[FIREFOX]).simplified)
         elif cleaned['version'] == '--':
             cleaned['version'] = ''
 
