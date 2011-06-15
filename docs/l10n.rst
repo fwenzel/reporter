@@ -8,6 +8,8 @@ Getting locales
 If you want to have locales in your instance of input do the following::
 
     svn co https://svn.mozilla.org/projects/reporter/locale
+    cd locale
+    ./compile-mo.sh .
 
 Updating localizations
 ----------------------
