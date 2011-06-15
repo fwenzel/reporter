@@ -30,7 +30,6 @@ def cluster():
     week_ago = datetime.datetime.today() - datetime.timedelta(7)
 
     base_qs = Opinion.objects.filter(locale='en-US', created__gte=week_ago)
-    import pdb; pdb.set_trace()
     log.debug('Beginning clustering')
     cluster_by_product(base_qs)
 
