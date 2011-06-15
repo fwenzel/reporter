@@ -11,6 +11,7 @@ SYNC_DIR="/data/input/www/django/input.mozilla.com/reporter/"
 pushd locale > /dev/null
 $SVN revert -R .
 $SVN up
+./compile-mo.sh .
 popd > /dev/null
 
 echo -e "Updating vendor..."

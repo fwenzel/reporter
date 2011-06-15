@@ -7,7 +7,7 @@ Getting locales
 
 If you want to have locales in your instance of input do the following::
 
-    svn clone https://svn.mozilla.org/projects/reporter/locale
+    svn co https://svn.mozilla.org/projects/reporter/locale
 
 Updating localizations
 ----------------------

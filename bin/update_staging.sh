@@ -14,7 +14,10 @@ pushd "$HERE/../" > /dev/null
 pushd locale > /dev/null
 $SVN revert -R .
 $SVN up
+./compile-mo.sh .
 popd > /dev/null
+
+
 
 # pull actual code
 $GIT pull -q origin master
