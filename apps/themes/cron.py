@@ -7,6 +7,7 @@ from django.db import transaction
 import cronjobs
 from textcluster import Corpus, search
 
+import input
 from feedback.models import Opinion
 from input import (PLATFORM_USAGE, PRODUCT_USAGE, LATEST_BETAS, LATEST_RELEASE,
                    OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA)
@@ -21,25 +22,6 @@ log = logging.getLogger('reporter')
 
 
 @cronjobs.register
-def cluster_panorama():
-    for word in ('panorama', 'tab candy',):
-        print word
-        print '=' * len(word)
-
-        qs = Opinion.objects.filter(locale='en-US', version='4.0b5',
-                positive=False, description__icontains=word)
-        result = cluster_queryset(qs)
-
-        for group in result:
-            if len(group.similars) < 2:
-                continue
-            print '* ' + group.primary.description
-
-            for s in group.similars:
-                print '  * ' + s['object'].description
-
-
-@cronjobs.register
 @transaction.commit_on_success
 def cluster():
     log.debug('Removing old clusters')
@@ -48,52 +30,41 @@ def cluster():
     week_ago = datetime.datetime.today() - datetime.timedelta(7)
 
     base_qs = Opinion.objects.filter(locale='en-US', created__gte=week_ago)
+    import pdb; pdb.set_trace()
     log.debug('Beginning clustering')
-    cluster_by_product_and_channel(base_qs)
+    cluster_by_product(base_qs)
 
 
-def cluster_by_product_and_channel(qs):
-    def get_version(channel, prod):
-        return (LATEST_BETAS[prod] if channel == 'beta'
-                else LATEST_RELEASE[prod])
-
-    for channel in ('beta', 'release'):
-        for prod in PRODUCT_USAGE:
-            version = get_version(channel, prod)
-            log.debug('Clustering %s (%s: %s)' %
-                      (unicode(prod.pretty), channel, version))
-            qs_product = qs.filter(product=prod.id, version=version)
-            cluster_by_feeling(qs_product, channel, prod)
+def cluster_by_product(qs):
+    for prod in PRODUCT_USAGE:
+        version = prod.default_version
+        log.debug('Clustering %s %s' % (unicode(prod.pretty), version))
+        qs_product = qs.filter(product=prod.id, version=version)
+        cluster_by_feeling(qs_product, prod)
 
 
-def cluster_by_feeling(qs, channel, prod):
+def cluster_by_feeling(qs, prod):
     """Cluster all products by feeling."""
-    # Sentiments to be considered depend on channel.
-    cluster_by = {
-        'beta': (OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA),
-        'release': (OPINION_IDEA,),
-    }
-    for opinion_type in cluster_by[channel]:
+    for opinion_type in input.OPINION_USAGE:
         type_qs = qs.filter(_type=opinion_type.id)
 
-        cluster_by_platform(type_qs, channel, prod, opinion_type.short)
+        cluster_by_platform(type_qs, prod, opinion_type.short)
 
 
-def cluster_by_platform(qs, channel, prod, feeling):
+def cluster_by_platform(qs, prod, feeling):
     """
     Cluster all products/feelings by platform ('all' as well as separate
     platforms).
     """
-    dimensions = dict(product=prod.id, channel=channel, feeling=feeling)
+    dimensions = dict(product=prod.id, feeling=feeling)
     cluster_and_save(qs, dimensions)
 
-    # Beta only: Create corpora for each platform and inspect each
+    # Create corpora for each platform and inspect each
     # opinion and put it in the right platform bucket.
-    if channel == 'beta':
-        for platform in PLATFORM_USAGE:
-            dimensions['platform'] = platform.short
-            cluster_and_save(qs.filter(platform=platform.short),
-                                      dimensions)
+    for platform in PLATFORM_USAGE:
+        dimensions['platform'] = platform.short
+        cluster_and_save(qs.filter(platform=platform.short),
+                                  dimensions)
 
 
 def cluster_and_save(qs, dimensions):
