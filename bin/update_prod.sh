@@ -7,6 +7,12 @@ VENDOR_DIR="$INPUT_DIR/vendor"
 
 SYNC_DIR="/data/input/www/django/input.mozilla.com/reporter/"
 
+# update locales
+pushd locale > /dev/null
+$SVN revert -R .
+$SVN up
+popd > /dev/null
+
 echo -e "Updating vendor..."
 cd $VENDOR_DIR
 git pull

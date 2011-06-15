@@ -1,0 +1,24 @@
+============
+Localization
+============
+
+Getting locales
+---------------
+
+If you want to have locales in your instance of input do the following::
+
+    svn clone https://svn.mozilla.org/projects/reporter/locale
+
+Updating localizations
+----------------------
+
+To update the localizations do the following::
+
+    pushd locale
+    svn revert -R .
+    svn up
+    popd
+    ./manage.py extract; ./manage.py verbatimize --rename; ./manage.py merge
+    pushd locale
+    svn commit -m 'Extracted strings'
+    popd

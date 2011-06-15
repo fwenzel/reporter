@@ -5,9 +5,16 @@
 
 HERE=`dirname $0`
 GIT=`which git`
+SVN=`which svn`
 PYTHON=`which python2.6`
 
 pushd "$HERE/../" > /dev/null
+
+# update locales
+pushd locale > /dev/null
+$SVN revert -R .
+$SVN up
+popd > /dev/null
 
 # pull actual code
 $GIT pull -q origin master

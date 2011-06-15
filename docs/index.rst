@@ -12,6 +12,8 @@ Contents:
    :maxdepth: 2
 
    sphinxsearch
+   elasticsearch
+   l10n
 
 Indices and tables
 ==================
